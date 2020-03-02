@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Callout" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAggAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Callout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChangeDay" Collapsed="true">
+    <Position X="0.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYCAAAAACAAAEAEQAAAAAAAAAAAAAAAAABgAgAIQAA=</HashCode>
+      <FileName>Assets\Script\GameScene\ChangeDay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chat" Collapsed="true">
+    <Position X="1" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Chat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatListManager" Collapsed="true">
+    <Position X="1.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAJAQBAAEGkAgAAQCWACwAAgBAIAAQCECAIIAEgBBAE=</HashCode>
+      <FileName>Assets\Script\GameScene\ChatListManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatNode" Collapsed="true">
+    <Position X="1.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgACAAACAEIAAAQAAEAwgAAAAAACQAAAAACAAACBBA=</HashCode>
+      <FileName>Assets\Script\GameScene\ChatNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatSystem" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hA4CBYAEAgAAMCQAAAAAAABAEAAAA4CFBEARAAgAAgQ=</HashCode>
+      <FileName>Assets\Script\GameScene\ChatSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatData" Collapsed="true">
+    <Position X="1.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAgAAgAQAAAAAAAEAEAAAAAgA=</HashCode>
+      <FileName>Assets\Script\GameScene\ChatSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager" Collapsed="true">
+    <Position X="2" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQRAGBAACAgQAAAAoABQAEAAAAAACAAIAQAAQoAEAA=</HashCode>
+      <FileName>Assets\Script\GameScene\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MenberScrollView" Collapsed="true">
+    <Position X="2.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAgAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\MenberScrollView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NewBehaviourScript" Collapsed="true">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\NewBehaviourScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NextDay" Collapsed="true">
+    <Position X="2.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\NextDay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="3" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TabooWord" Collapsed="true">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAABAAAAAAQAAAAAAAAAAIAAACAAAABAA=</HashCode>
+      <FileName>Assets\Script\GameScene\TabooWord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TimeController" Collapsed="true">
+    <Position X="3.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEQiAiAAEDAAgAAEACACRgAQAQgQIEQEAAAAgAAAAQQ=</HashCode>
+      <FileName>Assets\Script\GameScene\TimeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vocabulary">
+    <Position X="2.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAgIAAAAAAgAAAAIAAAAAAAAIAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Vocabulary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wolfmode">
+    <Position X="4.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAABAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Wolfmode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="ChatRoll" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAgAAAAAQAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\ChatSystem.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ROLLTYPE" Collapsed="true">
+    <Position X="6" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAACAAAAQAAIAEAAIEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\ROLLTYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Yu Gothic UI" Size="9" />
+</ClassDiagram>
