@@ -25,7 +25,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public int calloutTimeLimit;
     public string inputData;
     public NGList taboolist;
-    public string[] comingOut;//CO状況を保存
+    public string[] comingOutPlayers;//CO状況を保存
     public List<string>playerNameList = new List<string>();
     public List<Player> playersList = new List<Player>();
     public int myID;

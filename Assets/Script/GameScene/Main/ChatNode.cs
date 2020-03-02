@@ -48,10 +48,10 @@ public class ChatNode : MonoBehaviour {
         playerName = chatData.playerName;
 
         //PlayerがCOしているか否か
-        if (chatSystem.comingOut[chatData.playerNum] == "") {
+        if (chatSystem.comingOutPlayers[chatData.playerNum] == "") {
             statusText.text = playerName;
         } else {
-            statusText.text = playerName[chatData.playerNum] + "【" + chatSystem.comingOut[chatData.playerNum] + "CO】";
+            statusText.text = playerName[chatData.playerNum] + "【" + chatSystem.comingOutPlayers[chatData.playerNum] + "CO】";
         }
         layoutGroup.childAlignment = TextAnchor.UpperLeft;
         //COした場合幅等を変更する
@@ -63,8 +63,8 @@ public class ChatNode : MonoBehaviour {
             chatBoard.GetComponent<LayoutElement>().preferredHeight = 60;
             COPopup.SetActive(false);
             //COすると名前の横にCO状況を表示
-            chatSystem.comingOut[chatData.playerNum] = chatData.rollName;
-            statusText.text = chatData.roll + "【" + chatSystem.comingOut[chatData.playerNum] + "CO】";
+            chatSystem.comingOutPlayers[chatData.playerNum] = chatData.rollName;
+            statusText.text = chatData.roll + "【" + chatSystem.comingOutPlayers[chatData.playerNum] + "CO】";
 
         }
         StartCoroutine(CheckTextSize());

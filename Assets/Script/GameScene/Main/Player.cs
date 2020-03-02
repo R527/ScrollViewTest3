@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
+using System;
 
 /// <summary>
 /// MenbarViewにあるPlayer情報などをまとめてる
 /// </summary>
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviourPunCallbacks {
 
 
     //class
-    public ROLLTYPE rollType;
+    public ROLLTYPE rollType = ROLLTYPE.ETC;
+    public CHATTYPE chatType = CHATTYPE.MINE;
     public GameManager gameManager;
     public ChatSystem chatSystem;
 
     //main
     public int playerID;
-    public Text plyaerText;
+    public Text playerText;
     public string playerName;
     public Button playerButton;
     public bool live;//生死
@@ -27,6 +31,10 @@ public class Player : MonoBehaviour {
     public Button wolfButton;
     public Text MenbarViewText;
 
+    public ChatNode chatNodePrefab;//チャットノード用のプレふぁぶ
+    public int iconNo;//アイコンの絵用
+    private  Transform tran;
+
     //仮
     public bool def;
 
@@ -35,13 +43,41 @@ public class Player : MonoBehaviour {
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
     public void PlayerSetUp() {
-        //ラムダ式で引数をあてる
-        playerButton.onClick.AddListener(() => gameManager.PlayerButton(rollType, playerID,live,fortune,def));
+        Debug.Log("Setup");
         live = true;
-        chatSystem = GameObject.Find("GameCanvas/ChatSystem").GetComponent<ChatSystem>();
-        plyaerText.text = rollType.ToString();
-        //ニックネームに変更する予定
-        playerName = chatSystem.playerNameList[playerID];
+
+
+        chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
+        tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
+
+
+        //自分と他人を分ける分岐
+        if (photonView.IsMine) {
+            playerText.text = rollType.ToString();
+            playerName = PhotonNetwork.LocalPlayer.NickName;
+            //Networkの自分の持っている番号を追加
+            iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
+
+            //ラムダ式で引数を充てる。
+            playerButton.onClick.AddListener(() => gameManager.PlayerButton(rollType, playerID, live, fortune, def));
+
+            //このクラスは参加人数が9人の場合81個ある状態になる。
+            //上の9人分を除いた、72個分をこちらで処理する
+        } else {
+            //自分の世界に作られたほかのPlayerの設定
+            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                //photonView.OwnerActorNrは自分の通し番号
+                //player.ActorNumberもネットワーク上の自分の番号
+                //playerで回すから各プレイヤーの番号を検索できる
+                if (player.ActorNumber == photonView.OwnerActorNr) {
+                    playerID = player.ActorNumber;
+                    rollType = (ROLLTYPE)player.CustomProperties["roll"];
+                    playerText.text = rollType.ToString();
+                    playerName = player.NickName;
+                    iconNo = player.ActorNumber;
+                }
+            }
+        }
 
         //役職ごとの判定を追加
         if (rollType == ROLLTYPE.人狼) {
@@ -53,5 +89,7 @@ public class Player : MonoBehaviour {
             wolfCamp = true;
         }
     }
+
+
 }
 
