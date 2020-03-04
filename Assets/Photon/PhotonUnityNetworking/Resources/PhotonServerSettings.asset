@@ -30,10 +30,10 @@ MonoBehaviour:
   StartInOfflineMode: 0
   RpcList:
   - ClickRpc
+  - CreateChatNodeFromPlayer
   - DestroyRpc
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - CreateRoom
   DisableAutoOpenWizard: 1
   ShowSettings: 1

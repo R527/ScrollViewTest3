@@ -162,12 +162,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //処刑
                 case TIME.投票時間:
                     timeType = TIME.処刑後チェック;
-                    voteCount.Execution();
+                    //voteCount.Execution();
                     totalTime = executionTime;
                     break;
                 //処刑後チェック
                 case TIME.処刑後チェック:
-                    gameOver.CheckGameOver();
+                    //gameOver.CheckGameOver();
                     timeType = TIME.処刑;
                     break;
                 //夜の行動
@@ -193,7 +193,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //結果発表チェック
                 case TIME.結果発表後チェック:
                     timeType = TIME.夜の結果発表;
-                    gameOver.CheckGameOver();
+                    //gameOver.CheckGameOver();
                     break;
             }
             StartCoroutine(WaitInterval());

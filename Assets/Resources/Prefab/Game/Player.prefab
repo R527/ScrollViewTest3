@@ -93,9 +93,10 @@ GameObject:
   - component: {fileID: 2752226843825163464}
   - component: {fileID: -2718671719702027752}
   - component: {fileID: 5950567266344266541}
+  - component: {fileID: -7964158761032835371}
   m_Layer: 5
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,16 +134,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollType: 0
+  chatType: 0
   gameManager: {fileID: 0}
   chatSystem: {fileID: 0}
   playerID: 0
-  plyaerText: {fileID: 6959428748610184544}
+  playerText: {fileID: 6959428748610184544}
   playerName: 
   playerButton: {fileID: 5950567266344266541}
   live: 0
   fortune: 0
+  spiritual: 0
+  wolf: 0
+  wolfCamp: 0
   wolfButton: {fileID: 0}
   MenbarViewText: {fileID: 0}
+  chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
+    type: 3}
+  iconNo: 0
   def: 0
 --- !u!222 &5807723990393611466
 CanvasRenderer:
@@ -246,3 +254,25 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &-7964158761032835371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4026812345811896178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

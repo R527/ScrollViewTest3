@@ -860,46 +860,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37bd090b190d4ff48ab8e883b1b982ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatData:
-    id: 0
-    roll: 0
-    body: 
-    rollName: 
-    playerNum: 0
-    boardColor: {r: 0, g: 0, b: 0, a: 0}
-    playerName: 
-    rollType: 0
   chatSystem: {fileID: 0}
   COPopup: {fileID: 0}
-  ChatPrefab: {fileID: 7737116944678905149}
   chatText: {fileID: 4466735831423285711}
   statusObj: {fileID: 1235808738732009459}
-  iconSprite:
-  - {fileID: 21300000, guid: 1223837ef2f9443498e3fd09bd21e88b, type: 3}
-  - {fileID: 21300000, guid: f86037b1211fc214ea5121918c861313, type: 3}
-  - {fileID: 21300000, guid: 649ad74ee9c543e4590c1f2cc8f67fc1, type: 3}
-  - {fileID: 21300000, guid: 7203ec1f94cc1354bb79d08401e87956, type: 3}
-  - {fileID: 21300000, guid: b01e0463b1b8a164292c6e912c1efd0d, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 21300000, guid: 05af485e0138a34478445e6828d6923e, type: 3}
-  playerName: 
-  iconObj: {fileID: 7407571817137271022}
-  chatRoll: 1
   statusText: {fileID: 7543894743011651805}
-  playerNum: 0
+  playerName: 
+  playerID: 0
   layoutGroup: {fileID: 5080018548450252811}
   chatBoard: {fileID: 6995840903809688898}
   chatIcon: {fileID: 6432085198602546823}
-  mineSprite: {fileID: 21300000, guid: 60c065004ee84674bbe28a5a6ad7e6b8, type: 3}
-  othersSprite: {fileID: 21300000, guid: 74e47bd6ff7f33b488c85092a1234468, type: 3}
+  iconObjLayoutElement: {fileID: 8258252561014166148}
 --- !u!114 &7595674281625313176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,7 +901,8 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 0
   OwnershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

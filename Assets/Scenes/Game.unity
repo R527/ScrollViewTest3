@@ -10485,6 +10485,7 @@ GameObject:
   - component: {fileID: 1130743580}
   - component: {fileID: 1130743582}
   - component: {fileID: 1130743584}
+  - component: {fileID: 1130743576}
   m_Layer: 5
   m_Name: GameManager
   m_TagString: Untagged
@@ -10523,6 +10524,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5832c6e06cec3489b2b57db504306a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1130743576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130743573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &1130743578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20421,9 +20444,10 @@ GameObject:
   - component: {fileID: 4395145948522523483}
   - component: {fileID: 4395145948522523302}
   - component: {fileID: 4395145948522523303}
+  - component: {fileID: 4395145948522523304}
   m_Layer: 5
   m_Name: ChatSystem
-  m_TagString: Untagged
+  m_TagString: ChatSystem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20480,22 +20504,7 @@ MonoBehaviour:
   calloutTimeLimit: 0
   inputData: 
   taboolist: {fileID: 1130743581}
-  comingOut:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  comingOutPlayers: []
   playerNameList: []
   playersList: []
   myID: 0
@@ -20510,7 +20519,7 @@ MonoBehaviour:
   - {r: 0.9622642, g: 0.23148806, b: 0.23148806, a: 1}
   - {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   - {r: 0.4038179, g: 1, b: 0, a: 1}
-  boardColor: {r: 0, g: 0, b: 0, a: 0}
+  boardColor: 0
   wolfmode: {fileID: 1018169726}
   chatListManager: {fileID: 1130743579}
 --- !u!114 &4395145948522523303
@@ -20533,6 +20542,28 @@ MonoBehaviour:
   y: 0
   scrollRect: {fileID: 4395145949457617573}
   previewButton: {fileID: 2047641962}
+--- !u!114 &4395145948522523304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4395145948522523300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &4395145948522523480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20884,7 +20915,7 @@ GameObject:
   - component: {fileID: 4395145949336749763}
   m_Layer: 5
   m_Name: Content
-  m_TagString: Untagged
+  m_TagString: ChatContent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

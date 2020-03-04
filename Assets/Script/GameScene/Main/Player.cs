@@ -14,7 +14,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
     //class
     public ROLLTYPE rollType = ROLLTYPE.ETC;
-    public CHATTYPE chatType = CHATTYPE.MINE;
+    public CHAT_TYPE chatType = CHAT_TYPE.MINE;
     public GameManager gameManager;
     public ChatSystem chatSystem;
 
@@ -53,6 +53,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //自分と他人を分ける分岐
         if (photonView.IsMine) {
+            chatSystem.myPlayer = this;
             playerText.text = rollType.ToString();
             playerName = PhotonNetwork.LocalPlayer.NickName;
             //Networkの自分の持っている番号を追加
@@ -91,5 +92,39 @@ public class Player : MonoBehaviourPunCallbacks {
     }
 
 
+    /// <summary>
+    /// ChatNodeの生成準備
+    /// 発言はPlayerクラスで行われる
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="inputData"></param>
+    /// <param name="boardColor"></param>
+    /// <param name="comingOut"></param>
+    public void CreateNode(int id, string inputData, int boardColor, bool comingOut) {
+        Debug.Log("CreateNode: Player");
+        photonView.RPC(nameof(CreateChatNodeFromPlayer), RpcTarget.All, id, inputData, boardColor, comingOut);
+    }
+
+
+    [PunRPC]
+    public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut) {
+        Debug.Log("RPC START");
+
+        ChatData chatData = new ChatData(id, inputData, playerID, boardColor, playerName, rollType);
+        Debug.Log(chatData.inputData);
+
+        //発言者の分岐
+        if (photonView.IsMine) {
+            chatData.chatType = CHAT_TYPE.MINE;
+        } else {
+            chatData.chatType = CHAT_TYPE.OTHERS;
+        }
+
+        ChatNode chatNode = Instantiate(chatNodePrefab, tran, false);
+        chatNode.InitChatNode(chatData, iconNo, comingOut);
+        Debug.Log(comingOut);
+        chatSystem.SetChatNode(chatNode, chatData, comingOut);
+        Debug.Log("Player RPC END");
+    }
 }
 

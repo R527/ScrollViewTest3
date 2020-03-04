@@ -126,6 +126,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         Debug.Log("OnJoinedRoom");
         //InRoom＝そのプレイヤーが部屋にいるかどうか～tureなら
         if (PhotonNetwork.InRoom) {
+            PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.name;
+            Debug.Log("NickName;" + PhotonNetwork.LocalPlayer.NickName);
             Debug.Log("RoomName:" + PhotonNetwork.CurrentRoom.Name);
             Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);
             Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);

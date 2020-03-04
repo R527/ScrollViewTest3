@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 /// <summary>
 /// chatNodeにつけるクラス
@@ -10,62 +11,76 @@ using UnityEngine.UI;
 public class ChatNode : MonoBehaviour {
 
     //class
-    public ChatData chatData;
     public ChatSystem chatSystem;
 
     //main
     public GameObject COPopup;
-    public GameObject ChatPrefab;
     public Text chatText;
     public GameObject statusObj;
-    public Sprite[] iconSprite;//Icon画像配列
-    public string playerName;
-    public GameObject iconObj;
-    public ChatRoll chatRoll = ChatRoll.EXT;
     public Text statusText;
-    public int playerNum;
+    //public Sprite[] iconSprite;//Icon画像配列
+    public string playerName;
+    public int playerID;
     [SerializeField] LayoutGroup layoutGroup;
-    [SerializeField] Image chatBoard;
+    public  Image chatBoard;
     [SerializeField] Image chatIcon;
-    [SerializeField] Sprite mineSprite;
-    [SerializeField] Sprite othersSprite;
+    public LayoutElement iconObjLayoutElement;
 
 
     /// <summary>
     /// ChatSystemからデータを受け取りそれをもとにちゃっとNODEを作る
     /// 名前、CO状況の処理、アイコンやそれに伴うRollName、COスタンプ
     /// </summary>
-    /// <param name="data"></param>
-    public void InitChatNode(ChatData data) {
+    /// <param name="chatData"></param>
+    public void InitChatNode(ChatData chatData, int iconNo, bool comingOut) {
 
         //ChatDataはChatSystemのdataを取り入れている
-        chatData = data;
         COPopup = GameObject.FindGameObjectWithTag("COPopup");
-        chatSystem = GameObject.Find("GameCanvas/ChatSystem").GetComponent<ChatSystem>();
-        chatText.text = chatData.body;
-        chatIcon.sprite = iconSprite[chatData.playerNum];
-        chatBoard.color = chatData.boardColor;
-        playerName = chatData.playerName;
+        chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
+        chatText.text = chatData.inputData;
+        chatIcon.sprite = Resources.Load<Sprite>("CoImage/Player" + iconNo);//Spriteの配列ではなくResouces.Loatにして取得
 
-        //PlayerがCOしているか否か
-        if (chatSystem.comingOutPlayers[chatData.playerNum] == "") {
-            statusText.text = playerName;
+        playerID = chatData.playerID;
+
+        //PlayerがCOしているか否か（COしている場合は名前の横に職業名を記載
+        if (chatData.chatType == CHAT_TYPE.GM) {
+            statusText.text = "GM";
         } else {
-            statusText.text = playerName[chatData.playerNum] + "【" + chatSystem.comingOutPlayers[chatData.playerNum] + "CO】";
+            //stringがnullかから文字化を判定し、その判定をbool型で返す。
+            //(chatData.playerID - 1)はGM分をー１にする調整
+            if (string.IsNullOrEmpty(chatSystem.comingOutPlayers[(chatData.playerID - 1)])) {
+                Debug.Log("ComingOut : 未");
+                statusText.text = chatData.playerName;
+            } else {
+                Debug.Log("Coming:済");
+                statusText.text = chatData.playerName + "【" + chatSystem.comingOutPlayers[(chatData.playerID - 1)] +
+                    "CO】";
+            }
         }
-        layoutGroup.childAlignment = TextAnchor.UpperLeft;
+        //発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
+        if(chatData.chatType == CHAT_TYPE.MINE) {
+            layoutGroup.childAlignment = TextAnchor.UpperRight;
+        }else if(chatData.chatType == CHAT_TYPE.OTHERS) {
+            layoutGroup.childAlignment = TextAnchor.UpperLeft;
+        }else if(chatData.chatType == CHAT_TYPE.GM) {
+            layoutGroup.childAlignment = TextAnchor.UpperLeft;
+        }
+
+
         //COした場合幅等を変更する
-        if (chatData.rollName != "null" && chatData.rollName != "GameMaster") {
+        if (comingOut) {
+            Debug.Log("ComingOut:" + chatData.playerName);
             chatSystem.chatInputField.text = "";
-            chatBoard.sprite = Resources.Load<Sprite>("CoImage/" + chatData.rollName);
+            //chatBoard.sprite = Resources.Load<Sprite>("CoImage/" + chatData.rollName);
             chatBoard.color = new Color(1f, 1f, 1f, 1f);
             chatBoard.GetComponent<LayoutElement>().preferredWidth = 60;
             chatBoard.GetComponent<LayoutElement>().preferredHeight = 60;
-            COPopup.SetActive(false);
+            if(COPopup != null) {
+                COPopup.SetActive(false);
+            }
             //COすると名前の横にCO状況を表示
-            chatSystem.comingOutPlayers[chatData.playerNum] = chatData.rollName;
-            statusText.text = chatData.roll + "【" + chatSystem.comingOutPlayers[chatData.playerNum] + "CO】";
-
+            chatSystem.comingOutPlayers[chatData.playerID - 1] = chatData.rollType.ToString();
+            statusText.text = chatData.playerName + "【" + chatSystem.comingOutPlayers[chatData.playerID - 1] + "CO】";
         }
         StartCoroutine(CheckTextSize());
     }

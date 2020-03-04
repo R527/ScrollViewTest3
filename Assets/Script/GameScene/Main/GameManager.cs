@@ -490,7 +490,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             player.gameManager = this;
             //自分のプレイヤークラスを使う時用。
             chatSystem.myPlayer = player;
-
+            Debug.Log("Player" + chatSystem.myPlayer);
             player.PlayerSetUp();
         }
     }
