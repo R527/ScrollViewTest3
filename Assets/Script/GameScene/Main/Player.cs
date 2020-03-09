@@ -23,7 +23,7 @@ public class Player : MonoBehaviourPunCallbacks {
     public Text playerText;
     public string playerName;
     public Button playerButton;
-    public bool live;//生死
+    public bool live;//生死 trueで生存している
     public bool fortune;//占い結果
     public bool spiritual;//霊能結果
     public bool wolf;//狼か否か
@@ -36,16 +36,16 @@ public class Player : MonoBehaviourPunCallbacks {
     private  Transform tran;
 
     //仮
-    public bool def;
+    public bool def;//騎士のデバッグ用
 
 
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
-    public void PlayerSetUp() {
+    public void PlayerSetUp(GameManager gameManager) {
         Debug.Log("Setup");
         live = true;
-
+        this.gameManager = gameManager;
 
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
@@ -60,7 +60,7 @@ public class Player : MonoBehaviourPunCallbacks {
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
 
             //ラムダ式で引数を充てる。
-            playerButton.onClick.AddListener(() => gameManager.PlayerButton(rollType, playerID, live, fortune, def));
+            playerButton.onClick.AddListener(() => OnClickPlayerButton());
 
             //このクラスは参加人数が9人の場合81個ある状態になる。
             //上の9人分を除いた、72個分をこちらで処理する
@@ -125,6 +125,38 @@ public class Player : MonoBehaviourPunCallbacks {
         Debug.Log(comingOut);
         chatSystem.SetChatNode(chatNode, chatData, comingOut);
         Debug.Log("Player RPC END");
+    }
+
+
+    /// <summary>
+    ///投票、フィルター、夜の行動を制御 
+    /// </summary>
+    public void OnClickPlayerButton()
+    {
+        if (gameManager.chatListManager.isfilter == true)
+        {
+            Debug.Log("フィルターOn");
+            gameManager.chatListManager.OnFilter(playerID);
+        }
+        else
+        {
+            switch (gameManager.timeController.timeType)
+            {
+                case TIME.投票時間:
+                    Debug.Log("投票する");
+                    gameManager.voteCount.VoteCountList(playerID, live);
+                    break;
+                case TIME.夜の行動:
+                    Debug.Log("夜の行動");
+                    gameManager.rollAction.RollActionButton(rollType, playerID, live, fortune, def);
+                    break;
+                default:
+                    Debug.Log("フィルターOn");
+                    gameManager.chatListManager.OnFilter(playerID);
+                    break;
+            }
+        }
+
     }
 }
 

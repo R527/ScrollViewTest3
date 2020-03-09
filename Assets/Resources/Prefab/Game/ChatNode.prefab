@@ -826,9 +826,9 @@ MonoBehaviour:
     m_Right: 5
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 2
   m_Spacing: 5
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
@@ -876,7 +876,7 @@ MonoBehaviour:
   layoutGroup: {fileID: 5080018548450252811}
   chatBoard: {fileID: 6995840903809688898}
   chatIcon: {fileID: 6432085198602546823}
-  iconObjLayoutElement: {fileID: 8258252561014166148}
+  iconObjLayoutElement: {fileID: 6187143868307752041}
 --- !u!114 &7595674281625313176
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -91,12 +91,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             OnClickOtherButton();
         }
 
-        //if (scrollRect.verticalNormalizedPosition >= 0.0f) {
-        //    scrollRect.StopMovement();
-        //    scrollRect.enabled = false;
-        //}
 
-        //Debug.Log(scrollRect.verticalNormalizedPosition);
     }
 
     //第2引数がない場合は自動でNullを入れます。
@@ -226,19 +221,23 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         //SetActiveを制御する
         chatNode.gameObject.SetActive(SetActiveChatObj());
 
-        
+
 
         //if(chatListManager.isfilter == true) {
         //    chat.gameObject.SetActive(false);
         //}
 
         //playerが連続でチャットを投稿した場合、アイコンObj等を削除する
-        if (lastChatNode != null) {
-            if (lastChatNode.playerID == chatData.playerID) {
+        if (lastChatNode != null)
+        {
+            if (lastChatNode.playerID == chatData.playerID)
+            {
                 chatNode.iconObjLayoutElement.minHeight = 0f;
                 chatNode.iconObjLayoutElement.preferredHeight = 0f;
                 chatNode.statusObj.SetActive(false);
-            } else {
+            }
+            else
+            {
                 chatNode.iconObjLayoutElement.preferredHeight = 20f;
                 chatNode.iconObjLayoutElement.minHeight = 20f;
                 chatNode.statusObj.SetActive(true);
