@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 
 /// <summary>
-/// プレイヤー情報を管理する
+/// プレイヤーPoPUpを管理する
 /// </summary>
 public class PlayerInfoPopUp : MonoBehaviour
 {
     public GameObject playerInfoPopUpObj;
     public Button maskButton;
     public Button backButton;
+
+
 
     private void Start() {
         backButton.onClick.AddListener(OnDestroy);

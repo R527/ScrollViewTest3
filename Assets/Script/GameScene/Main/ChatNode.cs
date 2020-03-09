@@ -58,11 +58,11 @@ public class ChatNode : MonoBehaviour {
             }
         }
         //発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
-        if(chatData.chatType == CHAT_TYPE.MINE) {
+        if (chatData.chatType == CHAT_TYPE.MINE) {
             layoutGroup.childAlignment = TextAnchor.UpperRight;
-        }else if(chatData.chatType == CHAT_TYPE.OTHERS) {
+        } else if (chatData.chatType == CHAT_TYPE.OTHERS) {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
-        }else if(chatData.chatType == CHAT_TYPE.GM) {
+        } else if (chatData.chatType == CHAT_TYPE.GM) {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
 

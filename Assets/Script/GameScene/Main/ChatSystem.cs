@@ -226,30 +226,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         //SetActiveを制御する
         chatNode.gameObject.SetActive(SetActiveChatObj());
 
-        ////市民の場合
-        //if (myPlayer != null) {
-        //    if (myPlayer.rollType != ROLLTYPE.人狼) {
-        //        if (myPlayer.live == true) {
-        //            if (boardColor == color[3] || boardColor == color[2]) {
-        //                chat.gameObject.SetActive(false);
-        //            }
-        //        }
-        //        if (myPlayer.live == false) {
-        //            if (boardColor == color[2]) {
-        //                chat.gameObject.SetActive(false);
-        //            }
-        //        }
-        //    }
-
-        //    //人狼の場合
-        //    if (myPlayer.rollType == ROLLTYPE.人狼) {
-        //        if (myPlayer.live == true) {
-        //            if (boardColor == color[3]) {
-        //                chat.gameObject.SetActive(false);
-        //            }
-        //        }
-        //    }
-        //}
+        
 
         //if(chatListManager.isfilter == true) {
         //    chat.gameObject.SetActive(false);
@@ -349,41 +326,3 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     }
 
 }
-
-////この下が分からない。
-////enumは定数をまとめることができる
-////状態を登録する
-////列挙型
-////ChatRollが登録された状態を管理する
-//public enum ChatRoll {
-//    EXT,
-//    MINE,
-//    OTHERS,
-//    GM,
-//}
-
-////Classはこのクラスが呼び出されると初めに実行される？
-////クラス名とメソッド名を同じにすることをコンストラクト
-////クラスが初期化されると自動的に実行される
-//[System.Serializable]
-//public class ChatData {
-//    public int id;
-//    public ChatRoll roll = ChatRoll.EXT;
-//    public string body;
-//    public string rollName;
-//    public int playerNum;
-//    public Color boardColor;
-//    public string playerName;
-//    public ROLLTYPE rollType;
-
-//    public ChatData(int id, ChatRoll roll, string body, string rollName, int playerNum, Color boardColor, string playerName, ROLLTYPE rollType) {
-//        this.id = id;
-//        this.roll = roll;
-//        this.body = body;
-//        this.rollName = rollName;
-//        this.playerNum = playerNum;
-//        this.boardColor = boardColor;
-//        this.playerName = playerName;
-//        this.rollType = rollType;
-//    }
-//}

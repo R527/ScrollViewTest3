@@ -4285,6 +4285,7 @@ GameObject:
   - component: {fileID: 757757272}
   - component: {fileID: 757757271}
   - component: {fileID: 757757273}
+  - component: {fileID: 757757274}
   m_Layer: 0
   m_Name: TitleButtonManager
   m_TagString: Untagged
@@ -4341,6 +4342,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contentRectTransform: {fileID: 1471958841}
+--- !u!114 &757757274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757757270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b82453e3a3a951479d3f8188b1fd5c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNameText: {fileID: 1717778944}
 --- !u!1 &757905221
 GameObject:
   m_ObjectHideFlags: 0

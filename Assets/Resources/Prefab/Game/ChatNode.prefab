@@ -643,7 +643,13 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '
+  m_Text: 'aaaaaaa
+
+    a
+
+    a
+
+    a
 
 '
 --- !u!114 &4195308905769707859
@@ -774,7 +780,7 @@ GameObject:
   - component: {fileID: 8258252561014166148}
   - component: {fileID: 305502188816226707}
   - component: {fileID: 7595674281625313176}
-  - component: {fileID: -7537884154115917646}
+  - component: {fileID: 2359451424020302141}
   m_Layer: 5
   m_Name: ChatNode
   m_TagString: Untagged
@@ -822,7 +828,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 5
-  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
@@ -884,7 +890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coImage: {fileID: 6995840903809688898}
---- !u!114 &-7537884154115917646
+--- !u!114 &2359451424020302141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -10569,8 +10569,8 @@ MonoBehaviour:
   timeType: 0
   morningResults: {fileID: 930455256}
   NumText: {fileID: 2035613864}
-  num: 7
-  enterNum: 7
+  num: 8
+  enterNum: 8
   numLimit: 9
   liveNum: 0
   enterNumTime: 25
@@ -20875,7 +20875,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 5
     m_Bottom: 5
-  m_ChildAlignment: 6
+  m_ChildAlignment: 0
   m_Spacing: 3
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -20900,7 +20900,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -341.81818}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -202, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &4395145949336749762
 GameObject:
