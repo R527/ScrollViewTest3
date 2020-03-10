@@ -22,7 +22,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
     //main
     public Text timerText;
-    private float totalTime;
+    public  float totalTime;
     public float mainTime;　　　//昼の時間
     public float votingTime;   //投票時間
     public float nightTime;   //夜の時間
@@ -167,7 +167,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     break;
                 //処刑後チェック
                 case TIME.処刑後チェック:
-                    //gameOver.CheckGameOver();
+                    gameOver.CheckGameOver();
                     timeType = TIME.処刑;
                     break;
                 //夜の行動
@@ -193,7 +193,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //結果発表チェック
                 case TIME.結果発表後チェック:
                     timeType = TIME.夜の結果発表;
-                    //gameOver.CheckGameOver();
+                    gameOver.CheckGameOver();
                     break;
             }
             StartCoroutine(WaitInterval());

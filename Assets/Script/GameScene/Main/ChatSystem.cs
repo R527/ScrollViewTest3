@@ -19,6 +19,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public TimeController timeController;
     public RollExplanation rollExplanation;
     public GameManager gameManager;
+    public GameMasterChatManager gameMasterChatManager;
     public TIME timeType;
     //共通項目
     public int id = 0;
@@ -109,7 +110,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         if (rollName == "GameMaster") {
             //GMは自分の世界のみでChatNodeを生成
             boardColor = 4;
-            inputData = GameMasterChat();
+            inputData = gameMasterChatManager.TimeManagementChat();
             Debug.Log(inputData);
 
             ChatData chatData = new ChatData(id, inputData, 999, boardColor, rollName, ROLLTYPE.GM);
@@ -305,23 +306,23 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         }
     }
 
-    /// <summary>
-    /// GameMasterのチャット管理
-    /// </summary>
-    public string GameMasterChat() {
-        string gmNode = "";
-        switch (timeController.timeType) {
-            case TIME.昼:
-                gmNode = "おはようございます。" + "昨夜は○○が●されました。";
-                break;
-            case TIME.投票時間:
-                gmNode = "投票の時間です";
-                break;
-            case TIME.夜の行動:
-                gmNode = "占え";
-                break;
-        }
-        return gmNode;
-    }
+    ///// <summary>
+    ///// GameMasterのチャット管理
+    ///// </summary>
+    //public string GameMasterChat() {
+    //    string gmNode = "";
+    //    switch (timeController.timeType) {
+    //        case TIME.昼:
+    //            gmNode = "おはようございます。" + "昨夜は○○が●されました。";
+    //            break;
+    //        case TIME.投票時間:
+    //            gmNode = "投票の時間です";
+    //            break;
+    //        case TIME.夜の行動:
+    //            gmNode = "占え";
+    //            break;
+    //    }
+    //    return gmNode;
+    //}
 
 }

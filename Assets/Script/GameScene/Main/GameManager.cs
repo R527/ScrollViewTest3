@@ -302,8 +302,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
         //ネットワーク上に保存されているキーがあるかを確認
         //保存されていたらEnterNumの値が書き換わる
-        CheckEnterNum();
-
+        if (!isOffline) {
+            CheckEnterNum();
+        }
         switch (confirmationEnterButtonText.text) {
             case "参加":
                 //参加するなら
