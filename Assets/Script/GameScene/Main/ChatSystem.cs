@@ -11,6 +11,11 @@ using System;
 /// </summary>
 public class ChatSystem : MonoBehaviourPunCallbacks {
 
+    public enum SPEAKER_TYPE {
+        UNNKOWN,//ゲーム始まる前のプレイヤー
+        NULL,//そのほか
+        GAMEMASTER//Gamemaster
+    }
     //他クラス
     public Callout callout;
     public ChatNode lastChatNode;
@@ -62,7 +67,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     //MineかOthersなのかをボタンで振り分ける
     public void OnClickMineButton() {
         if (gameManager.numLimit > gameManager.num) {
-            CreateChatNode( false, "unknown");
+            CreateChatNode( false, SPEAKER_TYPE.UNNKOWN);
         } else {
             CreateChatNode(false);
         }
@@ -83,7 +88,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     }
 
     public void GameMasterChatNode() {
-        CreateChatNode(false,"GameMaster");
+        gameMasterChatManager.TimeManagementChat();
     }
     private void Update() {
         if (Input.GetKeyUp(KeyCode.Return)) {
@@ -97,8 +102,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
     //第2引数がない場合は自動でNullを入れます。
     //指定がある場合はNullの代わりに別の引数が入る
-    private void CreateChatNode(bool comingOut, string rollName = "null") {
-        if (chatInputField.text == "" && rollName == "null") {
+    public  void CreateChatNode(bool comingOut, SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL) {
+        if (chatInputField.text == "" && speaker_Type == SPEAKER_TYPE.NULL) {
             return;
         }
         //チャットを管理するためのID
@@ -107,13 +112,13 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         //発言者（ETC、GM、Player）の分岐
         //GMの発言
-        if (rollName == "GameMaster") {
+        if (speaker_Type == SPEAKER_TYPE.GAMEMASTER) {
             //GMは自分の世界のみでChatNodeを生成
             boardColor = 4;
-            inputData = gameMasterChatManager.TimeManagementChat();
+            inputData = gameMasterChat;
             Debug.Log(inputData);
 
-            ChatData chatData = new ChatData(id, inputData, 999, boardColor, rollName, ROLLTYPE.GM);
+            ChatData chatData = new ChatData(id, inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
             chatData.chatType = CHAT_TYPE.GM;
             ChatNode chatNode = Instantiate(chatNodePrefab, content.transform, false);
             chatNode.InitChatNode(chatData, 0, comingOut);
@@ -126,7 +131,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         } else {
             //色変更
             //ETC
-            if (rollName == "unknown") {
+            if (speaker_Type == SPEAKER_TYPE.UNNKOWN) {
                 boardColor = 0;
             } else if (myPlayer != null) {
                 //死亡しているプレイヤー
@@ -326,3 +331,4 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     //}
 
 }
+

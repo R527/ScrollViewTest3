@@ -8474,6 +8474,7 @@ MonoBehaviour:
   rollAction: {fileID: 904789179}
   gameOver: {fileID: 1130743582}
   timerText: {fileID: 575804562}
+  totalTime: 0
   mainTime: 30
   votingTime: 2
   nightTime: 2
@@ -10587,8 +10588,8 @@ MonoBehaviour:
   timeType: 0
   morningResults: {fileID: 930455256}
   NumText: {fileID: 2035613864}
-  num: 8
-  enterNum: 8
+  num: 7
+  enterNum: 7
   numLimit: 9
   liveNum: 0
   enterNumTime: 25

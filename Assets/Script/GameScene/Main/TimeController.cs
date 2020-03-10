@@ -19,7 +19,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public VoteCount voteCount;
     public RollAction rollAction;
     public GameOver gameOver;
-
+    
     //main
     public Text timerText;
     public  float totalTime;
@@ -58,7 +58,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public void Init(bool isOffline) {
         startGame = true;
         isGameOver = true;
-        timeType = TIME.処刑;
+        timeType = TIME.夜の行動;
         savingButton.interactable = true;
         wolfButton.interactable = false;
         callOutButton.interactable = false;
@@ -100,7 +100,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             timerText.text = totalTime.ToString("F0");
             if (totalTime < 1) {
                 isPlaying = false;
-                IntervalController();
+                StartInterval();
             }
         }
     }
@@ -135,7 +135,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <summary>
     /// インターバルを決定する
     /// </summary>
-    public void IntervalController() {
+    public void StartInterval() {
         if (isPlaying == false && isGameOver == true) {
             switch (timeType) {
                 //お昼
@@ -150,6 +150,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     }
                     StartCoroutine(GameMasterChat());
                     break;
+
                 //投票時間
                 case TIME.昼:
                     timeType = TIME.投票時間;
@@ -159,17 +160,20 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     TimesavingControllerFalse();
                     StartCoroutine(GameMasterChat());
                     break;
+
                 //処刑
                 case TIME.投票時間:
                     timeType = TIME.処刑後チェック;
                     //voteCount.Execution();
                     totalTime = executionTime;
                     break;
+
                 //処刑後チェック
                 case TIME.処刑後チェック:
-                    gameOver.CheckGameOver();
+                    //gameOver.CheckGameOver();
                     timeType = TIME.処刑;
                     break;
+
                 //夜の行動
                 case TIME.処刑:
                     timeType = TIME.夜の行動;
@@ -179,24 +183,26 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     voteCount.mostVotes = 0;
                     voteCount.ExecutionPlayerList.Clear();
                     totalTime = nightTime;
+                    break;
+
+                //夜の結果発表
+                case TIME.夜の行動:
+                    totalTime = rollActionTime;
                     if (startGame == true) {
                         StartCoroutine(NextDay());
                         startGame = false;
                     }
                     StartCoroutine(GameMasterChat());
-                    break;
-                //夜の結果発表
-                case TIME.夜の行動:
-                    totalTime = rollActionTime;
                     timeType = TIME.結果発表後チェック;
                     break;
+
                 //結果発表チェック
                 case TIME.結果発表後チェック:
                     timeType = TIME.夜の結果発表;
-                    gameOver.CheckGameOver();
+                    //gameOver.CheckGameOver();
                     break;
             }
-            StartCoroutine(WaitInterval());
+            StartCoroutine(EndInterval());
         }
     }
 
@@ -228,7 +234,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// 昼、夜、投票後にあるインターバル時間を設定
     /// </summary>
     /// <returns></returns>
-    private IEnumerator WaitInterval() {
+    private IEnumerator EndInterval() {
         yield return new WaitForSeconds(intervalTime);//コルーチンでインターバル時間を設ける
         mainPopup.SetActive(false);
         votingPopup.SetActive(false);
