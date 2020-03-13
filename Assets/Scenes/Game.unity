@@ -10577,8 +10577,8 @@ MonoBehaviour:
   timeType: 0
   morningResults: {fileID: 930455256}
   NumText: {fileID: 2035613864}
-  num: 8
-  enterNum: 8
+  num: 7
+  enterNum: 7
   numLimit: 9
   liveNum: 0
   enterNumTime: 25
@@ -12699,9 +12699,6 @@ MonoBehaviour:
     roomSelection: 0
   numList: 030000000100000001000000010000000200000001000000
   settingNum: 9
-  testMainTime: 20
-  testNightTime: 10
-  isDebugOn: 1
 --- !u!4 &1364650106
 Transform:
   m_ObjectHideFlags: 0

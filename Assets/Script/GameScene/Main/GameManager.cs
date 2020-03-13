@@ -87,8 +87,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
             if (PhotonNetwork.IsMasterClient) {
                 var customProperties = new ExitGames.Client.Photon.Hashtable {
-                { "testMainTime", RoomData.instance.testMainTime },
-                { "testNightTime", RoomData.instance.testNightTime }
+                { "testMainTime", PlayerManager.instance.testMainTime },
+                { "testNightTime", PlayerManager.instance.testNightTime }
             };
                 PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
             }
@@ -438,25 +438,25 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //マスター以外RoomDataをもらう
         if (!PhotonNetwork.IsMasterClient) {
-            {
-                RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["mainTime"];
-                RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["nightTime"];
-                RoomData.instance.roomInfo.fortuneType = (FORTUNETYPE)PhotonNetwork.CurrentRoom.CustomProperties["fortuneType"];
-                RoomData.instance.roomInfo.openVoting = (VOTING)PhotonNetwork.CurrentRoom.CustomProperties["openVoting"];
-                RoomData.instance.roomInfo.title = (string)PhotonNetwork.CurrentRoom.CustomProperties["roomName"];
-                //Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["MaxPlayers"]);
-                RoomData.instance.settingNum = (int)PhotonNetwork.CurrentRoom.MaxPlayers;
-                string roll = (string)PhotonNetwork.CurrentRoom.CustomProperties["numListStr"];
-                int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
-                RoomData.instance.numList = intArray.ToList();
-            }
 
-            if (RoomData.instance.isDebugOn) {
+            RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["mainTime"];
+            RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["nightTime"];
+            RoomData.instance.roomInfo.fortuneType = (FORTUNETYPE)PhotonNetwork.CurrentRoom.CustomProperties["fortuneType"];
+            RoomData.instance.roomInfo.openVoting = (VOTING)PhotonNetwork.CurrentRoom.CustomProperties["openVoting"];
+            RoomData.instance.roomInfo.title = (string)PhotonNetwork.CurrentRoom.CustomProperties["roomName"];
+            //Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["MaxPlayers"]);
+            RoomData.instance.settingNum = (int)PhotonNetwork.CurrentRoom.MaxPlayers;
+            string roll = (string)PhotonNetwork.CurrentRoom.CustomProperties["numListStr"];
+            int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
+            RoomData.instance.numList = intArray.ToList();
+        }
+
+            if (PlayerManager.instance.isDebug) {
                 RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
                 RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
                 Debug.Log("isDebugOn");
             }
-        }
+        
             //Playerの生成
             StartCoroutine(CreatePlayers());
         

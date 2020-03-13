@@ -42,7 +42,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public GameObject votingPopup;
     public GameObject nightPopup;
     public TIME timeType;
-    public bool isGameOver;
+    public bool isGameOver;//falseならゲームオーバー
     private float cheakTimer;//1秒ごとに時間を管理する
 
     //x日　GMのチャット追加
@@ -99,7 +99,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
             seconds = (int)totalTime;
             timerText.text = totalTime.ToString("F0");
             if (totalTime < 1) {
-                isPlaying = false;
+                if (PhotonNetwork.IsMasterClient) {
+                    isPlaying = false;
+                    var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                    {"isPlaying",isPlaying }
+                };
+                    PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+                }
+
+                
                 StartInterval();
             }
         }
@@ -241,6 +249,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         nightPopup.SetActive(false);
         isPlaying = true;
         TimesavingControllerTrue();
+        Debug.Log("EndInterval: 終了");
     }
 
     /// <summary>
