@@ -95,6 +95,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             //時短判定(過半数以上なら時短成立
             //Mathf.CeilToIntは切り上げ
+            Debug.Log(Mathf.CeilToInt(gameManager.liveNum / 2));
+            Debug.Log(timeSavingNum);
+
             if (Mathf.CeilToInt(gameManager.liveNum / 2) <= timeSavingNum) {
                 timeController.totalTime = 0;
                 Debug.Log("時短成立");

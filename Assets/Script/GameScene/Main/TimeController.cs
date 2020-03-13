@@ -264,20 +264,21 @@ public class TimeController : MonoBehaviourPunCallbacks {
         COButton.interactable = false;
     }
 
-    /// <summary>
-    /// 時短.退出ボタン
-    /// </summary>
-    public void SavingButton() {
-            if (savingText.text == "退出") {
-            if (gameManager.isOffline) {
-                SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
-            }else {
-                NetworkManager.instance.LeaveRoom();
-            }
-            } else {
-                totalTime = 0;
-            }
-        }
-    }
+    ///// <summary>
+    ///// 時短.退出ボタン
+    ///// </summary>
+    //public void SavingButton() {
+    //    if (savingText.text == "退出") {
+    //        if (gameManager.isOffline) {
+    //            SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
+    //        } else {
+    //            NetworkManager.instance.LeaveRoom();
+    //        }
+    //    }
+    //        } else {
+    //            totalTime = 0;
+    //        }
+    //    }
+}
 
 
