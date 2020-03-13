@@ -8467,9 +8467,9 @@ MonoBehaviour:
   mainTime: 30
   votingTime: 2
   nightTime: 2
-  executionTime: 0
+  executionTime: 10
   moningTime: 0
-  rollActionTime: 0
+  rollActionTime: 10
   intervalTime: 2
   isPlaying: 0
   savingButton: {fileID: 163000424}
@@ -8486,7 +8486,7 @@ MonoBehaviour:
   day: 0
   dayPrefab: {fileID: 3296371353862893511, guid: 7384babc9c2ecd245b217a6c263d54f9,
     type: 3}
-  startGame: 0
+  firstDay: 0
   nextDayList: []
 --- !u!114 &930455256
 MonoBehaviour:
