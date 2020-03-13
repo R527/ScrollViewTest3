@@ -311,24 +311,5 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         }
     }
 
-    ///// <summary>
-    ///// GameMasterのチャット管理
-    ///// </summary>
-    //public string GameMasterChat() {
-    //    string gmNode = "";
-    //    switch (timeController.timeType) {
-    //        case TIME.昼:
-    //            gmNode = "おはようございます。" + "昨夜は○○が●されました。";
-    //            break;
-    //        case TIME.投票時間:
-    //            gmNode = "投票の時間です";
-    //            break;
-    //        case TIME.夜の行動:
-    //            gmNode = "占え";
-    //            break;
-    //    }
-    //    return gmNode;
-    //}
-
-}
+   }
 

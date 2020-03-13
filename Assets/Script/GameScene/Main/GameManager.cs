@@ -454,12 +454,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
                 RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
             }
-
+        }
             //Playerの生成
             StartCoroutine(CreatePlayers());
-        }
+        
     }
         private IEnumerator CreatePlayers() {
+        Debug.Log("CreatePlayers:通過");
             //各自が自分の分のプレイヤーを作る
             CreatePlayerObj();
             //for (int i = 0; i < numLimit; i++) {
@@ -495,7 +496,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         /// PlayerObjの作成
         /// </summary>
         private void CreatePlayerObj() {
-
+        
             //ネットワークオブジェクトとして生成（相手の世界にも自分のプレイヤーが作られる）
             GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
             Player player = playerObj.GetComponent<Player>();
@@ -528,7 +529,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 Debug.Log("Player" + chatSystem.myPlayer);
                 player.PlayerSetUp(this);
             }
-        }
+    }
 
         /// <summary>
         /// 各プレイヤーのプレイヤークラスをもらってリストにする
