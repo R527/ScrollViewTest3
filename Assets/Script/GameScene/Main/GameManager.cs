@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     void Start() {
 
-        timeController.Init(isOffline);
+        //timeController.Init(isOffline);
         if (!isOffline) {
             //部屋を作った人は初めての人なのでこの処理はない
             //二人目以降の人が値を取得する
@@ -450,9 +450,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
                 RoomData.instance.numList = intArray.ToList();
             }
+
             if (RoomData.instance.isDebugOn) {
                 RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
                 RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
+                Debug.Log("isDebugOn");
             }
         }
             //Playerの生成
@@ -487,10 +489,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //PhotonNetwork.PlayerListは配列だからLengthで対応する
             yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckPlayerInGame());
 
-            Debug.Log("参加者全員がPlayerList　準備OK");
+            
+            
             rollExplanation.RollExplanationSetUp(rollTypeList);
             chatSystem.OnClickPlayerID();
-        }
+            timeController.Init(isOffline);
+            Debug.Log("参加者全員がPlayerList　準備OK");
+    }
 
         /// <summary>
         /// PlayerObjの作成

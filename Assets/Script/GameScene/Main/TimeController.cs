@@ -53,7 +53,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public List<GameObject> nextDayList = new List<GameObject>();
 
     /// <summary>
-    /// 各ボタンの制御など
+    /// 各ボタンの制御,
     /// </summary>
     public void Init(bool isOffline) {
         startGame = true;
@@ -63,10 +63,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
         wolfButton.interactable = false;
         callOutButton.interactable = false;
         COButton.interactable = false;
+        mainTime = RoomData.instance.roomInfo.mainTime;
+        nightTime = RoomData.instance.roomInfo.nightTime;
+        totalTime = nightTime;
         if (!isOffline && PhotonNetwork.IsMasterClient) {
-            mainTime = RoomData.instance.roomInfo.mainTime;
-            nightTime = RoomData.instance.roomInfo.nightTime;
-            totalTime = nightTime;
             isPlaying = true;
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                 { "totalTime", totalTime },

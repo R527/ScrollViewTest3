@@ -12699,8 +12699,8 @@ MonoBehaviour:
     roomSelection: 0
   numList: 030000000100000001000000010000000200000001000000
   settingNum: 9
-  testMainTime: 0
-  testNightTime: 0
+  testMainTime: 20
+  testNightTime: 10
   isDebugOn: 1
 --- !u!4 &1364650106
 Transform:
