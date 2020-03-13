@@ -1421,18 +1421,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 163000425}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 930455255}
-        m_MethodName: SavingButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &163000425
@@ -8474,12 +8463,13 @@ MonoBehaviour:
   rollAction: {fileID: 904789179}
   gameOver: {fileID: 1130743582}
   timerText: {fileID: 575804562}
+  totalTime: 0
   mainTime: 30
   votingTime: 2
   nightTime: 2
-  executionTime: 0
+  executionTime: 10
   moningTime: 0
-  rollActionTime: 0
+  rollActionTime: 10
   intervalTime: 2
   isPlaying: 0
   savingButton: {fileID: 163000424}
@@ -8496,7 +8486,7 @@ MonoBehaviour:
   day: 0
   dayPrefab: {fileID: 3296371353862893511, guid: 7384babc9c2ecd245b217a6c263d54f9,
     type: 3}
-  startGame: 0
+  firstDay: 0
   nextDayList: []
 --- !u!114 &930455256
 MonoBehaviour:
@@ -10587,8 +10577,8 @@ MonoBehaviour:
   timeType: 0
   morningResults: {fileID: 930455256}
   NumText: {fileID: 2035613864}
-  num: 8
-  enterNum: 8
+  num: 7
+  enterNum: 7
   numLimit: 9
   liveNum: 0
   enterNumTime: 25
@@ -10603,10 +10593,10 @@ MonoBehaviour:
   gameStart: 0
   friendButton: {fileID: 1109161862}
   damyObj: {fileID: 546607570}
+  setEnterNumTime: 25
   timeControllButton: {fileID: 0}
   menbarContent: {fileID: 30259292}
   isOffline: 0
-  setEnterNumTime: 25
   rollTypeList: 
 --- !u!114 &1130743579
 MonoBehaviour:

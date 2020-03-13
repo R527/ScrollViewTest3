@@ -1414,3 +1414,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 
+  isDebug: 1
+  testMainTime: 10
+  testNightTime: 8

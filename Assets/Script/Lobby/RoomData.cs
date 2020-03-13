@@ -13,6 +13,7 @@ public class RoomData : MonoBehaviour
     public RoomInfo roomInfo;
     public List<int> numList = new List<int>();
     public int settingNum;
+   
 
     private void Awake() {
         if (instance == null) {
