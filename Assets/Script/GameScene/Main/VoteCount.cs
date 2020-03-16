@@ -16,9 +16,9 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     public List<int> voteCountList = new List<int>();
     private int listCount;
     public bool isVoteFlag;
-    public List<string> ExecutionPlayerList = new List<string>();
+    public List<Player> ExecutionPlayerList = new List<Player>();
     public int mostVotes;
-    public string mostVotePlayer;//処刑ナンバー
+    public Player mostVotePlayer;//処刑ナンバー
     public Player executionPlayer;
 
     /// <summary>
@@ -54,11 +54,11 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         for (int id = 0; id < gameManager.liveNum; id++) {
             int count = voteCountList[id];
             if(mostVotes == count) {
-                ExecutionPlayerList.Add(chatSystem.playerNameList[id]);
+                ExecutionPlayerList.Add(chatSystem.playersList[id]);
             } else if(mostVotes < count) {
                 mostVotes = count;
                 ExecutionPlayerList.Clear();
-                ExecutionPlayerList.Add(chatSystem.playerNameList[id]);
+                ExecutionPlayerList.Add(chatSystem.playersList[id]);
             }
         }
 
@@ -68,15 +68,36 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         } else {
             mostVotePlayer = ExecutionPlayerList[0];
         }
+        //決定したプレイヤーを処刑処理する
         foreach(Player playerObj in chatSystem.playersList) {
-            if (playerObj.playerName == mostVotePlayer) {
+            if (playerObj.playerID == mostVotePlayer.playerID) {
                 playerObj.live = false;
                 executionPlayer = playerObj;
+
+                //処刑されたプレイヤーをリストから削除する
+                foreach(Player player in chatSystem.playersList) {
+                    if (playerObj.playerID == executionPlayer.playerID) {
+                        chatSystem.playersList.Remove(player);
+                        break;
+                    }
+                }
+                break;
             }
         }
         gameManager.liveNum--;
         if (PhotonNetwork.IsMasterClient) {
+
+            //生存数を更新
             gameManager.SetLiveNum();
+
+            //生き残ったプレイヤーのVoteCountを０にする
+            foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                var properties = new ExitGames.Client.Photon.Hashtable {
+                    {"voteCount", 0 }
+                };
+                player.SetCustomProperties(properties);
+            }
+
         }
     }
 

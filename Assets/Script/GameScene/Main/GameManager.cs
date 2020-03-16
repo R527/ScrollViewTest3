@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
                             {"liveNum", liveNum}
                         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["liveNum"]);
+        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["liveNum"]);
     }
 
     public int GetLiveNum() {
@@ -567,7 +567,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
             yield return null;
         }
 
-        //人数分のカミングアウトを用意(要素数を要しただけで初期化はしてないため、中身は””ではなくnull
+        //PlayerListを照準に並び替える（chatSystem.playersListの各要素をaに入れる foreachのようなもの
+        //＝＞　a.playerIDでは何を基準に並び替えているのかを決めている
+        chatSystem.playersList.OrderByDescending(a => a.playerID);
+
+            //人数分のカミングアウトを用意(要素数を要しただけで初期化はしてないため、中身は””ではなくnull
         chatSystem.comingOutPlayers = new string[playerObjs.Length];
 
         //自分のステートを準備完了に変更しカスタムプロパティを更新(個人のフラグではなく、ネットワークで管理できるフラグにする

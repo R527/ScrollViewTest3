@@ -20,6 +20,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
     //main
     public int playerID;
+    public int voteCount;
     public Text playerText;
     public string playerName;
     public Button playerButton;
@@ -61,6 +62,12 @@ public class Player : MonoBehaviourPunCallbacks {
 
             //ラムダ式で引数を充てる。
             playerButton.onClick.AddListener(() => OnClickPlayerButton());
+
+            //voteCountをプロパティーにセット
+            var properties = new ExitGames.Client.Photon.Hashtable {
+                {"voteCount", voteCount }
+            };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
 
             //このクラスは参加人数が9人の場合81個ある状態になる。
             //上の9人分を除いた、72個分をこちらで処理する
@@ -133,18 +140,41 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     public void OnClickPlayerButton()
     {
-        if (gameManager.chatListManager.isfilter == true)
+        //死亡時
+        if(!live) {
+            Debug.Log("フィルターOn");
+            gameManager.chatListManager.OnFilter(playerID);
+        //生きているがフィルター時
+        } else if (gameManager.chatListManager.isfilter == true)
         {
             Debug.Log("フィルターOn");
             gameManager.chatListManager.OnFilter(playerID);
-        }
-        else
-        {
+        } else if(live && !gameManager.chatListManager.isfilter){ 
+        
+            //フィルター機能がOFFの時は各時間ごとの機能をする
             switch (gameManager.timeController.timeType)
             {
                 case TIME.投票時間:
                     Debug.Log("投票する");
-                    gameManager.voteCount.VoteCountList(playerID, live);
+                    //gameManager.voteCount.VoteCountList(playerID, live);
+
+                    if (!gameManager.voteCount.isVoteFlag) {
+                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                            if (player.ActorNumber == playerID) {
+                                //最新の投票数を取得する
+                                voteCount = (int)player.CustomProperties["voteCount"];
+                                voteCount++;
+                                var propertiers = new ExitGames.Client.Photon.Hashtable {
+                                    {"voteCount", voteCount }
+                                };
+
+                                player.SetCustomProperties(propertiers);
+                                Debug.Log("player.ActorNumber:" + player.ActorNumber);
+                                Debug.Log("voteCount:" + voteCount);
+                            }
+                        }
+                    }
+                    gameManager.voteCount.isVoteFlag = true;
                     break;
                 case TIME.夜の行動:
                     Debug.Log("夜の行動");
