@@ -196,6 +196,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 case TIME.処刑:
                     timeType = TIME.処刑後チェック;
 
+                    //生存者数を取得
+                    gameManager.liveNum = gameManager.GetLiveNum();
                     //gameOver.CheckGameOver();
                     break;
 

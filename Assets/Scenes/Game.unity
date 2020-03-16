@@ -10583,8 +10583,8 @@ MonoBehaviour:
   morningResults: {fileID: 930455256}
   gameMasterChatManager: {fileID: 1130743577}
   NumText: {fileID: 2035613864}
-  num: 8
-  enterNum: 8
+  num: 7
+  enterNum: 7
   numLimit: 9
   liveNum: 0
   enterNumTime: 25

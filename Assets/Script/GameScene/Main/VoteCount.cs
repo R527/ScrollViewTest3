@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 
 /// <summary>
 /// 投票を集計し、処刑処理をする
 /// </summary>
-public class VoteCount : MonoBehaviour
-{
+public class VoteCount : MonoBehaviourPunCallbacks {
 
     //class
     public ChatSystem chatSystem;
@@ -52,7 +51,7 @@ public class VoteCount : MonoBehaviour
     /// 一番投票されたプレイヤーを処刑する
     /// </summary>
     public void Execution() {
-        for (int id = 0; id < gameManager.numLimit; id++) {
+        for (int id = 0; id < gameManager.liveNum; id++) {
             int count = voteCountList[id];
             if(mostVotes == count) {
                 ExecutionPlayerList.Add(chatSystem.playerNameList[id]);
@@ -76,6 +75,9 @@ public class VoteCount : MonoBehaviour
             }
         }
         gameManager.liveNum--;
+        if (PhotonNetwork.IsMasterClient) {
+            gameManager.SetLiveNum();
+        }
     }
 
 

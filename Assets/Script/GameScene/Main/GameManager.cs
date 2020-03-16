@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     [Header("オフライン用フラグ")]
     public bool isOffline;
-    
+
 
 
     [Header("役職リスト")]
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"num", num },
             {"enterNum", enterNum },
-            {"enterNumTime", enterNumTime }
+            {"enterNumTime", enterNumTime },
         };
             //カスタムプロパティに更新した変数をセットする
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
@@ -139,52 +139,59 @@ public class GameManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
         Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["enterNumTime"]);
     }
+
+    public void SetLiveNum() {
+        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                            {"liveNum", liveNum}
+                        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+        Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["liveNum"]);
+    }
+
+    public int GetLiveNum() {
+        int value = 0;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("liveNum", out object liveNumObj)) {
+            value = (int)liveNumObj;
+        }
+        return value;
+    }
     /// <summary>
     /// 入室と退室を管理
     /// 人数設定と入室者が同じ数になるとゲーム参加再確認を行う
     /// </summary>
     void Update() {
         //ルームにいる場合のみ
-        if (PhotonNetwork.InRoom)
-        {
+        if (PhotonNetwork.InRoom) {
             if (!gameStart) {
-                if (enterNum == numLimit)
-                {
+                if (enterNum == numLimit) {
                     confirmationImage.SetActive(false);
-                    liveNum = numLimit;
+
                     //ルームのカスタムプロパティで共有化
                     gameStart = true;
                     StartCoroutine(SetRandomRoll());
                 }
                 //1秒ごとに部屋参加人数を確認する
-                if (num != numLimit)
-                {
+                if (num != numLimit) {
                     checkTimer += Time.deltaTime;
-                    if (checkTimer >= 1)
-                    {
+                    if (checkTimer >= 1) {
                         checkTimer = 0;
                         //オフライン用
-                        if (!isOffline)
-                        {
+                        if (!isOffline) {
                             CheckNum();
                         }
                         NumText.text = num + "/" + numLimit;
                     }
                 }
                 //部屋参加人数がそろったら1秒ごとにenterNumを確認
-                if (num == numLimit)
-                {
-                    if (!isNumComplete)
-                    {
+                if (num == numLimit) {
+                    if (!isNumComplete) {
                         isNumComplete = true;
                     }
                     checkTimer += Time.deltaTime;
-                    if (checkTimer >= 1)
-                    {
+                    if (checkTimer >= 1) {
                         checkTimer = 0;
                         //オフライン用
-                        if (!isOffline)
-                        {
+                        if (!isOffline) {
                             Debug.Log("check");
                             CheckEnterNum();
                         }
@@ -194,8 +201,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
                 //ネットワーク処理が必要
                 //入場人数と制限人数が一致してかつ、参加希望人数と制限人数が一致していない場合
-                if (num == numLimit && enterNum != numLimit)
-                {
+                if (num == numLimit && enterNum != numLimit) {
                     timeController.savingText.text = "時短";
                     //フレンド招待ボタン
                     friendButton.gameObject.SetActive(false);
@@ -203,47 +209,37 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     confirmationImage.SetActive(true);
 
                     //時間を書き込む
-                    if (PhotonNetwork.IsMasterClient)
-                    {
+                    if (PhotonNetwork.IsMasterClient) {
 
-                        if (!isNumComplete)
-                        {
+                        if (!isNumComplete) {
                             enterNumTime = CheckEnterNumTime();
                             //人数が揃ったらEnterNumTimeを初期値に
                             enterNumTime = setEnterNumTime;
                             SetEnterNumTime();
                         }
                         checkEnterTimer += Time.deltaTime;
-                        if (checkEnterTimer >= 1)
-                        {
+                        if (checkEnterTimer >= 1) {
                             checkEnterTimer = 0;
                             enterNumTime--;
                             SetEnterNumTime();
                         }
-                    }
-                    else
-                    {
+                    } else {
                         enterNumTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["enterNumTime"];
                     }
                     confirmationTimeText.text = (int)enterNumTime + "秒";
                     //参加確認の時間が切れたら
-                    if (enterNumTime <= 0)
-                    {
+                    if (enterNumTime <= 0) {
                         confirmationImage.SetActive(false);
                         //ゲームマスターのみ
-                        if (PhotonNetwork.IsMasterClient)
-                        {
+                        if (PhotonNetwork.IsMasterClient) {
                             JoinReset();
                             Debug.Log("master");
                         }
                         //参加意思表示ないプレイヤーのみ強制退出
-                        if (!isJoined)
-                        {
+                        if (!isJoined) {
                             NetworkManager.instance.LeaveRoom();
                             Debug.Log("その他プレイヤー");
-                        }
-                        else
-                        {
+                        } else {
                             //意思表示があるプレイヤーは一度isJoinedをリセット
                             isJoined = false;
                             ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
@@ -252,8 +248,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
                             PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
                         }
                         //オンラインにしてマスターに管理(リセット
-                        if (PhotonNetwork.IsMasterClient)
-                        {
+                        if (PhotonNetwork.IsMasterClient) {
                             enterNumTime = setEnterNumTime;
                             ExitGames.Client.Photon.Hashtable customRoomMasterProperties = new ExitGames.Client.Photon.Hashtable {
                             {"enterNumTime", enterNumTime }
@@ -300,7 +295,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 
-    
+
 
 
     /// <summary>
@@ -308,7 +303,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void EnterButton() {
         //時間が0になったらボタンの無効化
-        if(enterNumTime <= 0) {
+        if (enterNumTime <= 0) {
             return;
         }
         //ネットワーク上に保存されているキーがあるかを確認
@@ -370,7 +365,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     //指定人数がそろった後のルール確認ボタン
     public void RuleConfirmation() {
-        if(ruleConfiramationButtonText.text == "↓") {
+        if (ruleConfiramationButtonText.text == "↓") {
             ruleConfiramationObj.SetActive(true);
             ruleConfiramationButtonText.text = "↑";
         } else {
@@ -383,39 +378,39 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
 
 
-            List<ROLLTYPE> randomRollTypeList = new List<ROLLTYPE>();
+        List<ROLLTYPE> randomRollTypeList = new List<ROLLTYPE>();
 
-            for (int x = 0; x < RoomData.instance.numList.Count; x++) {
-                if (RoomData.instance.numList[x] > 0) {
-                    for (int i = 0; i < RoomData.instance.numList[x]; i++) {
-                        randomRollTypeList.Add((ROLLTYPE)x);
-                        Debug.Log((ROLLTYPE)x);
-                    }
-                    //役職説明のボタンを追加している
-                    rollTypeList.Add((ROLLTYPE)x);
+        for (int x = 0; x < RoomData.instance.numList.Count; x++) {
+            if (RoomData.instance.numList[x] > 0) {
+                for (int i = 0; i < RoomData.instance.numList[x]; i++) {
+                    randomRollTypeList.Add((ROLLTYPE)x);
+                    Debug.Log((ROLLTYPE)x);
                 }
+                //役職説明のボタンを追加している
+                rollTypeList.Add((ROLLTYPE)x);
             }
+        }
 
 
-            //参加人数分だけランダムに
-            //PhotonNetwork.PlayerList　=　今部屋に参加しているプレイヤーのリスト9人ぶん
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                //プレイヤーのカスタムプロパティに役職を登録しておく
-                int randomValue = Random.Range(0, randomRollTypeList.Count);
+        //参加人数分だけランダムに
+        //PhotonNetwork.PlayerList　=　今部屋に参加しているプレイヤーのリスト9人ぶん
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            //プレイヤーのカスタムプロパティに役職を登録しておく
+            int randomValue = Random.Range(0, randomRollTypeList.Count);
 
-                ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
+            ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
                     {"roll", randomRollTypeList[randomValue] }
                 };
-                player.SetCustomProperties(customPlayerProperties);
-                Debug.Log("ランダム役職：" + player.CustomProperties["roll"]);
-                randomRollTypeList.Remove(randomRollTypeList[randomValue]);
-            }
+            player.SetCustomProperties(customPlayerProperties);
+            Debug.Log("ランダム役職：" + player.CustomProperties["roll"]);
+            randomRollTypeList.Remove(randomRollTypeList[randomValue]);
+        }
         ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable() {
             {"isSetup", false },
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
         yield return new WaitForSeconds(0.5f);
-        
+
     }
 
     /// <summary>
@@ -452,149 +447,154 @@ public class GameManager : MonoBehaviourPunCallbacks {
             RoomData.instance.numList = intArray.ToList();
         }
 
-            if (PlayerManager.instance.isDebug) {
-                RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
-                RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
-                Debug.Log("isDebugOn");
-            }
-        
-            //Playerの生成
-            StartCoroutine(CreatePlayers());
-        
+        if (PlayerManager.instance.isDebug) {
+            RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
+            RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
+            Debug.Log("isDebugOn");
+        }
+
+        //Playerの生成
+        StartCoroutine(CreatePlayers());
+
     }
-        private IEnumerator CreatePlayers() {
+    private IEnumerator CreatePlayers() {
         Debug.Log("CreatePlayers:通過");
-            //各自が自分の分のプレイヤーを作る
-            CreatePlayerObj();
-            //for (int i = 0; i < numLimit; i++) {
-            //    Player playerObj = Instantiate(playerPrefab, menbarContent, false);
-            //    playerObj.playerID = i;
-            //    int RandomValue = Random.Range(0, randomRollTypeList.Count);
-            //    playerObj.rollType = randomRollTypeList[RandomValue];
-            //    chatSystem.playersList.Add(playerObj);
-            //    randomRollTypeList.Remove(randomRollTypeList[RandomValue]);
+        //各自が自分の分のプレイヤーを作る
+        CreatePlayerObj();
+        //for (int i = 0; i < numLimit; i++) {
+        //    Player playerObj = Instantiate(playerPrefab, menbarContent, false);
+        //    playerObj.playerID = i;
+        //    int RandomValue = Random.Range(0, randomRollTypeList.Count);
+        //    playerObj.rollType = randomRollTypeList[RandomValue];
+        //    chatSystem.playersList.Add(playerObj);
+        //    randomRollTypeList.Remove(randomRollTypeList[RandomValue]);
+        //    playerObj.gameManager = this;
+        //    playerObj.PlayerSetUp();
+        //}
+        //morningResults.MorningResultsStartUp();
+
+        //自分が参加者全員のプレイヤーをもらってリストにする
+        yield return StartCoroutine(SetPlayerData());
+        Debug.Log("Playerリスト　作成完了");
+
+        //参加者全員がPlayerのリストを作りおわるまで（上の処理が終わるまで）待機する
+        //WatiUntilは条件を満たすまで待機（Trueになるまで）
+        //CheckPlayerInGame()で取得できるReadyのフラグはネットワークで共有化されている情報
+        //よって参加者全員からリストを作り終わるまで次の処理に行かない
+
+        //PhotonNetwork.PlayerListは配列だからLengthで対応する
+        yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckPlayerInGame());
+
+
+
+        rollExplanation.RollExplanationSetUp(rollTypeList);
+        chatSystem.OnClickPlayerID();
+        //morningResults.MorningResultsStartUp();
+        timeController.Init(isOffline);
+
+        liveNum = PhotonNetwork.PlayerList.Length;
+        if (PhotonNetwork.IsMasterClient) {
+            SetLiveNum();
+        }
+        Debug.Log("参加者全員がPlayerList　準備OK");
+    }
+
+    /// <summary>
+    /// PlayerObjの作成
+    /// </summary>
+    private void CreatePlayerObj() {
+
+        //ネットワークオブジェクトとして生成（相手の世界にも自分のプレイヤーが作られる）
+        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
+        Player player = playerObj.GetComponent<Player>();
+        player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        //取得した自分の番号と同じ番号を探して役職を設定する
+        foreach (Photon.Realtime.Player playerData in PhotonNetwork.PlayerList) {
+            //Player playerObj = Instantiate(playerPrefab, menbarContent, false);
+            //playerObj.playerID = player.ActorNumber;
+            //playerObj.playerName = player.NickName;//どこかで登録する
+
+            if (player.playerID == playerData.ActorNumber) {
+                player.rollType = (ROLLTYPE)playerData.CustomProperties["roll"];
+                break;
+            }
+
+
+
+            //chatSystem.playersList.Add(playerObj);
+
+            //if (playerObj.playerName == PhotonNetwork.LocalPlayer.NickName) {
             //    playerObj.gameManager = this;
-            //    playerObj.PlayerSetUp();
+            //    chatSystem.myPlayer = playerObj;
             //}
-            //morningResults.MorningResultsStartUp();
+            //playerObj.PlayerSetUp();
 
-            //自分が参加者全員のプレイヤーをもらってリストにする
-            yield return StartCoroutine(SetPlayerData());
-            Debug.Log("Playerリスト　作成完了");
-
-            //参加者全員がPlayerのリストを作りおわるまで（上の処理が終わるまで）待機する
-            //WatiUntilは条件を満たすまで待機（Trueになるまで）
-            //CheckPlayerInGame()で取得できるReadyのフラグはネットワークで共有化されている情報
-            //よって参加者全員からリストを作り終わるまで次の処理に行かない
-
-            //PhotonNetwork.PlayerListは配列だからLengthで対応する
-            yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckPlayerInGame());
-
-            
-            
-            rollExplanation.RollExplanationSetUp(rollTypeList);
-            chatSystem.OnClickPlayerID();
-            //morningResults.MorningResultsStartUp();
-            timeController.Init(isOffline);
-            Debug.Log("参加者全員がPlayerList　準備OK");
+            //自分だけにGameManager.csを入れる。
+            //自分のプレイヤークラスを使う時用。
+            chatSystem.myPlayer = player;
+            Debug.Log("Player" + chatSystem.myPlayer);
+            player.PlayerSetUp(this);
+        }
     }
 
-        /// <summary>
-        /// PlayerObjの作成
-        /// </summary>
-        private void CreatePlayerObj() {
-        
-            //ネットワークオブジェクトとして生成（相手の世界にも自分のプレイヤーが作られる）
-            GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
+    /// <summary>
+    /// 各プレイヤーのプレイヤークラスをもらってリストにする
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SetPlayerData() {
+        Debug.Log("SetPlayerData:Start");
+        GameObject[] playerObjs = GameObject.FindGameObjectsWithTag("Player");
+
+        //whileの条件式を満たしている間は、繰り返す。
+        //参加している人数と探してきた人数が一致しているかどうか
+        //条件式をクリアするまで繰り返され、抜けない
+        while (playerObjs.Length != PhotonNetwork.PlayerList.Length) {
+            playerObjs = GameObject.FindGameObjectsWithTag("Player");
+            //yield return null;は1フレーム待つ
+            yield return null;
+        }
+        Debug.Log("参加プレイヤー人数：" + playerObjs.Length);
+
+        //全キャラのPlayerSetUpを実行
+        foreach (GameObject playerObj in playerObjs) {
             Player player = playerObj.GetComponent<Player>();
-            player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-
-            //取得した自分の番号と同じ番号を探して役職を設定する
-            foreach (Photon.Realtime.Player playerData in PhotonNetwork.PlayerList) {
-                //Player playerObj = Instantiate(playerPrefab, menbarContent, false);
-                //playerObj.playerID = player.ActorNumber;
-                //playerObj.playerName = player.NickName;//どこかで登録する
-
-                if (player.playerID == playerData.ActorNumber) {
-                    player.rollType = (ROLLTYPE)playerData.CustomProperties["roll"];
-                    break;
-                }
-
-
-
-                //chatSystem.playersList.Add(playerObj);
-
-                //if (playerObj.playerName == PhotonNetwork.LocalPlayer.NickName) {
-                //    playerObj.gameManager = this;
-                //    chatSystem.myPlayer = playerObj;
-                //}
-                //playerObj.PlayerSetUp();
-
-                //自分だけにGameManager.csを入れる。
-                //自分のプレイヤークラスを使う時用。
-                chatSystem.myPlayer = player;
-                Debug.Log("Player" + chatSystem.myPlayer);
-                player.PlayerSetUp(this);
-            }
-    }
-
-        /// <summary>
-        /// 各プレイヤーのプレイヤークラスをもらってリストにする
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator SetPlayerData() {
-            Debug.Log("SetPlayerData:Start");
-            GameObject[] playerObjs = GameObject.FindGameObjectsWithTag("Player");
-
-            //whileの条件式を満たしている間は、繰り返す。
-            //参加している人数と探してきた人数が一致しているかどうか
-            //条件式をクリアするまで繰り返され、抜けない
-            while (playerObjs.Length != PhotonNetwork.PlayerList.Length) {
-                playerObjs = GameObject.FindGameObjectsWithTag("Player");
-                //yield return null;は1フレーム待つ
-                yield return null;
-            }
-            Debug.Log("参加プレイヤー人数：" + playerObjs.Length);
-
-            //全キャラのPlayerSetUpを実行
-            foreach (GameObject playerObj in playerObjs) {
-                Player player = playerObj.GetComponent<Player>();
-                player.PlayerSetUp(this);
-                //各リストに登録
-                chatSystem.playersList.Add(player);
-                chatSystem.playerNameList.Add(player.playerName);
-                playerObj.transform.SetParent(menbarContent);
-                yield return null;
-            }
-
-            //人数分のカミングアウトを用意(要素数を要しただけで初期化はしてないため、中身は””ではなくnull
-            chatSystem.comingOutPlayers = new string[playerObjs.Length];
-
-            //自分のステートを準備完了に変更しカスタムプロパティを更新(個人のフラグではなく、ネットワークで管理できるフラグにする
-            var properties = new ExitGames.Client.Photon.Hashtable();
-            properties.Add("player-state", "ready");
-            PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
-            Debug.Log("SetPlayerData:Complete");
+            player.PlayerSetUp(this);
+            //各リストに登録
+            chatSystem.playersList.Add(player);
+            chatSystem.playerNameList.Add(player.playerName);
+            playerObj.transform.SetParent(menbarContent);
+            yield return null;
         }
 
+        //人数分のカミングアウトを用意(要素数を要しただけで初期化はしてないため、中身は””ではなくnull
+        chatSystem.comingOutPlayers = new string[playerObjs.Length];
 
-        /// <summary>
-        /// 各PlayerのPhotonデータからStateがReadyの人数を合計して戻す
-        /// </summary>
-        /// <returns></returns>
-        private int CheckPlayerInGame() {
-            int retReadyPlayerCount = 0;
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                //各プレイヤーのStateがReadyかどうかを確認し、カウントする
-                //player.CustomProperties["player-state"]がnullではないかつreadyが入っている場合カウントを進める
-                //player.CustomProperties["player-state"]がnullは確認のために入れている。
-                if (player.CustomProperties["player-state"] != null && player.CustomProperties["player-state"].ToString() == "ready") {
-                    retReadyPlayerCount++;
-                }
-            }
-            Debug.Log(retReadyPlayerCount);
-            return retReadyPlayerCount;
-        }
-
+        //自分のステートを準備完了に変更しカスタムプロパティを更新(個人のフラグではなく、ネットワークで管理できるフラグにする
+        var properties = new ExitGames.Client.Photon.Hashtable();
+        properties.Add("player-state", "ready");
+        PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+        Debug.Log("SetPlayerData:Complete");
     }
+
+
+    /// <summary>
+    /// 各PlayerのPhotonデータからStateがReadyの人数を合計して戻す
+    /// </summary>
+    /// <returns></returns>
+    private int CheckPlayerInGame() {
+        int retReadyPlayerCount = 0;
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            //各プレイヤーのStateがReadyかどうかを確認し、カウントする
+            //player.CustomProperties["player-state"]がnullではないかつreadyが入っている場合カウントを進める
+            //player.CustomProperties["player-state"]がnullは確認のために入れている。
+            if (player.CustomProperties["player-state"] != null && player.CustomProperties["player-state"].ToString() == "ready") {
+                retReadyPlayerCount++;
+            }
+        }
+        Debug.Log(retReadyPlayerCount);
+        return retReadyPlayerCount;
+    }
+
+}
 
