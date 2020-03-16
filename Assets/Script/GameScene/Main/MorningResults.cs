@@ -29,15 +29,5 @@ public class MorningResults : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// 騎士が守ったか否か
-    /// </summary>
-    public void KnightSaving() {
-        if(biteID == protectID) {
-            return;
-        } else {
 
-        }
-
-    }
 }

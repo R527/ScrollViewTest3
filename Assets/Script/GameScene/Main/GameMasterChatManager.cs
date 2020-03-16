@@ -10,12 +10,15 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     //class
     public TimeController timeController;
     public GameManager gameManager;
+    public VoteCount voteCount;
 
 
     //main
     public Button timeSavingButton;
     public bool timeSaving;//時短用　希望の場合true
     public int timeSavingNum;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -106,5 +109,16 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             }
         }
     }
+
+
+    /// <summary>
+    /// 処刑プレイヤーをGMチャットに表示する
+    /// </summary>
+    public void ExecutionChat() {
+        gameManager.chatSystem.gameMasterChat = voteCount.executionPlayer.playerName + "が処刑されました。";
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER);
+    }
+
+
 
 }

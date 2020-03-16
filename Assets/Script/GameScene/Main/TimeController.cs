@@ -161,6 +161,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //お昼
                 case TIME.夜の結果発表:
                     timeType = TIME.昼;
+
                     mainPopup.SetActive(true);
                     totalTime = mainTime;
                     chatSystem.coTimeLimit = 0;
@@ -174,6 +175,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //投票時間
                 case TIME.昼:
                     timeType = TIME.投票時間;
+
                     votingPopup.SetActive(true);
                     totalTime = votingTime;
                     voteCount.isVoteFlag = false;
@@ -183,22 +185,24 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 //処刑
                 case TIME.投票時間:
-                    timeType = TIME.処刑後チェック;
-                    //voteCount.Execution();
+                    timeType = TIME.処刑;
+
                     totalTime = executionTime;
+                    voteCount.Execution();
+                    gameManager.gameMasterChatManager.ExecutionChat();
                     break;
 
                 //処刑後チェック
-                case TIME.処刑後チェック:
-                    timeType = TIME.処刑;
+                case TIME.処刑:
+                    timeType = TIME.処刑後チェック;
 
                     //gameOver.CheckGameOver();
-
                     break;
 
                 //夜の行動
-                case TIME.処刑:
+                case TIME.処刑後チェック:
                     timeType = TIME.夜の行動;
+
                     nightPopup.SetActive(true);
                     //霊能
                     //rollAction.PsychicAction();
@@ -215,7 +219,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //夜の行動の結果発表
                 case TIME.夜の行動:
                     timeType = TIME.結果発表後チェック;
-
+                    rollAction.MorningResults();
                     totalTime = rollActionTime;
                     break;
 

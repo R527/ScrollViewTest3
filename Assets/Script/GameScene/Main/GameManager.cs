@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public VoteCount voteCount;
     public TIME timeType;
     public MorningResults morningResults;
+    public GameMasterChatManager gameMasterChatManager;
 
     //main
     public Text NumText;//入室してる人数
@@ -493,6 +494,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             
             rollExplanation.RollExplanationSetUp(rollTypeList);
             chatSystem.OnClickPlayerID();
+            //morningResults.MorningResultsStartUp();
             timeController.Init(isOffline);
             Debug.Log("参加者全員がPlayerList　準備OK");
     }

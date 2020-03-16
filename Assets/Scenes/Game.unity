@@ -8367,9 +8367,13 @@ MonoBehaviour:
   chatSystem: {fileID: 4395145948522523302}
   voteCount: {fileID: 1130743580}
   morningResults: {fileID: 930455256}
+  gameManager: {fileID: 1130743578}
   wolfButton: {fileID: 972337835}
   MenbarViewText: {fileID: 429416297}
   spiritualResult: 
+  biteID: 0
+  protectID: 0
+  bitePlayer: {fileID: 0}
 --- !u!4 &904789180
 Transform:
   m_ObjectHideFlags: 0
@@ -10551,6 +10555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeController: {fileID: 930455255}
   gameManager: {fileID: 1130743578}
+  voteCount: {fileID: 1130743580}
   timeSavingButton: {fileID: 163000424}
   timeSaving: 0
   timeSavingNum: 0
@@ -10576,9 +10581,10 @@ MonoBehaviour:
   voteCount: {fileID: 1130743580}
   timeType: 0
   morningResults: {fileID: 930455256}
+  gameMasterChatManager: {fileID: 1130743577}
   NumText: {fileID: 2035613864}
-  num: 7
-  enterNum: 7
+  num: 8
+  enterNum: 8
   numLimit: 9
   liveNum: 0
   enterNumTime: 25
