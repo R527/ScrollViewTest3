@@ -13,7 +13,6 @@ public class RollAction : MonoBehaviour
     //class
     public ChatSystem chatSystem;
     public VoteCount voteCount;
-    public MorningResults morningResults;
     public GameManager gameManager;
 
     //main

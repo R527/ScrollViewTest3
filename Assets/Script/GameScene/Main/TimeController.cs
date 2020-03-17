@@ -66,6 +66,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
         mainTime = RoomData.instance.roomInfo.mainTime;
         nightTime = RoomData.instance.roomInfo.nightTime;
         totalTime = nightTime;
+
+        //マスターだけトータルタイムとIsPlayingを取得する
         if (!isOffline && PhotonNetwork.IsMasterClient) {
             isPlaying = true;
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
@@ -80,11 +82,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
     }
 
 
-
-    //カウントダウンタイマー
+    /// <summary>
+    /// カウントダウンタイマー
+    /// </summary>
     void Update() {
         //GetPlayStateはtrueが返ってきたらOK
         if (GetPlayState() && gameManager.gameStart == true) {
+            Debug.Log(gameManager.gameStart);
             if (PhotonNetwork.IsMasterClient) {
                 cheakTimer += Time.deltaTime;
                 if (cheakTimer >= 1) {
@@ -143,6 +147,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
         return time;
     }
 
+
+    /// <summary>
+    /// isPlayingのオンライン化をbool型で返す
+    /// </summary>
+    /// <returns></returns>
     private bool GetPlayState() {
         isPlaying = false;
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isPlaying", out object isPlayingeObj)) {
@@ -198,7 +207,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                     //生存者数を取得
                     gameManager.liveNum = gameManager.GetLiveNum();
-                    //gameOver.CheckGameOver();
+                    gameOver.CheckGameOver();
                     break;
 
                 //夜の行動
@@ -228,8 +237,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //結果発表チェック
                 case TIME.結果発表後チェック:
                     timeType = TIME.夜の結果発表;
-
-                    //gameOver.CheckGameOver();
+                    gameOver.CheckGameOver();
                     break;
             }
             Debug.Log(timeType);

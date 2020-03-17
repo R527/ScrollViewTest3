@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public RollExplanation rollExplanation;
     public VoteCount voteCount;
     public TIME timeType;
-    public MorningResults morningResults;
     public GameMasterChatManager gameMasterChatManager;
 
     //main

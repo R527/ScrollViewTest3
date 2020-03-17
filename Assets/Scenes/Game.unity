@@ -8366,7 +8366,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatSystem: {fileID: 4395145948522523302}
   voteCount: {fileID: 1130743580}
-  morningResults: {fileID: 930455256}
   gameManager: {fileID: 1130743578}
   wolfButton: {fileID: 972337835}
   MenbarViewText: {fileID: 429416297}
@@ -8419,7 +8418,6 @@ GameObject:
   m_Component:
   - component: {fileID: 930455254}
   - component: {fileID: 930455255}
-  - component: {fileID: 930455256}
   - component: {fileID: 930455257}
   m_Layer: 5
   m_Name: TimeController
@@ -8492,23 +8490,6 @@ MonoBehaviour:
     type: 3}
   firstDay: 0
   nextDayList: []
---- !u!114 &930455256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930455253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6cdf11c0a5505143bda461830f1f47d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rollAction: {fileID: 0}
-  timeController: {fileID: 0}
-  biteID: 0
-  protectID: 0
-  playerList: []
 --- !u!114 &930455257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10580,11 +10561,10 @@ MonoBehaviour:
   rollExplanation: {fileID: 904789181}
   voteCount: {fileID: 1130743580}
   timeType: 0
-  morningResults: {fileID: 930455256}
   gameMasterChatManager: {fileID: 1130743577}
   NumText: {fileID: 2035613864}
-  num: 7
-  enterNum: 7
+  num: 8
+  enterNum: 8
   numLimit: 9
   liveNum: 0
   enterNumTime: 25
@@ -10641,7 +10621,7 @@ MonoBehaviour:
   isVoteFlag: 0
   ExecutionPlayerList: []
   mostVotes: 0
-  mostVotePlayer: 
+  mostVotePlayer: {fileID: 0}
   executionPlayer: {fileID: 0}
 --- !u!114 &1130743581
 MonoBehaviour:
@@ -10674,6 +10654,7 @@ MonoBehaviour:
   wolfCount: 0
   liverCount: 0
   timeSavingButton: {fileID: 163000422}
+  winnerList: []
 --- !u!114 &1130743584
 MonoBehaviour:
   m_ObjectHideFlags: 0
