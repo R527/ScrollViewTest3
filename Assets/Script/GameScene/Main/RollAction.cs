@@ -87,7 +87,7 @@ public class RollAction : MonoBehaviour
         } else {
             gameManager.chatSystem.gameMasterChat = bitePlayer.playerName + "が襲撃されました。";
         }
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER);
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
     }
 
     /// <summary>

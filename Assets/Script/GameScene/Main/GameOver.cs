@@ -69,7 +69,7 @@ public class GameOver : MonoBehaviour {
 
         //ゲーム終了
         timeController.timeType = TIME.終了;
-        chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER);
+        chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         timeController.isGameOver = false;
         //gameManager.gameStart = false;
         Debug.Log("gameStart:" + gameManager.gameStart);

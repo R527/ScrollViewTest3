@@ -172,7 +172,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void LeaveRoom() {
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
+            Debug.Log("退出完了");
         }
+        
     }
 
     /// <summary>

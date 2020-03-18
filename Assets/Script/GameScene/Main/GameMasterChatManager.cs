@@ -59,7 +59,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 gameManager.chatSystem.gameMasterChat = "占え";
                 break;
         }
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER);
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     timeSaving = false;
                     gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短をキャンセルしました。" + timeSavingNum + "/" + gameManager.liveNum + "※過半数を超えると時短されます。";
                 }
-                gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER);
+                gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
                 //timeSavingNum更新
                 var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                     {"timeSavingNum",timeSavingNum }
@@ -120,7 +120,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 //ゲーム開始前
                 if (!gameManager.gameStart) {
                     gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
-                    gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER);
+                    gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+                    //LeaveRoom();処理をするときにTimeControllerのエラーが出るので消去する
+                    Destroy(timeController.gameObject);
                     NetworkManager.instance.LeaveRoom();
 
                 //ゲーム終了後or死亡後
@@ -137,7 +139,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     private void ExitButton() {
         gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER);
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         NetworkManager.instance.LeaveRoom();
     }
 
@@ -146,7 +148,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void ExecutionChat() {
         gameManager.chatSystem.gameMasterChat = voteCount.executionPlayer.playerName + "が処刑されました。";
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER);
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
     }
 
 

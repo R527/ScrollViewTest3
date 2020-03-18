@@ -14,7 +14,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public enum SPEAKER_TYPE {
         UNNKOWN,//ゲーム始まる前のプレイヤー
         NULL,//そのほか
-        GAMEMASTER//Gamemaster
+        GAMEMASTER_OFFLINE,//Gamemaster
+        GAMEMASTER_ONLINE
     }
     //他クラス
     public Callout callout;
@@ -112,7 +113,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         //発言者（ETC、GM、Player）の分岐
         //GMの発言
-        if (speaker_Type == SPEAKER_TYPE.GAMEMASTER) {
+        if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE || speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
             //GMは自分の世界のみでChatNodeを生成
             boardColor = 4;
             inputData = gameMasterChat;
@@ -120,11 +121,19 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
             ChatData chatData = new ChatData(id, inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
             chatData.chatType = CHAT_TYPE.GM;
-            ChatNode chatNode = Instantiate(chatNodePrefab, content.transform, false);
+
+            //オンラインオフラインで分ける
+            ChatNode chatNode = null;
+            if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
+                 chatNode = Instantiate(chatNodePrefab, content.transform, false);
+                Debug.Log("CreateNode: GM_OFFLINE");
+            } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
+                GameObject chatNodeObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
+                chatNode = chatNodeObj.GetComponent<ChatNode>();
+                Debug.Log("CreateNode: GM_ONLINE");
+            }
+            
             chatNode.InitChatNode(chatData, 0, comingOut);
-
-            Debug.Log("CreateNode: GM");
-
             SetChatNode(chatNode, chatData, comingOut);
 
             //Playerの発言
