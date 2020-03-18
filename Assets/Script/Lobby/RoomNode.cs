@@ -35,6 +35,7 @@ public class RoomNode : MonoBehaviour
     public ROOMSELECTION roomSelection;
     public string roomId;
     public List<int> rollNumList = new List<int>();
+    public Photon.Realtime.RoomInfo roomInfo;
     
     /// <summary>
     /// 部屋を作った人（マスターだけが利用する
@@ -73,6 +74,8 @@ public class RoomNode : MonoBehaviour
     /// </summary>
     /// <param name="info"></param>
     public void Activate(Photon.Realtime.RoomInfo info) {
+        Debug.Log("Activate通過");
+        roomInfo = info;
         //入室処理
         enterButton.onClick.AddListener(OnClickJoinRoom);
         //部屋の設定を表示する
@@ -129,9 +132,9 @@ public class RoomNode : MonoBehaviour
     }
 
     //部屋が閉じられた時の処理
-    public void Deactivate() {
-        gameObject.SetActive(false);
-    }
+    //public void Deactivate() {
+    //    gameObject.SetActive(false);
+    //}
     //部屋のListのTransformを一番下へ
     public RoomNode SetAsLastSibling() {
         rectTransform.SetAsLastSibling();
@@ -147,8 +150,8 @@ public class RoomNode : MonoBehaviour
     /// roomIDをもとに部屋に参加する
     /// </summary>
     public void OnClickJoinRoom() {
-        NetworkManager.instance.JoinRoom(roomId);
-        Debug.Log(roomId);
+            NetworkManager.instance.JoinRoom(roomId);
+            Debug.Log(roomId);
     }
 
     /// <summary>

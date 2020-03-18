@@ -122,13 +122,16 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             ChatData chatData = new ChatData(id, inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
             chatData.chatType = CHAT_TYPE.GM;
 
-            //オンラインオフラインで分ける
+            //オンラインオフラインで分ける(GMChat
             ChatNode chatNode = null;
+            //OnLine
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
                  chatNode = Instantiate(chatNodePrefab, content.transform, false);
                 Debug.Log("CreateNode: GM_OFFLINE");
+            //OffLine
             } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
                 GameObject chatNodeObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
+                chatNodeObj.transform.SetParent(content.transform);
                 chatNode = chatNodeObj.GetComponent<ChatNode>();
                 Debug.Log("CreateNode: GM_ONLINE");
             }

@@ -26,7 +26,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     void Start()
     {
         timeSavingButton.onClick.AddListener(() => TimeSavingChat());
-        exitButton.onClick.AddListener(() => ExitButton());
+        exitButton.onClick.AddListener(() => StartCoroutine(ExitButton()));
 
         //カスタムプロパティ
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
@@ -136,10 +136,13 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
     /// <summary>
     /// ゲーム終了後の退出ボタンを押したときに出るPoPUP内にある退出ボタン
+    /// ネットワークのチェック完了
     /// </summary>
-    private void ExitButton() {
+    private IEnumerator ExitButton() {
         gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        yield return new WaitForSeconds(3.0f);
+
         NetworkManager.instance.LeaveRoom();
     }
 
