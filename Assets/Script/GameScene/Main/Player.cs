@@ -44,7 +44,7 @@ public class Player : MonoBehaviourPunCallbacks {
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
     public void PlayerSetUp(GameManager gameManager) {
-        Debug.Log("Setup");
+        //Debug.Log("Setup");
         live = true;
         this.gameManager = gameManager;
 

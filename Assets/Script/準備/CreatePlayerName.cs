@@ -22,7 +22,7 @@ public class CreatePlayerName : MonoBehaviour
             inputFieldName.text = string.Empty;
             return;
         }
-        Debug.Log(inputFieldName.text.Trim().Length);
+        //Debug.Log(inputFieldName.text.Trim().Length);
         if (inputFieldName.text.Trim().Length >= 3 && inputFieldName.text.Trim().Length <= 12) {
             PlayerManager.instance.name = inputFieldName.text;
             SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);

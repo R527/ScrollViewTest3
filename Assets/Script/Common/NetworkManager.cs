@@ -29,10 +29,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         if (instance == null) {
             instance = this;
             PhotonNetwork.AutomaticallySyncScene = false;
-            Debug.Log("Dont");
             DontDestroyOnLoad(gameObject);
         } else {
-            Debug.Log("通貨");
             Destroy(gameObject);
         }
     }

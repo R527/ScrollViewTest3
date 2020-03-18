@@ -19,10 +19,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public VoteCount voteCount;
     public RollAction rollAction;
     public GameOver gameOver;
-    
+
     //main
     public Text timerText;
-    public  float totalTime;
+    public float totalTime;
     public float mainTime;　　　//昼の時間
     public float votingTime;   //投票時間
     public float nightTime;   //夜の時間
@@ -58,7 +58,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public void Init(bool isOffline) {
         firstDay = true;
         isGameOver = true;
-        timeType = TIME.処刑;
+        timeType = TIME.処刑後チェック;
         savingButton.interactable = true;
         wolfButton.interactable = false;
         callOutButton.interactable = false;
@@ -86,9 +86,18 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// カウントダウンタイマー
     /// </summary>
     void Update() {
-        //GetPlayStateはtrueが返ってきたらOK
-        if (GetPlayState() && gameManager.gameStart == true) {
-            Debug.Log(gameManager.gameStart);
+
+        //ゲームが終了したらUpdateを止める
+        if (timeType == TIME.終了) {
+            timerText.text = string.Empty;
+            gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
+            return;
+        } else if (GetPlayState() && gameManager.gameStart) {
+            Debug.Log("gamestart:" + gameManager.gameStart);
+            //GetPlayStateはtrueが返ってきたらOK
+
+
+            //マスターだけトータルタイムを管理する
             if (PhotonNetwork.IsMasterClient) {
                 cheakTimer += Time.deltaTime;
                 if (cheakTimer >= 1) {
@@ -96,20 +105,26 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     totalTime--;
                     SetGameTime();
                 }
+                //マスター以外はトータルタイムをもらう
             } else {
                 Debug.Log(totalTime);
                 totalTime = GetGameTime();
             }
+            //トータルタイム表示
             seconds = (int)totalTime;
             timerText.text = totalTime.ToString("F0");
+            //トータルタイムが0未満になったら
             if (totalTime < 0) {
+                //マスターだけがisPlayingをfalseに
                 if (PhotonNetwork.IsMasterClient) {
                     isPlaying = false;
                     SetPlayState(isPlaying);
                 }
             }
-        } else if(!GetPlayState() && totalTime <= 0) {
-            timerText.text = 0.ToString();
+
+            //isPlayingがfalseでかつトータルタイムが0以下ならStartIntervalへ
+        } else if (!GetPlayState() && totalTime <= 0) {
+            timerText.text = string.Empty;
             StartInterval();
         }
     }
@@ -119,12 +134,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// bool型IsPlayingをRoomPropertiesに保存する
     /// </summary>
     /// <returns></returns>
-    private void SetPlayState(bool isPlayState){
-            var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    private void SetPlayState(bool isPlayState) {
+        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                     {"isPlaying",isPlayState }
                 };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+
         Debug.Log("isPlaying:終了");
     }
 
@@ -165,7 +180,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public void StartInterval() {
         Debug.Log("StartInterval:開始");
-        if (isPlaying == false && isGameOver == true) {
+        if (!isPlaying && gameManager.gameStart) {
             switch (timeType) {
                 //お昼
                 case TIME.夜の結果発表:
@@ -292,9 +307,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// 時短、狼モード、
     /// </summary>
     public void TimesavingControllerTrue() {
-        if(timeType == TIME.昼) {
+        if (timeType == TIME.昼) {
             savingButton.interactable = true;
-            if(chatSystem.myPlayer.rollType == ROLLTYPE.人狼) {
+            if (chatSystem.myPlayer.rollType == ROLLTYPE.人狼) {
                 wolfButton.interactable = true;
             }
             callOutButton.interactable = true;
@@ -309,21 +324,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         COButton.interactable = false;
     }
 
-    ///// <summary>
-    ///// 時短.退出ボタン
-    ///// </summary>
-    //public void SavingButton() {
-    //    if (savingText.text == "退出") {
-    //        if (gameManager.isOffline) {
-    //            SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
-    //        } else {
-    //            NetworkManager.instance.LeaveRoom();
-    //        }
-    //    }
-    //        } else {
-    //            totalTime = 0;
-    //        }
-    //    }
+
 }
 
 
