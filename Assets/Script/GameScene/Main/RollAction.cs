@@ -14,15 +14,13 @@ public class RollAction : MonoBehaviour
     public ChatSystem chatSystem;
     public VoteCount voteCount;
     public GameManager gameManager;
+    public GameMasterChatManager gameMasterChatManager;
 
     //main
     public Button wolfButton;
     public Text MenbarViewText;
     public string spiritualResult;//霊能結果
-    //早朝用
-    public int biteID;//噛んだプレイヤーID
-    public int protectID;//守ったプレイヤーID
-    public Player bitePlayer;
+
 
 
 
@@ -54,8 +52,8 @@ public class RollAction : MonoBehaviour
                         } else {
                             Debug.Log("かみ殺す。");
                             //噛んだプレイヤーを記録
-                            biteID = id;
-                            bitePlayer = chatSystem.playersList[id];
+                            gameMasterChatManager.biteID = id;
+                            gameMasterChatManager.bitePlayer = chatSystem.playersList[id];
                         }
                         break;
                 }
@@ -71,40 +69,14 @@ public class RollAction : MonoBehaviour
             case ROLLTYPE.騎士:
                 Debug.Log("守ります");
                 //守ったプレイヤーを記録
-                protectID = id;
+                gameMasterChatManager.protectID = id;
                 break;  
             
         }
     }
 
-    /// <summary>
-    /// 騎士が守ったか否か
-    /// </summary>
-    public void MorningResults() {
-        if (biteID == protectID) {
-            gameManager.chatSystem.gameMasterChat = "本日の犠牲者はいません。";
-            return;
-        } else {
-            gameManager.chatSystem.gameMasterChat = bitePlayer.playerName + "が襲撃されました。";
-        }
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-    }
 
-    /// <summary>
-    /// 霊能者の行動を制御(役職増えると、ここに別の処理を加える
-    /// </summary>
-    public void PsychicAction() {
-        if (chatSystem.myPlayer.rollType == ROLLTYPE.霊能者) {
-            if(voteCount.executionPlayer == null) {
-                return;
-            }
-            if (voteCount.executionPlayer.fortune == true) {
-                Debug.Log(voteCount.mostVotePlayer + "人狼");
-            } else {
-                Debug.Log(voteCount.mostVotePlayer + "人狼ではない");
-            }
 
-        }
-    }
+
 
 }

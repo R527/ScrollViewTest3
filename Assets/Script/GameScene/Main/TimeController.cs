@@ -19,6 +19,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public VoteCount voteCount;
     public RollAction rollAction;
     public GameOver gameOver;
+    public GameMasterChatManager gameMasterChatManager;
 
     //main
     public Text timerText;
@@ -83,6 +84,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
             Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["gameReady"]);
         }
         Debug.Log("Init時のTimeType"　+ timeType);
+
+        // 本当の姿を表示する
+        gameMasterChatManager.TrueCharacter();
+
+
         StartInterval();
     }
 
@@ -271,22 +277,22 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.夜の行動;
 
                     nightPopup.SetActive(true);
-                    //霊能
-                    //rollAction.PsychicAction();
                     voteCount.mostVotes = 0;
                     voteCount.ExecutionPlayerList.Clear();
                     totalTime = nightTime;
+                    //霊能結果の表示
+                    gameMasterChatManager.PsychicAction();
                     if (firstDay == true) {
                         StartCoroutine(NextDay());
                         firstDay = false;
-                    }
+                    } 
                     StartCoroutine(GameMasterChat());
                     break;
 
                 //夜の行動の結果発表
                 case TIME.夜の行動:
                     timeType = TIME.結果発表後チェック;
-                    rollAction.MorningResults();
+                    gameMasterChatManager.MorningResults();
                     totalTime = rollActionTime;
                     break;
 

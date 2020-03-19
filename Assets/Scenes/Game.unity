@@ -9018,12 +9018,10 @@ MonoBehaviour:
   chatSystem: {fileID: 4395145948522523302}
   voteCount: {fileID: 1130743580}
   gameManager: {fileID: 1130743578}
+  gameMasterChatManager: {fileID: 1130743577}
   wolfButton: {fileID: 972337835}
   MenbarViewText: {fileID: 429416297}
   spiritualResult: 
-  biteID: 0
-  protectID: 0
-  bitePlayer: {fileID: 0}
 --- !u!4 &904789180
 Transform:
   m_ObjectHideFlags: 0
@@ -9115,6 +9113,7 @@ MonoBehaviour:
   voteCount: {fileID: 1130743580}
   rollAction: {fileID: 904789179}
   gameOver: {fileID: 1130743582}
+  gameMasterChatManager: {fileID: 1130743577}
   timerText: {fileID: 575804562}
   totalTime: 0
   mainTime: 30
@@ -9125,6 +9124,7 @@ MonoBehaviour:
   rollActionTime: 10
   intervalTime: 2
   isPlaying: 0
+  gameReady: 0
   savingButton: {fileID: 163000424}
   savingText: {fileID: 256122106}
   COButton: {fileID: 1812546287}
@@ -11415,6 +11415,9 @@ MonoBehaviour:
   timeSavingButtonText: {fileID: 256122106}
   LeavePopUp: {fileID: 75429907}
   exitButton: {fileID: 1458055666}
+  biteID: 0
+  protectID: 0
+  bitePlayer: {fileID: 0}
 --- !u!114 &1130743578
 MonoBehaviour:
   m_ObjectHideFlags: 0

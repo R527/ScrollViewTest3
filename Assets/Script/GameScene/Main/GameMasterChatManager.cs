@@ -5,6 +5,10 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun;
 
+
+/// <summary>
+/// GMチャットをまとめています。
+/// </summary>
 public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
     //class
@@ -20,6 +24,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public Text timeSavingButtonText;//時短or退出ボタン
     public GameObject LeavePopUp;//ゲーム終了後の退出用PopUP
     public Button exitButton;
+    //早朝用
+    public int biteID;//噛んだプレイヤーID
+    public int protectID;//守ったプレイヤーID
+    public Player bitePlayer;
 
 
     // Start is called before the first frame update
@@ -35,11 +43,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     /// <summary>
     /// タイムコントローラのシーンが変更するたびに発言するチャット
@@ -50,13 +53,13 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         switch (timeController.timeType)
         {
             case TIME.昼:
-                gameManager.chatSystem.gameMasterChat = "おはようございます。" + "昨夜は○○が●されました。";
+                gameManager.chatSystem.gameMasterChat = "話し合う時間です。\r\n\r\n市民陣営は嘘をついている狼を探しましょう。\r\n\r\n人狼陣営は市民にうまく紛れて市民を騙しましょう！";
                 break;
             case TIME.投票時間:
-                gameManager.chatSystem.gameMasterChat = "投票の時間です";
+                gameManager.chatSystem.gameMasterChat = "投票の時間です。\r\n\r\n人狼と思われるプレイヤーに投票しましょう。";
                 break;
             case TIME.夜の行動:
-                gameManager.chatSystem.gameMasterChat = "占え";
+                gameManager.chatSystem.gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう。";
                 break;
         }
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
@@ -134,6 +137,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         }
     }
 
+
+
     /// <summary>
     /// ゲーム終了後の退出ボタンを押したときに出るPoPUP内にある退出ボタン
     /// ネットワークのチェック完了
@@ -155,5 +160,46 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     }
 
 
+    /// <summary>
+    /// 騎士が守ったか否か
+    /// </summary>
+    public void MorningResults() {
+        if (biteID == protectID) {
+            gameManager.chatSystem.gameMasterChat = "本日の犠牲者はいません。";
+            return;
+        } else {
+            gameManager.chatSystem.gameMasterChat = bitePlayer.playerName + "が襲撃されました。";
+        }
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+    }
 
+
+    /// <summary>
+    /// 本当の姿を表示する
+    /// </summary>
+    public void TrueCharacter() {
+        //本当の姿
+        gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんの本当の姿は" + gameManager.chatSystem.myPlayer.rollType.ToString() + "です！";
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+    }
+
+
+    /// <summary>
+    /// 霊能者の行動を制御(役職増えると、ここに別の処理を加える
+    /// </summary>
+    public void PsychicAction() {
+        if (gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.霊能者　&& gameManager.chatSystem.myPlayer.live) {
+            if (voteCount.executionPlayer == null) {
+                return;
+            }
+            if (voteCount.executionPlayer.fortune == true) {
+                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n"　+ voteCount.mostVotePlayer.playerName + "は人狼です。";
+                Debug.Log(voteCount.mostVotePlayer + "人狼");
+            } else {
+                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.playerName + "は人狼ではない。";
+                Debug.Log(voteCount.mostVotePlayer + "人狼ではない");
+            }
+            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        }
+    }
 }
