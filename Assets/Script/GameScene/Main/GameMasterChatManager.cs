@@ -43,6 +43,23 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 
+    /// <summary>
+    /// 時短希望人数をチェックする
+    /// </summary>
+    private void CheckTimeSavingNum() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeSavingNum", out object timeSavingNumObj)) {
+            timeSavingNum = (int)timeSavingNumObj;
+        }
+    }
+
+    /// <summary>
+    /// 本当の姿を表示する
+    /// </summary>
+    public void TrueCharacter() {
+        //本当の姿
+        gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんの本当の姿は" + gameManager.chatSystem.myPlayer.rollType.ToString() + "です！";
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+    }
 
     /// <summary>
     /// タイムコントローラのシーンが変更するたびに発言するチャット
@@ -65,14 +82,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
     }
 
-    /// <summary>
-    /// 時短希望人数をチェックする
-    /// </summary>
-    private void CheckTimeSavingNum() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeSavingNum", out object timeSavingNumObj)) {
-            timeSavingNum = (int)timeSavingNumObj;
-        }
-    }
+
     /// <summary>
     /// 時短と退出処理のGMチャットを制御
     /// </summary>
@@ -151,36 +161,31 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         NetworkManager.instance.LeaveRoom();
     }
 
+
+    /// <summary>
+    /// 投票を完了させる
+    /// </summary>
+    public void Voted(Photon.Realtime.Player player) {
+        gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんは" + player.NickName + "に投票しました。";
+
+        //設定で投票を開示するか否か
+        if (RoomData.instance.roomInfo.openVoting == VOTING.開示しない) {
+            //開示しない場合
+            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        } else {
+            //開示する場合
+            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        }
+    }
+
     /// <summary>
     /// 処刑プレイヤーをGMチャットに表示する
     /// </summary>
     public void ExecutionChat() {
         gameManager.chatSystem.gameMasterChat = voteCount.executionPlayer.playerName + "が処刑されました。";
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-    }
-
-
-    /// <summary>
-    /// 騎士が守ったか否か
-    /// </summary>
-    public void MorningResults() {
-        if (biteID == protectID) {
-            gameManager.chatSystem.gameMasterChat = "本日の犠牲者はいません。";
-            return;
-        } else {
-            gameManager.chatSystem.gameMasterChat = bitePlayer.playerName + "が襲撃されました。";
-        }
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-    }
-
-
-    /// <summary>
-    /// 本当の姿を表示する
-    /// </summary>
-    public void TrueCharacter() {
-        //本当の姿
-        gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんの本当の姿は" + gameManager.chatSystem.myPlayer.rollType.ToString() + "です！";
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n\r\n" + voteCount.executionPlayer.playerName + ": " + voteCount.executionPlayer.voteCount + "票";
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
     }
 
 
@@ -193,13 +198,83 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 return;
             }
             if (voteCount.executionPlayer.fortune == true) {
-                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n"　+ voteCount.mostVotePlayer.playerName + "は人狼です。";
+                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n"　+ voteCount.mostVotePlayer.playerName + "は人狼（黒）です。";
                 Debug.Log(voteCount.mostVotePlayer + "人狼");
             } else {
-                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.playerName + "は人狼ではない。";
+                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.playerName + "は人狼ではない（白）です。";
                 Debug.Log(voteCount.mostVotePlayer + "人狼ではない");
             }
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         }
+    }
+
+
+    /// <summary>
+    /// 夜の行動を制御する
+    /// </summary>
+    /// <param name="rollType"></param>
+    /// <param name="id"></param>
+    public void RollActionButton(ROLLTYPE rollType, int id, bool live, bool fortune,bool wolf) {
+
+        //死亡時もしくは自分のボタンは機能しない
+        if (gameManager.chatSystem.myID == id || live == false) {
+            Debug.Log("押せません。");
+            return;
+        }
+
+        //ボタンを押した対象のプレイヤーを代入
+        Player thePlayer = gameManager.chatSystem.playersList[id];
+        //自分の役職が～～なら
+        switch (gameManager.chatSystem.myPlayer.rollType) {
+
+            case ROLLTYPE.人狼:
+
+                //相方のため押せません。
+                if (wolf) {
+                    Debug.Log("相方です。");
+                } else { 
+                    //噛んだプレイヤーを記録
+                    biteID = id;
+                    bitePlayer = thePlayer;
+                    gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを襲撃します。";
+                    Debug.Log(thePlayer.playerName + "襲撃します。");
+                }
+                break;
+
+            case ROLLTYPE.占い師:
+
+                if (!fortune) {
+                    gameManager.chatSystem.gameMasterChat = "【占い結果】\r\n" + thePlayer.playerName + "は人狼ではない（白）です。";
+                    Debug.Log("白");
+                } else {
+                    gameManager.chatSystem.gameMasterChat = "【占い結果】\r\n" + thePlayer.playerName + "は人狼（黒）です。";
+                    Debug.Log("黒");
+                }
+                break;
+            case ROLLTYPE.騎士:
+                gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "を護衛します。";
+                Debug.Log("守ります");
+                //守ったプレイヤーを記録
+                protectID = id;
+                break;
+        }
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+    }
+
+    /// <summary>
+    /// 騎士が守ったか否か
+    /// </summary>
+    public void MorningResults() {
+        if (biteID == protectID) {
+            gameManager.chatSystem.gameMasterChat = "本日の犠牲者はいません。";
+            return;
+        } else {
+            gameManager.chatSystem.gameMasterChat = bitePlayer.playerName + "が襲撃されました。";
+        }
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+
+        //初期化
+        biteID = 0000;
+        protectID = 0000;
     }
 }

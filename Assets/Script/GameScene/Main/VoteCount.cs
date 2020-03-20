@@ -31,21 +31,6 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             voteCountList.Add(0);
         }
     }
-    /// <summary>
-    /// Playerが押した相手に投票処理をする
-    /// </summary>
-    /// <param name="id"></param>
-    public void VoteCountList(int id, bool live) {
-        if(isVoteFlag == false && live == true) {
-            if (chatSystem.myPlayer.playerID == id) {
-                Debug.Log("押せません");
-                return;
-            }
-            voteCountList[id]++;
-            isVoteFlag = true;
-        }
-        Debug.Log("押せません");
-    }
 
     /// <summary>
     /// 一番投票されたプレイヤーを処刑する

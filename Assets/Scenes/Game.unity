@@ -9117,7 +9117,7 @@ MonoBehaviour:
   timerText: {fileID: 575804562}
   totalTime: 0
   mainTime: 30
-  votingTime: 2
+  votingTime: 10
   nightTime: 2
   executionTime: 10
   moningTime: 0

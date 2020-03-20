@@ -25,8 +25,8 @@ public class Player : MonoBehaviourPunCallbacks {
     public string playerName;
     public Button playerButton;
     public bool live;//生死 trueで生存している
-    public bool fortune;//占い結果
-    public bool spiritual;//霊能結果
+    public bool fortune;//占い結果 true=黒
+    public bool spiritual;//霊能結果　true = 黒
     public bool wolf;//狼か否か
     public bool wolfCamp;//狼陣営か否か
     public Button wolfButton;
@@ -155,10 +155,10 @@ public class Player : MonoBehaviourPunCallbacks {
             switch (gameManager.timeController.timeType)
             {
                 case TIME.投票時間:
-                    Debug.Log("投票する");
+                    
                     //gameManager.voteCount.VoteCountList(playerID, live);
 
-                    if (!gameManager.voteCount.isVoteFlag) {
+                    if (!gameManager.voteCount.isVoteFlag && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                             if (player.ActorNumber == playerID) {
                                 //最新の投票数を取得する
@@ -169,8 +169,13 @@ public class Player : MonoBehaviourPunCallbacks {
                                 };
 
                                 player.SetCustomProperties(propertiers);
+
+                                //投票のチャット表示
+                                gameManager.gameMasterChatManager.Voted(player);
+
                                 Debug.Log("player.ActorNumber:" + player.ActorNumber);
                                 Debug.Log("voteCount:" + voteCount);
+                                Debug.Log("投票完了");
                             }
                         }
                     }
@@ -178,7 +183,7 @@ public class Player : MonoBehaviourPunCallbacks {
                     break;
                 case TIME.夜の行動:
                     Debug.Log("夜の行動");
-                    gameManager.rollAction.RollActionButton(rollType, playerID, live, fortune, def);
+                    gameManager.gameMasterChatManager.RollActionButton(rollType, playerID, live, fortune, wolf);
                     break;
                 default:
                     Debug.Log("フィルターOn");
