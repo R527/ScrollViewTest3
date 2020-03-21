@@ -1415,5 +1415,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   isDebug: 1
-  testMainTime: 14
-  testNightTime: 8
+  testMainTime: 20
+  testNightTime: 30

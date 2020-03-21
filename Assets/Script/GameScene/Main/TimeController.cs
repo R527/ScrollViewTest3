@@ -292,6 +292,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //夜の行動の結果発表
                 case TIME.夜の行動:
                     timeType = TIME.結果発表後チェック;
+                    chatSystem.myPlayer.isRollAction = false;
                     gameMasterChatManager.MorningResults();
                     totalTime = rollActionTime;
                     break;

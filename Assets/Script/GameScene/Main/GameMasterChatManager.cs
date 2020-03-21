@@ -176,6 +176,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //開示する場合
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         }
+        Debug.Log("Voted");
     }
 
     /// <summary>
@@ -214,7 +215,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="rollType"></param>
     /// <param name="id"></param>
-    public void RollActionButton(ROLLTYPE rollType, int id, bool live, bool fortune,bool wolf) {
+    public void RollAction(ROLLTYPE rollType, int id, bool live, bool fortune,bool wolf) {
 
         //死亡時もしくは自分のボタンは機能しない
         if (gameManager.chatSystem.myID == id || live == false) {
@@ -236,7 +237,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     //噛んだプレイヤーを記録
                     biteID = id;
                     bitePlayer = thePlayer;
-                    gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを襲撃します。";
+                    gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを襲撃しました。";
                     Debug.Log(thePlayer.playerName + "襲撃します。");
                 }
                 break;
@@ -257,8 +258,13 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 //守ったプレイヤーを記録
                 protectID = id;
                 break;
+            default:
+                gameManager.chatSystem.gameMasterChat = "";
+                Debug.Log("押せません。");
+                break;
         }
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        Debug.Log("RollAction");
     }
 
     /// <summary>
