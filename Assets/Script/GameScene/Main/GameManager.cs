@@ -75,6 +75,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
             {"enterNum", enterNum },
             {"enterNumTime", enterNumTime },
         };
+
+            if(PhotonNetwork.CurrentRoom.IsOpen && PhotonNetwork.CurrentRoom.PlayerCount >= PhotonNetwork.CurrentRoom.MaxPlayers) {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+                Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
+            }
             //カスタムプロパティに更新した変数をセットする
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
@@ -487,7 +492,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         rollExplanation.RollExplanationSetUp(rollTypeList);
         chatSystem.OnClickPlayerID();
         timeController.Init(isOffline);
-        //gameStart = true;
         liveNum = PhotonNetwork.PlayerList.Length;
         if (PhotonNetwork.IsMasterClient) {
             SetLiveNum();

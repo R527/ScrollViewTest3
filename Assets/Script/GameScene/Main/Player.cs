@@ -25,12 +25,13 @@ public class Player : MonoBehaviourPunCallbacks {
     public string playerName;
     public Button playerButton;
     public bool live;//生死 trueで生存している
-    public bool fortune;//占い結果
-    public bool spiritual;//霊能結果
+    public bool fortune;//占い結果 true=黒
+    public bool spiritual;//霊能結果　true = 黒
     public bool wolf;//狼か否か
     public bool wolfCamp;//狼陣営か否か
     public Button wolfButton;
     public Text MenbarViewText;
+    public bool isRollAction;
 
     public ChatNode chatNodePrefab;//チャットノード用のプレふぁぶ
     public int iconNo;//アイコンの絵用
@@ -51,6 +52,8 @@ public class Player : MonoBehaviourPunCallbacks {
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
 
+        //ラムダ式で引数を充てる。
+        playerButton.onClick.AddListener(() => OnClickPlayerButton());
 
         //自分と他人を分ける分岐
         if (photonView.IsMine) {
@@ -60,8 +63,7 @@ public class Player : MonoBehaviourPunCallbacks {
             //Networkの自分の持っている番号を追加
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
 
-            //ラムダ式で引数を充てる。
-            playerButton.onClick.AddListener(() => OnClickPlayerButton());
+            
 
             //voteCountをプロパティーにセット
             var properties = new ExitGames.Client.Photon.Hashtable {
@@ -140,23 +142,25 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     public void OnClickPlayerButton()
     {
+        
         //死亡時
         if(!live) {
-            Debug.Log("フィルターOn");
+            Debug.Log("フィルターOFF");
             gameManager.chatListManager.OnFilter(playerID);
         //生きているがフィルター時
         } else if (gameManager.chatListManager.isfilter == true)
         {
-            Debug.Log("フィルターOn");
+            Debug.Log("フィルターOFF");
             gameManager.chatListManager.OnFilter(playerID);
-        } else if(live && !gameManager.chatListManager.isfilter){ 
-        
+            //&& PhotonNetwork.LocalPlayer.ActorNumber != playerID
+        } else if(live && !gameManager.chatListManager.isfilter ) {
+            Debug.Log("その時間ごとの行動");
             //フィルター機能がOFFの時は各時間ごとの機能をする
+            Debug.Log(gameManager.timeController.timeType);
             switch (gameManager.timeController.timeType)
             {
+               
                 case TIME.投票時間:
-                    Debug.Log("投票する");
-                    //gameManager.voteCount.VoteCountList(playerID, live);
 
                     if (!gameManager.voteCount.isVoteFlag) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
@@ -165,23 +169,33 @@ public class Player : MonoBehaviourPunCallbacks {
                                 voteCount = (int)player.CustomProperties["voteCount"];
                                 voteCount++;
                                 var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                    {"voteCount", voteCount }
-                                };
+                                {"voteCount", voteCount }
+                            };
 
                                 player.SetCustomProperties(propertiers);
+
+                                //投票のチャット表示
+                                gameManager.gameMasterChatManager.Voted(player);
+
                                 Debug.Log("player.ActorNumber:" + player.ActorNumber);
                                 Debug.Log("voteCount:" + voteCount);
+                                Debug.Log("投票完了");
                             }
                         }
                     }
-                    gameManager.voteCount.isVoteFlag = true;
-                    break;
+                        gameManager.voteCount.isVoteFlag = true;
+                        break;
+
                 case TIME.夜の行動:
                     Debug.Log("夜の行動");
-                    gameManager.rollAction.RollActionButton(rollType, playerID, live, fortune, def);
+                    if (!isRollAction) {
+                        
+                        gameManager.gameMasterChatManager.RollAction(rollType, playerID, live, fortune, wolf);
+                    }
+                    isRollAction = true;
                     break;
                 default:
-                    Debug.Log("フィルターOn");
+                    Debug.Log("フィルターOFF");
                     gameManager.chatListManager.OnFilter(playerID);
                     break;
             }

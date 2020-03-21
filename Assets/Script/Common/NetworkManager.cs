@@ -55,7 +55,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //部屋情報を確定する
         RoomOptions roomOptions = new RoomOptions {
             //プロパティを設定している
-            MaxPlayers = (byte)maxPlayer,
+            //MaxPlayers = (byte)maxPlayer,
+            MaxPlayers = 2,
             //プライベートにするかしないか
             IsVisible = true,
             //部屋が開いている状態にする
@@ -145,14 +146,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             RoomNode roomNode;
             //アクティブの部屋がありますか
             if (activeEntries.TryGetValue(info.Name, out roomNode)) {
-                if (!info.RemovedFromList) {
+                //IsOpenがtureの場合表示する
+                //最後のプレイヤーがRoomに入った時にfalseにする
+                if (!info.RemovedFromList && info.IsOpen) {
                     //部屋情報を読み取ってアクティブ化する
-                    roomNode.Activate(info);
+                       roomNode.Activate(info);
                 } else {
                     //部屋がなくなった場合
                     activeEntries.Remove(info.Name);
                    //部屋をfalse
-                    roomNode.Deactivate();
+                    //roomNode.Deactivate();
                     inactiveEntries.Push(roomNode);
                 }
                 //部屋が一つも作られていないとき
@@ -172,7 +175,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void LeaveRoom() {
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
+            Debug.Log("退出完了");
         }
+        
     }
 
     /// <summary>
