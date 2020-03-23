@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 
 /// <summary>
 /// ChatListの管理。場合に応じてSetActiveで制御する
@@ -25,29 +25,40 @@ public class ChatListManager : MonoBehaviour
     //その他
     private int listCount;
 
-    //フィルター機能
+    /// <summary>
+    /// 全てのプレイヤーのChatNodeをさらにList化します。
+    /// </summary>
+    /// <param name="numLimit"></param>
     public void PlayerListSetUp(int numLimit) {
         listCount = numLimit;
             for (int i = 0; i < numLimit; i++) {
             allPlayerList.Add(new List<ChatNode>());
         }
+        //allPlayerList.OrderByDescending(a => a.);
     }
 
 
+    /// <summary>
+    /// フィルター機能をOnにします。
+    /// </summary>
+    /// <param name="id"></param>
     public void OnFilter(int id) {
-        playerNum = id;
-        PlayerFilterTrue(playerNum);
+        isfilter = true;
+        PlayerFilterFalse(id);
         for (int i = 0; i < listCount; i++){
-            if(i == playerNum) {
+            if(i != id) {
                 continue;
             }
             foreach (ChatNode chatObj in allPlayerList[i]) {
-                chatObj.gameObject.SetActive(false);
+                chatObj.gameObject.SetActive(true) ;
             }
         }
-        isfilter = true;
     }
 
+    /// <summary>
+    /// フィルター機能をOffにします。
+    /// </summary>
+    /// <param name="id"></param>
     public void OffFilter() {
         for (int i = 0; i < listCount; i++) {
             foreach (ChatNode chatObj in allPlayerList[i]) {
@@ -62,52 +73,8 @@ public class ChatListManager : MonoBehaviour
             chatObj.gameObject.SetActive(false);
         }
     }
-    public void PlayerFilterTrue(int num) {
-        foreach (ChatNode chatObj in allPlayerList[num]) {
-            chatObj.gameObject.SetActive(true);
-        }
-    }
-    //メソッドまとめ。Playerの状態によりそれぞれ処理をする
-    /// <summary>
-    /// 市民死亡時
-    /// </summary>
-    public void DeadCitizen() {
-        NormalListSetActiveTrue();
-        WolfListSetActiveFalse();
-        DeathListSetActiveTrue();
-    }
-    /// <summary>
-    /// 市民生存時
-    /// </summary>
-    public void LivingCitizen() {
-        NormalListSetActiveTrue();
-        WolfListSetActiveFalse();
-        DeathListSetActiveFalse();
-    }
-    /// <summary>
-    /// 狼死亡時
-    /// </summary>
-    public void DeadWolf() {
-        NormalListSetActiveTrue();
-        WolfListSetActiveFalse();
-        DeathListSetActiveTrue();
-    }
-    /// <summary>
-    /// 狼生存時
-    /// </summary>
-    public void LivingWolf() {
-        NormalListSetActiveTrue();
-        WolfListSetActiveTrue();
-        DeathListSetActiveFalse();
-    }
-    /// <summary>
-    /// 狼専用モード
-    /// </summary>
-    public void WolfMode() {
-        NormalListSetActiveFalse();
-        WolfListSetActiveTrue();
-        DeathListSetActiveFalse();
-    }
+
+
     //メソッドまとめ。状態によりそれぞれ処理をする
 
     /// <summary>

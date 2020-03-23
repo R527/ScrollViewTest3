@@ -6,9 +6,7 @@
 public class ChatData 
 {
     public int chatID;
-    //public ChatRoll roll = ChatRoll.EXT;
     public string inputData;
-    //public string rollName;
     public int playerID;
     public int boardColor;
     public string playerName;
@@ -28,9 +26,7 @@ public class ChatData
     /// <param name="rollType"></param>
     public ChatData(int chatID, string inputData, int playerID, int boardColor, string playerName, ROLLTYPE rollType) {
         this.chatID = chatID;
-        //this.roll = roll;
         this.inputData = inputData;
-        //this.rollName = rollName;
         this.playerID = playerID;
         this.boardColor = boardColor;
         this.playerName = playerName;

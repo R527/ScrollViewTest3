@@ -343,9 +343,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["enterNum"]);
 
         confirmationNumText.text = enterNum + "/" + numLimit;
-        //Startで反応しない場合は処理中に書くとよい
-        chatListManager.PlayerListSetUp(numLimit);
-        voteCount.VoteCountListSetUp(numLimit);
+
     }
 
     /// <summary>
@@ -489,9 +487,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
 
 
+        //Startで反応しない場合は処理中に書くとよい
+
         rollExplanation.RollExplanationSetUp(rollTypeList);
         chatSystem.OnClickPlayerID();
         timeController.Init(isOffline);
+        chatListManager.PlayerListSetUp(numLimit);
+        voteCount.VoteCountListSetUp(numLimit);
         liveNum = PhotonNetwork.PlayerList.Length;
         if (PhotonNetwork.IsMasterClient) {
             SetLiveNum();
@@ -558,7 +560,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //PlayerListを照準に並び替える（chatSystem.playersListの各要素をaに入れる foreachのようなもの
         //＝＞　a.playerIDでは何を基準に並び替えているのかを決めている
-        chatSystem.playersList.OrderByDescending(a => a.playerID);
+        chatSystem.playersList.OrderByDescending(player => player.playerID);
 
             //人数分のカミングアウトを用意(要素数を要しただけで初期化はしてないため、中身は””ではなくnull
         chatSystem.comingOutPlayers = new string[playerObjs.Length];
