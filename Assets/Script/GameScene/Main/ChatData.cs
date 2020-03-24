@@ -11,8 +11,10 @@ public class ChatData
     public int boardColor;
     public string playerName;
     public ROLLTYPE rollType;
-    public CHAT_TYPE chatType;//コンストラクタでは代入しない
 
+    public CHAT_TYPE chatType;//コンストラクタでは代入しない
+    public bool chatLive;
+    public bool chatWolf;
 
     /// <summary>
     /// Class名と同名で戻り値（voidなど）を持たないメソッドはコストラクタになる

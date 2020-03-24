@@ -184,7 +184,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     private bool GetGameReady() {
         gameReady = false;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
+        if (!gameManager.isOffline && PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
             gameReady = (bool)gameReadyObj;
         }
         return gameReady;

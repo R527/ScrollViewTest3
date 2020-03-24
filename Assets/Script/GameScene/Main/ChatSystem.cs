@@ -233,7 +233,14 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         //PlayerごとにList管理
         if (chatData.rollType != ROLLTYPE.ETC && chatData.rollType != ROLLTYPE.GM) {
-            chatListManager.allPlayerList[chatData.playerID].Add(chatNode);
+            if (myPlayer.live == false) {
+                chatListManager.alldeathList[chatData.playerID - 1].Add(chatNode);
+            } else if (wolfmode.wolf == true) {
+                chatListManager.allwolfList[chatData.playerID - 1].Add(chatNode);
+            } else {
+                chatListManager.allnormalList[chatData.playerID - 1].Add(chatNode);
+            }
+            
         }
 
         //SetActiveを制御する
@@ -289,22 +296,30 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     public bool SetActiveChatObj() {
         bool isChatSet = true;
-        
-        if (myPlayer != null) {
-            //市民の場合
-            if (myPlayer.rollType != ROLLTYPE.人狼) {
-                if ((myPlayer.live == true && (boardColor == 3 || boardColor == 2)) || (!myPlayer.live && boardColor == 2)) {
-                    isChatSet = false;
+
+        //フィルター中でないなら狼チャットに参加できるか否かを判別する
+        if (!chatListManager.isfilter) {
+            if (myPlayer != null) {
+                //市民の場合
+                if (!myPlayer.wolfChat) {
+                    //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
+                    if ((myPlayer.live && (boardColor == 3 || boardColor == 2)) || (!myPlayer.live && boardColor == 2)) {
+                        isChatSet = false;
+                    }
+                }
+
+                //人狼の場合
+                if (myPlayer.wolfChat) {
+                    //自分が生きていている場合は死亡チャットをfalse　
+                    if (myPlayer.live && boardColor == 3) {
+                        isChatSet = false;
+                    }
                 }
             }
-
-            //人狼の場合
-            if (myPlayer.rollType == ROLLTYPE.人狼) {
-                if (myPlayer.live && boardColor == 3) {
-                    isChatSet = false;
-                    }
-            }
+        } else {
+            isChatSet = false;
         }
+        
         return isChatSet;
     }
 

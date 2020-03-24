@@ -9750,11 +9750,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1018169723}
-  - component: {fileID: 1018169724}
   - component: {fileID: 1018169722}
   - component: {fileID: 1018169726}
   - component: {fileID: 1018169725}
   - component: {fileID: 1018169727}
+  - component: {fileID: 1018169728}
   m_Layer: 0
   m_Name: ButtonManager
   m_TagString: Untagged
@@ -9782,8 +9782,7 @@ MonoBehaviour:
   foldingButton: {fileID: 48525514}
   comingButton: {fileID: 1812546287}
   menberViewPopUpObj: {fileID: 1552074811}
-  coPopUpPbj: {fileID: 327988790}
-  change: 0
+  coPopUpObj: {fileID: 327988790}
 --- !u!4 &1018169723
 Transform:
   m_ObjectHideFlags: 0
@@ -9798,26 +9797,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1018169724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018169721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1047a2fd71140db4a8294305a461c33e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chatListManager: {fileID: 1130743579}
-  inputView: {fileID: 1018169722}
-  filterButtanText: {fileID: 341305430}
-  filterButton: {fileID: 474407752}
-  flodingButton: {fileID: 48525514}
-  comingOutButton: {fileID: 1812546287}
-  menberPopUp: {fileID: 0}
-  coPopUp: {fileID: 0}
 --- !u!114 &1018169725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9860,6 +9839,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vocabularyButton: {fileID: 737056824}
   vocabularyPopUp: {fileID: 647257696}
+--- !u!114 &1018169728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018169721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c9ab8106cc27c419cb5095243b8fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chatListManager: {fileID: 1130743579}
+  inputView: {fileID: 1018169722}
+  filterButtanText: {fileID: 341305430}
+  filterButton: {fileID: 474407752}
+  flodingButton: {fileID: 48525514}
+  comingOutButton: {fileID: 1812546287}
 --- !u!1 &1018278468
 GameObject:
   m_ObjectHideFlags: 0
@@ -11441,8 +11438,8 @@ MonoBehaviour:
   timeType: 0
   gameMasterChatManager: {fileID: 1130743577}
   NumText: {fileID: 2035613864}
-  num: 7
-  enterNum: 7
+  num: 8
+  enterNum: 8
   numLimit: 9
   liveNum: 0
   enterNumTime: 25
@@ -11474,6 +11471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74eb5454b463ae542a712a3c17c62355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatSystem: {fileID: 0}
   normalList: []
   wlofList: []
   callOutList: []
@@ -11481,6 +11479,8 @@ MonoBehaviour:
   gameMasterList: []
   isfilter: 0
   playerNum: 1
+  myWolfChat: 0
+  myLive: 0
 --- !u!114 &1130743580
 MonoBehaviour:
   m_ObjectHideFlags: 0

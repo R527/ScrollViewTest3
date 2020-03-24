@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     //
     public Transform menbarContent;
 
-    [Header("オフライン用フラグ")]
+    [Header("オフライン用(trueならOff)")]
     public bool isOffline;
 
 
@@ -62,13 +62,14 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     void Start() {
 
-        //timeController.Init(isOffline);
+        //offlineなら以下の処理をする
         if (!isOffline) {
             //部屋を作った人は初めての人なのでこの処理はない
             //二人目以降の人が値を取得する
             CheckNum();
             //参加人数一人追加
             num++;
+
             //トータルの参加人数を更新して、カスタムプロパティに保存する
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"num", num },
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             {"enterNumTime", enterNumTime },
         };
 
-            if(PhotonNetwork.CurrentRoom.IsOpen && PhotonNetwork.CurrentRoom.PlayerCount >= PhotonNetwork.CurrentRoom.MaxPlayers) {
+            if( PhotonNetwork.CurrentRoom.IsOpen && PhotonNetwork.CurrentRoom.PlayerCount >= PhotonNetwork.CurrentRoom.MaxPlayers) {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
             }
@@ -165,7 +166,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     void Update() {
         
         //ルームにいる場合のみ
-        if (PhotonNetwork.InRoom) {
+        if (PhotonNetwork.InRoom || isOffline) {
             if (!gameStart) {
                 if (enterNum == numLimit) {
                     confirmationImage.SetActive(false);
@@ -180,9 +181,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     if (checkTimer >= 1) {
                         checkTimer = 0;
                         //オフライン用
-                        if (!isOffline) {
+                        //if (!isOffline) {
                             CheckNum();
-                        }
+                        //}
                         NumText.text = num + "/" + numLimit;
                     }
                 }
@@ -195,9 +196,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     if (checkTimer >= 1) {
                         checkTimer = 0;
                         //オフライン用
-                        if (!isOffline) {
+                        //if (!isOffline) {
                             CheckEnterNum();
-                        }
+                        //}
                         confirmationNumText.text = enterNum + "/" + numLimit;
                     }
                 }
@@ -311,9 +312,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
         //ネットワーク上に保存されているキーがあるかを確認
         //保存されていたらEnterNumの値が書き換わる
-        if (!isOffline) {
+        //if (!isOffline) {
             CheckEnterNum();
-        }
+        //}
         switch (confirmationEnterButtonText.text) {
             case "参加":
                 //参加するなら
@@ -492,7 +493,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         rollExplanation.RollExplanationSetUp(rollTypeList);
         chatSystem.OnClickPlayerID();
         timeController.Init(isOffline);
-        chatListManager.PlayerListSetUp(numLimit);
+        chatListManager.PlayerListSetUp(numLimit,chatSystem.myPlayer.wolfChat, chatSystem.myPlayer.live);
         voteCount.VoteCountListSetUp(numLimit);
         liveNum = PhotonNetwork.PlayerList.Length;
         if (PhotonNetwork.IsMasterClient) {
