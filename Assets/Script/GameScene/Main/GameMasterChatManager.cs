@@ -69,7 +69,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void　TimeManagementChat()
     {
-        string gmNode = string.Empty;
+        //string gmNode = string.Empty;
         switch (timeController.timeType)
         {
             case TIME.昼:

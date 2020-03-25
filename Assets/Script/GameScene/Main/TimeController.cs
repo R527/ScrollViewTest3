@@ -29,7 +29,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public float nightTime;   //夜の時間
     public float executionTime;//処刑時間
     public float moningTime;//朝の結果発表
-    public float rollActionTime;
+    public float resultTime;
     public float intervalTime;
     public bool isPlaying;　　//gameが動いているかの判定
     public bool gameReady;//ゲーム待機状態か否か
@@ -151,7 +151,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 Debug.Log(!GetPlayState());
                 Debug.Log(totalTime);
 
-                Debug.Log(timeType);
+                //Debug.Log(timeType);
                 StartInterval();
                 Debug.Log(timeType);
             }
@@ -292,7 +292,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     gameMasterChatManager.PsychicAction();
                     if (firstDay == true) {
                         StartCoroutine(NextDay());
-                        firstDay = false;
                     } 
                     StartCoroutine(GameMasterChat());
                     break;
@@ -301,8 +300,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 case TIME.夜の行動:
                     timeType = TIME.結果発表後チェック;
                     chatSystem.myPlayer.isRollAction = false;
-                    gameMasterChatManager.MorningResults();
-                    totalTime = rollActionTime;
+                    if (firstDay == true) {
+                        gameMasterChatManager.MorningResults();
+                        firstDay = false;
+                    }
+                    totalTime = resultTime;
                     break;
 
                 //結果発表チェック
