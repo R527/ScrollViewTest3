@@ -32,8 +32,6 @@ public class Player : MonoBehaviourPunCallbacks {
     public bool wolf;//狼か否か
     public bool wolfChat;//狼チャットに参加できるかどうか
     public bool wolfCamp;//狼陣営か否か
-    public Button wolfButton;
-    public Text MenbarViewText;
     public bool isRollAction;
     public ChatNode chatNodePrefab;//チャットノード用のプレふぁぶ
     public int iconNo;//アイコンの絵用
@@ -154,13 +152,7 @@ public class Player : MonoBehaviourPunCallbacks {
     public void OnClickPlayerButton()
     {
         
-        //死亡時
-        if(!live) {
-            Debug.Log("フィルターOFF");
-            gameManager.chatListManager.OnFilter(playerID);
-
-        //生きているがフィルター時
-        } else if (gameManager.chatListManager.isfilter == true) { 
+        if (!live || gameManager.chatListManager.isfilter) { 
             
             gameManager.chatListManager.OnFilter(playerID);
             //&& PhotonNetwork.LocalPlayer.ActorNumber != playerID
@@ -205,10 +197,10 @@ public class Player : MonoBehaviourPunCallbacks {
                     }
                     isRollAction = true;
                     break;
-                default:
-                    Debug.Log("フィルターOFF");
-                    gameManager.chatListManager.OnFilter(playerID);
-                    break;
+                //default:
+                //    Debug.Log("フィルターOFF");
+                //    gameManager.chatListManager.OnFilter(playerID);
+                //    break;
             }
         }
     }
