@@ -20,12 +20,14 @@ public class ChatNode : MonoBehaviour {
     public Text statusText;
     //public Sprite[] iconSprite;//Icon画像配列
     public string playerName;
-    public int playerID;
     [SerializeField] LayoutGroup layoutGroup;
     public  Image chatBoard;
     [SerializeField] Image chatIcon;
     public LayoutElement iconObjLayoutElement;
 
+    public bool chatLive;
+    public bool chatWolf;
+    public int playerID;
 
     /// <summary>
     /// ChatSystemからデータを受け取りそれをもとにちゃっとNODEを作る
@@ -40,7 +42,10 @@ public class ChatNode : MonoBehaviour {
         chatText.text = chatData.inputData;
         chatIcon.sprite = Resources.Load<Sprite>("CoImage/Player" + iconNo);//Spriteの配列ではなくResouces.Loatにして取得
 
+        //チャットにデータを持たせる
         playerID = chatData.playerID;
+        chatLive = chatData.chatLive;
+        chatWolf = chatData.chatWolf;
 
         //PlayerがCOしているか否か（COしている場合は名前の横に職業名を記載
         if (chatData.chatType == CHAT_TYPE.GM) {

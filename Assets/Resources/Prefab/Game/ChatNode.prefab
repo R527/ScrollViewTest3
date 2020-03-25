@@ -872,11 +872,13 @@ MonoBehaviour:
   statusObj: {fileID: 1235808738732009459}
   statusText: {fileID: 7543894743011651805}
   playerName: 
-  playerID: 0
   layoutGroup: {fileID: 5080018548450252811}
   chatBoard: {fileID: 6995840903809688898}
   chatIcon: {fileID: 6432085198602546823}
   iconObjLayoutElement: {fileID: 6187143868307752041}
+  chatLive: 0
+  chatWolf: 0
+  playerID: 0
 --- !u!114 &7595674281625313176
 MonoBehaviour:
   m_ObjectHideFlags: 0

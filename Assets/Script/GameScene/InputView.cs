@@ -18,9 +18,9 @@ public class InputView : MonoBehaviour {
     public Button stampButton;
     public Button foldingButton;
     public Button comingButton;
-    public GameObject menberViewPopUpObj;
-    public GameObject coPopUpPbj;
-    public bool change;
+    public GameObject menberViewPopUpObj;//メンバーの入ってるPrefab
+    public GameObject coPopUpObj;//Coの入っているPrefab
+    //public bool change;
 
 
     private void Start() {
@@ -31,9 +31,8 @@ public class InputView : MonoBehaviour {
     /// 折り畳みボタンの制御
     /// </summary>
     public void FoldingPosition() {
-        if (coPopUpPbj.activeSelf && foldingText.text == "↓") {
-            //change = false;
-            coPopUpPbj.SetActive(false);
+        if (coPopUpObj.activeSelf && foldingText.text == "↓") {
+            coPopUpObj.SetActive(false);
             menberViewPopUpObj.SetActive(true);
             return;
         } else if (menberViewPopUpObj.activeSelf && foldingText.text == "↓") {
@@ -42,14 +41,12 @@ public class InputView : MonoBehaviour {
             filterButton.interactable = true;
             stampButton.interactable = true;
             foldingText.text = "↑";
-            //change = true; 
             StartCoroutine(PopUpFalse());
         } else if (foldingText.text == "↑") {
-            //change = false;
             menberViewPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             mainRectTransform.DOLocalMoveY(72, 0.5f);
-            filterButton.interactable = false;
+            filterButton.interactable = true;
             stampButton.interactable = false;
             foldingText.text = "↓";
         }
@@ -67,9 +64,9 @@ public class InputView : MonoBehaviour {
     public void ComingOut() {
         if (menberViewPopUpObj.activeSelf && foldingText.text == "↓") {
             //change = false;
-            coPopUpPbj.SetActive(true);
+            coPopUpObj.SetActive(true);
             menberViewPopUpObj.SetActive(false);
-        }else if (coPopUpPbj.activeSelf && foldingText.text == "↓") {
+        }else if (coPopUpObj.activeSelf && foldingText.text == "↓") {
             inputRectTransform.DOLocalMoveY(-67, 0.5f);
             mainRectTransform.DOLocalMoveY(0, 0.5f);
             filterButton.interactable = true;
@@ -79,7 +76,7 @@ public class InputView : MonoBehaviour {
             StartCoroutine(PopUpFalse());
         } else if (foldingText.text == "↑") {
             //change = false;
-            coPopUpPbj.SetActive(true);
+            coPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             mainRectTransform.DOLocalMoveY(72, 0.5f);
             filterButton.interactable = false;
@@ -91,7 +88,7 @@ public class InputView : MonoBehaviour {
     public IEnumerator PopUpFalse() {
         yield return new WaitForSeconds(0.5f);
         menberViewPopUpObj.SetActive(false);
-        coPopUpPbj.SetActive(false);
+        coPopUpObj.SetActive(false);
     }
 
 }

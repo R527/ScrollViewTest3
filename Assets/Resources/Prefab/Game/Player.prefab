@@ -146,9 +146,8 @@ MonoBehaviour:
   fortune: 0
   spiritual: 0
   wolf: 0
+  wolfChat: 0
   wolfCamp: 0
-  wolfButton: {fileID: 0}
-  MenbarViewText: {fileID: 0}
   isRollAction: 0
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
     type: 3}

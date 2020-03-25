@@ -37,11 +37,14 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         exitButton.onClick.AddListener(() => StartCoroutine(ExitButton()));
 
         //カスタムプロパティ
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+        if (!gameManager.isOffline) {
+            var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"timeSavingNum",timeSavingNum }
         };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+        }
     }
+
 
     /// <summary>
     /// 時短希望人数をチェックする
@@ -66,7 +69,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void　TimeManagementChat()
     {
-        string gmNode = string.Empty;
+        //string gmNode = string.Empty;
         switch (timeController.timeType)
         {
             case TIME.昼:
@@ -224,7 +227,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         }
 
         //ボタンを押した対象のプレイヤーを代入
-        Player thePlayer = gameManager.chatSystem.playersList[id];
+        Player thePlayer = gameManager.chatSystem.playersList[id - 1];
         //自分の役職が～～なら
         switch (gameManager.chatSystem.myPlayer.rollType) {
 

@@ -27,6 +27,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public GameManager gameManager;
     public GameMasterChatManager gameMasterChatManager;
     public TIME timeType;
+    public Fillter fillter;
     //共通項目
     public int id = 0;
     [SerializeField] public InputField chatInputField;
@@ -52,7 +53,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     //色変更
     public Color [] color;
     public int boardColor;
-    public Wolfmode wolfmode;
 
     //LIst管理
     public ChatListManager chatListManager;
@@ -143,22 +143,27 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         } else {
             //色変更
             //ETC
-            if (speaker_Type == SPEAKER_TYPE.UNNKOWN) {
-                boardColor = 0;
-            } else if (myPlayer != null) {
+
+            //Debug.Log("WolfMode" + fillter.wolfMode);
+            //Debug.Log(myPlayer);
+            //if (speaker_Type == SPEAKER_TYPE.UNNKOWN) {
+            //    boardColor = 0;
+            //} else
+            if (myPlayer != null) {
                 //死亡しているプレイヤー
-                if (myPlayer.live == false) {
+                if (!myPlayer.live) {
                     boardColor = 3;
                     //狼用の発言
-                } else if (wolfmode.wolf == true) {
+                } else if (fillter.wolfMode) {
                     boardColor = 2;
                     //青チャット
-                } else if (callout.callOut == true) {
+                } else if (callout.callOut) {
                     boardColor = 1;
                     //通常のチャット
                 } else {
                     boardColor = 0;
                 }
+                Debug.Log("色変更通過");
             }
 
             inputData = checkTabooWard.StrMatch(chatInputField.text, taboolist.ngWordList);
@@ -222,7 +227,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         } else {
             if (myPlayer.live == false) {
                 chatListManager.deathList.Add(chatNode);
-            } else if (wolfmode.wolf == true) {
+            } else if (fillter.wolfMode == true) {
                 chatListManager.wlofList.Add(chatNode);
             } else if (callout.callOut == true) {
                 chatListManager.callOutList.Add(chatNode);
@@ -233,7 +238,14 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         //PlayerごとにList管理
         if (chatData.rollType != ROLLTYPE.ETC && chatData.rollType != ROLLTYPE.GM) {
-            chatListManager.allPlayerList[chatData.playerID].Add(chatNode);
+            if (myPlayer.live == false) {
+                chatListManager.alldeathList[chatData.playerID - 1].Add(chatNode);
+            } else if (fillter.wolfMode == true) {
+                chatListManager.allwolfList[chatData.playerID - 1].Add(chatNode);
+            } else {
+                chatListManager.allnormalList[chatData.playerID - 1].Add(chatNode);
+            }
+            
         }
 
         //SetActiveを制御する
@@ -289,22 +301,30 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     public bool SetActiveChatObj() {
         bool isChatSet = true;
-        
-        if (myPlayer != null) {
-            //市民の場合
-            if (myPlayer.rollType != ROLLTYPE.人狼) {
-                if ((myPlayer.live == true && (boardColor == 3 || boardColor == 2)) || (!myPlayer.live && boardColor == 2)) {
-                    isChatSet = false;
+
+        //フィルター中でないなら狼チャットに参加できるか否かを判別する
+        if (!chatListManager.isfilter) {
+            if (myPlayer != null) {
+                //市民の場合
+                if (!myPlayer.wolfChat) {
+                    //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
+                    if ((myPlayer.live && (boardColor == 3 || boardColor == 2)) || (!myPlayer.live && boardColor == 2)) {
+                        isChatSet = false;
+                    }
+                }
+
+                //人狼の場合
+                if (myPlayer.wolfChat) {
+                    //自分が生きていている場合は死亡チャットをfalse　
+                    if (myPlayer.live && boardColor == 3) {
+                        isChatSet = false;
+                    }
                 }
             }
-
-            //人狼の場合
-            if (myPlayer.rollType == ROLLTYPE.人狼) {
-                if (myPlayer.live && boardColor == 3) {
-                    isChatSet = false;
-                    }
-            }
+        } else {
+            isChatSet = false;
         }
+        
         return isChatSet;
     }
 

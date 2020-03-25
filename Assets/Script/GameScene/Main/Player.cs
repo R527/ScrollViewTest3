@@ -6,8 +6,10 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 
+
 /// <summary>
-/// MenbarViewにあるPlayer情報などをまとめてる
+/// MenbarViewにあるPlayer情報のまとめ
+/// MenbarViewにあるボタンの制御
 /// </summary>
 public class Player : MonoBehaviourPunCallbacks {
 
@@ -28,14 +30,13 @@ public class Player : MonoBehaviourPunCallbacks {
     public bool fortune;//占い結果 true=黒
     public bool spiritual;//霊能結果　true = 黒
     public bool wolf;//狼か否か
+    public bool wolfChat;//狼チャットに参加できるかどうか
     public bool wolfCamp;//狼陣営か否か
-    public Button wolfButton;
-    public Text MenbarViewText;
     public bool isRollAction;
-
     public ChatNode chatNodePrefab;//チャットノード用のプレふぁぶ
     public int iconNo;//アイコンの絵用
-    private  Transform tran;
+    private Transform tran;
+
 
     //仮
     public bool def;//騎士のデバッグ用
@@ -94,10 +95,14 @@ public class Player : MonoBehaviourPunCallbacks {
             fortune = true;
             spiritual = true;
             wolf = true;
+            wolfChat = true;
             wolfCamp = true;
         } else if(rollType == ROLLTYPE.狂人) {
             wolfCamp = true;
         }
+
+
+
     }
 
 
@@ -129,6 +134,10 @@ public class Player : MonoBehaviourPunCallbacks {
             chatData.chatType = CHAT_TYPE.OTHERS;
         }
 
+        //チャットにデータを持たせる用
+        chatData.chatLive = live;
+        chatData.chatWolf = wolf;
+
         ChatNode chatNode = Instantiate(chatNodePrefab, tran, false);
         chatNode.InitChatNode(chatData, iconNo, comingOut);
         Debug.Log(comingOut);
@@ -142,26 +151,23 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     public void OnClickPlayerButton()
     {
-        
-        //死亡時
-        if(!live) {
-            Debug.Log("フィルターOFF");
+        Debug.Log(".ActorNumber" + PhotonNetwork.LocalPlayer.ActorNumber);
+        Debug.Log("playerID" + playerID);
+
+        //フィルター機能ON
+        if (!live || gameManager.chatListManager.isfilter) { 
             gameManager.chatListManager.OnFilter(playerID);
-        //生きているがフィルター時
-        } else if (gameManager.chatListManager.isfilter == true)
-        {
-            Debug.Log("フィルターOFF");
-            gameManager.chatListManager.OnFilter(playerID);
-            //&& PhotonNetwork.LocalPlayer.ActorNumber != playerID
-        } else if(live && !gameManager.chatListManager.isfilter ) {
+
+        //フィルター機能Off時
+        //生存していて、自分以外のプレイヤーを指定
+        } else if(live && !gameManager.chatListManager.isfilter && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
             Debug.Log("その時間ごとの行動");
             //フィルター機能がOFFの時は各時間ごとの機能をする
             Debug.Log(gameManager.timeController.timeType);
+
             switch (gameManager.timeController.timeType)
             {
-               
                 case TIME.投票時間:
-
                     if (!gameManager.voteCount.isVoteFlag) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                             if (player.ActorNumber == playerID) {
@@ -194,13 +200,15 @@ public class Player : MonoBehaviourPunCallbacks {
                     }
                     isRollAction = true;
                     break;
-                default:
-                    Debug.Log("フィルターOFF");
-                    gameManager.chatListManager.OnFilter(playerID);
-                    break;
+                //default:
+                //    Debug.Log("フィルターOFF");
+                //    gameManager.chatListManager.OnFilter(playerID);
+                //    break;
             }
         }
-
     }
+
+
+   
 }
 

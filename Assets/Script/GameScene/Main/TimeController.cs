@@ -29,7 +29,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public float nightTime;   //夜の時間
     public float executionTime;//処刑時間
     public float moningTime;//朝の結果発表
-    public float rollActionTime;
+    public float resultTime;
     public float intervalTime;
     public bool isPlaying;　　//gameが動いているかの判定
     public bool gameReady;//ゲーム待機状態か否か
@@ -62,7 +62,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
         isGameOver = true;
         timeType = TIME.処刑後チェック;
         savingButton.interactable = true;
-        wolfButton.interactable = false;
+
+
+        //狼の場合
+        if (chatSystem.myPlayer.wolfChat) {
+            wolfButton.interactable = true;
+        } else {
+            wolfButton.interactable = false;
+        }
+
         callOutButton.interactable = false;
         COButton.interactable = false;
         mainTime = RoomData.instance.roomInfo.mainTime;
@@ -143,7 +151,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 Debug.Log(!GetPlayState());
                 Debug.Log(totalTime);
 
-                Debug.Log(timeType);
+                //Debug.Log(timeType);
                 StartInterval();
                 Debug.Log(timeType);
             }
@@ -184,7 +192,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     private bool GetGameReady() {
         gameReady = false;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
+        if (!gameManager.isOffline && PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
             gameReady = (bool)gameReadyObj;
         }
         return gameReady;
@@ -281,20 +289,25 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     voteCount.ExecutionPlayerList.Clear();
                     totalTime = nightTime;
                     //霊能結果の表示
-                    gameMasterChatManager.PsychicAction();
-                    if (firstDay == true) {
+                    
+                    if (firstDay) {
                         StartCoroutine(NextDay());
-                        firstDay = false;
                     } 
                     StartCoroutine(GameMasterChat());
+                    if (!firstDay) {
+                        StartCoroutine(PsychicAction());
+                    }
                     break;
 
                 //夜の行動の結果発表
                 case TIME.夜の行動:
                     timeType = TIME.結果発表後チェック;
                     chatSystem.myPlayer.isRollAction = false;
-                    gameMasterChatManager.MorningResults();
-                    totalTime = rollActionTime;
+                    if (firstDay) {
+                        gameMasterChatManager.MorningResults();
+                        firstDay = false;
+                    }
+                    totalTime = resultTime;
                     break;
 
                 //結果発表チェック
@@ -332,6 +345,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
         nextDayList.Add(dayObj);
     }
 
+
+    /// <summary>
+    /// 霊能者結果の表示に遅延を与える
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PsychicAction() {
+        yield return new WaitForSeconds(intervalTime + 0.3f);
+        gameMasterChatManager.PsychicAction();
+    }
+
     /// <summary>
     /// 昼、夜、投票後にあるインターバル時間を設定
     /// </summary>
@@ -367,9 +390,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
     public void TimesavingControllerFalse() {
         savingButton.interactable = false;
-        wolfButton.interactable = false;
         callOutButton.interactable = false;
         COButton.interactable = false;
+
+        //WolfChatが使えるプレイヤーの場合
+        if (chatSystem.myPlayer.wolfChat) {
+            wolfButton.interactable = true;
+        } else {
+            wolfButton.interactable = false;
+        }
     }
 
 

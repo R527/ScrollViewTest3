@@ -9117,11 +9117,11 @@ MonoBehaviour:
   timerText: {fileID: 575804562}
   totalTime: 0
   mainTime: 30
-  votingTime: 10
+  votingTime: 15
   nightTime: 2
-  executionTime: 10
+  executionTime: 7
   moningTime: 0
-  rollActionTime: 10
+  resultTime: 2
   intervalTime: 2
   isPlaying: 0
   gameReady: 0
@@ -9750,11 +9750,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1018169723}
-  - component: {fileID: 1018169724}
   - component: {fileID: 1018169722}
-  - component: {fileID: 1018169726}
   - component: {fileID: 1018169725}
   - component: {fileID: 1018169727}
+  - component: {fileID: 1018169728}
   m_Layer: 0
   m_Name: ButtonManager
   m_TagString: Untagged
@@ -9782,8 +9781,7 @@ MonoBehaviour:
   foldingButton: {fileID: 48525514}
   comingButton: {fileID: 1812546287}
   menberViewPopUpObj: {fileID: 1552074811}
-  coPopUpPbj: {fileID: 327988790}
-  change: 0
+  coPopUpObj: {fileID: 327988790}
 --- !u!4 &1018169723
 Transform:
   m_ObjectHideFlags: 0
@@ -9798,26 +9796,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1018169724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018169721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1047a2fd71140db4a8294305a461c33e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chatListManager: {fileID: 1130743579}
-  inputView: {fileID: 1018169722}
-  filterButtanText: {fileID: 341305430}
-  filterButton: {fileID: 474407752}
-  flodingButton: {fileID: 48525514}
-  comingOutButton: {fileID: 1812546287}
-  menberPopUp: {fileID: 0}
-  coPopUp: {fileID: 0}
 --- !u!114 &1018169725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9832,20 +9810,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CallOutText: {fileID: 812473625}
   callOut: 0
---- !u!114 &1018169726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018169721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6b98dcb4b199b6469aed93a9a183369, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wolfText: {fileID: 1484097463}
-  wolf: 0
 --- !u!114 &1018169727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9860,6 +9824,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vocabularyButton: {fileID: 737056824}
   vocabularyPopUp: {fileID: 647257696}
+--- !u!114 &1018169728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018169721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c9ab8106cc27c419cb5095243b8fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chatListManager: {fileID: 1130743579}
+  inputView: {fileID: 1018169722}
+  filterButtanText: {fileID: 341305430}
+  filterButton: {fileID: 474407752}
+  flodingButton: {fileID: 48525514}
+  comingOutButton: {fileID: 1812546287}
+  wolfModeButton: {fileID: 972337835}
+  wolfModeButtonText: {fileID: 1484097463}
+  wolfMode: 0
 --- !u!1 &1018278468
 GameObject:
   m_ObjectHideFlags: 0
@@ -11458,10 +11443,11 @@ MonoBehaviour:
   friendButton: {fileID: 1109161862}
   damyObj: {fileID: 546607570}
   setEnterNumTime: 25
-  timeControllButton: {fileID: 0}
   menbarContent: {fileID: 30259292}
-  isOffline: 0
+  timeControllButton: {fileID: 0}
   rollTypeList: 
+  isOffline: 0
+  testRollTypeList: 
 --- !u!114 &1130743579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11474,6 +11460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74eb5454b463ae542a712a3c17c62355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatSystem: {fileID: 0}
   normalList: []
   wlofList: []
   callOutList: []
@@ -11481,6 +11468,8 @@ MonoBehaviour:
   gameMasterList: []
   isfilter: 0
   playerNum: 1
+  myWolfChat: 0
+  myLive: 0
 --- !u!114 &1130743580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22891,6 +22880,7 @@ MonoBehaviour:
   gameManager: {fileID: 1130743578}
   gameMasterChatManager: {fileID: 1130743577}
   timeType: 0
+  fillter: {fileID: 1018169728}
   id: 0
   chatInputField: {fileID: 943886673}
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
@@ -22917,7 +22907,6 @@ MonoBehaviour:
   - {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   - {r: 0.4038179, g: 1, b: 0, a: 1}
   boardColor: 0
-  wolfmode: {fileID: 1018169726}
   chatListManager: {fileID: 1130743579}
 --- !u!114 &4395145948522523303
 MonoBehaviour:
@@ -23296,7 +23285,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -341.81766}
+  m_AnchoredPosition: {x: 0, y: -341.73837}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &4395145949336749762
