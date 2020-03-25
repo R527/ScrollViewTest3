@@ -276,7 +276,7 @@ MonoBehaviour:
   num: 7
   enterNum: 7
   isTestPlay: 1
-  testRollTypeList: 0200000003000000
+  testRollTypeList: 0300000003000000
 --- !u!4 &317373128
 Transform:
   m_ObjectHideFlags: 0

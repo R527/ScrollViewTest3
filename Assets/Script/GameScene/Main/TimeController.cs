@@ -289,18 +289,21 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     voteCount.ExecutionPlayerList.Clear();
                     totalTime = nightTime;
                     //霊能結果の表示
-                    gameMasterChatManager.PsychicAction();
-                    if (firstDay == true) {
+                    
+                    if (firstDay) {
                         StartCoroutine(NextDay());
                     } 
                     StartCoroutine(GameMasterChat());
+                    if (!firstDay) {
+                        StartCoroutine(PsychicAction());
+                    }
                     break;
 
                 //夜の行動の結果発表
                 case TIME.夜の行動:
                     timeType = TIME.結果発表後チェック;
                     chatSystem.myPlayer.isRollAction = false;
-                    if (firstDay == true) {
+                    if (firstDay) {
                         gameMasterChatManager.MorningResults();
                         firstDay = false;
                     }
@@ -340,6 +343,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
         nextDay.day = day;
         GameObject dayObj = Instantiate(dayPrefab, content.transform, false);
         nextDayList.Add(dayObj);
+    }
+
+
+    /// <summary>
+    /// 霊能者結果の表示に遅延を与える
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PsychicAction() {
+        yield return new WaitForSeconds(intervalTime + 0.3f);
+        gameMasterChatManager.PsychicAction();
     }
 
     /// <summary>
