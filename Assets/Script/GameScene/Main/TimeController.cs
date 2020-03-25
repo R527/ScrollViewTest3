@@ -62,7 +62,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
         isGameOver = true;
         timeType = TIME.処刑後チェック;
         savingButton.interactable = true;
-        wolfButton.interactable = false;
+
+
+        //狼の場合
+        if (chatSystem.myPlayer.wolfChat) {
+            wolfButton.interactable = true;
+        } else {
+            wolfButton.interactable = false;
+        }
+
         callOutButton.interactable = false;
         COButton.interactable = false;
         mainTime = RoomData.instance.roomInfo.mainTime;
@@ -367,9 +375,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
     public void TimesavingControllerFalse() {
         savingButton.interactable = false;
-        wolfButton.interactable = false;
         callOutButton.interactable = false;
         COButton.interactable = false;
+
+        //WolfChatが使えるプレイヤーの場合
+        if (chatSystem.myPlayer.wolfChat) {
+            wolfButton.interactable = true;
+        } else {
+            wolfButton.interactable = false;
+        }
     }
 
 

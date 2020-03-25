@@ -7,15 +7,20 @@ using DG.Tweening;
 public class Fillter : MonoBehaviour
 {
 
-    //Filter関連
     //class
     public ChatListManager chatListManager;
     public InputView inputView;
 
+    //fillter
     public Text filterButtanText;
     public Button filterButton;
     public Button flodingButton;
     public Button comingOutButton;
+
+    //wolfMode（狼チャットの制御関連
+    public Button wolfModeButton;
+    public Text wolfModeButtonText;
+    public bool wolfMode;//trueで狼モード
  
 
 
@@ -24,6 +29,7 @@ public class Fillter : MonoBehaviour
     {
         //フィルターボタンの追加
         filterButton.onClick.AddListener(FilterButton);
+        wolfModeButton.onClick.AddListener(WolfMode);
     }
 
     /// <summary>
@@ -62,6 +68,26 @@ public class Fillter : MonoBehaviour
             comingOutButton.interactable = true;
             inputView.foldingText.text = "↑";
             StartCoroutine(inputView.PopUpFalse());
+        }
+    }
+
+    /// <summary>
+    /// 狼チャットのONOF
+    /// </summary>
+    public void WolfMode() {
+
+        //On
+        if (wolfModeButtonText.text == "市民") {
+            wolfModeButtonText.text = "狼";
+            wolfMode = true;
+
+            chatListManager.OnWolfMode();
+            //Off
+        } else {
+            wolfModeButtonText.text = "市民";
+            wolfMode = false;
+            chatListManager.OffWolfMode();
+
         }
     }
 }
