@@ -14,10 +14,15 @@ public class DebugManager : MonoBehaviour
     public bool isDebug;//TimeControllerの時間管理用のDebug
     public int testMainTime;
     public int testNightTime;
+    public int num;//GameManagerの参加人数設定
+    public int enterNum;//GameManagerの参加希望人数設定
+
 
     [Header("役職管理用")]
     public bool isTestPlay;//プレイヤーの役職を任意に決める
     public List<ROLLTYPE> testRollTypeList = new List<ROLLTYPE>();
+
+
 
     private void Awake() {
         if (instance == null) {

@@ -63,6 +63,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     void Start() {
 
+        if (DebugManager.instance.isDebug) {
+            num = DebugManager.instance.num;
+            enterNum = DebugManager.instance.enterNum;
+        }
         //offlineなら以下の処理をする
         if (!isOffline) {
             //部屋を作った人は初めての人なのでこの処理はない
@@ -173,13 +177,14 @@ public class GameManager : MonoBehaviourPunCallbacks {
             if (!gameStart) {
 
                 //テスト用役職を決定してゲーム開始
-                if (DebugManager.instance.isTestPlay) {
+                if (enterNum == numLimit && DebugManager.instance.isTestPlay) {
+                    confirmationImage.SetActive(false);
                     gameStart = true;
                     StartCoroutine(SetTestRoll());
                 }
 
                 //正規のデータを利用してゲーム開始
-                if (enterNum == numLimit) {
+                if (enterNum == numLimit && !DebugManager.instance.isTestPlay) {
                     confirmationImage.SetActive(false);
                     gameStart = true;
                     StartCoroutine(SetRandomRoll());
@@ -399,11 +404,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //参加人数分だけランダムに
         //PhotonNetwork.PlayerList　=　今部屋に参加しているプレイヤーのリスト9人ぶん
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-            i++;
             ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
-                    {"roll", testRollTypeList[i - 1] }
+                    {"roll", testRollTypeList[i] }
                 };
             player.SetCustomProperties(customPlayerProperties);
+            i++;
         }
         var properties = new ExitGames.Client.Photon.Hashtable() {
             {"isSetup", false },

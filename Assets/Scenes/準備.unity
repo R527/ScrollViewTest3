@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 317373128}
   - component: {fileID: 317373127}
   m_Layer: 0
-  m_Name: DebugObj
+  m_Name: DebugManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,8 +273,10 @@ MonoBehaviour:
   isDebug: 1
   testMainTime: 20
   testNightTime: 10
+  num: 7
+  enterNum: 7
   isTestPlay: 1
-  testRollTypeList: 04000000
+  testRollTypeList: 0200000003000000
 --- !u!4 &317373128
 Transform:
   m_ObjectHideFlags: 0

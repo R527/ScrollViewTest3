@@ -151,13 +151,16 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     public void OnClickPlayerButton()
     {
-        
-        if (!live || gameManager.chatListManager.isfilter) { 
-            
-            gameManager.chatListManager.OnFilter(playerID);
-            //&& PhotonNetwork.LocalPlayer.ActorNumber != playerID
+        Debug.Log(".ActorNumber" + PhotonNetwork.LocalPlayer.ActorNumber);
+        Debug.Log("playerID" + playerID);
 
-        } else if(live && !gameManager.chatListManager.isfilter ) {
+        //フィルター機能ON
+        if (!live || gameManager.chatListManager.isfilter) { 
+            gameManager.chatListManager.OnFilter(playerID);
+
+        //フィルター機能Off時
+        //生存していて、自分以外のプレイヤーを指定
+        } else if(live && !gameManager.chatListManager.isfilter && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
             Debug.Log("その時間ごとの行動");
             //フィルター機能がOFFの時は各時間ごとの機能をする
             Debug.Log(gameManager.timeController.timeType);
