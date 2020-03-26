@@ -88,12 +88,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                 { "totalTime", totalTime },
                 {"isPlaying", isPlaying },
-                {"gameReady",gameReady }
+                {"gameReady",gameReady },
+                {"timeType",timeType }
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
             Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
             Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["isPlaying"]);
             Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["gameReady"]);
+            Debug.Log((TIME)PhotonNetwork.CurrentRoom.CustomProperties["timeType"]);
         }
         Debug.Log("Init時のTimeType"　+ timeType);
 
@@ -177,18 +179,18 @@ public class TimeController : MonoBehaviourPunCallbacks {
         Debug.Log("isPlaying:セット完了");
     }
 
-    /// <summary>
-    /// bool型gameReadyをRoomPropertiesに保存する
-    /// </summary>
-    /// <param name="isPlayState"></param>
-    private void SetGameReady(bool gameReady) {
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                    {"gameReady",gameReady }
-                };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    ///// <summary>
+    ///// bool型gameReadyをRoomPropertiesに保存する
+    ///// </summary>
+    ///// <param name="isPlayState"></param>
+    //private void SetGameReady(bool gameReady) {
+    //    var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    //                {"gameReady",gameReady }
+    //            };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
-        Debug.Log("gameReady:セット完了");
-    }
+    //    Debug.Log("gameReady:セット完了");
+    //}
 
     /// <summary>
     /// gamereadyを取得する
@@ -210,9 +212,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
                             {"totalTime", totalTime }
                         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
+        //Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
     }
 
+
+    /// <summary>
+    /// トータルタイムを取得する
+    /// </summary>
+    /// <returns></returns>
     private float GetGameTime() {
         float time = 0;
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("totalTime", out object totalTimeObj)) {
@@ -233,6 +240,30 @@ public class TimeController : MonoBehaviourPunCallbacks {
         }
         return isPlaying;
     }
+
+
+    /// <summary>
+    /// TimeTypeをもらう
+    /// </summary>
+    /// <returns></returns>
+    private TIME GetTimeType() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeType", out object timeTypeObj)) {
+            timeType = (TIME)timeTypeObj;
+        }
+        return timeType;
+    }
+
+
+    /// <summary>
+    /// TimeTypeをセットする
+    /// </summary>
+    private void SetTimeType() {
+        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                            {"timeType", timeType }
+                        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+        Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
+    } 
 
     /// <summary>
     /// インターバルを決定する
@@ -294,7 +325,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     voteCount.mostVotes = 0;
                     voteCount.ExecutionPlayerList.Clear();
                     totalTime = nightTime;
-                    //霊能結果の表示
                     if (firstDay) {
                         StartCoroutine(NextDay());
                         StartCoroutine(UpInputView());
@@ -322,7 +352,17 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     //gameOver.CheckGameOver();
                     break;
             }
+
+            //TimeTypeをもらう
+            if (PhotonNetwork.IsMasterClient) {
+                SetTimeType();
             Debug.Log(timeType);
+            } else {
+                timeType = GetTimeType();
+            Debug.Log(timeType);
+            }
+
+
             StartCoroutine(EndInterval());
         }
     }
