@@ -52,11 +52,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
     private float cheakTimer;//1秒ごとに時間を管理する
 
     //x日　GMのチャット追加
-    public GameObject content;
+    public GameObject chatContent;
     public int day;
-    public GameObject dayPrefab;
+    public NextDay dayPrefab;
     public bool firstDay;
-    public List<GameObject> nextDayList = new List<GameObject>();
+    public List<NextDay> nextDayList = new List<NextDay>();
 
     /// <summary>
     /// 各ボタンの制御,
@@ -262,7 +262,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                             {"timeType", timeType }
                         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
+        Debug.Log((TIME)PhotonNetwork.CurrentRoom.CustomProperties["timeType"]);
     } 
 
     /// <summary>
@@ -270,6 +270,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public void StartInterval() {
         Debug.Log("StartInterval:開始");
+
         if (!isPlaying && gameManager.gameStart) {
             switch (timeType) {
                 //お昼
@@ -381,14 +382,18 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator NextDay() {
+        Debug.Log("oldday" + day);
         yield return new WaitForSeconds(intervalTime + 0.1f);
         day++;
         chatSystem.id++;
-        nextDay.nextDayText.text = day + "日目";
+        //nextDay.nextDayText.text = day + "日目";
         //NextDayクラスのdayにTimeController.dayを代入
-        nextDay.day = day;
-        GameObject dayObj = Instantiate(dayPrefab, content.transform, false);
+        //nextDay.day = day;
+        NextDay dayObj = Instantiate(dayPrefab, chatContent.transform, false);
+        dayObj.day = day;
+        dayObj.nextDayText.text = day + "日目";
         nextDayList.Add(dayObj);
+        Debug.Log("newDay" + day);
     }
 
 
