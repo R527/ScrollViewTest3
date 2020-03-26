@@ -155,7 +155,7 @@ public class Player : MonoBehaviourPunCallbacks {
         Debug.Log("playerID" + playerID);
 
         //フィルター機能ON
-        if (!live || gameManager.chatListManager.isfilter) { 
+        if (gameManager.chatListManager.isfilter) { 
             gameManager.chatListManager.OnFilter(playerID);
 
         //フィルター機能Off時

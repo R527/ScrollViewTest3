@@ -18,7 +18,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         GAMEMASTER_ONLINE
     }
     //他クラス
-    public Callout callout;
     public ChatNode lastChatNode;
     public Player myPlayer;
     public CheckTabooWard checkTabooWard;
@@ -157,7 +156,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 } else if (fillter.wolfMode) {
                     boardColor = 2;
                     //青チャット
-                } else if (callout.callOut) {
+                } else if (fillter.superChat) {
                     boardColor = 1;
                     //通常のチャット
                 } else {
@@ -227,9 +226,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         } else {
             if (myPlayer.live == false) {
                 chatListManager.deathList.Add(chatNode);
-            } else if (fillter.wolfMode == true) {
+            } else if (fillter.wolfMode) {
                 chatListManager.wlofList.Add(chatNode);
-            } else if (callout.callOut == true) {
+            } else if (fillter.superChat) {
                 chatListManager.callOutList.Add(chatNode);
             } else {
                 chatListManager.normalList.Add(chatNode);
@@ -282,15 +281,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 if (coTimeLimit == 3) {
                     //Buttoncomponentにアクセスしないとinteractableが取れない
                     GameObject.FindGameObjectWithTag("COButton").GetComponent<Button>().interactable = false;
-                }
-            }
-            if(chatData.boardColor == 1) {
-                calloutTimeLimit++;
-                if(calloutTimeLimit == 2) {
-                    GameObject.FindGameObjectWithTag("CallOutButton").GetComponent<Button>().interactable = false;
-                    callout.CallOutText.text = "通常";
-                    //CallOutクラスのcallOutboolを変更
-                    callout.callOut = false;
                 }
             }
     }

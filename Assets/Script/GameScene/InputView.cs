@@ -20,7 +20,7 @@ public class InputView : MonoBehaviour {
     public Button comingButton;
     public GameObject menberViewPopUpObj;//メンバーの入ってるPrefab
     public GameObject coPopUpObj;//Coの入っているPrefab
-    //public bool change;
+    
 
 
     private void Start() {
@@ -35,11 +35,11 @@ public class InputView : MonoBehaviour {
             coPopUpObj.SetActive(false);
             menberViewPopUpObj.SetActive(true);
             return;
-        } else if (menberViewPopUpObj.activeSelf && foldingText.text == "↓") {
+        } else if (menberViewPopUpObj.activeSelf && foldingText.text == "↓" ) {
             inputRectTransform.DOLocalMoveY(-67, 0.5f);
             mainRectTransform.DOLocalMoveY(0, 0.5f);
             filterButton.interactable = true;
-            stampButton.interactable = true;
+            //stampButton.interactable = true;
             foldingText.text = "↑";
             StartCoroutine(PopUpFalse());
         } else if (foldingText.text == "↑") {
@@ -47,7 +47,7 @@ public class InputView : MonoBehaviour {
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             mainRectTransform.DOLocalMoveY(72, 0.5f);
             filterButton.interactable = true;
-            stampButton.interactable = false;
+            //stampButton.interactable = false;
             foldingText.text = "↓";
         }
 
@@ -57,6 +57,8 @@ public class InputView : MonoBehaviour {
         //temp.y = PosY;
         //rectTransform.localPosition = temp;
     }
+
+
 
     /// <summary>
     /// カミングアウトボタンを制御
@@ -70,7 +72,7 @@ public class InputView : MonoBehaviour {
             inputRectTransform.DOLocalMoveY(-67, 0.5f);
             mainRectTransform.DOLocalMoveY(0, 0.5f);
             filterButton.interactable = true;
-            stampButton.interactable = true;
+            //stampButton.interactable = true;
             foldingText.text = "↑";
             //change = true;
             StartCoroutine(PopUpFalse());
@@ -80,7 +82,7 @@ public class InputView : MonoBehaviour {
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             mainRectTransform.DOLocalMoveY(72, 0.5f);
             filterButton.interactable = false;
-            stampButton.interactable = false;
+            //stampButton.interactable = false;
             foldingText.text = "↓";
         }
     }
