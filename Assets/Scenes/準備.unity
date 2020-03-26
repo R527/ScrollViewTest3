@@ -273,8 +273,8 @@ MonoBehaviour:
   isDebug: 1
   testMainTime: 20
   testNightTime: 10
-  num: 9
-  enterNum: 9
+  num: 7
+  enterNum: 7
   isTestPlay: 1
   testRollTypeList: 0200000003000000
 --- !u!4 &317373128

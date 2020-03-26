@@ -103,7 +103,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         gameMasterChatManager.TrueCharacter();
 
 
-        StartInterval();
+       //StartInterval();
     }
 
 
