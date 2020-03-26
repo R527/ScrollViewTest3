@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using DG.Tweening;
 
 
 
@@ -20,6 +21,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public RollAction rollAction;
     public GameOver gameOver;
     public GameMasterChatManager gameMasterChatManager;
+    public InputView inputView;
+    public Fillter fillter;
 
     //main
     public Text timerText;
@@ -40,6 +43,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public Button COButton;
     public Button callOutButton;
     public Button wolfButton;
+    public InputField inputField;//文字入力部分
     public GameObject mainPopup;
     public GameObject votingPopup;
     public GameObject nightPopup;
@@ -130,7 +134,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     }
                     //マスター以外はトータルタイムをもらう
                 } else {
-                    Debug.Log(totalTime);
+                    //Debug.Log(totalTime);
                     totalTime = GetGameTime();
                 }
                 //トータルタイム表示
@@ -149,7 +153,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             } else if (!GetPlayState() && totalTime <= 0) {
                 timerText.text = string.Empty;
                 Debug.Log(!GetPlayState());
-                Debug.Log(totalTime);
+                //Debug.Log(totalTime);
 
                 //Debug.Log(timeType);
                 StartInterval();
@@ -249,6 +253,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                         StartCoroutine(NextDay());
                     }
                     StartCoroutine(GameMasterChat());
+                    StartCoroutine(DownInputView());
                     break;
 
                 //投票時間
@@ -260,6 +265,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     voteCount.isVoteFlag = false;
                     TimesavingControllerFalse();
                     StartCoroutine(GameMasterChat());
+                    StartCoroutine(UpInputView());
                     break;
 
                 //処刑
@@ -289,10 +295,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     voteCount.ExecutionPlayerList.Clear();
                     totalTime = nightTime;
                     //霊能結果の表示
-                    
                     if (firstDay) {
                         StartCoroutine(NextDay());
-                    } 
+                        StartCoroutine(UpInputView());
+                    }
                     StartCoroutine(GameMasterChat());
                     if (!firstDay) {
                         StartCoroutine(PsychicAction());
@@ -374,17 +380,38 @@ public class TimeController : MonoBehaviourPunCallbacks {
         Debug.Log("EndInterval: 終了");
     }
 
+    public IEnumerator UpInputView() {
+        fillter.folding = true;
+        inputView.foldingButton.interactable = false;
+        yield return new WaitForSeconds(intervalTime + 0.3f);
+        inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
+        inputView.mainRectTransform.DOLocalMoveY(72, 0.5f);
+        inputView.menberViewPopUpObj.SetActive(true);
+        inputView.foldingText.text = "↓";
+    }
+
+    public IEnumerator DownInputView() {
+        fillter.folding = false;
+        inputView.foldingButton.interactable = true;
+        yield return new WaitForSeconds(intervalTime + 0.3f);
+        inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
+        inputView.mainRectTransform.DOLocalMoveY(0, 0.5f);
+        StartCoroutine(inputView.PopUpFalse());
+        inputView.foldingText.text = "↑";
+    }
+
     /// <summary>
     /// 時短、狼モード、
     /// </summary>
     public void TimesavingControllerTrue() {
         if (timeType == TIME.昼) {
             savingButton.interactable = true;
-            if (chatSystem.myPlayer.rollType == ROLLTYPE.人狼) {
+            if (chatSystem.myPlayer.wolfChat) {
                 wolfButton.interactable = true;
             }
             callOutButton.interactable = true;
             COButton.interactable = true;
+            inputField.interactable = true;
         }
     }
 
@@ -395,9 +422,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         //WolfChatが使えるプレイヤーの場合
         if (chatSystem.myPlayer.wolfChat) {
-            wolfButton.interactable = true;
+            //変更なくしゃべれる
         } else {
+            //しゃべれないプレイヤーの処理
             wolfButton.interactable = false;
+            inputField.interactable = false;
         }
     }
 

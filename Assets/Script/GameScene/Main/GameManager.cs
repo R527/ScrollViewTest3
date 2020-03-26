@@ -171,9 +171,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
     void Update() {
 
         //ルームにいる場合のみ
-        if (PhotonNetwork.InRoom) {
-
-
+        if (PhotonNetwork.InRoom || isOffline) {
+            Debug.Log("入室");
             if (!gameStart) {
 
                 //テスト用役職を決定してゲーム開始
@@ -671,6 +670,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         if (DebugManager.instance.isDebug) {
+            Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"]);
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
             RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
             //Debug.Log("isDebugOn");

@@ -21,7 +21,14 @@ public class Fillter : MonoBehaviour
     public Button wolfModeButton;
     public Text wolfModeButtonText;
     public bool wolfMode;//trueで狼モード
- 
+
+
+    //superChatButton
+    public Button superChatButton;
+    public Text superChatButtonText;
+    public bool superChat;
+
+    public bool folding;//夕方～夜にかけて折り畳みを制限する
 
 
     // Start is called before the first frame update
@@ -30,6 +37,7 @@ public class Fillter : MonoBehaviour
         //フィルターボタンの追加
         filterButton.onClick.AddListener(FilterButton);
         wolfModeButton.onClick.AddListener(WolfMode);
+        superChatButton.onClick.AddListener(SuperChat);
     }
 
     /// <summary>
@@ -56,14 +64,16 @@ public class Fillter : MonoBehaviour
             inputView.menberViewPopUpObj.SetActive(true);
             inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
             inputView.mainRectTransform.DOLocalMoveY(72, 0.5f);
-            inputView.stampButton.interactable = false;
+            //inputView.stampButton.interactable = false;
             flodingButton.interactable = false;
             comingOutButton.interactable = false;
             inputView.foldingText.text = "↓";
-        } else {
-            inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
+
+            //夕方から夜にかけて上下を制限する
+        } else if(!folding){
+    inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
             inputView.mainRectTransform.DOLocalMoveY(0, 0.5f);
-            inputView.stampButton.interactable = true;
+            //inputView.stampButton.interactable = true;
             flodingButton.interactable = true;
             comingOutButton.interactable = true;
             inputView.foldingText.text = "↑";
@@ -80,13 +90,30 @@ public class Fillter : MonoBehaviour
         if (wolfModeButtonText.text == "市民") {
             wolfModeButtonText.text = "狼";
             wolfMode = true;
-
             chatListManager.OnWolfMode();
             //Off
         } else {
             wolfModeButtonText.text = "市民";
             wolfMode = false;
             chatListManager.OffWolfMode();
+
+        }
+    }
+
+    /// <summary>
+    /// 青チャットの制御
+    /// </summary>
+    public void SuperChat() {
+        //On
+        if (superChatButtonText.text == "通常") {
+            superChatButtonText.text = "青";
+            superChat = true;
+            Debug.Log("superChat"+ superChat);
+            //Off
+        } else {
+            superChatButtonText.text = "通常";
+            superChat = false;
+            Debug.Log("superChat" + superChat);
 
         }
     }
