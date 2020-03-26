@@ -9160,11 +9160,11 @@ MonoBehaviour:
   fillter: {fileID: 1018169728}
   timerText: {fileID: 575804562}
   totalTime: 0
-  mainTime: 30
+  mainTime: 20
   votingTime: 15
   nightTime: 10
   executionTime: 10
-  moningTime: 0
+  checkGameOverTime: 10
   resultTime: 10
   intervalTime: 2
   isPlaying: 0

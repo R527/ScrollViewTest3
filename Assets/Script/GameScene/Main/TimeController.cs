@@ -31,7 +31,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public float votingTime;   //投票時間
     public float nightTime;   //夜の時間
     public float executionTime;//処刑時間
-    public float moningTime;//朝の結果発表
+    public float checkGameOverTime;//ゲームオーバー確認時間
     public float resultTime;
     public float intervalTime;
     public bool isPlaying;　　//gameが動いているかの判定
@@ -271,6 +271,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public void StartInterval() {
         Debug.Log("StartInterval:開始");
 
+        ////TimeTypeをもらう
+        //if (PhotonNetwork.IsMasterClient) {
+        //    SetTimeType();
+        //    Debug.Log(timeType);
+        //} else {
+        //    timeType = GetTimeType();
+        //    Debug.Log(timeType);
+        //}
+
         if (!isPlaying && gameManager.gameStart) {
             switch (timeType) {
                 //お昼
@@ -281,7 +290,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     totalTime = mainTime;
                     chatSystem.coTimeLimit = 0;
                     chatSystem.calloutTimeLimit = 0;
-                    if (firstDay == false) {
+                    if (!firstDay) {
                         StartCoroutine(NextDay());
                     }
                     StartCoroutine(GameMasterChat());
@@ -312,7 +321,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //処刑後チェック
                 case TIME.処刑:
                     timeType = TIME.処刑後チェック;
-
+                    totalTime = checkGameOverTime;
                     //生存者数を取得
                     gameManager.liveNum = gameManager.GetLiveNum();
                     //gameOver.CheckGameOver();
@@ -350,18 +359,19 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //結果発表チェック
                 case TIME.結果発表後チェック:
                     timeType = TIME.夜の結果発表;
+                    totalTime = checkGameOverTime;
                     //gameOver.CheckGameOver();
                     break;
             }
 
-            //TimeTypeをもらう
-            if (PhotonNetwork.IsMasterClient) {
-                SetTimeType();
-            Debug.Log(timeType);
-            } else {
-                timeType = GetTimeType();
-            Debug.Log(timeType);
-            }
+            ////TimeTypeをもらう
+            //if (PhotonNetwork.IsMasterClient) {
+            //    SetTimeType();
+            //Debug.Log(timeType);
+            //} else {
+            //    timeType = GetTimeType();
+            //Debug.Log(timeType);
+            //}
 
 
             StartCoroutine(EndInterval());
