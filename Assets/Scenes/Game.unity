@@ -11455,9 +11455,9 @@ MonoBehaviour:
   timeSavingButtonText: {fileID: 256122106}
   LeavePopUp: {fileID: 75429907}
   exitButton: {fileID: 1458055666}
-  biteID: 0
-  protectID: 0
-  bitePlayer: {fileID: 0}
+  bitedID: 0
+  protectedID: 0
+  bitedPlayer: {fileID: 0}
 --- !u!114 &1130743578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11480,6 +11480,7 @@ MonoBehaviour:
   voteCount: {fileID: 1130743580}
   timeType: 0
   gameMasterChatManager: {fileID: 1130743577}
+  fillter: {fileID: 1018169728}
   NumText: {fileID: 2035613864}
   num: 7
   enterNum: 7
@@ -11545,6 +11546,7 @@ MonoBehaviour:
   mostVotes: 0
   mostVotePlayer: {fileID: 0}
   executionPlayer: {fileID: 0}
+  executionID: 999
 --- !u!114 &1130743581
 MonoBehaviour:
   m_ObjectHideFlags: 0

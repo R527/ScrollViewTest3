@@ -71,8 +71,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //狼の場合
         if (chatSystem.myPlayer.wolfChat) {
             wolfButton.interactable = true;
+            inputField.interactable = true;
         } else {
             wolfButton.interactable = false;
+            inputField.interactable = false;
         }
 
         callOutButton.interactable = false;
@@ -300,7 +302,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //投票時間
                 case TIME.昼:
                     timeType = TIME.投票時間;
-                    OffVotingButton();
                     votingPopup.SetActive(true);
                     totalTime = votingTime;
                     voteCount.isVoteFlag = false;
@@ -492,16 +493,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
         }
     }
 
-    /// <summary>
-    /// 投票時PlayerButtonをRollに応じてOFFにする
-    /// /// </summary>
-    public void OffVotingButton() {
-        foreach (Player playerObj in chatSystem.playersList) {
-            if (chatSystem.myPlayer.playerID == playerObj.playerID || !playerObj.live) {
-                playerObj.GetComponent<Button>().interactable = false;
-            }
-        }
-    }
+    ///// <summary>
+    ///// 投票時PlayerButtonをRollに応じてOFFにする((フィルターにも対応させる必要があるから別の方法を考える
+    ///// /// </summary>
+    //public void OffVotingButton() {
+    //    foreach (Player playerObj in chatSystem.playersList) {
+    //        if (chatSystem.myPlayer.playerID == playerObj.playerID || !playerObj.live) {
+    //            playerObj.GetComponent<Button>().interactable = false;
+    //        }
+    //    }
+    //}
 }
 
 

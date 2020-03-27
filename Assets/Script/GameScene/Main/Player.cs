@@ -101,6 +101,13 @@ public class Player : MonoBehaviourPunCallbacks {
             wolfCamp = true;
         }
 
+        ////自分が狼チャットが使えるなら
+        //if (chatSystem.myPlayer.wolfChat) {
+        //    fillter.wolfModeButtonText.text = "狼";
+        //    fillter.wolfModeButton.interactable = false;
+        //    fillter.wolfMode = true;
+        //}
+
 
 
     }
@@ -181,7 +188,7 @@ public class Player : MonoBehaviourPunCallbacks {
                                 player.SetCustomProperties(propertiers);
 
                                 //投票のチャット表示
-                                gameManager.gameMasterChatManager.Voted(player);
+                                gameManager.gameMasterChatManager.Voted(player, live,  wolf);
 
                                 Debug.Log("player.ActorNumber:" + player.ActorNumber);
                                 Debug.Log("voteCount:" + voteCount);
@@ -198,6 +205,8 @@ public class Player : MonoBehaviourPunCallbacks {
                         
                         gameManager.gameMasterChatManager.RollAction(playerID, live, fortune, wolf);
                     }
+
+                    //PopUPが出た後にtrueにしたい
                     isRollAction = true;
                     break;
                 //default:
