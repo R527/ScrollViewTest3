@@ -25,26 +25,33 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public GameObject LeavePopUp;//ゲーム終了後の退出用PopUP
     public Button exitButton;
     //早朝用
-    public int biteID;//噛んだプレイヤーID
-    public int protectID;//守ったプレイヤーID
-    public Player bitePlayer;
+    public int bitedID;//噛んだプレイヤーID
+    public int protectedID;//守ったプレイヤーID
+    public Player bitedPlayer;
+    public Player protectedPlayer;
 
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         timeSavingButton.onClick.AddListener(() => TimeSavingChat());
         exitButton.onClick.AddListener(() => StartCoroutine(ExitButton()));
-
         //カスタムプロパティ
         if (!gameManager.isOffline) {
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"timeSavingNum",timeSavingNum }
+            {"timeSavingNum",timeSavingNum },
+            {"bitedID", bitedID },
+            {"protectedID", protectedID }
         };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+
+            //    var customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
+            //    {"bitedPlayer", bitedPlayer },
+            //    {"protectedPlayer", protectedPlayer }
+            //};
+            //    PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
+
         }
     }
-
 
     /// <summary>
     /// 時短希望人数をチェックする
@@ -53,6 +60,46 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeSavingNum", out object timeSavingNumObj)) {
             timeSavingNum = (int)timeSavingNumObj;
         }
+    }
+    /// <summary>
+    /// 狩人が守った情報をセットします。
+    /// </summary>
+    private void SetProtectedPlayer() {
+        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                            {"protectedID", protectedID }
+                        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["protectedID"]);
+    }
+    /// <summary>
+    /// 狼が噛んだプレイヤーをセットします。
+    /// </summary>
+    private void SetBitedPlayer() {
+        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                            {"biteID", bitedID },
+                        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["bitedID"]);
+    }
+    /// <summary>
+    /// 噛んだプレイヤーを受け取ります。
+    /// </summary>
+    /// <returns></returns>
+    private int GetBitedPlayerInfo() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("bitedID", out object bitedIDObj)) {
+            bitedID = (int)bitedIDObj;
+        }
+        return bitedID;
+    }
+    /// <summary>
+    /// 狩人が守ったプレイヤーを受け取ります。
+    /// </summary>
+    /// <returns></returns>
+    private int GetProtectedPlayerInfo() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("protectedID", out object protectedIDObj)) {
+            protectedID = (int)protectedIDObj;
+        }
+        return protectedID;
     }
 
     /// <summary>
@@ -67,11 +114,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// タイムコントローラのシーンが変更するたびに発言するチャット
     /// </summary>
-    public void　TimeManagementChat()
-    {
+    public void TimeManagementChat() {
         //string gmNode = string.Empty;
-        switch (timeController.timeType)
-        {
+        switch (timeController.timeType) {
             case TIME.昼:
                 gameManager.chatSystem.gameMasterChat = "話し合う時間です。\r\n\r\n市民陣営は嘘をついている狼を探しましょう。\r\n\r\n人狼陣営は市民にうまく紛れて市民を騙しましょう！";
                 break;
@@ -91,7 +136,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public void TimeSavingChat() {
-        
+
         if (!gameManager.isOffline) {
             //時短処理
             if (timeSavingButtonText.text == "時短") {
@@ -131,8 +176,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 }
 
                 //退出処理
-            }else if (timeSavingButtonText.text == "退出") {
-                
+            } else if (timeSavingButtonText.text == "退出") {
+
                 //ゲーム開始前
                 if (!gameManager.gameStart) {
                     gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
@@ -141,7 +186,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     Destroy(timeController.gameObject);
                     NetworkManager.instance.LeaveRoom();
 
-                //ゲーム終了後or死亡後
+                    //ゲーム終了後or死亡後
                 } else {
                     //PoPUpを出したい
                     LeavePopUp.SetActive(true);
@@ -197,12 +242,12 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 霊能者の行動を制御(役職増えると、ここに別の処理を加える
     /// </summary>
     public void PsychicAction() {
-        if (gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.霊能者　&& gameManager.chatSystem.myPlayer.live) {
+        if (gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.霊能者 && gameManager.chatSystem.myPlayer.live) {
             if (voteCount.executionPlayer == null) {
                 return;
             }
             if (voteCount.executionPlayer.fortune == true) {
-                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n"　+ voteCount.mostVotePlayer.playerName + "は人狼（黒）です。";
+                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.playerName + "は人狼（黒）です。";
                 Debug.Log(voteCount.mostVotePlayer + "人狼");
             } else {
                 gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.playerName + "は人狼ではない（白）です。";
@@ -217,17 +262,19 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 夜の行動を制御する
     /// </summary>
     /// <param name="rollType"></param>
-    /// <param name="id"></param>
-    public void RollAction(ROLLTYPE rollType, int id, bool live, bool fortune,bool wolf) {
+    /// <param name="playerID"></param>
+    public void RollAction(int playerID, bool live, bool fortune, bool wolf) {
 
         //死亡時もしくは自分のボタンは機能しない
-        if (gameManager.chatSystem.myID == id || live == false) {
+        if (gameManager.chatSystem.myID == playerID || !live) {
             Debug.Log("押せません。");
             return;
         }
 
         //ボタンを押した対象のプレイヤーを代入
-        Player thePlayer = gameManager.chatSystem.playersList[id - 1];
+        Debug.Log(playerID - 1);
+        Debug.Log(gameManager.chatSystem.playersList[playerID - 1]);
+        Player thePlayer = gameManager.chatSystem.playersList[playerID - 1];
         //自分の役職が～～なら
         switch (gameManager.chatSystem.myPlayer.rollType) {
 
@@ -236,11 +283,12 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 //相方のため押せません。
                 if (wolf) {
                     Debug.Log("相方です。");
-                } else { 
+                } else {
                     //噛んだプレイヤーを記録
-                    biteID = id;
-                    bitePlayer = thePlayer;
-                    gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを襲撃しました。";
+                    //biteID = playerID;
+                    bitedID = thePlayer.playerID;
+                    SetBitedPlayer();
+                    gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを襲撃します。";
                     Debug.Log(thePlayer.playerName + "襲撃します。");
                 }
                 break;
@@ -256,13 +304,13 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 }
                 break;
             case ROLLTYPE.騎士:
-                gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "を護衛します。";
+                gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを護衛します。";
                 Debug.Log("守ります");
                 //守ったプレイヤーを記録
-                protectID = id;
+                protectedID = thePlayer.playerID;
+                SetProtectedPlayer();
                 break;
             default:
-                gameManager.chatSystem.gameMasterChat = "";
                 Debug.Log("押せません。");
                 break;
         }
@@ -271,19 +319,31 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
-    /// 騎士が守ったか否か
+    /// 朝の結果発表
     /// </summary>
     public void MorningResults() {
-        if (biteID == protectID) {
-            gameManager.chatSystem.gameMasterChat = "本日の犠牲者はいません。";
+        Debug.Log("朝の結果発表");
+        //オンラインプレイヤーから必要な情報を共有する
+        protectedID = GetProtectedPlayerInfo();
+        bitedID = GetBitedPlayerInfo();
+
+        //結果を実行する
+        if (protectedID == bitedID) {
+            gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
+            Debug.Log("犠牲者なし");
+
             return;
         } else {
-            gameManager.chatSystem.gameMasterChat = bitePlayer.playerName + "が襲撃されました。";
+            bitedPlayer = gameManager.chatSystem.playersList[bitedID];
+            gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n" + bitedPlayer.playerName + "さんが襲撃されました。";
+            Debug.Log("襲撃成功");
         }
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
 
         //初期化
-        biteID = 0000;
-        protectID = 0000;
+        bitedID = 999;
+        protectedID = 999;
+        SetProtectedPlayer();
+        SetBitedPlayer();
     }
 }

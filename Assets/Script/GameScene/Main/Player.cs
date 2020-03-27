@@ -196,7 +196,7 @@ public class Player : MonoBehaviourPunCallbacks {
                     Debug.Log("夜の行動");
                     if (!isRollAction) {
                         
-                        gameManager.gameMasterChatManager.RollAction(rollType, playerID, live, fortune, wolf);
+                        gameManager.gameMasterChatManager.RollAction(playerID, live, fortune, wolf);
                     }
                     isRollAction = true;
                     break;
