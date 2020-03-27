@@ -87,9 +87,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         //CreateChatNode(ChatRoll.OTHERS, 2, ROLLTYPE.占い師, true, rollName);
     }
 
-    public void GameMasterChatNode() {
-        gameMasterChatManager.TimeManagementChat();
-    }
+    //public void GameMasterChatNode() {
+    //    gameMasterChatManager.TimeManagementChat();
+    //}
     private void Update() {
         if (Input.GetKeyUp(KeyCode.Return)) {
             OnClickMineButton();

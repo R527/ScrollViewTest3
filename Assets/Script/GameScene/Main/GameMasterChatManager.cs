@@ -283,6 +283,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 //相方のため押せません。
                 if (wolf) {
                     Debug.Log("相方です。");
+                    return;
                 } else {
                     //噛んだプレイヤーを記録
                     //biteID = playerID;
@@ -312,7 +313,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 break;
             default:
                 Debug.Log("押せません。");
-                break;
+                return;
         }
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         Debug.Log("RollAction");
