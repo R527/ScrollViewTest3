@@ -56,10 +56,12 @@ public class Player : MonoBehaviourPunCallbacks {
         //ラムダ式で引数を充てる。
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
 
+
+        
+
         //自分と他人を分ける分岐
         if (photonView.IsMine) {
             chatSystem.myPlayer = this;
-            playerText.text = rollType.ToString();
             playerName = PhotonNetwork.LocalPlayer.NickName;
             //Networkの自分の持っている番号を追加
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -83,11 +85,13 @@ public class Player : MonoBehaviourPunCallbacks {
                 if (player.ActorNumber == photonView.OwnerActorNr) {
                     playerID = player.ActorNumber;
                     rollType = (ROLLTYPE)player.CustomProperties["roll"];
-                    playerText.text = rollType.ToString();
                     playerName = player.NickName;
                     iconNo = player.ActorNumber;
                 }
             }
+
+            //自分以外のプレイヤーは青色のラインがない
+            gameObject.GetComponent<Outline>().enabled = false;
         }
 
         //役職ごとの判定を追加
@@ -101,15 +105,7 @@ public class Player : MonoBehaviourPunCallbacks {
             wolfCamp = true;
         }
 
-        ////自分が狼チャットが使えるなら
-        //if (chatSystem.myPlayer.wolfChat) {
-        //    fillter.wolfModeButtonText.text = "狼";
-        //    fillter.wolfModeButton.interactable = false;
-        //    fillter.wolfMode = true;
-        //}
-
-
-
+        playerText.text = rollType.ToString() + playerName;
     }
 
 
@@ -201,13 +197,11 @@ public class Player : MonoBehaviourPunCallbacks {
 
                 case TIME.夜の行動:
                     Debug.Log("夜の行動");
-                    if (!isRollAction) {
+                    if (!chatSystem.myPlayer.isRollAction) {
                         
                         gameManager.gameMasterChatManager.RollAction(playerID, live, fortune, wolf);
+                        chatSystem.myPlayer.isRollAction = true;
                     }
-
-                    //PopUPが出た後にtrueにしたい
-                    isRollAction = true;
                     break;
                 //default:
                 //    Debug.Log("フィルターOFF");

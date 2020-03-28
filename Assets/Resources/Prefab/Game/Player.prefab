@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: -2718671719702027752}
   - component: {fileID: 5950567266344266541}
   - component: {fileID: -7964158761032835371}
+  - component: {fileID: 3402471733404889480}
   m_Layer: 5
   m_Name: Player
   m_TagString: Player
@@ -277,3 +278,18 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &3402471733404889480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4026812345811896178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.0039215684, g: 1, b: 0.72064424, a: 1}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 0

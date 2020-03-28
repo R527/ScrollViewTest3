@@ -56,7 +56,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         RoomOptions roomOptions = new RoomOptions {
             //プロパティを設定している
             //MaxPlayers = (byte)maxPlayer,
-            MaxPlayers = 2,
+            MaxPlayers = 3,
             //プライベートにするかしないか
             IsVisible = true,
             //部屋が開いている状態にする

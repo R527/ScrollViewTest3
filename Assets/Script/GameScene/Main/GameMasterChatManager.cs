@@ -43,12 +43,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
-            //    var customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
-            //    {"bitedPlayer", bitedPlayer },
-            //    {"protectedPlayer", protectedPlayer }
-            //};
-            //    PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
-
         }
     }
 
@@ -68,7 +62,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                             {"protectedID", protectedID }
                         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["protectedID"]);
+        Debug.Log("SetProtected" + (int)PhotonNetwork.CurrentRoom.CustomProperties["protectedID"]);
     }
     /// <summary>
     /// 狼が噛んだプレイヤーをセットします。
@@ -78,7 +72,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                             {"biteID", bitedID }
                         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["bitedID"]);
+        Debug.Log("SetBited"+(int)PhotonNetwork.CurrentRoom.CustomProperties["bitedID"]);
     }
     /// <summary>
     /// 噛んだプレイヤーを受け取ります。
@@ -282,6 +276,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         Debug.Log(playerID - 1);
         Debug.Log(gameManager.chatSystem.playersList[playerID - 1]);
         Player thePlayer = gameManager.chatSystem.playersList[playerID - 1];
+        Debug.Log(thePlayer.playerName);
         //自分の役職が～～なら
         switch (gameManager.chatSystem.myPlayer.rollType) {
 
@@ -295,7 +290,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     //噛んだプレイヤーを記録
                     //biteID = playerID;
                     bitedID = thePlayer.playerID;
+                    Debug.Log("噛んだID" + thePlayer.playerID);
                     SetBitedPlayerID();
+                    Debug.Log("噛んだID" + bitedID);
                     gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを襲撃します。";
                     Debug.Log(thePlayer.playerName + "襲撃します。");
                 }
@@ -317,6 +314,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 //守ったプレイヤーを記録
                 protectedID = thePlayer.playerID;
                 SetProtectedPlayerID();
+                Debug.Log("守ったID" + protectedID);
                 break;
             default:
                 Debug.Log("押せません。");
@@ -331,9 +329,30 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void MorningResults() {
         Debug.Log("朝の結果発表");
+
         //オンラインプレイヤーから必要な情報を共有する
-        protectedID = GetProtectedPlayerID();
-        bitedID = GetBitedPlayerID();
+        switch (gameManager.chatSystem.myPlayer.rollType) {
+            case ROLLTYPE.人狼:
+                protectedID = GetProtectedPlayerID();
+                Debug.Log("守ったID" + protectedID);
+                Debug.Log("噛んだID" + bitedID);
+                break;
+            case ROLLTYPE.騎士:
+                bitedID = GetBitedPlayerID();
+                Debug.Log("守ったID" + protectedID);
+                Debug.Log("噛んだID" + bitedID);
+                break;
+            default:
+                protectedID = GetProtectedPlayerID();
+                bitedID = GetBitedPlayerID();
+                Debug.Log("守ったID" + protectedID);
+                Debug.Log("噛んだID" + bitedID);
+                break;
+        }
+        //protectedID = GetProtectedPlayerID();
+        //bitedID = GetBitedPlayerID();
+        //Debug.Log("守ったID" + protectedID);
+        //Debug.Log("噛んだID" + bitedID);
 
         //結果を実行する
         if (protectedID == bitedID) {

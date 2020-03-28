@@ -272,11 +272,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 1
   testMainTime: 5
-  testNightTime: 5
-  num: 7
-  enterNum: 7
+  testNightTime: 30
+  num: 6
+  enterNum: 6
   isTestPlay: 1
-  testRollTypeList: 0400000004000000
+  testRollTypeList: 020000000400000000000000
 --- !u!4 &317373128
 Transform:
   m_ObjectHideFlags: 0
