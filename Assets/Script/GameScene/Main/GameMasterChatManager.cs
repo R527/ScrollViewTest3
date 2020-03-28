@@ -368,8 +368,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
 
         //初期化
-        bitedID = 999;
-        protectedID = 999;
+        bitedID = 99;
+        protectedID = 99;
         SetProtectedPlayerID();
         SetBitedPlayerID();
     }

@@ -349,6 +349,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //夜の行動の結果発表
                 case TIME.夜の行動:
                     timeType = TIME.夜の結果発表;
+                    totalTime = resultTime;
                     chatSystem.myPlayer.isRollAction = false;
                     gameMasterChatManager.MorningResults();
                     if (!firstDay) {
@@ -356,7 +357,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     } else {
                         firstDay = false;
                     }
-                    totalTime = resultTime;
+                    
                     break;
 
                 //結果発表チェック
