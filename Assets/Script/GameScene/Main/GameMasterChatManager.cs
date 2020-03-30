@@ -372,8 +372,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             //結果を実行する
             if (bitedID == protectedID) {
-            gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
-            Debug.Log("犠牲者なし");
+                gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
+                Debug.Log("犠牲者なし");
 
             } else {
                 //bitedPlayer = 
