@@ -70,7 +70,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     private void SetBitedPlayerID() {
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"biteID", bitedID }
+                            {"bitedID", bitedID }
                         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
         Debug.Log("SetBited"+(int)PhotonNetwork.CurrentRoom.CustomProperties["bitedID"]);
@@ -274,10 +274,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         }
 
         //ボタンを押した対象のプレイヤーを代入
-        Debug.Log(playerID - 1);
-        Debug.Log(gameManager.chatSystem.playersList[playerID - 1]);
+        //Debug.Log(playerID - 1);
+        //Debug.Log(gameManager.chatSystem.playersList[playerID - 1]);
         //Player thePlayer = gameManager.chatSystem.playersList[playerID - 1];
-        Debug.Log(thePlayer.playerName);
+        //Debug.Log(thePlayer.playerName);
 
         foreach(Player playerObj in gameManager.chatSystem.playersList) {
             if(playerObj.playerID == playerID) {
@@ -360,21 +360,30 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         //bitedID = GetBitedPlayerID();
         //Debug.Log("守ったID" + protectedID);
         //Debug.Log("噛んだID" + bitedID);
+        if (PhotonNetwork.IsMasterClient) {
+            protectedID = GetProtectedPlayerID();
+            bitedID = GetBitedPlayerID();
 
-        //結果を実行する
-        if (GetProtectedPlayerID() == GetBitedPlayerID()) {
+            foreach(Player playerObj in gameManager.chatSystem.playersList) {
+                if(playerObj.playerID == bitedID) {
+                    bitedPlayer = playerObj;
+                }
+            }
+
+            //結果を実行する
+            if (bitedID == protectedID) {
             gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
             Debug.Log("犠牲者なし");
 
             return;
-        } else {
-            //bitedPlayer = 
-            gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n" + thePlayer.playerName + "さんが襲撃されました。";
-            Debug.Log("襲撃成功");
-        }
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+            } else {
+                //bitedPlayer = 
+                gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n" + bitedPlayer.playerName + "さんが襲撃されました。";
+                Debug.Log("襲撃成功");
+            }
+            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
 
-        if (PhotonNetwork.IsMasterClient) {
+        
             //初期化
             bitedID = 99;
             protectedID = 99;
