@@ -375,7 +375,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
             Debug.Log("犠牲者なし");
 
-            return;
             } else {
                 //bitedPlayer = 
                 gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n" + bitedPlayer.playerName + "さんが襲撃されました。";
