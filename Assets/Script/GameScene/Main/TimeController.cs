@@ -71,8 +71,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //狼の場合
         if (chatSystem.myPlayer.wolfChat) {
             wolfButton.interactable = true;
+            inputField.interactable = true;
         } else {
             wolfButton.interactable = false;
+            inputField.interactable = false;
         }
 
         callOutButton.interactable = false;
@@ -283,7 +285,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         if (!isPlaying && gameManager.gameStart) {
             switch (timeType) {
                 //お昼
-                case TIME.夜の結果発表:
+                case TIME.結果発表後チェック:
                     timeType = TIME.昼;
 
                     mainPopup.SetActive(true);
@@ -300,7 +302,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //投票時間
                 case TIME.昼:
                     timeType = TIME.投票時間;
-
                     votingPopup.SetActive(true);
                     totalTime = votingTime;
                     voteCount.isVoteFlag = false;
@@ -314,8 +315,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.処刑;
 
                     totalTime = executionTime;
-                    voteCount.Execution();
-                    gameManager.gameMasterChatManager.ExecutionChat();
+                    //voteCount.Execution();
+                    //gameManager.gameMasterChatManager.ExecutionChat();
                     break;
 
                 //処刑後チェック
@@ -347,18 +348,21 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 //夜の行動の結果発表
                 case TIME.夜の行動:
-                    timeType = TIME.結果発表後チェック;
+                    timeType = TIME.夜の結果発表;
+                    totalTime = resultTime;
                     chatSystem.myPlayer.isRollAction = false;
-                    if (firstDay) {
-                        gameMasterChatManager.MorningResults();
+                    gameMasterChatManager.MorningResults();
+                    if (!firstDay) {
+                        //gameMasterChatManager.MorningResults();
+                    } else {
                         firstDay = false;
                     }
-                    totalTime = resultTime;
+                    
                     break;
 
                 //結果発表チェック
-                case TIME.結果発表後チェック:
-                    timeType = TIME.夜の結果発表;
+                case TIME.夜の結果発表:
+                    timeType = TIME.結果発表後チェック;
                     totalTime = checkGameOverTime;
                     //gameOver.CheckGameOver();
                     break;
@@ -384,7 +388,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     private IEnumerator GameMasterChat() {
         yield return new WaitForSeconds(intervalTime + 0.2f);
-        chatSystem.GameMasterChatNode();
+        //chatSystem.GameMasterChatNode();
+        gameMasterChatManager.TimeManagementChat();
     }
 
     /// <summary>
@@ -456,7 +461,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
-    /// 時短、狼モード、
+    /// ButtonなどをRollに応じてtrueにする
     /// </summary>
     public void TimesavingControllerTrue() {
         if (timeType == TIME.昼) {
@@ -470,6 +475,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
         }
     }
 
+
+    /// <summary>
+    /// ButtonなどをRollに応じてfalseにする
+    /// </summary>
     public void TimesavingControllerFalse() {
         savingButton.interactable = false;
         callOutButton.interactable = false;
@@ -485,7 +494,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
         }
     }
 
-
+    ///// <summary>
+    ///// 投票時PlayerButtonをRollに応じてOFFにする((フィルターにも対応させる必要があるから別の方法を考える
+    ///// /// </summary>
+    //public void OffVotingButton() {
+    //    foreach (Player playerObj in chatSystem.playersList) {
+    //        if (chatSystem.myPlayer.playerID == playerObj.playerID || !playerObj.live) {
+    //            playerObj.GetComponent<Button>().interactable = false;
+    //        }
+    //    }
+    //}
 }
 
 

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public VoteCount voteCount;
     public TIME timeType;
     public GameMasterChatManager gameMasterChatManager;
+    public Fillter fillter;
 
     //main
     public Text NumText;//入室してる人数
@@ -172,7 +173,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //ルームにいる場合のみ
         if (PhotonNetwork.InRoom || isOffline) {
-            Debug.Log("入室");
             if (!gameStart) {
 
                 //テスト用役職を決定してゲーム開始
@@ -555,6 +555,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
         liveNum = PhotonNetwork.PlayerList.Length;
         if (PhotonNetwork.IsMasterClient) {
             SetLiveNum();
+        }
+
+        //自分が狼チャットが使えるなら
+        if (chatSystem.myPlayer.wolfChat) {
+            fillter.wolfModeButtonText.text = "狼";
+            fillter.wolfModeButton.interactable = false;
+            fillter.wolfMode = true;
         }
         Debug.Log("参加者全員がPlayerList　準備OK");
     }

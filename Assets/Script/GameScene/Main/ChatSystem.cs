@@ -87,9 +87,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         //CreateChatNode(ChatRoll.OTHERS, 2, ROLLTYPE.占い師, true, rollName);
     }
 
-    public void GameMasterChatNode() {
-        gameMasterChatManager.TimeManagementChat();
-    }
+    //public void GameMasterChatNode() {
+    //    gameMasterChatManager.TimeManagementChat();
+    //}
     private void Update() {
         if (Input.GetKeyUp(KeyCode.Return)) {
             OnClickMineButton();
@@ -98,6 +98,19 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         }
 
 
+    }
+
+    [PunRPC]
+    private void CreateGameMasterChatNode(int id, string inputData, int boardColor, bool comingOut) {
+        ChatNode chatNode = Instantiate(chatNodePrefab, content.transform, false);
+        chatNode.transform.SetParent(content.transform);
+
+        Debug.Log("CreatNode:GM_ONLINE");
+
+        ChatData chatData = new ChatData(id, inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
+        chatData.chatType = CHAT_TYPE.GM;
+        chatNode.InitChatNode(chatData, 0, comingOut);
+        SetChatNode(chatNode, chatData, comingOut);
     }
 
     //第2引数がない場合は自動でNullを入れます。
@@ -123,20 +136,22 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
             //オンラインオフラインで分ける(GMChat
             ChatNode chatNode = null;
-            //OnLine
+            //Offline
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
                  chatNode = Instantiate(chatNodePrefab, content.transform, false);
                 Debug.Log("CreateNode: GM_OFFLINE");
-            //OffLine
+                chatNode.InitChatNode(chatData, 0, false);
+                SetChatNode(chatNode, chatData, false);
+                //OnLine
             } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
-                GameObject chatNodeObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
-                chatNodeObj.transform.SetParent(content.transform);
-                chatNode = chatNodeObj.GetComponent<ChatNode>();
-                Debug.Log("CreateNode: GM_ONLINE");
+                photonView.RPC(nameof(CreateGameMasterChatNode), RpcTarget.All, id, inputData, boardColor, comingOut);
+                //GameObject chatNodeObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
+                //chatNodeObj.transform.SetParent(content.transform);
+                //chatNode = chatNodeObj.GetComponent<ChatNode>();
+                //Debug.Log("CreateNode: GM_ONLINE");
             }
             
-            chatNode.InitChatNode(chatData, 0, comingOut);
-            SetChatNode(chatNode, chatData, comingOut);
+
 
             //Playerの発言
         } else {
