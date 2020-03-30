@@ -28,6 +28,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public int bitedID;//噛んだプレイヤーID
     public int protectedID;//守ったプレイヤーID
     public Player bitedPlayer;
+    public Player thePlayer;
 
 
     // Start is called before the first frame update
@@ -265,7 +266,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// <param name="rollType"></param>
     /// <param name="playerID"></param>
     public void RollAction(int playerID, bool live, bool fortune, bool wolf) {
-
+        
         //死亡時もしくは自分のボタンは機能しない
         if (gameManager.chatSystem.myID == playerID || !live) {
             Debug.Log("押せません。");
@@ -275,8 +276,14 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         //ボタンを押した対象のプレイヤーを代入
         Debug.Log(playerID - 1);
         Debug.Log(gameManager.chatSystem.playersList[playerID - 1]);
-        Player thePlayer = gameManager.chatSystem.playersList[playerID - 1];
+        //Player thePlayer = gameManager.chatSystem.playersList[playerID - 1];
         Debug.Log(thePlayer.playerName);
+
+        foreach(Player playerObj in gameManager.chatSystem.playersList) {
+            if(playerObj.playerID == playerID) {
+                thePlayer = playerObj;
+            }
+        }
         //自分の役職が～～なら
         switch (gameManager.chatSystem.myPlayer.rollType) {
 
@@ -330,47 +337,50 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public void MorningResults() {
         Debug.Log("朝の結果発表");
 
-        //オンラインプレイヤーから必要な情報を共有する
-        switch (gameManager.chatSystem.myPlayer.rollType) {
-            case ROLLTYPE.人狼:
-                protectedID = GetProtectedPlayerID();
-                Debug.Log("守ったID" + protectedID);
-                Debug.Log("噛んだID" + bitedID);
-                break;
-            case ROLLTYPE.騎士:
-                bitedID = GetBitedPlayerID();
-                Debug.Log("守ったID" + protectedID);
-                Debug.Log("噛んだID" + bitedID);
-                break;
-            default:
-                protectedID = GetProtectedPlayerID();
-                bitedID = GetBitedPlayerID();
-                Debug.Log("守ったID" + protectedID);
-                Debug.Log("噛んだID" + bitedID);
-                break;
-        }
+        ////オンラインプレイヤーから必要な情報を共有する
+        //switch (gameManager.chatSystem.myPlayer.rollType) {
+        //    case ROLLTYPE.人狼:
+        //        protectedID = GetProtectedPlayerID();
+        //        Debug.Log("守ったID" + protectedID);
+        //        Debug.Log("噛んだID" + bitedID);
+        //        break;
+        //    case ROLLTYPE.騎士:
+        //        bitedID = GetBitedPlayerID();
+        //        Debug.Log("守ったID" + protectedID);
+        //        Debug.Log("噛んだID" + bitedID);
+        //        break;
+        //    default:
+        //        protectedID = GetProtectedPlayerID();
+        //        bitedID = GetBitedPlayerID();
+        //        Debug.Log("守ったID" + protectedID);
+        //        Debug.Log("噛んだID" + bitedID);
+        //        break;
+        //}
         //protectedID = GetProtectedPlayerID();
         //bitedID = GetBitedPlayerID();
         //Debug.Log("守ったID" + protectedID);
         //Debug.Log("噛んだID" + bitedID);
 
         //結果を実行する
-        if (protectedID == bitedID) {
+        if (GetProtectedPlayerID() == GetBitedPlayerID()) {
             gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
             Debug.Log("犠牲者なし");
 
             return;
         } else {
-            bitedPlayer = gameManager.chatSystem.playersList[bitedID];
-            gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n" + bitedPlayer.playerName + "さんが襲撃されました。";
+            //bitedPlayer = 
+            gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n" + thePlayer.playerName + "さんが襲撃されました。";
             Debug.Log("襲撃成功");
         }
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
 
-        //初期化
-        bitedID = 99;
-        protectedID = 99;
-        SetProtectedPlayerID();
-        SetBitedPlayerID();
+        if (PhotonNetwork.IsMasterClient) {
+            //初期化
+            bitedID = 99;
+            protectedID = 99;
+            SetProtectedPlayerID();
+            SetBitedPlayerID();
+        }
+
     }
 }
