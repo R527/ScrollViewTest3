@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 1
   testMainTime: 5
-  testNightTime: 30
+  testNightTime: 5
   num: 6
   enterNum: 6
   isTestPlay: 1

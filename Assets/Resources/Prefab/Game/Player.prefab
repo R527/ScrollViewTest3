@@ -138,8 +138,8 @@ MonoBehaviour:
   chatType: 0
   gameManager: {fileID: 0}
   chatSystem: {fileID: 0}
+  voteCount: {fileID: 0}
   playerID: 0
-  voteCount: 0
   playerText: {fileID: 6959428748610184544}
   playerName: 
   playerButton: {fileID: 5950567266344266541}
@@ -149,10 +149,12 @@ MonoBehaviour:
   wolf: 0
   wolfChat: 0
   wolfCamp: 0
-  isRollAction: 0
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
     type: 3}
   iconNo: 0
+  isVoteFlag: 0
+  voteNum: 0
+  isRollAction: 0
   def: 0
 --- !u!222 &5807723990393611466
 CanvasRenderer:

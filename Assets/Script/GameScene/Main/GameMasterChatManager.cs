@@ -223,20 +223,38 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //開示する場合
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         }
-        Debug.Log("Voted");
+
+        //投票開示する場合は一旦全てのプレイヤーにOFFLINEで表示し、そのあとまとめて投票先を表記する
+        //その際には投票先に合わせて表記を整頓する
+        Debug.Log("Votedメソッド通過");
     }
 
     /// <summary>
     /// 処刑プレイヤーをGMチャットに表示する
     /// </summary>
     public void ExecutionChat() {
-        Debug.Log("voteCount.executionID"+voteCount.executionID);
-        Debug.Log(voteCount.executionPlayer.playerName);
-        gameManager.chatSystem.gameMasterChat = voteCount.executionPlayer.playerName[voteCount.executionID] + "さんが処刑されました。";
-        Debug.Log(voteCount.executionPlayer.playerName);
-        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
-        //gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n\r\n" + voteCount.executionPlayer.playerName + ": " + voteCount.executionPlayer.voteCount + "票";
-        //gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        if (PhotonNetwork.IsMasterClient) {
+            string votingNameList = string.Empty;
+            //処刑されたプレイヤーの表示
+            Debug.Log("voteCount.executionID" + voteCount.executionID);
+            Debug.Log(voteCount.executionPlayer.playerName);
+            gameManager.chatSystem.gameMasterChat = voteCount.executionPlayer.playerName[voteCount.executionID] + "さんが処刑されました。";
+            Debug.Log(voteCount.executionPlayer.playerName);
+            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+
+            //投票数の表示
+            foreach(Player playerObj in gameManager.chatSystem.playersList) {
+                string str = string.Empty;
+                if (playerObj.playerID != voteCount.executionPlayer.playerID) {
+                    
+                    str = playerObj.playerName + ": " + playerObj.voteNum + "票";
+                }
+                votingNameList += str;
+            }
+            Debug.Log("処刑されたプレイヤー" + voteCount);
+            gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n" + voteCount.executionPlayer.playerName + ": " + voteCount.executionPlayer.voteNum + "票" + "\r\n\r\n" + votingNameList;
+            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        }
     }
 
 
@@ -337,29 +355,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public void MorningResults() {
         Debug.Log("朝の結果発表");
 
-        ////オンラインプレイヤーから必要な情報を共有する
-        //switch (gameManager.chatSystem.myPlayer.rollType) {
-        //    case ROLLTYPE.人狼:
-        //        protectedID = GetProtectedPlayerID();
-        //        Debug.Log("守ったID" + protectedID);
-        //        Debug.Log("噛んだID" + bitedID);
-        //        break;
-        //    case ROLLTYPE.騎士:
-        //        bitedID = GetBitedPlayerID();
-        //        Debug.Log("守ったID" + protectedID);
-        //        Debug.Log("噛んだID" + bitedID);
-        //        break;
-        //    default:
-        //        protectedID = GetProtectedPlayerID();
-        //        bitedID = GetBitedPlayerID();
-        //        Debug.Log("守ったID" + protectedID);
-        //        Debug.Log("噛んだID" + bitedID);
-        //        break;
-        //}
-        //protectedID = GetProtectedPlayerID();
-        //bitedID = GetBitedPlayerID();
-        //Debug.Log("守ったID" + protectedID);
-        //Debug.Log("噛んだID" + bitedID);
         if (PhotonNetwork.IsMasterClient) {
             protectedID = GetProtectedPlayerID();
             bitedID = GetBitedPlayerID();

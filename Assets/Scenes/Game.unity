@@ -9161,7 +9161,7 @@ MonoBehaviour:
   timerText: {fileID: 575804562}
   totalTime: 0
   mainTime: 20
-  votingTime: 15
+  votingTime: 30
   nightTime: 10
   executionTime: 10
   checkGameOverTime: 10
@@ -11458,6 +11458,7 @@ MonoBehaviour:
   bitedID: 0
   protectedID: 0
   bitedPlayer: {fileID: 0}
+  thePlayer: {fileID: 0}
 --- !u!114 &1130743578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11541,7 +11542,6 @@ MonoBehaviour:
   chatSystem: {fileID: 4395145948522523302}
   gameManager: {fileID: 1130743578}
   voteCountList: 
-  isVoteFlag: 0
   ExecutionPlayerList: []
   mostVotes: 0
   mostVotePlayer: {fileID: 0}
@@ -13977,7 +13977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomInfo:
-    openVoting: 0
+    openVoting: 1
     title: 
     fortuneType: 0
     mainTime: 30
@@ -23404,7 +23404,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -341.66766}
+  m_AnchoredPosition: {x: 0, y: -341.81805}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &4395145949336749762

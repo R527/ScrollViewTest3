@@ -590,7 +590,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //自分のプレイヤークラスを使う時用。
             chatSystem.myPlayer = player;
             Debug.Log("Player" + chatSystem.myPlayer);
-            player.PlayerSetUp(this);
+            player.PlayerSetUp(this,voteCount);
         }
     }
 
@@ -615,7 +615,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //全キャラのPlayerSetUpを実行
         foreach (GameObject playerObj in playerObjs) {
             Player player = playerObj.GetComponent<Player>();
-            player.PlayerSetUp(this);
+            player.PlayerSetUp(this,voteCount);
             //各リストに登録
             chatSystem.playersList.Add(player);
             chatSystem.playerNameList.Add(player.playerName);

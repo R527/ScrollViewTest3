@@ -14,7 +14,6 @@ public class VoteCount : MonoBehaviourPunCallbacks {
 
     //main
     public List<int> voteCountList = new List<int>();
-    public bool isVoteFlag;
     public List<Player> ExecutionPlayerList = new List<Player>();
     public int mostVotes;
     public Player mostVotePlayer;//処刑ナンバー
@@ -48,7 +47,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     /// <summary>
     /// 処刑されたプレイヤーをセットする
     /// </summary>
-    private void SetExecutionPlayer() {
+    private void SetExecutionPlayerID() {
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                             {"executionID", executionID}
                         };
@@ -59,7 +58,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     /// 処刑されたプレイヤーをもらう
     /// </summary>
     /// <returns></returns>
-    private int GetExecutionPlayer() {
+    private int GetExecutionPlayerID() {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("executionID", out object executionIDObj)) {
             executionID = (int)executionIDObj;
         }
@@ -69,14 +68,22 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     /// 一番投票されたプレイヤーを処刑する
     /// </summary>
     public void Execution() {
-        for (int id = 0; id < gameManager.liveNum; id++) {
-            int count = voteCountList[id];
-            if(mostVotes == count) {
-                ExecutionPlayerList.Add(chatSystem.playersList[id]);
-            } else if(mostVotes < count) {
-                mostVotes = count;
+    if (PhotonNetwork.IsMasterClient) {
+
+        foreach (Player playerObj in chatSystem.playersList) {
+            
+        //    //投票を他プレイヤーと比べる
+        //    for (int id = 0; id < gameManager.liveNum; id++) {
+        //int count = voteCountList[id];
+
+            //投票数が他プレイヤーと同数ならリストに追加
+            if (mostVotes == playerObj.voteNum) {
+            ExecutionPlayerList.Add(chatSystem.playersList[playerObj.playerID]);
+            //投票数が他プレイヤーより多いならListから削除して追加
+            } else if(mostVotes < playerObj.voteNum) {
+                mostVotes = playerObj.voteNum;
                 ExecutionPlayerList.Clear();
-                ExecutionPlayerList.Add(chatSystem.playersList[id]);
+                ExecutionPlayerList.Add(chatSystem.playersList[playerObj.playerID]);
             }
         }
 
@@ -84,49 +91,52 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         if(ExecutionPlayerList.Count >= 2) {
             mostVotePlayer = ExecutionPlayerList[Random.Range(0, ExecutionPlayerList.Count)];
         } else {
+            //最多投票が一人の場合
             mostVotePlayer = ExecutionPlayerList[0];
         }
         //決定したプレイヤーを処刑処理する
         foreach(Player playerObj in chatSystem.playersList) {
             if (playerObj.playerID == mostVotePlayer.playerID) {
                 playerObj.live = false;
-                executionPlayer = playerObj;
 
-                if (PhotonNetwork.IsMasterClient) {
-                    executionID = executionPlayer.playerID;
-                    SetExecutionPlayer();
-                    Debug.Log("voteCount.executionID" + executionID);
-                } else {
-                    executionID = GetExecutionPlayer();
-                    Debug.Log("voteCount.executionID" + executionID);
-                }
+                //プレイヤーの共有
+
+                executionID = mostVotePlayer.playerID;
+                SetExecutionPlayerID();
+                Debug.Log("executionID" + executionID);
+
+                ////マスターだけがIDをもらう
+                //if (PhotonNetwork.IsMasterClient) {
+                //executionID = GetExecutionPlayerID();
+                //Debug.Log("executionID" + executionID);
+                //}
 
                 //処刑されたプレイヤーをリストから削除する
-                foreach (Player player in chatSystem.playersList) {
-                    if (playerObj.playerID == executionPlayer.playerID) {
-                        chatSystem.playersList.Remove(player);
-                        break;
-                    }
-                }
-                break;
+                //foreach (Player player in chatSystem.playersList) {
+                //    if (playerObj.playerID == executionPlayer.playerID) {
+
+                    //chatSystem.playersList.Remove(playerObj);
+                    break;
+                 }
+                //}
             }
         }
+        
+        
         gameManager.liveNum--;
-        if (PhotonNetwork.IsMasterClient) {
+        //生存数を更新
+        gameManager.SetLiveNum();
 
-            //生存数を更新
-            gameManager.SetLiveNum();
-
-            //生き残ったプレイヤーのVoteCountを０にする
-            foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                var properties = new ExitGames.Client.Photon.Hashtable {
-                    {"voteCount", 0 }
-                };
-                player.SetCustomProperties(properties);
-            }
-
+        //生き残ったプレイヤーのVoteCountを０にする
+        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            var properties = new ExitGames.Client.Photon.Hashtable {
+                {"voteCount", 0 }
+            };
+            player.SetCustomProperties(properties);
         }
+
     }
-
-
 }
+
+
+

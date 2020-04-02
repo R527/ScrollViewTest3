@@ -304,7 +304,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.投票時間;
                     votingPopup.SetActive(true);
                     totalTime = votingTime;
-                    voteCount.isVoteFlag = false;
                     TimesavingControllerFalse();
                     StartCoroutine(GameMasterChat());
                     StartCoroutine(UpInputView());
@@ -315,8 +314,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.処刑;
 
                     totalTime = executionTime;
-                    //voteCount.Execution();
-                    //gameManager.gameMasterChatManager.ExecutionChat();
+                    voteCount.Execution();
+                    gameManager.gameMasterChatManager.ExecutionChat();
                     break;
 
                 //処刑後チェック
@@ -351,7 +350,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.夜の結果発表;
                     totalTime = resultTime;
                     chatSystem.myPlayer.isRollAction = false;
-                    gameMasterChatManager.MorningResults();
+                    //gameMasterChatManager.MorningResults();
                     if (!firstDay) {
                         //gameMasterChatManager.MorningResults();
                     } else {

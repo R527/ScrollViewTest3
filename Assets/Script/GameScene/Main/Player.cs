@@ -19,10 +19,10 @@ public class Player : MonoBehaviourPunCallbacks {
     public CHAT_TYPE chatType = CHAT_TYPE.MINE;
     public GameManager gameManager;
     public ChatSystem chatSystem;
+    public VoteCount voteCount;
 
     //main
     public int playerID;
-    public int voteCount;
     public Text playerText;
     public string playerName;
     public Button playerButton;
@@ -32,11 +32,15 @@ public class Player : MonoBehaviourPunCallbacks {
     public bool wolf;//狼か否か
     public bool wolfChat;//狼チャットに参加できるかどうか
     public bool wolfCamp;//狼陣営か否か
-    public bool isRollAction;
     public ChatNode chatNodePrefab;//チャットノード用のプレふぁぶ
     public int iconNo;//アイコンの絵用
     private Transform tran;
 
+    //投票関連
+    public bool isVoteFlag; //投票を下か否か　falseなら非投票
+    public int voteNum;//そのPlayerの投票数
+    //夜の行動
+    public bool isRollAction;//夜の行動をとったか否か
 
     //仮
     public bool def;//騎士のデバッグ用
@@ -45,10 +49,11 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
-    public void PlayerSetUp(GameManager gameManager) {
+    public void PlayerSetUp(GameManager gameManager,VoteCount voteCount) {
         //Debug.Log("Setup");
         live = true;
         this.gameManager = gameManager;
+        this.voteCount = voteCount;
 
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
@@ -70,7 +75,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
             //voteCountをプロパティーにセット
             var properties = new ExitGames.Client.Photon.Hashtable {
-                {"voteCount", voteCount }
+                {"voteCount", voteNum }
             };
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
 
@@ -171,29 +176,34 @@ public class Player : MonoBehaviourPunCallbacks {
             switch (gameManager.timeController.timeType)
             {
                 case TIME.投票時間:
-                    if (!gameManager.voteCount.isVoteFlag) {
+                    if (!chatSystem.myPlayer.isVoteFlag) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                             if (player.ActorNumber == playerID) {
+
                                 //最新の投票数を取得する
-                                voteCount = (int)player.CustomProperties["voteCount"];
-                                voteCount++;
+                                if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("voteCount", out object voteCountObj)) {
+                                    voteNum = (int)voteCountObj;
+                                }
+                                Debug.Log("投票前の投票数" + voteNum);
+                                voteNum++;
                                 var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                {"voteCount", voteCount }
+                                {"voteCount", voteNum }
                             };
-
-                                player.SetCustomProperties(propertiers);
-
+                                PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+                                voteCount.voteCountList[playerID] = voteNum;
                                 //投票のチャット表示
                                 gameManager.gameMasterChatManager.Voted(player, live,  wolf);
 
                                 Debug.Log("player.ActorNumber:" + player.ActorNumber);
-                                Debug.Log("voteCount:" + voteCount);
+                                Debug.Log("voteCount:" + voteNum);
                                 Debug.Log("投票完了");
                             }
                         }
                     }
-                        gameManager.voteCount.isVoteFlag = true;
-                        break;
+                    //ここでは投票をするだけで他プレイヤーとの比較判定はしない
+                    //比較はVoteCount.csで行われる
+                    chatSystem.myPlayer.isVoteFlag = true;
+                break;
 
                 case TIME.夜の行動:
                     Debug.Log("夜の行動");
