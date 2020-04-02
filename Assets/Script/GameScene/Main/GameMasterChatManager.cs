@@ -226,7 +226,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
         //投票開示する場合は一旦全てのプレイヤーにOFFLINEで表示し、そのあとまとめて投票先を表記する
         //その際には投票先に合わせて表記を整頓する
-        Debug.Log("Votedメソッド通過");
+        //Debug.Log("Votedメソッド通過");
     }
 
     /// <summary>
@@ -237,10 +237,11 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             string votingNameList = string.Empty;
             //処刑されたプレイヤーの表示
             Debug.Log("voteCount.executionID" + voteCount.executionID);
-            Debug.Log(voteCount.executionPlayer.playerName);
-            gameManager.chatSystem.gameMasterChat = PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + "さんが処刑されました。";
+            //Debug.Log(voteCount.executionPlayer.playerName);
+            Debug.Log("処刑されたプレイヤー" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"]);
+            gameManager.chatSystem.gameMasterChat = (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + "さんが処刑されました。";
             //gameManager.chatSystem.gameMasterChat = voteCount.executionPlayer.playerName[voteCount.executionID] + "さんが処刑されました。";
-            Debug.Log(voteCount.executionPlayer.playerName);
+            //Debug.Log(voteCount.executionPlayer.playerName);
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
 
             //投票数の表示
@@ -253,13 +254,13 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 string str = string.Empty;
                 foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                     if(player.ActorNumber == playerObj.playerID) {
-                        str = playerObj.playerName + ": " + player.CustomProperties["voteNum"] + "票\r\n";
+                        str = playerObj.playerName + ": " + (int)player.CustomProperties["voteNum"] + "票\r\n";
                     }
                 }
                 votingNameList += str;
             }
-            Debug.Log("処刑されたプレイヤー" + voteCount);
-            gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n" + PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + ": " + PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"] + "票" + "\r\n\r\n" + votingNameList;
+            //Debug.Log("処刑されたプレイヤー" + voteCount);
+            gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + ": " + PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"] + "票" + "\r\n\r\n" + votingNameList;
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         }
     }

@@ -169,7 +169,6 @@ public class Player : MonoBehaviourPunCallbacks {
         //フィルター機能Off時
         //生存していて、自分以外のプレイヤーを指定
         } else if(live && !gameManager.chatListManager.isfilter && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
-            Debug.Log("その時間ごとの行動");
             //フィルター機能がOFFの時は各時間ごとの機能をする
             Debug.Log(gameManager.timeController.timeType);
 
@@ -194,14 +193,14 @@ public class Player : MonoBehaviourPunCallbacks {
                                 {"voteNum", voteNum }
                             };
                                 player.SetCustomProperties(propertiers);
-
+                                Debug.Log((int)player.CustomProperties["voteNum"]);
                                 //ディクショナリー
                                 voteCount.voteCountList[playerID] = voteNum;
                                 //投票のチャット表示
                                 gameManager.gameMasterChatManager.Voted(player, live,  wolf);
 
-                                Debug.Log("player.ActorNumber:" + player.ActorNumber);
-                                Debug.Log("voteNum:" + voteNum);
+                                //Debug.Log("player.ActorNumber:" + player.ActorNumber);
+                                //Debug.Log("voteNum:" + voteNum);
                                 Debug.Log("投票完了");
                             }
                         }

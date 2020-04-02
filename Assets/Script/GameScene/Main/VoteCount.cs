@@ -41,7 +41,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                 {"executionID",executionID }
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-            Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["executionID"]);
+            //Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["executionID"]);
         }
     }
 
@@ -55,7 +55,9 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             {"mostVotes",mostVotes }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["executionID"]);
+        Debug.Log("executionID"+(int)PhotonNetwork.CurrentRoom.CustomProperties["executionID"]);
+        Debug.Log("executionPlayerName" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"]);
+        Debug.Log("mostVotes" + (int)PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"]);
     }
     /// <summary>
     /// 処刑されたプレイヤーをもらう
@@ -154,10 +156,10 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         }
 
 
-        //ディクショナリーの初期化
-        foreach(int playerID in voteCountList.Keys) {
-            voteCountList[playerID] = 0;
-        }
+        ////ディクショナリーの初期化
+        //foreach(int playerID in voteCountList.Keys) {
+        //    voteCountList[playerID] = 0;
+        //}
 
     }
 }

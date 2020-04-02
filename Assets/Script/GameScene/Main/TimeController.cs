@@ -94,12 +94,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 {"timeType",timeType }
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-            Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
-            Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["isPlaying"]);
-            Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["gameReady"]);
+            //Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
+            //Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["isPlaying"]);
+            //Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["gameReady"]);
             Debug.Log((TIME)PhotonNetwork.CurrentRoom.CustomProperties["timeType"]);
         }
-        Debug.Log("Init時のTimeType"　+ timeType);
 
         // 本当の姿を表示する
         gameMasterChatManager.TrueCharacter();
@@ -156,7 +155,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //isPlayingがfalseでかつトータルタイムが0以下ならStartIntervalへ
             } else if (!GetPlayState() && totalTime <= 0) {
                 timerText.text = string.Empty;
-                Debug.Log(!GetPlayState());
+                //Debug.Log(!GetPlayState());
                 //Debug.Log(totalTime);
 
                 //Debug.Log(timeType);
@@ -178,7 +177,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
-        Debug.Log("isPlaying:セット完了");
+        //Debug.Log("isPlaying:セット完了");
     }
 
     ///// <summary>
