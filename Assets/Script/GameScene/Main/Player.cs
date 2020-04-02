@@ -75,7 +75,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
             //voteCountをプロパティーにセット
             var properties = new ExitGames.Client.Photon.Hashtable {
-                {"voteCount", voteNum }
+                {"voteNum", voteNum }
             };
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
 
@@ -178,24 +178,30 @@ public class Player : MonoBehaviourPunCallbacks {
                 case TIME.投票時間:
                     if (!chatSystem.myPlayer.isVoteFlag) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                            //Photonが用意しているActorNumberという数字とPLayerクラスが持っているPlayerIDが合致したら
+                            //playerIDはActorNumberからもらっているから合致したら同じ番号を持っているクラスだといえる
                             if (player.ActorNumber == playerID) {
 
                                 //最新の投票数を取得する
-                                if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("voteCount", out object voteCountObj)) {
+
+                                //指定されたplayerのキーに登録する
+                                if (player.CustomProperties.TryGetValue("voteNum", out object voteCountObj)) {
                                     voteNum = (int)voteCountObj;
                                 }
                                 Debug.Log("投票前の投票数" + voteNum);
                                 voteNum++;
                                 var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                {"voteCount", voteNum }
+                                {"voteNum", voteNum }
                             };
-                                PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+                                player.SetCustomProperties(propertiers);
+
+                                //ディクショナリー
                                 voteCount.voteCountList[playerID] = voteNum;
                                 //投票のチャット表示
                                 gameManager.gameMasterChatManager.Voted(player, live,  wolf);
 
                                 Debug.Log("player.ActorNumber:" + player.ActorNumber);
-                                Debug.Log("voteCount:" + voteNum);
+                                Debug.Log("voteNum:" + voteNum);
                                 Debug.Log("投票完了");
                             }
                         }

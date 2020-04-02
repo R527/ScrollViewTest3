@@ -238,21 +238,28 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //処刑されたプレイヤーの表示
             Debug.Log("voteCount.executionID" + voteCount.executionID);
             Debug.Log(voteCount.executionPlayer.playerName);
-            gameManager.chatSystem.gameMasterChat = voteCount.executionPlayer.playerName[voteCount.executionID] + "さんが処刑されました。";
+            gameManager.chatSystem.gameMasterChat = PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + "さんが処刑されました。";
+            //gameManager.chatSystem.gameMasterChat = voteCount.executionPlayer.playerName[voteCount.executionID] + "さんが処刑されました。";
             Debug.Log(voteCount.executionPlayer.playerName);
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
 
             //投票数の表示
             foreach(Player playerObj in gameManager.chatSystem.playersList) {
+
+                //処刑したプレイヤーも含めて死亡したプレイヤーを除外
+                if (!playerObj.live) {
+                    continue;
+                }
                 string str = string.Empty;
-                if (playerObj.playerID != voteCount.executionPlayer.playerID) {
-                    
-                    str = playerObj.playerName + ": " + playerObj.voteNum + "票";
+                foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                    if(player.ActorNumber == playerObj.playerID) {
+                        str = playerObj.playerName + ": " + player.CustomProperties["voteNum"] + "票\r\n";
+                    }
                 }
                 votingNameList += str;
             }
             Debug.Log("処刑されたプレイヤー" + voteCount);
-            gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n" + voteCount.executionPlayer.playerName + ": " + voteCount.executionPlayer.voteNum + "票" + "\r\n\r\n" + votingNameList;
+            gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n" + PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + ": " + PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"] + "票" + "\r\n\r\n" + votingNameList;
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         }
     }
