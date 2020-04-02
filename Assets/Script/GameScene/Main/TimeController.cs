@@ -395,7 +395,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator NextDay() {
-        Debug.Log("oldday" + day);
+        //Debug.Log("oldday" + day);
         yield return new WaitForSeconds(intervalTime + 0.1f);
         day++;
         chatSystem.id++;
@@ -406,7 +406,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         dayObj.day = day;
         dayObj.nextDayText.text = day + "日目";
         nextDayList.Add(dayObj);
-        Debug.Log("newDay" + day);
+        //Debug.Log("newDay" + day);
     }
 
 
@@ -435,7 +435,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             SetPlayState(isPlaying);
         }
 
-        Debug.Log("EndInterval: 終了");
+        //Debug.Log("EndInterval: 終了");
     }
 
     public IEnumerator UpInputView() {
