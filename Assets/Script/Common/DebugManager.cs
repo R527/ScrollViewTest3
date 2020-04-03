@@ -14,8 +14,15 @@ public class DebugManager : MonoBehaviour
     public bool isDebug;//TimeControllerの時間管理用のDebug
     public int testMainTime;
     public int testNightTime;
+    public int testVotingTime;
+    public int testExecutionTime;
+    public int testCheckGameOverTime;
+    public int testResultTime;
     public int num;//GameManagerの参加人数設定
     public int enterNum;//GameManagerの参加希望人数設定
+    public VOTING openVoting;
+    public FORTUNETYPE fortuneType;
+
 
 
     [Header("役職管理用")]

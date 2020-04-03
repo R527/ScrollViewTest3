@@ -68,6 +68,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
         savingButton.interactable = true;
 
 
+        //Debug用
+        if (DebugManager.instance.isDebug) {
+            votingTime = DebugManager.instance.testVotingTime;
+            executionTime = DebugManager.instance.testExecutionTime;
+            checkGameOverTime = DebugManager.instance.testCheckGameOverTime;
+            resultTime = DebugManager.instance.testResultTime;
+        }
+
         //狼の場合
         if (chatSystem.myPlayer.wolfChat) {
             wolfButton.interactable = true;

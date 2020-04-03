@@ -71,6 +71,10 @@ public class RoomSetting : MonoBehaviour
         //部屋をインスタンスと同時に部屋情報を渡す。
         RoomNode room = Instantiate(RoomNodePrefab, content.transform, false);
         //と同時に部屋情報を渡す。
+        if (DebugManager.instance.isDebug) {
+            openVoting = DebugManager.instance.openVoting;
+            fortuneType = DebugManager.instance.fortuneType;
+        }
         RoomInfo roomInfo = new RoomInfo(openVoting, title, fortuneType, mainTime, nightTime, roomSelection);
         room.InitRoomNode(roomInfo, rollSetting.NumList,rollSetting.settingNum);
 
