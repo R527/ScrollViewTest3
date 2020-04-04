@@ -50,6 +50,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public TIME timeType;
     public bool isGameOver;//falseならゲームオーバー
     private float cheakTimer;//1秒ごとに時間を管理する
+    public bool isVotingCompleted;
 
     //x日　GMのチャット追加
     public GameObject chatContent;
@@ -121,6 +122,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// カウントダウンタイマー
     /// </summary>
     void Update() {
+        //全員の投票が完了したら
+        if (isVotingCompleted　&& PhotonNetwork.IsMasterClient) {
+            totalTime = 0;
+            SetGameTime();
+        }
         //ゲーム待機中かどうかを確認する
         if (!GetGameReady()) {
             return;
@@ -142,6 +148,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     if (cheakTimer >= 1) {
                         cheakTimer = 0;
                         totalTime--;
+
                         SetGameTime();
                     }
                     //マスター以外はトータルタイムをもらう
@@ -320,7 +327,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //処刑
                 case TIME.投票時間:
                     timeType = TIME.処刑;
-
+                    isVotingCompleted = false;
                     totalTime = executionTime;
                     voteCount.Execution();
                     gameManager.gameMasterChatManager.ExecutionChat();

@@ -20,6 +20,7 @@ public class Player : MonoBehaviourPunCallbacks {
     public GameManager gameManager;
     public ChatSystem chatSystem;
     public VoteCount voteCount;
+    public TimeController timeController;
 
     //main
     public int playerID;
@@ -49,12 +50,12 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
-    public void PlayerSetUp(GameManager gameManager,VoteCount voteCount) {
+    public void PlayerSetUp(GameManager gameManager,VoteCount voteCount,TimeController timeController) {
         //Debug.Log("Setup");
         live = true;
         this.gameManager = gameManager;
         this.voteCount = voteCount;
-
+        this.timeController = timeController;
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
 
@@ -71,13 +72,19 @@ public class Player : MonoBehaviourPunCallbacks {
             //Networkの自分の持っている番号を追加
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
 
-            
+
 
             //voteCountをプロパティーにセット
-            var properties = new ExitGames.Client.Photon.Hashtable {
-                {"voteNum", voteNum }
-            };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+
+            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                    if (player.ActorNumber == playerID) {
+                        var properties = new ExitGames.Client.Photon.Hashtable {
+                    {"voteNum", voteNum }
+                };
+                        player.SetCustomProperties(properties);
+                    break;
+                }
+            }
 
             //このクラスは参加人数が9人の場合81個ある状態になる。
             //上の9人分を除いた、72個分をこちらで処理する
@@ -210,7 +217,15 @@ public class Player : MonoBehaviourPunCallbacks {
                     //ここでは投票をするだけで他プレイヤーとの比較判定はしない
                     //比較はVoteCount.csで行われる
                     chatSystem.myPlayer.isVoteFlag = true;
-                break;
+
+                    //foreach (Player player in chatSystem.playersList) {
+                    //    if (player.live && !player.isVoteFlag) {
+                            
+                    //    }
+                        
+                    //}
+                    //timeController.isVotingCompleted = true;
+                    break;
 
                 case TIME.夜の行動:
                     Debug.Log("夜の行動");

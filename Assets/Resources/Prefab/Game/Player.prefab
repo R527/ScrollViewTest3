@@ -139,6 +139,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   chatSystem: {fileID: 0}
   voteCount: {fileID: 0}
+  timeController: {fileID: 0}
   playerID: 0
   playerText: {fileID: 6959428748610184544}
   playerName: 

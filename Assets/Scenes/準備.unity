@@ -273,7 +273,7 @@ MonoBehaviour:
   isDebug: 1
   testMainTime: 5
   testNightTime: 5
-  testVotingTime: 5
+  testVotingTime: 10
   testExecutionTime: 4
   testCheckGameOverTime: 3
   testResultTime: 3

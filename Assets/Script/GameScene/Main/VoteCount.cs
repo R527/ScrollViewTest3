@@ -82,6 +82,8 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                 //int count = voteCountList[id];
 
                 //投票数が他プレイヤーと同数ならリストに追加
+                Debug.Log(player.NickName);
+                Debug.Log(player.CustomProperties["voteNum"]);
                 if (player.CustomProperties["voteNum"] != null) {
                     if (mostVotes == (int)player.CustomProperties["voteNum"]) {
                         ExecutionPlayerList.Add(chatSystem.playersList[player.ActorNumber - 1]);
