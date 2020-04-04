@@ -155,6 +155,7 @@ MonoBehaviour:
   iconNo: 0
   isVoteFlag: 0
   voteNum: 0
+  votingCompletedNum: 0
   isRollAction: 0
   def: 0
 --- !u!222 &5807723990393611466

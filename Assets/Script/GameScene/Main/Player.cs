@@ -40,6 +40,7 @@ public class Player : MonoBehaviourPunCallbacks {
     //投票関連
     public bool isVoteFlag; //投票を下か否か　falseなら非投票
     public int voteNum;//そのPlayerの投票数
+    public bool votingCompletedNum;
     //夜の行動
     public bool isRollAction;//夜の行動をとったか否か
 
@@ -175,12 +176,14 @@ public class Player : MonoBehaviourPunCallbacks {
             switch (gameManager.timeController.timeType)
             {
                 case TIME.投票時間:
+                    //ここでは投票をするだけで他プレイヤーとの比較判定はしない
+                    //比較はVoteCount.csで行われる
                     if (!chatSystem.myPlayer.isVoteFlag && live) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                             //Photonが用意しているActorNumberという数字とPLayerクラスが持っているPlayerIDが合致したら
                             //playerIDはActorNumberからもらっているから合致したら同じ番号を持っているクラスだといえる
                             if (player.ActorNumber == playerID) {
-
+                            
                                 //最新の投票数を取得する
 
                                 //指定されたplayerのキーに登録する
@@ -190,12 +193,20 @@ public class Player : MonoBehaviourPunCallbacks {
                                 Debug.Log("投票前の投票数" + voteNum);
                                 voteNum++;
                                 var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                {"voteNum", voteNum }
-                            };
+                                    {"voteNum", voteNum }
+                                };
                                 player.SetCustomProperties(propertiers);
-                                Debug.Log((int)player.CustomProperties["voteNum"]);
-                                Debug.Log("投票時のPlayerList" + PhotonNetwork.PlayerList);
-                                Debug.Log("投票時のPlayerList" + player.NickName);
+
+                                //全てのプレイヤーが投票したら時短される処理を追加
+                                if (player.CustomProperties.TryGetValue("VotingCompletedNum", out object VotingCompletedNumObj)) {
+                                    votingCompletedNum = (bool)VotingCompletedNumObj;
+                                }
+                                votingCompletedNum = true;
+                                var num = new ExitGames.Client.Photon.Hashtable {
+                                    {"VotingCompletedNum",votingCompletedNum }
+                                };
+                                player.SetCustomProperties(num);
+
                                 //ディクショナリー
                                 voteCount.voteCountList[playerID] = voteNum;
                                 //投票のチャット表示
@@ -204,20 +215,24 @@ public class Player : MonoBehaviourPunCallbacks {
                                 //Debug.Log("player.ActorNumber:" + player.ActorNumber);
                                 //Debug.Log("voteNum:" + voteNum);
                                 Debug.Log("投票完了");
+
+                                
                             }
                         }
-                    }
-                    //ここでは投票をするだけで他プレイヤーとの比較判定はしない
-                    //比較はVoteCount.csで行われる
-                    chatSystem.myPlayer.isVoteFlag = true;
+                        chatSystem.myPlayer.isVoteFlag = true;
 
-                    //foreach (Player player in chatSystem.playersList) {
-                    //    if (player.live && !player.isVoteFlag) {
-                            
-                    //    }
+
+                        //全てのプレイヤーが投票したら時短
                         
-                    //}
-                    //timeController.isVotingCompleted = true;
+                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                            Debug.Log((bool)player.CustomProperties["VotingCompletedNum"]);
+                            if (live && !(bool)player.CustomProperties["VotingCompletedNum"]) {
+                                break;
+                            }
+                        }
+                        timeController.isVotingCompleted = true;
+                    }
+
                     break;
 
                 case TIME.夜の行動:

@@ -342,9 +342,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
                         //生き残ったプレイヤーのVoteCountを０にする
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                             var properties = new ExitGames.Client.Photon.Hashtable {
-                            {"voteNum", 0 }
+                            {"voteNum", 0 },
+                            {"VotingCompletedNum",false }
                         };
                             Debug.Log(player.CustomProperties["voteNum"]);
+                            Debug.Log(player.CustomProperties["VotingCompletedNum"]);
                             player.SetCustomProperties(properties);
                         }
                     }
