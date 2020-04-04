@@ -73,18 +73,11 @@ public class Player : MonoBehaviourPunCallbacks {
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
 
 
-
             //voteCountをプロパティーにセット
-
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                    if (player.ActorNumber == playerID) {
-                        var properties = new ExitGames.Client.Photon.Hashtable {
-                    {"voteNum", voteNum }
-                };
-                        player.SetCustomProperties(properties);
-                    break;
-                }
-            }
+            var properties = new ExitGames.Client.Photon.Hashtable {
+                {"voteNum", voteNum }
+            };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
 
             //このクラスは参加人数が9人の場合81個ある状態になる。
             //上の9人分を除いた、72個分をこちらで処理する
@@ -182,7 +175,7 @@ public class Player : MonoBehaviourPunCallbacks {
             switch (gameManager.timeController.timeType)
             {
                 case TIME.投票時間:
-                    if (!chatSystem.myPlayer.isVoteFlag) {
+                    if (!chatSystem.myPlayer.isVoteFlag && live) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                             //Photonが用意しているActorNumberという数字とPLayerクラスが持っているPlayerIDが合致したら
                             //playerIDはActorNumberからもらっているから合致したら同じ番号を持っているクラスだといえる

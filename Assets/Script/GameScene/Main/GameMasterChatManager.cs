@@ -259,8 +259,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 
                 //処刑されなかったプレイヤーの表示
                 foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                    if(player.ActorNumber == playerObj.playerID ) {
-                        //&& (int)player.CustomProperties["voteNum"] != 0
+                    if(player.ActorNumber == playerObj.playerID && (int)player.CustomProperties["voteNum"] != 0) {
+
+
                         Debug.Log("投票時のPlayerList" + PhotonNetwork.PlayerList);
                         Debug.Log("投票時のPlayerList" + player.NickName);
                         Debug.Log("投票数" + player.CustomProperties["voteNum"]);

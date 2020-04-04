@@ -151,12 +151,12 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         gameManager.SetLiveNum();
 
         //生き残ったプレイヤーのVoteCountを０にする
-        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-            var properties = new ExitGames.Client.Photon.Hashtable {
-                {"voteNum", 0 }
-            };
-            player.SetCustomProperties(properties);
-        }
+        //foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+        //    var properties = new ExitGames.Client.Photon.Hashtable {
+        //        {"voteNum", 0 }
+        //    };
+        //    player.SetCustomProperties(properties);
+        //}
 
 
         ////ディクショナリーの初期化

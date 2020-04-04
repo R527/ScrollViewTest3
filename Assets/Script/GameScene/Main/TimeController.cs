@@ -336,6 +336,20 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //処刑後チェック
                 case TIME.処刑:
                     timeType = TIME.処刑後チェック;
+                    chatSystem.myPlayer.isVoteFlag = false;
+
+                    if (PhotonNetwork.IsMasterClient) {
+                        //生き残ったプレイヤーのVoteCountを０にする
+                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                            var properties = new ExitGames.Client.Photon.Hashtable {
+                            {"voteNum", 0 }
+                        };
+                            Debug.Log(player.CustomProperties["voteNum"]);
+                            player.SetCustomProperties(properties);
+                        }
+                    }
+
+
                     totalTime = checkGameOverTime;
                     //生存者数を取得
                     gameManager.liveNum = gameManager.GetLiveNum();
