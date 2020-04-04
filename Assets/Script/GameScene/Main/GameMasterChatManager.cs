@@ -207,8 +207,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// 投票を完了させる
     /// </summary>
-    public void Voted(Photon.Realtime.Player player, bool live, bool wolf) {
-        if(!live && wolf) {
+    public void Voted(Photon.Realtime.Player player, bool live) {
+        if(!live) {
             Debug.Log("押せません");
             return;
         }
@@ -216,13 +216,13 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんは" + player.NickName + "に投票しました。";
 
         //設定で投票を開示するか否か
-        if (RoomData.instance.roomInfo.openVoting == VOTING.開示しない) {
+        //if (RoomData.instance.roomInfo.openVoting == VOTING.開示しない) {
             //開示しない場合
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        } else {
-            //開示する場合
-            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
-        }
+        //} else {
+        //    //開示する場合
+        //    gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        //}
 
         //投票開示する場合は一旦全てのプレイヤーにOFFLINEで表示し、そのあとまとめて投票先を表記する
         //その際には投票先に合わせて表記を整頓する
@@ -254,6 +254,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 string str = string.Empty;
                 foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                     if(player.ActorNumber == playerObj.playerID) {
+                        Debug.Log("投票時のPlayerList" + PhotonNetwork.PlayerList);
+                        Debug.Log("投票時のPlayerList" + player.NickName);
+                        Debug.Log("投票数" + (int)player.CustomProperties["voteNum"]);
                         str = playerObj.playerName + ": " + (int)player.CustomProperties["voteNum"] + "票\r\n";
                     }
                 }

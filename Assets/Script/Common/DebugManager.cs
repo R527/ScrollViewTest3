@@ -22,6 +22,7 @@ public class DebugManager : MonoBehaviour
     public int enterNum;//GameManagerの参加希望人数設定
     public VOTING openVoting;
     public FORTUNETYPE fortuneType;
+    public TIME timeType;
 
 
 

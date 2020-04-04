@@ -194,10 +194,12 @@ public class Player : MonoBehaviourPunCallbacks {
                             };
                                 player.SetCustomProperties(propertiers);
                                 Debug.Log((int)player.CustomProperties["voteNum"]);
+                                Debug.Log("投票時のPlayerList" + PhotonNetwork.PlayerList);
+                                Debug.Log("投票時のPlayerList" + player.NickName);
                                 //ディクショナリー
                                 voteCount.voteCountList[playerID] = voteNum;
                                 //投票のチャット表示
-                                gameManager.gameMasterChatManager.Voted(player, live,  wolf);
+                                gameManager.gameMasterChatManager.Voted(player, live);
 
                                 //Debug.Log("player.ActorNumber:" + player.ActorNumber);
                                 //Debug.Log("voteNum:" + voteNum);

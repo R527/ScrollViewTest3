@@ -74,6 +74,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             executionTime = DebugManager.instance.testExecutionTime;
             checkGameOverTime = DebugManager.instance.testCheckGameOverTime;
             resultTime = DebugManager.instance.testResultTime;
+            timeType = DebugManager.instance.timeType;
         }
 
         //狼の場合

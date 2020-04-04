@@ -82,55 +82,56 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                 //int count = voteCountList[id];
 
                 //投票数が他プレイヤーと同数ならリストに追加
-
                 if (player.CustomProperties["voteNum"] != null) {
                     if (mostVotes == (int)player.CustomProperties["voteNum"]) {
-                        ExecutionPlayerList.Add(chatSystem.playersList[player.ActorNumber]);
+                        ExecutionPlayerList.Add(chatSystem.playersList[player.ActorNumber - 1]);
                         //投票数が他プレイヤーより多いならListから削除して追加
                     } else if (mostVotes < (int)player.CustomProperties["voteNum"]) {
                         mostVotes = (int)player.CustomProperties["voteNum"];
                         ExecutionPlayerList.Clear();
-                        ExecutionPlayerList.Add(chatSystem.playersList[player.ActorNumber]);
+
+                        ExecutionPlayerList.Add(chatSystem.playersList[player.ActorNumber - 1]);
                     }
                 }
             }
 
         //ランダム処刑処理or処刑処理
-        if(ExecutionPlayerList.Count >= 2) {
-            mostVotePlayer = ExecutionPlayerList[Random.Range(0, ExecutionPlayerList.Count)];
-        } else {
-            //最多投票が一人の場合
-            mostVotePlayer = ExecutionPlayerList[0];
-        }
-        //決定したプレイヤーを処刑処理する
-        foreach(Player playerObj in chatSystem.playersList) {
-            if (playerObj.playerID == mostVotePlayer.playerID) {
-
-                //プレイヤーの死亡処理
-                playerObj.live = false;
-
-                //プレイヤーの共有
-
-                executionID = mostVotePlayer.playerID;
-                SetExecutionPlayerID();
-                Debug.Log("executionID" + executionID);
-
-                ////マスターだけがIDをもらう
-                //if (PhotonNetwork.IsMasterClient) {
-                //executionID = GetExecutionPlayerID();
-                //Debug.Log("executionID" + executionID);
-                //}
-
-                //処刑されたプレイヤーをリストから削除する
-                //foreach (Player player in chatSystem.playersList) {
-                //    if (playerObj.playerID == executionPlayer.playerID) {
-
-                    //chatSystem.playersList.Remove(playerObj);
-                    break;
-                 }
-                //}
+            if(ExecutionPlayerList.Count >= 2) {
+                mostVotePlayer = ExecutionPlayerList[Random.Range(0, ExecutionPlayerList.Count)];
+            } else {
+                //最多投票が一人の場合
+                mostVotePlayer = ExecutionPlayerList[0];
             }
-        }
+            //決定したプレイヤーを処刑処理する
+            foreach(Player playerObj in chatSystem.playersList) {
+                if (playerObj.playerID == mostVotePlayer.playerID) {
+
+                    //プレイヤーの死亡処理
+                    playerObj.live = false;
+
+                    //プレイヤーの共有
+
+                    executionID = mostVotePlayer.playerID;
+                    executionPlayerName = mostVotePlayer.playerName;
+                    SetExecutionPlayerID();
+                    Debug.Log("executionID" + executionID);
+
+                    ////マスターだけがIDをもらう
+                    //if (PhotonNetwork.IsMasterClient) {
+                    //executionID = GetExecutionPlayerID();
+                    //Debug.Log("executionID" + executionID);
+                    //}
+
+                    //処刑されたプレイヤーをリストから削除する
+                    //foreach (Player player in chatSystem.playersList) {
+                    //    if (playerObj.playerID == executionPlayer.playerID) {
+
+                        //chatSystem.playersList.Remove(playerObj);
+                        break;
+                     }
+                    //}
+                }
+            }
 
         
         //マスター以外のプレイヤーに処刑したプレイヤーの死亡処理をする
