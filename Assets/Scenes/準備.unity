@@ -279,7 +279,7 @@ MonoBehaviour:
   testResultTime: 3
   num: 7
   enterNum: 7
-  openVoting: 1
+  openVoting: 0
   fortuneType: 1
   timeType: 0
   isTestPlay: 1

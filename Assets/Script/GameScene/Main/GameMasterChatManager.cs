@@ -237,8 +237,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             string strList = string.Empty;
             string str = string.Empty;
+            string yajirusi = string.Empty;
             string testNameList = string.Empty;
-            string votingNameList = string.Empty;
+            string votingNameList = string.Empty;//投票数を表示するリスト
+            string votedNameList = string.Empty;//投票された名前を表示するリスト
 
             //処刑されたプレイヤーの表示
             Debug.Log("voteCount.executionID" + voteCount.executionID);
@@ -261,11 +263,14 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                     if(player.ActorNumber == playerObj.playerID && (int)player.CustomProperties["voteNum"] != 0) {
 
-
                         Debug.Log("投票時のPlayerList" + PhotonNetwork.PlayerList);
                         Debug.Log("投票時のPlayerList" + player.NickName);
                         Debug.Log("投票数" + player.CustomProperties["voteNum"]);
-                        strList = playerObj.playerName + ": " + player.CustomProperties["voteNum"] + "票\r\n";
+                        if (RoomData.instance.roomInfo.openVoting == VOTING.開示する) {
+                            yajirusi = "←";
+                            votedNameList = voteCount.voteNameTable[playerObj.playerID];
+                        }
+                        strList = playerObj.playerName + ": " + player.CustomProperties["voteNum"] + "票" + yajirusi + votedNameList;
                         str = "\r\n\r\n";
 
                     }

@@ -123,7 +123,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     void Update() {
         //全員の投票が完了したら
-        if (isVotingCompleted　&& PhotonNetwork.IsMasterClient) {
+        if (GetIsVotingCompleted() && PhotonNetwork.IsMasterClient) {
+            isVotingCompleted = false;
+            SetIsVotingCompleted();
             totalTime = 0;
             SetGameTime();
         }
@@ -280,7 +282,24 @@ public class TimeController : MonoBehaviourPunCallbacks {
                         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
         Debug.Log((TIME)PhotonNetwork.CurrentRoom.CustomProperties["timeType"]);
-    } 
+    }
+
+    /// <summary>
+    /// 全員が投票完了したらtrue
+    /// </summary>
+    public bool GetIsVotingCompleted() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isVotingCompleted", out object isVotingCompletedObj)) {
+            isVotingCompleted = (bool)isVotingCompletedObj;
+        }
+        return isVotingCompleted;
+    }
+
+    public void SetIsVotingCompleted() {
+        var propertis = new ExitGames.Client.Photon.Hashtable {
+                                    {"isVotingCompleted",isVotingCompleted }
+                                };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
+    }
 
     /// <summary>
     /// インターバルを決定する

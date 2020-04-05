@@ -13,7 +13,8 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     public GameManager gameManager;
 
     //main
-    public Dictionary<int,int> voteCountList = new Dictionary<int, int>();
+    public Dictionary<int,int> voteCountTable = new Dictionary<int, int>();
+    public Dictionary<int, string> voteNameTable = new Dictionary<int, string>();
     public List<Player> ExecutionPlayerList = new List<Player>();
     public int mostVotes;
     public Player mostVotePlayer;//処刑ナンバー
@@ -29,7 +30,8 @@ public class VoteCount : MonoBehaviourPunCallbacks {
 
         //投票用のListを作成
         for (int i = 0; i < numLimit; i++) {
-            voteCountList.Add(i + 1,0);
+            voteCountTable.Add(i + 1,0);
+            voteNameTable.Add(i + 1,string.Empty);
         }
 
     }

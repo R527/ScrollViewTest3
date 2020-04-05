@@ -40,7 +40,8 @@ public class Player : MonoBehaviourPunCallbacks {
     //投票関連
     public bool isVoteFlag; //投票を下か否か　falseなら非投票
     public int voteNum;//そのPlayerの投票数
-    public bool votingCompletedNum;
+    public int votingCompletedNum;
+    public bool isVotingCompleted;
     //夜の行動
     public bool isRollAction;//夜の行動をとったか否か
 
@@ -129,6 +130,13 @@ public class Player : MonoBehaviourPunCallbacks {
     }
 
 
+    /// <summary>
+    /// PunRPCでChatNodeを生成する　プレイヤーがMineかOhtersの設定　ちゃっとDataをの設定
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="inputData"></param>
+    /// <param name="boardColor"></param>
+    /// <param name="comingOut"></param>
     [PunRPC]
     public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut) {
         Debug.Log("RPC START");
@@ -152,6 +160,17 @@ public class Player : MonoBehaviourPunCallbacks {
         Debug.Log(comingOut);
         chatSystem.SetChatNode(chatNode, chatData, comingOut);
         Debug.Log("Player RPC END");
+    }
+
+    /// <summary>
+    /// 投票の完了数
+    /// </summary>
+    /// <returns></returns>
+    private int GetVotingCompletedNum() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("VotingCompletedNum", out object VotingCompletedNumObj)) {
+            votingCompletedNum = (int)VotingCompletedNumObj;
+        }
+        return votingCompletedNum;
     }
 
 
@@ -190,25 +209,28 @@ public class Player : MonoBehaviourPunCallbacks {
                                 if (player.CustomProperties.TryGetValue("voteNum", out object voteCountObj)) {
                                     voteNum = (int)voteCountObj;
                                 }
-                                Debug.Log("投票前の投票数" + voteNum);
                                 voteNum++;
+
                                 var propertiers = new ExitGames.Client.Photon.Hashtable {
                                     {"voteNum", voteNum }
                                 };
                                 player.SetCustomProperties(propertiers);
 
+                                
+
                                 //全てのプレイヤーが投票したら時短される処理を追加
-                                if (player.CustomProperties.TryGetValue("VotingCompletedNum", out object VotingCompletedNumObj)) {
-                                    votingCompletedNum = (bool)VotingCompletedNumObj;
-                                }
-                                votingCompletedNum = true;
+                                votingCompletedNum = GetVotingCompletedNum();
+                                votingCompletedNum++;
                                 var num = new ExitGames.Client.Photon.Hashtable {
                                     {"VotingCompletedNum",votingCompletedNum }
                                 };
-                                player.SetCustomProperties(num);
+                                PhotonNetwork.CurrentRoom.SetCustomProperties(num);
 
-                                //ディクショナリー
-                                voteCount.voteCountList[playerID] = voteNum;
+                                //投票数の表示をディクショナリーで管理
+                                voteCount.voteCountTable[playerID] = voteNum;
+                                //投票先に自分の名前を記載をディクショナリーで管理
+                                voteCount.voteNameTable[playerID] = chatSystem.myPlayer.playerName;
+                                Debug.Log(voteCount.voteNameTable[playerID]);
                                 //投票のチャット表示
                                 gameManager.gameMasterChatManager.Voted(player, live);
 
@@ -221,16 +243,15 @@ public class Player : MonoBehaviourPunCallbacks {
                         }
                         chatSystem.myPlayer.isVoteFlag = true;
 
-
                         //全てのプレイヤーが投票したら時短
-                        
-                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                            Debug.Log((bool)player.CustomProperties["VotingCompletedNum"]);
-                            if (live && !(bool)player.CustomProperties["VotingCompletedNum"]) {
-                                break;
-                            }
+                        Debug.Log("生存数" + gameManager.liveNum);
+                        Debug.Log("投票完了数" + GetVotingCompletedNum());
+                        if (gameManager.liveNum == GetVotingCompletedNum()) {
+                            timeController.isVotingCompleted = timeController.GetIsVotingCompleted();
+                            timeController.isVotingCompleted = true;
+                            timeController.SetIsVotingCompleted();
+                            Debug.Log("全員投票完了");
                         }
-                        timeController.isVotingCompleted = true;
                     }
 
                     break;
