@@ -229,7 +229,7 @@ public class Player : MonoBehaviourPunCallbacks {
                                 //投票数の表示をディクショナリーで管理
                                 voteCount.voteCountTable[playerID] = voteNum;
                                 //投票先に自分の名前を記載をディクショナリーで管理
-                                voteCount.voteNameTable[playerID] = chatSystem.myPlayer.playerName;
+                                voteCount.voteNameTable[playerID] += chatSystem.myPlayer.playerName + ",";
                                 Debug.Log(voteCount.voteNameTable[playerID]);
                                 //投票のチャット表示
                                 gameManager.gameMasterChatManager.Voted(player, live);

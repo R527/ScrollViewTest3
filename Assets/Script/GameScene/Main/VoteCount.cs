@@ -65,7 +65,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     /// 処刑されたプレイヤーをもらう
     /// </summary>
     /// <returns></returns>
-    private int GetExecutionPlayerID() {
+    public int GetExecutionPlayerID() {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("executionID", out object executionIDObj)) {
             executionID = (int)executionIDObj;
         }

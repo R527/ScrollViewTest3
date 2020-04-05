@@ -154,7 +154,6 @@ MonoBehaviour:
     type: 3}
   iconNo: 0
   isVoteFlag: 0
-  voteNameList: 
   voteNum: 0
   votingCompletedNum: 0
   isVotingCompleted: 0

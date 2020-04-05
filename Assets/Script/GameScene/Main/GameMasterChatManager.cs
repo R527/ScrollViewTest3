@@ -281,8 +281,11 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             votingNameList = testNameList.TrimEnd();
 
             //GMチャットの表示
-            //Debug.Log("処刑されたプレイヤー" + voteCount);
-            gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + ": " + PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"] + "票" + str + votingNameList;
+            Debug.Log(voteCount.GetExecutionPlayerID());
+            Debug.Log(voteCount.voteNameTable[2]);
+            Debug.Log(voteCount.voteNameTable[1]);
+            Debug.Log("処刑されたプレイヤーに投票したプレイヤー" + voteCount.voteNameTable[voteCount.GetExecutionPlayerID()]);
+            gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + ": " + PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"] + "票" + yajirusi + voteCount.voteNameTable[voteCount.GetExecutionPlayerID()] + str + votingNameList;
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         }
     }
