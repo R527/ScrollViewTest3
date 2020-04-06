@@ -364,8 +364,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                             {"voteNum", 0 },
                             {"voteName", ""},
                         };
-                            Debug.Log(player.CustomProperties["voteNum"]);
-                            Debug.Log(player.CustomProperties["voteName"]);
+                            Debug.Log((int)player.CustomProperties["voteNum"]);
+                            Debug.Log((string)player.CustomProperties["voteName"]);
                             player.SetCustomProperties(properties);
                         }
 

@@ -227,6 +227,8 @@ public class Player : MonoBehaviourPunCallbacks {
                                     {"voteName", voteName },
                                     {"voteNum", voteNum }
                                 };
+                                Debug.Log((int)player.CustomProperties["voteNum"]);
+                                Debug.Log((string)player.CustomProperties["voteName"]);
                                 player.SetCustomProperties(propertiers);
 
 

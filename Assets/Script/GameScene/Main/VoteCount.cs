@@ -15,10 +15,10 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     //main
     public Dictionary<int,int> voteCountTable = new Dictionary<int, int>();
     public Dictionary<int, string> voteNameTable = new Dictionary<int, string>();
-    public List<Player> ExecutionPlayerList = new List<Player>();
+    public List<Photon.Realtime.Player> ExecutionPlayerList = new List<Photon.Realtime.Player>();
     public int mostVotes;
-    public Player mostVotePlayer;//処刑ナンバー
-    public Player executionPlayer;
+    public Photon.Realtime.Player mostVotePlayer;//処刑ナンバー
+    public Photon.Realtime.Player executionPlayer;
     public string executionPlayerName;
     public int executionID = 999;
 
@@ -88,13 +88,13 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                 Debug.Log(player.CustomProperties["voteNum"]);
                 if (player.CustomProperties["voteNum"] != null) {
                     if (mostVotes == (int)player.CustomProperties["voteNum"]) {
-                        ExecutionPlayerList.Add(chatSystem.playersList[player.ActorNumber - 1]);
+                        ExecutionPlayerList.Add(player);
                         //投票数が他プレイヤーより多いならListから削除して追加
                     } else if (mostVotes < (int)player.CustomProperties["voteNum"]) {
                         mostVotes = (int)player.CustomProperties["voteNum"];
                         ExecutionPlayerList.Clear();
 
-                        ExecutionPlayerList.Add(chatSystem.playersList[player.ActorNumber - 1]);
+                        ExecutionPlayerList.Add(player);
                     }
                 }
             }
@@ -107,16 +107,20 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                 mostVotePlayer = ExecutionPlayerList[0];
             }
             //決定したプレイヤーを処刑処理する
-            foreach(Player playerObj in chatSystem.playersList) {
-                if (playerObj.playerID == mostVotePlayer.playerID) {
+            foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                if (player.ActorNumber == mostVotePlayer.ActorNumber) {
 
+                    var properties = new ExitGames.Client.Photon.Hashtable {
+                            {"live", false}
+                    };
+                    player.SetCustomProperties(properties);
                     //プレイヤーの死亡処理
-                    playerObj.live = false;
+                    //playerObj.live = false;
 
                     //プレイヤーの共有
 
-                    executionID = mostVotePlayer.playerID;
-                    executionPlayerName = mostVotePlayer.playerName;
+                    executionID = mostVotePlayer.ActorNumber;
+                    executionPlayerName = mostVotePlayer.NickName;
                     SetExecutionPlayerID();
                     Debug.Log("executionID" + executionID);
 
@@ -131,20 +135,17 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                     //    if (playerObj.playerID == executionPlayer.playerID) {
 
                         //chatSystem.playersList.Remove(playerObj);
-                        break;
+                break;
                      }
-                    //}
                 }
             }
 
         
         //マスター以外のプレイヤーに処刑したプレイヤーの死亡処理をする
-        if (!PhotonNetwork.IsMasterClient) {
-            foreach (Player playerObj in chatSystem.playersList) {
-                if(GetExecutionPlayerID() == playerObj.playerID) {
-                    playerObj.live = false;
-                    break;
-                }
+        foreach (Player player in chatSystem.playersList) {
+            if(GetExecutionPlayerID() == player.playerID) {
+                player.live = false;
+                break;
             }
         }
         

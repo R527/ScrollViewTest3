@@ -255,7 +255,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 //処刑されるプレイヤーに投票したプレイヤー名の表示
                 foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                     //PhotonのActorNumberとIDを合致させる
-                    if (RoomData.instance.roomInfo.openVoting == VOTING.開示する && voteCount.mostVotePlayer.playerID == player.ActorNumber) {
+                    if (RoomData.instance.roomInfo.openVoting == VOTING.開示する && voteCount.mostVotePlayer.ActorNumber == player.ActorNumber) {
                         mostVotingNameList = (string)player.CustomProperties["voteName"];
                         Debug.Log(mostVotingNameList);
                     }
@@ -300,19 +300,19 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 霊能者の行動を制御(役職増えると、ここに別の処理を加える
     /// </summary>
     public void PsychicAction() {
-        if (gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.霊能者 && gameManager.chatSystem.myPlayer.live) {
-            if (voteCount.executionPlayer == null) {
-                return;
-            }
-            if (voteCount.executionPlayer.fortune == true) {
-                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.playerName + "は人狼（黒）です。";
-                Debug.Log(voteCount.mostVotePlayer + "人狼");
-            } else {
-                gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.playerName + "は人狼ではない（白）です。";
-                Debug.Log(voteCount.mostVotePlayer + "人狼ではない");
-            }
-            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        }
+        //if (gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.霊能者 && gameManager.chatSystem.myPlayer.live) {
+        //    if (voteCount.executionPlayer == null) {
+        //        return;
+        //    }
+        //    if (voteCount.executionPlayer.wolf == true) {
+        //        gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.NickName + "は人狼（黒）です。";
+        //        Debug.Log(voteCount.mostVotePlayer + "人狼");
+        //    } else {
+        //        gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.NickName + "は人狼ではない（白）です。";
+        //        Debug.Log(voteCount.mostVotePlayer + "人狼ではない");
+        //    }
+        //    gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        //}
     }
 
 
