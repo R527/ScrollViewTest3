@@ -155,6 +155,7 @@ MonoBehaviour:
   iconNo: 0
   isVoteFlag: 0
   voteNum: 0
+  voteName: 
   votingCompletedNum: 0
   isVotingCompleted: 0
   isRollAction: 0

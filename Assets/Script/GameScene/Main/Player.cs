@@ -40,6 +40,7 @@ public class Player : MonoBehaviourPunCallbacks {
     //投票関連
     public bool isVoteFlag; //投票を下か否か　falseなら非投票
     public int voteNum;//そのPlayerの投票数
+    public string voteName;//投票したプレイヤーの名前を記載
     public int votingCompletedNum;
     public bool isVotingCompleted;
     //夜の行動
@@ -216,7 +217,18 @@ public class Player : MonoBehaviourPunCallbacks {
                                 };
                                 player.SetCustomProperties(propertiers);
 
-                                
+                                //投票したプレイヤーの名前を登録します
+                                if (player.CustomProperties.TryGetValue("voteName", out object voteNameObj)) {
+                                    voteName = (string)voteNameObj;
+                                }
+                                voteName += chatSystem.myPlayer.playerName + ",";
+
+                                var name = new ExitGames.Client.Photon.Hashtable {
+                                    {"voteName", voteName }
+                                };
+                                player.SetCustomProperties(name);
+
+
 
                                 //全てのプレイヤーが投票したら時短される処理を追加
                                 votingCompletedNum = GetVotingCompletedNum();
@@ -228,8 +240,8 @@ public class Player : MonoBehaviourPunCallbacks {
 
                                 //投票数の表示をディクショナリーで管理
                                 voteCount.voteCountTable[playerID] = voteNum;
-                                //投票先に自分の名前を記載をディクショナリーで管理
-                                voteCount.voteNameTable[playerID] += chatSystem.myPlayer.playerName + ",";
+                                
+                                
                                 Debug.Log(voteCount.voteNameTable[playerID]);
                                 //投票のチャット表示
                                 gameManager.gameMasterChatManager.Voted(player, live);
