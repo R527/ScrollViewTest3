@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     void Start() {
 
-        if (DebugManager.instance.isDebug) {
+        if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
             num = DebugManager.instance.num;
             enterNum = DebugManager.instance.enterNum;
         }
@@ -526,13 +526,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator CreatePlayers() {
-        Debug.Log("CreatePlayers:通過");
+        //Debug.Log("CreatePlayers:通過");
         //各自が自分の分のプレイヤーを作る
         CreatePlayerObj();
 
         //自分が参加者全員のプレイヤーをもらってリストにする
         yield return StartCoroutine(SetPlayerData());
-        Debug.Log("Playerリスト　作成完了");
+        //Debug.Log("Playerリスト　作成完了");
 
         //参加者全員がPlayerのリストを作りおわるまで（上の処理が終わるまで）待機する
         //WatiUntilは条件を満たすまで待機（Trueになるまで）
@@ -549,7 +549,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         rollExplanation.RollExplanationSetUp(rollTypeList);
         chatSystem.OnClickPlayerID();
         timeController.Init(isOffline);
-        Debug.Log("timeController.Init");
         chatListManager.PlayerListSetUp(numLimit, chatSystem.myPlayer.wolfChat, chatSystem.myPlayer.live);
         voteCount.VoteCountListSetUp(numLimit);
         liveNum = PhotonNetwork.PlayerList.Length;
@@ -563,7 +562,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             fillter.wolfModeButton.interactable = false;
             fillter.wolfMode = true;
         }
-        Debug.Log("参加者全員がPlayerList　準備OK");
+        //Debug.Log("参加者全員がPlayerList　準備OK");
     }
 
     /// <summary>
@@ -590,7 +589,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //自分のプレイヤークラスを使う時用。
             chatSystem.myPlayer = player;
             Debug.Log("Player" + chatSystem.myPlayer);
-            player.PlayerSetUp(this);
+            player.PlayerSetUp(this,voteCount,timeController);
         }
     }
 
@@ -599,7 +598,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator SetPlayerData() {
-        Debug.Log("SetPlayerData:Start");
+        //Debug.Log("SetPlayerData:Start");
         GameObject[] playerObjs = GameObject.FindGameObjectsWithTag("Player");
 
         //whileの条件式を満たしている間は、繰り返す。
@@ -615,7 +614,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //全キャラのPlayerSetUpを実行
         foreach (GameObject playerObj in playerObjs) {
             Player player = playerObj.GetComponent<Player>();
-            player.PlayerSetUp(this);
+            player.PlayerSetUp(this,voteCount,timeController);
             //各リストに登録
             chatSystem.playersList.Add(player);
             chatSystem.playerNameList.Add(player.playerName);
@@ -652,7 +651,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 retReadyPlayerCount++;
             }
         }
-        Debug.Log(retReadyPlayerCount);
+        //Debug.Log(retReadyPlayerCount);
         return retReadyPlayerCount;
     }
 
@@ -678,7 +677,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         if (DebugManager.instance.isDebug) {
-            Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"]);
+            //Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"]);
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
             RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
             //Debug.Log("isDebugOn");

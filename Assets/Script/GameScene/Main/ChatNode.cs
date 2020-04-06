@@ -62,7 +62,7 @@ public class ChatNode : MonoBehaviour {
                     "CO】";
             }
         }
-        Debug.Log(chatData.chatType);
+        //Debug.Log(chatData.chatType);
         //発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
         if (chatData.chatType == CHAT_TYPE.MINE) {
             Debug.Log("UpperRight");

@@ -50,6 +50,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public TIME timeType;
     public bool isGameOver;//falseならゲームオーバー
     private float cheakTimer;//1秒ごとに時間を管理する
+    public bool isVotingCompleted;
 
     //x日　GMのチャット追加
     public GameObject chatContent;
@@ -67,6 +68,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
         timeType = TIME.処刑後チェック;
         savingButton.interactable = true;
 
+
+        //Debug用
+        if (DebugManager.instance.isDebug) {
+            votingTime = DebugManager.instance.testVotingTime;
+            executionTime = DebugManager.instance.testExecutionTime;
+            checkGameOverTime = DebugManager.instance.testCheckGameOverTime;
+            resultTime = DebugManager.instance.testResultTime;
+            timeType = DebugManager.instance.timeType;
+        }
 
         //狼の場合
         if (chatSystem.myPlayer.wolfChat) {
@@ -94,12 +104,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 {"timeType",timeType }
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-            Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
-            Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["isPlaying"]);
-            Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["gameReady"]);
+            //Debug.Log((float)PhotonNetwork.CurrentRoom.CustomProperties["totalTime"]);
+            //Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["isPlaying"]);
+            //Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["gameReady"]);
             Debug.Log((TIME)PhotonNetwork.CurrentRoom.CustomProperties["timeType"]);
         }
-        Debug.Log("Init時のTimeType"　+ timeType);
 
         // 本当の姿を表示する
         gameMasterChatManager.TrueCharacter();
@@ -113,6 +122,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// カウントダウンタイマー
     /// </summary>
     void Update() {
+        //全員の投票が完了したら
+        if (GetIsVotingCompleted() && PhotonNetwork.IsMasterClient) {
+            isVotingCompleted = false;
+            SetIsVotingCompleted();
+            totalTime = 0;
+            SetGameTime();
+        }
         //ゲーム待機中かどうかを確認する
         if (!GetGameReady()) {
             return;
@@ -134,6 +150,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     if (cheakTimer >= 1) {
                         cheakTimer = 0;
                         totalTime--;
+
                         SetGameTime();
                     }
                     //マスター以外はトータルタイムをもらう
@@ -156,7 +173,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //isPlayingがfalseでかつトータルタイムが0以下ならStartIntervalへ
             } else if (!GetPlayState() && totalTime <= 0) {
                 timerText.text = string.Empty;
-                Debug.Log(!GetPlayState());
+                //Debug.Log(!GetPlayState());
                 //Debug.Log(totalTime);
 
                 //Debug.Log(timeType);
@@ -178,7 +195,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
-        Debug.Log("isPlaying:セット完了");
+        //Debug.Log("isPlaying:セット完了");
     }
 
     ///// <summary>
@@ -265,7 +282,24 @@ public class TimeController : MonoBehaviourPunCallbacks {
                         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
         Debug.Log((TIME)PhotonNetwork.CurrentRoom.CustomProperties["timeType"]);
-    } 
+    }
+
+    /// <summary>
+    /// 全員が投票完了したらtrue
+    /// </summary>
+    public bool GetIsVotingCompleted() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isVotingCompleted", out object isVotingCompletedObj)) {
+            isVotingCompleted = (bool)isVotingCompletedObj;
+        }
+        return isVotingCompleted;
+    }
+
+    public void SetIsVotingCompleted() {
+        var propertis = new ExitGames.Client.Photon.Hashtable {
+                                    {"isVotingCompleted",isVotingCompleted }
+                                };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
+    }
 
     /// <summary>
     /// インターバルを決定する
@@ -304,7 +338,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.投票時間;
                     votingPopup.SetActive(true);
                     totalTime = votingTime;
-                    voteCount.isVoteFlag = false;
                     TimesavingControllerFalse();
                     StartCoroutine(GameMasterChat());
                     StartCoroutine(UpInputView());
@@ -313,15 +346,37 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //処刑
                 case TIME.投票時間:
                     timeType = TIME.処刑;
-
+                    isVotingCompleted = false;
                     totalTime = executionTime;
-                    //voteCount.Execution();
-                    //gameManager.gameMasterChatManager.ExecutionChat();
+                    voteCount.Execution();
+                    gameManager.gameMasterChatManager.ExecutionChat();
                     break;
 
                 //処刑後チェック
                 case TIME.処刑:
                     timeType = TIME.処刑後チェック;
+                    chatSystem.myPlayer.isVoteFlag = false;
+
+                    if (PhotonNetwork.IsMasterClient) {
+                        //生き残ったプレイヤーのVoteCountを０にする
+                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                            var properties = new ExitGames.Client.Photon.Hashtable {
+                            {"voteNum", 0 },
+                            {"voteName", ""},
+                        };
+                            Debug.Log((int)player.CustomProperties["voteNum"]);
+                            Debug.Log((string)player.CustomProperties["voteName"]);
+                            player.SetCustomProperties(properties);
+                        }
+
+                        var num = new ExitGames.Client.Photon.Hashtable {
+                            {"VotingCompletedNum",false }
+                        };
+                        Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["VotingCompletedNum"]);
+                        PhotonNetwork.CurrentRoom.SetCustomProperties(num);
+                    }
+
+
                     totalTime = checkGameOverTime;
                     //生存者数を取得
                     gameManager.liveNum = gameManager.GetLiveNum();
@@ -351,7 +406,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.夜の結果発表;
                     totalTime = resultTime;
                     chatSystem.myPlayer.isRollAction = false;
-                    gameMasterChatManager.MorningResults();
+                    //gameMasterChatManager.MorningResults();
                     if (!firstDay) {
                         //gameMasterChatManager.MorningResults();
                     } else {
@@ -397,7 +452,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator NextDay() {
-        Debug.Log("oldday" + day);
+        //Debug.Log("oldday" + day);
         yield return new WaitForSeconds(intervalTime + 0.1f);
         day++;
         chatSystem.id++;
@@ -408,7 +463,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         dayObj.day = day;
         dayObj.nextDayText.text = day + "日目";
         nextDayList.Add(dayObj);
-        Debug.Log("newDay" + day);
+        //Debug.Log("newDay" + day);
     }
 
 
@@ -437,7 +492,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             SetPlayState(isPlaying);
         }
 
-        Debug.Log("EndInterval: 終了");
+        //Debug.Log("EndInterval: 終了");
     }
 
     public IEnumerator UpInputView() {

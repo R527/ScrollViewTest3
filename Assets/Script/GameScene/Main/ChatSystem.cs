@@ -105,7 +105,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         ChatNode chatNode = Instantiate(chatNodePrefab, content.transform, false);
         chatNode.transform.SetParent(content.transform);
 
-        Debug.Log("CreatNode:GM_ONLINE");
+        //Debug.Log("CreatNode:GM_ONLINE");
 
         ChatData chatData = new ChatData(id, inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
         chatData.chatType = CHAT_TYPE.GM;
@@ -139,7 +139,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             //Offline
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
                  chatNode = Instantiate(chatNodePrefab, content.transform, false);
-                Debug.Log("CreateNode: GM_OFFLINE");
+                //Debug.Log("CreateNode: GM_OFFLINE");
                 chatNode.InitChatNode(chatData, 0, false);
                 SetChatNode(chatNode, chatData, false);
                 //OnLine

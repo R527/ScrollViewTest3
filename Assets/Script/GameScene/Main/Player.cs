@@ -19,10 +19,11 @@ public class Player : MonoBehaviourPunCallbacks {
     public CHAT_TYPE chatType = CHAT_TYPE.MINE;
     public GameManager gameManager;
     public ChatSystem chatSystem;
+    public VoteCount voteCount;
+    public TimeController timeController;
 
     //main
     public int playerID;
-    public int voteCount;
     public Text playerText;
     public string playerName;
     public Button playerButton;
@@ -32,11 +33,18 @@ public class Player : MonoBehaviourPunCallbacks {
     public bool wolf;//狼か否か
     public bool wolfChat;//狼チャットに参加できるかどうか
     public bool wolfCamp;//狼陣営か否か
-    public bool isRollAction;
     public ChatNode chatNodePrefab;//チャットノード用のプレふぁぶ
     public int iconNo;//アイコンの絵用
     private Transform tran;
 
+    //投票関連
+    public bool isVoteFlag; //投票を下か否か　falseなら非投票
+    public int voteNum;//そのPlayerの投票数
+    public string voteName;//投票したプレイヤーの名前を記載
+    public int votingCompletedNum;
+    public bool isVotingCompleted;
+    //夜の行動
+    public bool isRollAction;//夜の行動をとったか否か
 
     //仮
     public bool def;//騎士のデバッグ用
@@ -45,11 +53,12 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
-    public void PlayerSetUp(GameManager gameManager) {
+    public void PlayerSetUp(GameManager gameManager,VoteCount voteCount,TimeController timeController) {
         //Debug.Log("Setup");
         live = true;
         this.gameManager = gameManager;
-
+        this.voteCount = voteCount;
+        this.timeController = timeController;
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
 
@@ -66,11 +75,10 @@ public class Player : MonoBehaviourPunCallbacks {
             //Networkの自分の持っている番号を追加
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
 
-            
 
             //voteCountをプロパティーにセット
             var properties = new ExitGames.Client.Photon.Hashtable {
-                {"voteCount", voteCount }
+                {"voteNum", voteNum }
             };
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
 
@@ -123,6 +131,13 @@ public class Player : MonoBehaviourPunCallbacks {
     }
 
 
+    /// <summary>
+    /// PunRPCでChatNodeを生成する　プレイヤーがMineかOhtersの設定　ちゃっとDataをの設定
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="inputData"></param>
+    /// <param name="boardColor"></param>
+    /// <param name="comingOut"></param>
     [PunRPC]
     public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut) {
         Debug.Log("RPC START");
@@ -148,6 +163,17 @@ public class Player : MonoBehaviourPunCallbacks {
         Debug.Log("Player RPC END");
     }
 
+    /// <summary>
+    /// 投票の完了数
+    /// </summary>
+    /// <returns></returns>
+    private int GetVotingCompletedNum() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("VotingCompletedNum", out object VotingCompletedNumObj)) {
+            votingCompletedNum = (int)VotingCompletedNumObj;
+        }
+        return votingCompletedNum;
+    }
+
 
     /// <summary>
     ///投票、フィルター、夜の行動を制御 
@@ -164,36 +190,86 @@ public class Player : MonoBehaviourPunCallbacks {
         //フィルター機能Off時
         //生存していて、自分以外のプレイヤーを指定
         } else if(live && !gameManager.chatListManager.isfilter && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
-            Debug.Log("その時間ごとの行動");
             //フィルター機能がOFFの時は各時間ごとの機能をする
             Debug.Log(gameManager.timeController.timeType);
 
             switch (gameManager.timeController.timeType)
             {
                 case TIME.投票時間:
-                    if (!gameManager.voteCount.isVoteFlag) {
+                    //ここでは投票をするだけで他プレイヤーとの比較判定はしない
+                    //比較はVoteCount.csで行われる
+                    if (!chatSystem.myPlayer.isVoteFlag && live) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                            //Photonが用意しているActorNumberという数字とPLayerクラスが持っているPlayerIDが合致したら
+                            //playerIDはActorNumberからもらっているから合致したら同じ番号を持っているクラスだといえる
                             if (player.ActorNumber == playerID) {
+                            
                                 //最新の投票数を取得する
-                                voteCount = (int)player.CustomProperties["voteCount"];
-                                voteCount++;
-                                var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                {"voteCount", voteCount }
-                            };
 
+                                //指定されたplayerのキーに登録する
+                                if (player.CustomProperties.TryGetValue("voteNum", out object voteCountObj)) {
+                                    voteNum = (int)voteCountObj;
+                                }
+                                voteNum++;
+
+                                //var propertiers = new ExitGames.Client.Photon.Hashtable {
+                                //    {"voteNum", voteNum }
+                                //};
+                                //player.SetCustomProperties(propertiers);
+
+                                //投票したプレイヤーの名前を登録します
+                                if (player.CustomProperties.TryGetValue("voteName", out object voteNameObj)) {
+                                    voteName = (string)voteNameObj;
+                                }
+                                voteName += chatSystem.myPlayer.playerName + ",";
+
+                                var propertiers = new ExitGames.Client.Photon.Hashtable {
+                                    {"voteName", voteName },
+                                    {"voteNum", voteNum }
+                                };
+                                Debug.Log((int)player.CustomProperties["voteNum"]);
+                                Debug.Log((string)player.CustomProperties["voteName"]);
                                 player.SetCustomProperties(propertiers);
 
-                                //投票のチャット表示
-                                gameManager.gameMasterChatManager.Voted(player, live,  wolf);
 
-                                Debug.Log("player.ActorNumber:" + player.ActorNumber);
-                                Debug.Log("voteCount:" + voteCount);
+
+                                //全てのプレイヤーが投票したら時短される処理を追加
+                                votingCompletedNum = GetVotingCompletedNum();
+                                votingCompletedNum++;
+                                var num = new ExitGames.Client.Photon.Hashtable {
+                                    {"VotingCompletedNum",votingCompletedNum }
+                                };
+                                PhotonNetwork.CurrentRoom.SetCustomProperties(num);
+
+                                //投票数の表示をディクショナリーで管理
+                                voteCount.voteCountTable[playerID] = voteNum;
+                                
+                                
+                                Debug.Log(voteCount.voteNameTable[playerID]);
+                                //投票のチャット表示
+                                gameManager.gameMasterChatManager.Voted(player, live);
+
+                                //Debug.Log("player.ActorNumber:" + player.ActorNumber);
+                                //Debug.Log("voteNum:" + voteNum);
                                 Debug.Log("投票完了");
+
+                                
                             }
                         }
+                        chatSystem.myPlayer.isVoteFlag = true;
+
+                        //全てのプレイヤーが投票したら時短
+                        //Debug.Log("生存数" + gameManager.liveNum);
+                        //Debug.Log("投票完了数" + GetVotingCompletedNum());
+                        //if (gameManager.liveNum == GetVotingCompletedNum()) {
+                        //    timeController.isVotingCompleted = timeController.GetIsVotingCompleted();
+                        //    timeController.isVotingCompleted = true;
+                        //    timeController.SetIsVotingCompleted();
+                        //    Debug.Log("全員投票完了");
+                        //}
                     }
-                        gameManager.voteCount.isVoteFlag = true;
-                        break;
+
+                    break;
 
                 case TIME.夜の行動:
                     Debug.Log("夜の行動");
