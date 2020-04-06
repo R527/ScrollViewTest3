@@ -212,10 +212,10 @@ public class Player : MonoBehaviourPunCallbacks {
                                 }
                                 voteNum++;
 
-                                var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                    {"voteNum", voteNum }
-                                };
-                                player.SetCustomProperties(propertiers);
+                                //var propertiers = new ExitGames.Client.Photon.Hashtable {
+                                //    {"voteNum", voteNum }
+                                //};
+                                //player.SetCustomProperties(propertiers);
 
                                 //投票したプレイヤーの名前を登録します
                                 if (player.CustomProperties.TryGetValue("voteName", out object voteNameObj)) {
@@ -223,10 +223,11 @@ public class Player : MonoBehaviourPunCallbacks {
                                 }
                                 voteName += chatSystem.myPlayer.playerName + ",";
 
-                                var name = new ExitGames.Client.Photon.Hashtable {
-                                    {"voteName", voteName }
+                                var propertiers = new ExitGames.Client.Photon.Hashtable {
+                                    {"voteName", voteName },
+                                    {"voteNum", voteNum }
                                 };
-                                player.SetCustomProperties(name);
+                                player.SetCustomProperties(propertiers);
 
 
 
@@ -256,14 +257,14 @@ public class Player : MonoBehaviourPunCallbacks {
                         chatSystem.myPlayer.isVoteFlag = true;
 
                         //全てのプレイヤーが投票したら時短
-                        Debug.Log("生存数" + gameManager.liveNum);
-                        Debug.Log("投票完了数" + GetVotingCompletedNum());
-                        if (gameManager.liveNum == GetVotingCompletedNum()) {
-                            timeController.isVotingCompleted = timeController.GetIsVotingCompleted();
-                            timeController.isVotingCompleted = true;
-                            timeController.SetIsVotingCompleted();
-                            Debug.Log("全員投票完了");
-                        }
+                        //Debug.Log("生存数" + gameManager.liveNum);
+                        //Debug.Log("投票完了数" + GetVotingCompletedNum());
+                        //if (gameManager.liveNum == GetVotingCompletedNum()) {
+                        //    timeController.isVotingCompleted = timeController.GetIsVotingCompleted();
+                        //    timeController.isVotingCompleted = true;
+                        //    timeController.SetIsVotingCompleted();
+                        //    Debug.Log("全員投票完了");
+                        //}
                     }
 
                     break;

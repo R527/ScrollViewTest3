@@ -254,7 +254,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             foreach(Player playerObj in gameManager.chatSystem.playersList) {
                 //処刑されるプレイヤーに投票したプレイヤー名の表示
                 foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                    if (RoomData.instance.roomInfo.openVoting == VOTING.開示する && voteCount.mostVotePlayer.playerID == playerObj.playerID) {
+                    //PhotonのActorNumberとIDを合致させる
+                    if (RoomData.instance.roomInfo.openVoting == VOTING.開示する && voteCount.mostVotePlayer.playerID == player.ActorNumber) {
                         mostVotingNameList = (string)player.CustomProperties["voteName"];
                         Debug.Log(mostVotingNameList);
                     }

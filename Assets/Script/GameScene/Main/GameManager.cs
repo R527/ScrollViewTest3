@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     void Start() {
 
-        if (DebugManager.instance.isDebug) {
+        if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
             num = DebugManager.instance.num;
             enterNum = DebugManager.instance.enterNum;
         }
