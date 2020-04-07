@@ -18,7 +18,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     public List<Photon.Realtime.Player> ExecutionPlayerList = new List<Photon.Realtime.Player>();
     public int mostVotes;
     public Photon.Realtime.Player mostVotePlayer;//処刑ナンバー
-    public Photon.Realtime.Player executionPlayer;
+    public Player executionPlayer;
     public string executionPlayerName;
     public int executionID = 999;
 

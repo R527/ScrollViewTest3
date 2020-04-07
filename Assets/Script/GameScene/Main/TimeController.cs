@@ -49,7 +49,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public GameObject nightPopup;
     public TIME timeType;
     public bool isGameOver;//falseならゲームオーバー
-    private float cheakTimer;//1秒ごとに時間を管理する
+    private float chekTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
 
     //x日　GMのチャット追加
@@ -146,9 +146,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 //マスターだけトータルタイムを管理する
                 if (PhotonNetwork.IsMasterClient) {
-                    cheakTimer += Time.deltaTime;
-                    if (cheakTimer >= 1) {
-                        cheakTimer = 0;
+                    chekTimer += Time.deltaTime;
+                    if (chekTimer >= 1) {
+                        chekTimer = 0;
                         totalTime--;
 
                         SetGameTime();
@@ -364,16 +364,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
                             {"voteNum", 0 },
                             {"voteName", ""},
                         };
+                            player.SetCustomProperties(properties);
                             Debug.Log((int)player.CustomProperties["voteNum"]);
                             Debug.Log((string)player.CustomProperties["voteName"]);
-                            player.SetCustomProperties(properties);
                         }
 
                         var num = new ExitGames.Client.Photon.Hashtable {
                             {"VotingCompletedNum",false }
                         };
-                        Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["VotingCompletedNum"]);
                         PhotonNetwork.CurrentRoom.SetCustomProperties(num);
+                        Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["VotingCompletedNum"]);
                     }
 
 

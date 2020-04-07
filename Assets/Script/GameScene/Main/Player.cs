@@ -41,11 +41,14 @@ public class Player : MonoBehaviourPunCallbacks {
     public bool isVoteFlag; //投票を下か否か　falseなら非投票
     public int voteNum;//そのPlayerの投票数
     public string voteName;//投票したプレイヤーの名前を記載
-    public int votingCompletedNum;
-    public bool isVotingCompleted;
+    public bool votingCompleted;//投票完了
     //夜の行動
     public bool isRollAction;//夜の行動をとったか否か
 
+
+    //masterのみCheckOnLine用
+    private float checkTimer;
+    private int checkNum;
     //仮
     public bool def;//騎士のデバッグ用
 
@@ -78,7 +81,8 @@ public class Player : MonoBehaviourPunCallbacks {
 
             //voteCountをプロパティーにセット
             var properties = new ExitGames.Client.Photon.Hashtable {
-                {"voteNum", voteNum }
+                {"voteNum", voteNum },
+                {"live", live }
             };
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
 
@@ -114,6 +118,59 @@ public class Player : MonoBehaviourPunCallbacks {
         }
 
         playerText.text = rollType.ToString() + playerName;
+    }
+
+
+    /// <summary>
+    /// オンラインチェック用
+    /// </summary>
+    private void Update() {
+        //masterのみ
+        if (PhotonNetwork.IsMasterClient) {
+
+            //全員が投票完了したら時短成立
+            if(gameManager.timeController.timeType == TIME.投票時間) { //ゲーム開始前にnullが返ってくる
+                checkTimer += Time.deltaTime;
+                if(checkTimer >= 1) {
+                    checkTimer = 0;
+                    checkNum = 0;
+
+                    //投票完了しているかをチェックする
+                    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                        //Debug.Log((bool)player.CustomProperties["votingCompleted"]);
+                        Debug.Log((bool)player.CustomProperties["live"]);
+
+                        if(player.CustomProperties["votingCompleted"] == null) {
+                            if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
+                                votingCompleted = (bool)votingCompletedObj;
+                            }
+                            var propertiers = new ExitGames.Client.Photon.Hashtable {
+                                    {"votingCompleted",votingCompleted }
+                                };
+                            player.SetCustomProperties(propertiers);
+                        }
+
+                        if (!(bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
+                            Debug.Log("投票完了していないプレイヤー" + player.NickName);
+                            return;
+                        }else if((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
+                            checkNum++;
+                            Debug.Log("投票完了したプレイヤー" + player.NickName);
+                        }
+                    }
+                    //投票完了人数が生存員数と一致したら時短する
+                    if(checkNum == gameManager.liveNum) {
+                        checkTimer = -2;
+                        timeController.isVotingCompleted = true;
+                        timeController.SetIsVotingCompleted();
+                        Debug.Log("全員投票完了");
+                    }
+                }
+            } else {
+                //処理なし
+            }
+        }
+        
     }
 
 
@@ -163,16 +220,6 @@ public class Player : MonoBehaviourPunCallbacks {
         Debug.Log("Player RPC END");
     }
 
-    /// <summary>
-    /// 投票の完了数
-    /// </summary>
-    /// <returns></returns>
-    private int GetVotingCompletedNum() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("VotingCompletedNum", out object VotingCompletedNumObj)) {
-            votingCompletedNum = (int)VotingCompletedNumObj;
-        }
-        return votingCompletedNum;
-    }
 
 
     /// <summary>
@@ -223,23 +270,31 @@ public class Player : MonoBehaviourPunCallbacks {
                                 }
                                 voteName += chatSystem.myPlayer.playerName + ",";
 
+                                //一人のプレイヤーが投票を完了したらtrue
+                                if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
+                                    votingCompleted = (bool)votingCompletedObj;
+                                }
+                                votingCompleted = true;
+
                                 var propertiers = new ExitGames.Client.Photon.Hashtable {
                                     {"voteName", voteName },
-                                    {"voteNum", voteNum }
+                                    {"voteNum", voteNum },
+                                    {"votingCompleted",votingCompleted }
                                 };
-                                Debug.Log((int)player.CustomProperties["voteNum"]);
-                                Debug.Log((string)player.CustomProperties["voteName"]);
+
                                 player.SetCustomProperties(propertiers);
 
-
+                                Debug.Log((int)player.CustomProperties["voteNum"]);
+                                Debug.Log((string)player.CustomProperties["voteName"]);
+                                Debug.Log((bool)player.CustomProperties["votingCompleted"]);
 
                                 //全てのプレイヤーが投票したら時短される処理を追加
-                                votingCompletedNum = GetVotingCompletedNum();
-                                votingCompletedNum++;
-                                var num = new ExitGames.Client.Photon.Hashtable {
-                                    {"VotingCompletedNum",votingCompletedNum }
-                                };
-                                PhotonNetwork.CurrentRoom.SetCustomProperties(num);
+                                //votingCompletedNum = GetVotingCompletedNum();
+                                //votingCompletedNum++;
+                                //var num = new ExitGames.Client.Photon.Hashtable {
+                                //    {"VotingCompletedNum",votingCompletedNum }
+                                //};
+                                //PhotonNetwork.CurrentRoom.SetCustomProperties(num);
 
                                 //投票数の表示をディクショナリーで管理
                                 voteCount.voteCountTable[playerID] = voteNum;
