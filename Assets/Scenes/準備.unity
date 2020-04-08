@@ -277,9 +277,9 @@ MonoBehaviour:
   testExecutionTime: 4
   testCheckGameOverTime: 3
   testResultTime: 3
-  num: 7
-  enterNum: 7
-  openVoting: 0
+  num: 6
+  enterNum: 6
+  openVoting: 1
   fortuneType: 1
   timeType: 0
   isTestPlay: 1

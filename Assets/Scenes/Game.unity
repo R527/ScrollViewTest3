@@ -2642,18 +2642,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 292037475}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1130743578}
-        m_MethodName: EnterButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &292037475
@@ -3915,18 +3904,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 391165870}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1130743578}
-        m_MethodName: ExitButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &391165870
@@ -9180,6 +9158,7 @@ MonoBehaviour:
   nightPopup: {fileID: 2556784974386083991}
   timeType: 0
   isGameOver: 0
+  isVotingCompleted: 0
   chatContent: {fileID: 4395145949336749762}
   day: 0
   dayPrefab: {fileID: -8829115933934691925, guid: 7384babc9c2ecd245b217a6c263d54f9,
@@ -11483,8 +11462,8 @@ MonoBehaviour:
   gameMasterChatManager: {fileID: 1130743577}
   fillter: {fileID: 1018169728}
   NumText: {fileID: 2035613864}
-  num: 7
-  enterNum: 7
+  num: 6
+  enterNum: 6
   numLimit: 9
   liveNum: 0
   enterNumTime: 25
@@ -11497,11 +11476,13 @@ MonoBehaviour:
   ruleConfiramationObj: {fileID: 0}
   maskObj: {fileID: 0}
   gameStart: 0
-  friendButton: {fileID: 1109161862}
   damyObj: {fileID: 546607570}
   setEnterNumTime: 25
   menbarContent: {fileID: 30259292}
   timeControllButton: {fileID: 0}
+  friendButton: {fileID: 1109161862}
+  exitButton: {fileID: 391165869}
+  enterButton: {fileID: 292037474}
   rollTypeList: 
   isOffline: 0
   testRollTypeList: 
@@ -11541,11 +11522,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatSystem: {fileID: 4395145948522523302}
   gameManager: {fileID: 1130743578}
-  voteCountList: 
-  ExecutionPlayerList: []
   mostVotes: 0
-  mostVotePlayer: {fileID: 0}
   executionPlayer: {fileID: 0}
+  executionPlayerName: 
   executionID: 999
 --- !u!114 &1130743581
 MonoBehaviour:
