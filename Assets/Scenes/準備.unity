@@ -279,6 +279,7 @@ MonoBehaviour:
   testResultTime: 3
   num: 7
   enterNum: 7
+  setEnterNumTime: 10
   openVoting: 1
   fortuneType: 1
   timeType: 0

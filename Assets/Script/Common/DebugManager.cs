@@ -20,6 +20,7 @@ public class DebugManager : MonoBehaviour
     public int testResultTime;
     public int num;//GameManagerの参加人数設定
     public int enterNum;//GameManagerの参加希望人数設定
+    public float setEnterNumTime;
     public VOTING openVoting;
     public FORTUNETYPE fortuneType;
     public TIME timeType;

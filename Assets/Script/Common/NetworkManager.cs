@@ -140,7 +140,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //プレイヤー作成
         
-        StartCoroutine(FirstCreatePlayerObj());
+        //StartCoroutine(FirstCreatePlayerObj());
     }
 
     /// <summary>
@@ -199,22 +199,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     }
 
-    /// <summary>
-    /// ゲーム開始前にプレイヤーを作成する
-    /// ロールなど詳細な情報は後程追加する
-    /// </summary>
-    public IEnumerator FirstCreatePlayerObj() {
-        yield return new WaitForSeconds(1.0f);
+    ///// <summary>
+    ///// ゲーム開始前にプレイヤーを作成する
+    ///// ロールなど詳細な情報は後程追加する
+    ///// </summary>
+    //public IEnumerator FirstCreatePlayerObj() {
+    //    yield return new WaitForSeconds(1.0f);
 
-        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    //    gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
-        Player player = playerObj.GetComponent<Player>();
-        player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+    //    GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
+    //    Player player = playerObj.GetComponent<Player>();
+    //    player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
 
-        gameManager.chatSystem.myPlayer = player;
-        Debug.Log("Player" + gameManager.chatSystem.myPlayer);
-        player.PlayerSetUp(gameManager, gameManager.voteCount, gameManager.timeController);
-    }
+    //    gameManager.chatSystem.myPlayer = player;
+    //    Debug.Log("Player" + gameManager.chatSystem.myPlayer);
+    //    player.PlayerSetUp(gameManager, gameManager.voteCount, gameManager.timeController);
+    //}
 
 }

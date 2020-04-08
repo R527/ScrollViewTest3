@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public bool gameStart;
     public GameObject damyObj;
     private bool isNumComplete;//ルームの規定人数が揃ったら
-    public float setEnterNumTime = 25.0f;//規定人数が揃ったら使われる
+    public float setEnterNumTime;//規定人数が揃ったら使われる
     private float checkEnterTimer;//人数チェック用タイム
     private float checkTimer;//人数チェック用タイム
     private bool isJoined = false;//参加不参加の確認用
@@ -69,8 +69,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
             num = DebugManager.instance.num;
             enterNum = DebugManager.instance.enterNum;
- 
-
+            setEnterNumTime = DebugManager.instance.setEnterNumTime;
         }
         Debug.Log("num" + num);
         Debug.Log("enterNum" + enterNum);
@@ -90,6 +89,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             {"num", num },
             {"enterNum", enterNum },
             {"enterNumTime", enterNumTime },
+            {"setEnterNumTime",setEnterNumTime }
         };
 
 
@@ -169,17 +169,16 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// ゲーム参加確認画面の人数チェック中の時間管理
     /// </summary>
     private float GetEnterNumTime() {
-        float value = 0;
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("enterNumTime", out object enterNumTimeObj)) {
-            value = (float)enterNumTimeObj;
+            enterNumTime = (float)enterNumTimeObj;
         }
-        return value;
+        return enterNumTime;
     }
 
     private void SetEnterNumTime() {
         ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"enterNumTime", enterNumTime }
-                        };
+            {"enterNumTime", enterNumTime }
+          };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 
@@ -263,8 +262,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     //時間を書き込む
                     if (PhotonNetwork.IsMasterClient) {
 
+                        //人数が揃ったらenterNumTimeをセットする
                         if (!isNumComplete) {
-                            enterNumTime = GetEnterNumTime();
+                            //enterNumTime = GetEnterNumTime();
                             //人数が揃ったらEnterNumTimeを初期値に
                             enterNumTime = setEnterNumTime;
                             SetEnterNumTime();
@@ -276,19 +276,20 @@ public class GameManager : MonoBehaviourPunCallbacks {
                             SetEnterNumTime();
                         }
                     } else {
-                        enterNumTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["enterNumTime"];
+                        enterNumTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["enterNumTime"] - 1;
                     }
                     confirmationTimeText.text = (int)enterNumTime + "秒";
                     //参加確認の時間が切れたら
-                    if (GetEnterNumTime() <= 0) {
+                    if (enterNumTime < 1) {
                         confirmationImage.SetActive(false);
                         //ゲームマスターのみ
                         if (PhotonNetwork.IsMasterClient) {
                             JoinReset();
                             Debug.Log("master");
                         }
+                        Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
                         //参加意思表示ないプレイヤーのみ強制退出
-                        if (!isJoined) {
+                        if (!(bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]) {
                             NetworkManager.instance.LeaveRoom();
                             Debug.Log("その他プレイヤー");
                         } else {
@@ -310,6 +311,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     //左上の参加人数記載
                     NumText.text = num + "/" + numLimit;
                     confirmationNumText.text = enterNum + "/" + numLimit;
+                    
                 }
             }
         }
@@ -395,8 +397,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
         SetEnterNum();
         confirmationImage.SetActive(false);
         //friendButton.gameObject.SetActive(true);
-        damyObj.SetActive(false);
-        maskObj.SetActive(true);
+        //damyObj.SetActive(false);
+        //maskObj.SetActive(true);
     }
 
 

@@ -131,9 +131,9 @@ public class Player : MonoBehaviourPunCallbacks {
 
 
             //参加意思表示確認画面の監視
-            if(gameManager.numLimit == gameManager.GetEnterNum()) {
+            //if(gameManager.numLimit == gameManager.GetEnterNum()) {
 
-            }
+            //}
 
             //全員が投票完了したら時短成立
             if(gameManager.timeController.timeType == TIME.投票時間) { //ゲーム開始前にnullが返ってくる
