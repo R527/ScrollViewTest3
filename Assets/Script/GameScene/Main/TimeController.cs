@@ -363,17 +363,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
                             var properties = new ExitGames.Client.Photon.Hashtable {
                             {"voteNum", 0 },
                             {"voteName", ""},
+                            {"votingCompleted",false }
                         };
                             player.SetCustomProperties(properties);
                             Debug.Log((int)player.CustomProperties["voteNum"]);
                             Debug.Log((string)player.CustomProperties["voteName"]);
+                            Debug.Log((bool)player.CustomProperties["votingCompleted"]);
                         }
 
-                        var num = new ExitGames.Client.Photon.Hashtable {
-                            {"VotingCompletedNum",false }
-                        };
-                        PhotonNetwork.CurrentRoom.SetCustomProperties(num);
-                        Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["VotingCompletedNum"]);
                     }
 
 

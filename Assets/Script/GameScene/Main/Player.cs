@@ -266,11 +266,6 @@ public class Player : MonoBehaviourPunCallbacks {
                                 }
                                 voteNum++;
 
-                                //var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                //    {"voteNum", voteNum }
-                                //};
-                                //player.SetCustomProperties(propertiers);
-
                                 //投票したプレイヤーの名前を登録します
                                 if (player.CustomProperties.TryGetValue("voteName", out object voteNameObj)) {
                                     voteName = (string)voteNameObj;
@@ -294,14 +289,6 @@ public class Player : MonoBehaviourPunCallbacks {
                                 Debug.Log((int)player.CustomProperties["voteNum"]);
                                 Debug.Log((string)player.CustomProperties["voteName"]);
                                 Debug.Log((bool)player.CustomProperties["votingCompleted"]);
-
-                                //全てのプレイヤーが投票したら時短される処理を追加
-                                //votingCompletedNum = GetVotingCompletedNum();
-                                //votingCompletedNum++;
-                                //var num = new ExitGames.Client.Photon.Hashtable {
-                                //    {"VotingCompletedNum",votingCompletedNum }
-                                //};
-                                //PhotonNetwork.CurrentRoom.SetCustomProperties(num);
 
                                 //投票数の表示をディクショナリーで管理
                                 voteCount.voteCountTable[playerID] = voteNum;
