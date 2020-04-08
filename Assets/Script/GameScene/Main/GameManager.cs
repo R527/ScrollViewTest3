@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //部屋を作った人は初めての人なのでこの処理はない
             //二人目以降の人が値を取得する
             num = GetNum();
+            enterNum = GetEnterNum();
             //参加人数一人追加
             num++;
 
@@ -90,6 +91,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             {"enterNum", enterNum },
             {"enterNumTime", enterNumTime },
         };
+
 
             if (PhotonNetwork.CurrentRoom.IsOpen && PhotonNetwork.CurrentRoom.PlayerCount >= PhotonNetwork.CurrentRoom.MaxPlayers) {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -125,7 +127,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// 入場者数をチェックする
     /// </summary>
-    private int GetNum() {
+    public  int GetNum() {
         //ルームに保存されているnumという情報があったら、それをキャストして変数に入れる
         //numというKeyがセットされていて、numがあった場合
         //outとしてobject型のnumObjが作られる。
@@ -146,7 +148,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// ゲーム参加確認画面の人数をもらう
     /// </summary>
-    private int GetEnterNum() {
+    public  int GetEnterNum() {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("enterNum", out object enterNumObj)) {
             enterNum = (int)enterNumObj;
         }
@@ -207,14 +209,14 @@ public class GameManager : MonoBehaviourPunCallbacks {
             if (!gameStart) {
 
                 //テスト用役職を決定してゲーム開始
-                if (enterNum == numLimit && DebugManager.instance.isTestPlay) {
+                if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
                     confirmationImage.SetActive(false);
                     gameStart = true;
                     StartCoroutine(SetTestRoll());
                 }
 
                 //正規のデータを利用してゲーム開始
-                if (enterNum == numLimit && !DebugManager.instance.isTestPlay) {
+                if (GetEnterNum() == numLimit && !DebugManager.instance.isTestPlay) {
                     confirmationImage.SetActive(false);
                     gameStart = true;
                     StartCoroutine(SetRandomRoll());
@@ -477,6 +479,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         List<ROLLTYPE> randomRollTypeList = new List<ROLLTYPE>();
 
+        //ルームデータから取得する
         for (int x = 0; x < RoomData.instance.numList.Count; x++) {
             if (RoomData.instance.numList[x] > 0) {
                 for (int i = 0; i < RoomData.instance.numList[x]; i++) {
@@ -702,5 +705,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //Debug.Log("isDebugOn");
         }
     }
+
+
 }
 

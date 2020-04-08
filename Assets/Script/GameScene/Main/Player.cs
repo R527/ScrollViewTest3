@@ -53,6 +53,7 @@ public class Player : MonoBehaviourPunCallbacks {
     public bool def;//騎士のデバッグ用
 
 
+
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
@@ -127,6 +128,12 @@ public class Player : MonoBehaviourPunCallbacks {
     private void Update() {
         //masterのみ
         if (PhotonNetwork.IsMasterClient) {
+
+
+            //参加意思表示確認画面の監視
+            if(gameManager.numLimit == gameManager.GetEnterNum()) {
+
+            }
 
             //全員が投票完了したら時短成立
             if(gameManager.timeController.timeType == TIME.投票時間) { //ゲーム開始前にnullが返ってくる

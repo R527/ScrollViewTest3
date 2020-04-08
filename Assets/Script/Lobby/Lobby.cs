@@ -16,6 +16,11 @@ public class Lobby : MonoBehaviour
     public GameObject menuPopUp;
     public NetworkManager networkManagerPrefab;
 
+
+    　
+　   /// <summary>
+    /// NetworkManager.csをインスタンス
+    /// </summary>
     private void Awake() {
 
         GameObject network = GameObject.FindGameObjectWithTag("networkManager");

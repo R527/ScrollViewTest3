@@ -16,6 +16,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //class
     public RoomSetting roomSetting;
     public static NetworkManager instance;
+    public GameManager gameManager;
 
     //部屋入室処理関連
     public RoomNode roomNodePrefab;
@@ -24,7 +25,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     private Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
 
 
-    
+
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -39,6 +41,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
         content = GameObject.FindGameObjectWithTag("content");
+        
     }
 
     public override void OnConnectedToMaster() {
@@ -133,6 +136,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
         //シーン遷移
         SceneStateManager.instance.NextScene(SCENE_TYPE.GAME);
+
+
+        //プレイヤー作成
+        
+        StartCoroutine(FirstCreatePlayerObj());
     }
 
     /// <summary>
@@ -191,8 +199,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     }
 
-    //public static bool HasStartTime(this Room room) {
-    //    return room.CustomProperties.ContainsKey(KeyStartTime);
-    //}
+    /// <summary>
+    /// ゲーム開始前にプレイヤーを作成する
+    /// ロールなど詳細な情報は後程追加する
+    /// </summary>
+    public IEnumerator FirstCreatePlayerObj() {
+        yield return new WaitForSeconds(1.0f);
+
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
+        Player player = playerObj.GetComponent<Player>();
+        player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        gameManager.chatSystem.myPlayer = player;
+        Debug.Log("Player" + gameManager.chatSystem.myPlayer);
+        player.PlayerSetUp(gameManager, gameManager.voteCount, gameManager.timeController);
+    }
 
 }

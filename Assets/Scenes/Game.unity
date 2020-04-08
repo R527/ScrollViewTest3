@@ -365,8 +365,8 @@ GameObject:
   - component: {fileID: 30259294}
   - component: {fileID: 30259293}
   m_Layer: 5
-  m_Name: Content
-  m_TagString: Untagged
+  m_Name: MenbarContent
+  m_TagString: MenbarContent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5601,7 +5601,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 9/15
+  m_Text: 
 --- !u!222 &527031521
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11355,7 +11355,7 @@ GameObject:
   - component: {fileID: 1130743577}
   m_Layer: 5
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11462,8 +11462,8 @@ MonoBehaviour:
   gameMasterChatManager: {fileID: 1130743577}
   fillter: {fileID: 1018169728}
   NumText: {fileID: 2035613864}
-  num: 6
-  enterNum: 6
+  num: 0
+  enterNum: 0
   numLimit: 9
   liveNum: 0
   enterNumTime: 25
@@ -19913,7 +19913,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 9/9
+  m_Text: 
 --- !u!222 &2035613865
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19935,11 +19935,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: -1
+  m_MinWidth: 33
   m_MinHeight: -1
   m_PreferredWidth: -1
   m_PreferredHeight: -1
-  m_FlexibleWidth: 0.2
+  m_FlexibleWidth: -1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
 --- !u!1 &2044720747
@@ -23383,7 +23383,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -341.81805}
+  m_AnchoredPosition: {x: 0, y: -341.81784}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &4395145949336749762
