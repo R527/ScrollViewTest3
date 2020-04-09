@@ -9,44 +9,40 @@ using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks {
     //class
-    public RollAction rollAction;
     public TimeController timeController;
     public ChatListManager chatListManager;
     public ChatSystem chatSystem;
-    public Player playerPrefab;
     public RollExplanation rollExplanation;
     public VoteCount voteCount;
-    public TIME timeType;
     public GameMasterChatManager gameMasterChatManager;
     public Fillter fillter;
 
-    //main
+    //入室関連
     public Text NumText;//入室してる人数
     public int num;//入場している人数
-    public int enterNum;//参加希望人数
     public int numLimit;//人数制限
     public int liveNum; //生存人数
+    public bool gameStart;
+    private float checkTimer;//人数チェック用タイム
+
+    //入室確認
+    public int enterNum;//参加希望人数
     public float enterNumTime;//30秒タイマーの残り時間（ゲーム参加再確認の時間
-    public int second;//陰とがたに変更
     public GameObject confirmationImage;//確認Image
     public Text confirmationTimeText;//30秒タイマー
     public Text confirmationNumText;//参加人数
     public Text confirmationEnterButtonText;//参加ボタン
     public Text ruleConfiramationButtonText;//ルール確認ボタン
     public GameObject ruleConfiramationObj;//ルール確認Obj
-    public GameObject maskObj;//ルール確認用Objのマスク
-    public bool gameStart;
     public GameObject damyObj;
     private bool isNumComplete;//ルームの規定人数が揃ったら
     public float setEnterNumTime;//規定人数が揃ったら使われる
     private float checkEnterTimer;//人数チェック用タイム
-    private float checkTimer;//人数チェック用タイム
     private bool isJoined = false;//参加不参加の確認用
     public Transform menbarContent;
+    public bool isTimeUp;
 
     //ボタン
-    public Button timeControllButton;//時短or退出ボタン
-    public Button friendButton;
     public Button exitButton;
     public Button enterButton;
 
@@ -65,17 +61,20 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
 
     void Start() {
-
         if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
             num = DebugManager.instance.num;
             enterNum = DebugManager.instance.enterNum;
-            setEnterNumTime = DebugManager.instance.setEnterNumTime;
+
+            var customProperties = new ExitGames.Client.Photon.Hashtable {
+                { "testMainTime", DebugManager.instance.testMainTime },
+                { "testNightTime", DebugManager.instance.testNightTime },
+                {"enterNumTime", DebugManager.instance.setEnterNumTime },
+
+            };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
         }
-        Debug.Log("num" + num);
-        Debug.Log("enterNum" + enterNum);
-        Debug.Log("enterNum" + DebugManager.instance.num);
-        Debug.Log("enterNum" + DebugManager.instance.enterNum);
-        //offlineなら以下の処理をする
+
+        //Onlineなら以下の処理をする
         if (!isOffline) {
             //部屋を作った人は初めての人なのでこの処理はない
             //二人目以降の人が値を取得する
@@ -88,10 +87,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"num", num },
             {"enterNum", enterNum },
-            {"enterNumTime", enterNumTime },
-            {"setEnterNumTime",setEnterNumTime }
         };
-
 
             if (PhotonNetwork.CurrentRoom.IsOpen && PhotonNetwork.CurrentRoom.PlayerCount >= PhotonNetwork.CurrentRoom.MaxPlayers) {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -107,13 +103,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             };
             PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
 
-            if (PhotonNetwork.IsMasterClient) {
-                var customProperties = new ExitGames.Client.Photon.Hashtable {
-                { "testMainTime", DebugManager.instance.testMainTime },
-                { "testNightTime", DebugManager.instance.testNightTime }
-            };
-                PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-            }
+
 
         }
 
@@ -124,199 +114,160 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     }
 
-    /// <summary>
-    /// 入場者数をチェックする
-    /// </summary>
-    public  int GetNum() {
-        //ルームに保存されているnumという情報があったら、それをキャストして変数に入れる
-        //numというKeyがセットされていて、numがあった場合
-        //outとしてobject型のnumObjが作られる。
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("num", out object numObj)) {
-            //numObjがobject型なのでintにキャスト
-            num = (int)numObj;
-        }
-        return num;
-    }
-
-    private void SetNum() {
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"num", num }
-                        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
-
-    /// <summary>
-    /// ゲーム参加確認画面の人数をもらう
-    /// </summary>
-    public  int GetEnterNum() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("enterNum", out object enterNumObj)) {
-            enterNum = (int)enterNumObj;
-        }
-        return enterNum;
-    }
-
-    /// <summary>
-    /// ゲーム参加確認画面の人数をセットする
-    /// </summary>
-    private void SetEnterNum() {
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"enterNum", enterNum }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
-
-    /// <summary>
-    /// ゲーム参加確認画面の人数チェック中の時間管理
-    /// </summary>
-    private float GetEnterNumTime() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("enterNumTime", out object enterNumTimeObj)) {
-            enterNumTime = (float)enterNumTimeObj;
-        }
-        return enterNumTime;
-    }
-
-    private void SetEnterNumTime() {
-        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"enterNumTime", enterNumTime }
-          };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
-
-    public void SetLiveNum() {
-        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"liveNum", liveNum}
-                        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["liveNum"]);
-    }
-
-    public int GetLiveNum() {
-        int value = 0;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("liveNum", out object liveNumObj)) {
-            value = (int)liveNumObj;
-        }
-        return value;
-    }
+    
     /// <summary>
     /// 入室と退室を管理
     /// 人数設定と入室者が同じ数になるとゲーム参加再確認を行う
     /// </summary>
     void Update() {
-
         //ルームにいる場合のみ
         if (PhotonNetwork.InRoom || isOffline) {
             if (!gameStart) {
+                //役職セット
+                SetRoll();
+                //人数を確認する
+                CountNum();
 
-                //テスト用役職を決定してゲーム開始
-                if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
-                    confirmationImage.SetActive(false);
-                    gameStart = true;
-                    StartCoroutine(SetTestRoll());
-                }
-
-                //正規のデータを利用してゲーム開始
-                if (GetEnterNum() == numLimit && !DebugManager.instance.isTestPlay) {
-                    confirmationImage.SetActive(false);
-                    gameStart = true;
-                    StartCoroutine(SetRandomRoll());
-                }
-
-                //1秒ごとに部屋参加人数を確認する
-                if (num != numLimit) {
-                    checkTimer += Time.deltaTime;
-                    if (checkTimer >= 1) {
-                        checkTimer = 0;
-                        //オフライン用
-                        if (!isOffline) {
-                        num = GetNum();
-                        }
-                        NumText.text = num + "/" + numLimit;
-                    }
-                }
-
-                //部屋参加人数がそろったら1秒ごとにenterNumを確認
-                if (GetNum() == numLimit) {
-                    if (!isNumComplete) {
-                        isNumComplete = true;
-                    }
-                    checkTimer += Time.deltaTime;
-                    if (checkTimer >= 1) {
-                        checkTimer = 0;
-                        //オフライン用
-                        if (!isOffline) {
-                            enterNum = GetEnterNum();
-                        }
-                        confirmationNumText.text = enterNum + "/" + numLimit;
-                    }
-                }
-
-                //ネットワーク処理が必要
                 //入場人数と制限人数が一致してかつ、参加希望人数と制限人数が一致していない場合
                 if (GetNum() == numLimit && GetEnterNum() != numLimit) {
-                    timeController.savingText.text = "時短";
-                    //フレンド招待ボタン
-                    //friendButton.gameObject.SetActive(false);
-                    damyObj.SetActive(true);
-                    confirmationImage.SetActive(true);
-
-                    //時間を書き込む
-                    if (PhotonNetwork.IsMasterClient) {
-
-                        //人数が揃ったらenterNumTimeをセットする
-                        if (!isNumComplete) {
-                            //enterNumTime = GetEnterNumTime();
-                            //人数が揃ったらEnterNumTimeを初期値に
-                            enterNumTime = setEnterNumTime;
-                            SetEnterNumTime();
-                        }
-                        checkEnterTimer += Time.deltaTime;
-                        if (checkEnterTimer >= 1) {
-                            checkEnterTimer = 0;
-                            enterNumTime--;
-                            SetEnterNumTime();
-                        }
-                    } else {
-                        enterNumTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["enterNumTime"] - 1;
-                    }
-                    confirmationTimeText.text = (int)enterNumTime + "秒";
-                    //参加確認の時間が切れたら
-                    if (enterNumTime < 1) {
-                        confirmationImage.SetActive(false);
-                        //ゲームマスターのみ
-                        if (PhotonNetwork.IsMasterClient) {
-                            JoinReset();
-                            Debug.Log("master");
-                        }
-                        Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
-                        //参加意思表示ないプレイヤーのみ強制退出
-                        if (!(bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]) {
-                            NetworkManager.instance.LeaveRoom();
-                            Debug.Log("その他プレイヤー");
-                        } else {
-                            //意思表示があるプレイヤーは一度isJoinedをリセット
-                            isJoined = false;
-                            ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"isJoined", isJoined }
-                        };
-                            PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
-                        }
-                        //オンラインにしてマスターに管理(リセット
-                        if (PhotonNetwork.IsMasterClient) {
-                            enterNumTime = setEnterNumTime;
-                            SetEnterNumTime();
-                        }
-                        //friendButton.gameObject.SetActive(true);
-                        damyObj.SetActive(false);
-                    }
+                    Debug.Log(gameStart);
+                    //参加意思表示の人数確認
+                    CountDownEnterNumTime();
+                    //参加意思表示の確認の時間切れ
+                    TimeUpEnterNumTime();
                     //左上の参加人数記載
                     NumText.text = num + "/" + numLimit;
                     confirmationNumText.text = enterNum + "/" + numLimit;
-                    
+                    confirmationTimeText.text = (int)enterNumTime + "秒";
                 }
             }
         }
     }
+    
 
+
+
+    /////////////////////////////////
+    ///メソッド関連
+    /////////////////////////////////
+
+
+
+
+    /// <summary>
+    /// テスト、通常時両方を含めたメソッド
+    /// 役職をセットします。
+    /// </summary>
+    public void SetRoll() {
+        //テスト用役職を決定してゲーム開始
+        if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
+            confirmationImage.SetActive(false);
+            gameStart = true;
+            StartCoroutine(SetTestRoll());
+        }
+
+        //正規のデータを利用してゲーム開始
+        if (GetEnterNum() == numLimit && !DebugManager.instance.isTestPlay) {
+            confirmationImage.SetActive(false);
+            gameStart = true;
+            StartCoroutine(SetRandomRoll());
+        }
+    }
+
+    /// <summary>
+    /// 部屋の参加人数を確認します。
+    /// </summary>
+    public void CountNum() {
+        //1秒ごとに部屋参加人数を確認する
+        if (GetNum() != numLimit) {
+            checkTimer += Time.deltaTime;
+            if (checkTimer >= 1) {
+                checkTimer = 0;
+                //オフライン用
+                if (!isOffline) {
+                    num = GetNum();
+                }
+                NumText.text = num + "/" + numLimit;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 参加意思表示を確認する時間をカウントダウンします。
+    /// </summary>
+    public void CountDownEnterNumTime() {
+        timeController.savingText.text = "時短";
+        //フレンド招待ボタン
+        //friendButton.gameObject.SetActive(false);
+        damyObj.SetActive(true);
+        confirmationImage.SetActive(true);
+
+        //時間を書き込む
+        if (PhotonNetwork.IsMasterClient) {
+
+            //人数が揃ったらenterNumTimeをセットする
+            if (!isNumComplete) {
+                isNumComplete = true;
+                enterNumTime = GetEnterNumTime();
+                SetEnterNumTime();
+                Debug.Log("enterNumTime" + enterNumTime);
+            }
+
+            //カウントダウン
+            checkEnterTimer += Time.deltaTime;
+            if (checkEnterTimer >= 1) {
+                checkEnterTimer = 0;
+                enterNumTime--;
+                SetEnterNumTime();
+            }
+        } else {
+            enterNumTime = GetEnterNumTime();
+        }
+    }
+
+    /// <summary>
+    /// 参加意思表示の確認時間が切れたら行われる処理
+    /// </summary>
+    public void TimeUpEnterNumTime() {
+        Debug.Log("TimeUpEnterNumTime");
+        //参加確認の時間が切れたら ゲームマスターのみ
+        if (GetEnterNumTime() < 1 && PhotonNetwork.IsMasterClient && !GetIsTimeUp()) {
+            isTimeUp = true;
+            SetIsTimeUp();
+        }
+
+        //時間切れになったらマスターからもらう
+        if (GetIsTimeUp()) {
+            Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
+            //参加意思表示ないプレイヤーのみ強制退出
+            if (!(bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]) {
+                NetworkManager.instance.LeaveRoom();
+                Debug.Log("その他プレイヤー");
+            } else {
+                //意思表示があるプレイヤーは一度isJoinedをリセット
+                isJoined = false;
+                ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
+                    {"isJoined", isJoined }
+                };
+                PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
+                Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
+            }
+            
+            //friendButton.gameObject.SetActive(true);
+            damyObj.SetActive(false);
+            confirmationImage.SetActive(false);
+
+            //マスターに管理(リセット
+            if (PhotonNetwork.IsMasterClient) {
+                enterNumTime = setEnterNumTime;
+                isTimeUp = false;
+                SetIsTimeUp();
+                SetEnterNumTime();
+                JoinReset();
+            }
+        }
+        
+    }
 
     /// <summary>
     /// 参加意思表示のないプレイヤー分numをマイナスする
@@ -324,98 +275,20 @@ public class GameManager : MonoBehaviourPunCallbacks {
     private void JoinReset() {
         //プレイヤーを一人ずつ確認して、参加意思表示ないプレイヤーをチェックする
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-            bool isCheckJoin = (bool)player.CustomProperties["isJoined"];
             //参加意思がないプレイヤーぶんだけnumをマイナスにする
-            if (!isCheckJoin) {
+            if (!(bool)player.CustomProperties["isJoined"]) {
                 num = GetNum();
                 num--;
                 SetNum();
             }
         }
+
+
         //enterNumもりセット
-        //Timeもりセット
         enterNum = 0;
         //トータルの参加人数を更新して、カスタムプロパティに保存する
         SetEnterNum();
     }
-
-
-
-
-    /// <summary>
-    /// 参加確認Imageにて参加orキャンセルする
-    /// </summary>
-    public void EnterButton() {
-        //時間が0になったらボタンの無効化
-        if (GetEnterNumTime() <= 0) {
-            return;
-        }
-        //ネットワーク上に保存されているキーがあるかを確認
-        //保存されていたらEnterNumの値が書き換わる
-        if (!isOffline) {
-            enterNum = GetEnterNum();
-        }
-        switch (confirmationEnterButtonText.text) {
-            case "参加":
-                //参加するなら
-                isJoined = true;
-                enterNum++;
-                confirmationEnterButtonText.text = "キャンセル";
-                break;
-            case "キャンセル":
-                //不参加なら
-                isJoined = false;
-                enterNum--;
-                confirmationEnterButtonText.text = "参加";
-                break;
-        }
-        //isJoinedを各プレイヤーごとに更新（LocalPlayer
-        var customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
-            {"isJoined", isJoined }
-        };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
-        //Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
-
-        //enterNumを更新
-        SetEnterNum();
-
-        confirmationNumText.text = enterNum + "/" + liveNum;
-
-    }
-
-    /// <summary>
-    /// 参加確認Imageにて退出する
-    /// </summary>
-    public void ExitButton() {
-        //時間が0になったら時間の無効化
-        if (GetEnterNumTime() <= 0) {
-            return;
-        }
-        num--;
-        enterNum = 0;
-        SetNum();
-        SetEnterNum();
-        confirmationImage.SetActive(false);
-        //friendButton.gameObject.SetActive(true);
-        //damyObj.SetActive(false);
-        //maskObj.SetActive(true);
-    }
-
-
-
-　   /// <summary>
-    /// 人数が規定人数揃った後の確認UIにあるルール表示ボタン
-    /// </summary>
-    public void RuleConfirmation() {
-        if (ruleConfiramationButtonText.text == "↓") {
-            ruleConfiramationObj.SetActive(true);
-            ruleConfiramationButtonText.text = "↑";
-        } else {
-            ruleConfiramationObj.SetActive(false);
-            ruleConfiramationButtonText.text = "↓";
-        }
-    }
-
 
     /// <summary>
     /// 任意に選択した役職をセッティングする
@@ -709,5 +582,197 @@ public class GameManager : MonoBehaviourPunCallbacks {
     }
 
 
+    /////////////////////////////////////
+    ///ボタン関連
+    /////////////////////////////////////
+
+    /// <summary>
+    /// 参加確認Imageにて参加orキャンセルする
+    /// </summary>
+    public void EnterButton() {
+        //時間が0になったらボタンの無効化
+        if (GetEnterNumTime() <= 0) {
+            return;
+        }
+        //ネットワーク上に保存されているキーがあるかを確認
+        //保存されていたらEnterNumの値が書き換わる
+        if (!isOffline) {
+            enterNum = GetEnterNum();
+        }
+        switch (confirmationEnterButtonText.text) {
+            case "参加":
+                //参加するなら
+                isJoined = true;
+                enterNum++;
+                confirmationEnterButtonText.text = "キャンセル";
+                break;
+            case "キャンセル":
+                //不参加なら
+                isJoined = false;
+                enterNum--;
+                confirmationEnterButtonText.text = "参加";
+                break;
+        }
+        //isJoinedを各プレイヤーごとに更新（LocalPlayer
+        var customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
+            {"isJoined", isJoined }
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
+        //Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
+
+        //enterNumを更新
+        SetEnterNum();
+
+        confirmationNumText.text = enterNum + "/" + liveNum;
+
+    }
+
+    /// <summary>
+    /// 参加確認Imageにて退出する
+    /// </summary>
+    public void ExitButton() {
+        //時間が0になったら時間の無効化
+        if (GetEnterNumTime() <= 0) {
+            return;
+        }
+        num--;
+        enterNum = 0;
+        SetNum();
+        SetEnterNum();
+        confirmationImage.SetActive(false);
+        //friendButton.gameObject.SetActive(true);
+        //damyObj.SetActive(false);
+        //maskObj.SetActive(true);
+    }
+
+
+
+　   /// <summary>
+    /// 人数が規定人数揃った後の確認UIにあるルール表示ボタン
+    /// </summary>
+    public void RuleConfirmation() {
+        if (ruleConfiramationButtonText.text == "↓") {
+            ruleConfiramationObj.SetActive(true);
+            ruleConfiramationButtonText.text = "↑";
+        } else {
+            ruleConfiramationObj.SetActive(false);
+            ruleConfiramationButtonText.text = "↓";
+        }
+    }
+
+
+
+    /////////////////////////////
+    ///カスタムプロパティ関連
+    /////////////////////////////
+
+
+    /// <summary>
+    /// 入場者数をチェックする
+    /// </summary>
+    public int GetNum() {
+        //ルームに保存されているnumという情報があったら、それをキャストして変数に入れる
+        //numというKeyがセットされていて、numがあった場合
+        //outとしてobject型のnumObjが作られる。
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("num", out object numObj)) {
+            //numObjがobject型なのでintにキャスト
+            num = (int)numObj;
+        }
+        return num;
+    }
+
+    private void SetNum() {
+        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                            {"num", num }
+                        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    }
+
+    /// <summary>
+    /// ゲーム参加確認画面の人数をもらう
+    /// </summary>
+    public int GetEnterNum() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("enterNum", out object enterNumObj)) {
+            enterNum = (int)enterNumObj;
+        }
+        return enterNum;
+    }
+
+    /// <summary>
+    /// ゲーム参加確認画面の人数をセットする
+    /// </summary>
+    private void SetEnterNum() {
+        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+            {"enterNum", enterNum }
+        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    }
+
+    /// <summary>
+    /// ゲーム参加確認画面の人数チェック中の時間管理
+    /// </summary>
+    private float GetEnterNumTime() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("enterNumTime", out object enterNumTimeObj)) {
+            enterNumTime = (float)enterNumTimeObj;
+        }
+        Debug.Log(enterNumTime);
+        return enterNumTime;
+    }
+
+    /// <summary>
+    /// EnterNumTimeをセットします。
+    /// </summary>
+    private void SetEnterNumTime() {
+        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+            {"enterNumTime", enterNumTime }
+          };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["enterNumTime"]);
+    }
+
+    /// <summary>
+    /// 生存人数をセットします
+    /// </summary>
+    public void SetLiveNum() {
+        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                            {"liveNum", liveNum}
+                        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["liveNum"]);
+    }
+
+    /// <summary>
+    /// 生存人数をもらいます
+    /// </summary>
+    /// <returns></returns>
+    public int GetLiveNum() {
+        int value = 0;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("liveNum", out object liveNumObj)) {
+            value = (int)liveNumObj;
+        }
+        return value;
+    }
+
+    /// <summary>
+    /// タイムアップのboolをセットします
+    /// </summary>
+    private void SetIsTimeUp() {
+        var propertis = new ExitGames.Client.Photon.Hashtable {
+                                    {"isTimeUp",isTimeUp }
+                                };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
+        Debug.Log("IsTimeUp" + (bool)PhotonNetwork.CurrentRoom.CustomProperties["isTimeUp"]);
+    }
+    /// <summary>
+    /// タイムアップのbool型をもらいます
+    /// </summary>
+    /// <returns></returns>
+    private bool GetIsTimeUp() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isTimeUp", out object isTimeUpObj)) {
+            isTimeUp = (bool)isTimeUpObj;
+        }
+        Debug.Log("IsTimeUp" + isTimeUp);
+        return isTimeUp;
+    }
 }
 
