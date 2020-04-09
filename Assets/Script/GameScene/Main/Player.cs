@@ -55,6 +55,35 @@ public class Player : MonoBehaviourPunCallbacks {
 
 
     /// <summary>
+    /// ゲーム参加直後にセットされる
+    /// </summary>
+    /// <param name="gameManager"></param>
+    public void FirstSetUp(GameManager gameManager) {
+        this.gameManager = gameManager;
+        chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
+        tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
+
+        playerButton.onClick.AddListener(() => OnClickPlayerButton());
+
+        if (photonView.IsMine) {
+            chatSystem.myPlayer = this;
+            playerName = PhotonNetwork.LocalPlayer.NickName;
+            iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
+        } else {
+            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                if (player.ActorNumber == photonView.OwnerActorNr) {
+                    playerID = player.ActorNumber;
+                    playerName = player.NickName;
+                    iconNo = player.ActorNumber;
+                }
+            }
+        }
+        gameObject.GetComponent<Outline>().enabled = false;
+        playerText.text = rollType.ToString() + playerName;
+    }
+
+
+    /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
     public void PlayerSetUp(GameManager gameManager,VoteCount voteCount,TimeController timeController) {

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun;
+using System.Linq;
 
 
 /// <summary>
@@ -197,6 +198,106 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
 
+    }
+
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
+        Debug.Log("OnPlayerEnteredRoom");
+        base.OnPlayerEnteredRoom(newPlayer);
+
+        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
+        Player players = playerObj.GetComponent<Player>();
+        players.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+        //menbarContentに出ないので改めて置きなおす
+        players.transform.SetParent(gameManager.menbarContent);
+
+        players.FirstSetUp(gameManager);
+
+        //自分の処理（ほかのプレイヤーが入室したときに自分を複数生成してしまうのを抑制する
+        if (gameManager.chatSystem.playersList.Count <= 0) {
+            gameManager.chatSystem.playersList.Add(players);
+            gameManager.chatSystem.myPlayer = players;
+            Debug.Log("一人目");
+        } else {
+            foreach (Player player in gameManager.chatSystem.playersList) {
+                if (players.playerID != player.playerID) {
+                    gameManager.chatSystem.playersList.Add(players);
+                    gameManager.chatSystem.myPlayer = players;
+                    Debug.Log("二人目生成");
+                } else {
+                    Destroy(players);
+                    Debug.Log("二人目削除");
+                }
+            }
+        }
+
+        StartCoroutine(SetPlayerData());
+    }
+
+    private IEnumerator SetPlayerData() {
+        //Debug.Log("SetPlayerData:Start");
+        GameObject[] playerObjs = GameObject.FindGameObjectsWithTag("Player");
+
+        //whileの条件式を満たしている間は、繰り返す。
+        //参加している人数と探してきた人数が一致しているかどうか
+        //条件式をクリアするまで繰り返され、抜けない
+        while (playerObjs.Length != PhotonNetwork.PlayerList.Length) {
+            playerObjs = GameObject.FindGameObjectsWithTag("Player");
+            //yield return null;は1フレーム待つ
+            yield return null;
+        }
+        Debug.Log("参加プレイヤー人数：" + playerObjs.Length);
+
+        //全キャラのPlayerSetUpを実行
+        foreach (GameObject playerObj in playerObjs) {
+            Player player = playerObj.GetComponent<Player>();
+            //plyaerIDが見つかったらcontinue
+            if (gameManager.chatSystem.playersList.Find(x => x.playerID == player.playerID)) {
+                continue;
+            }
+            
+            //player.PlayerSetUp(this, voteCount, timeController);
+            //各リストに登録
+            gameManager.chatSystem.playersList.Add(player);
+            gameManager.chatSystem.playerNameList.Add(player.playerName);
+            playerObj.transform.SetParent(gameManager.menbarContent);
+            yield return null;
+        }
+
+        //PlayerListを照準に並び替える（chatSystem.playersListの各要素をaに入れる foreachのようなもの
+        //＝＞　a.playerIDでは何を基準に並び替えているのかを決めている
+        gameManager.chatSystem.playersList.OrderByDescending(player => player.playerID);
+
+        //人数分のカミングアウトを用意(要素数を要しただけで初期化はしてないため、中身は””ではなくnull
+        //chatSystem.comingOutPlayers = new string[playerObjs.Length];
+
+        //自分のステートを準備完了に変更しカスタムプロパティを更新(個人のフラグではなく、ネットワークで管理できるフラグにする
+        //var properties = new ExitGames.Client.Photon.Hashtable();
+        //properties.Add("player-state", "ready");
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+        //Debug.Log("SetPlayerData:Complete");
+    }
+
+
+    /// <summary>
+    /// ほかのプレイヤーが退出し時に呼び出される
+    /// </summary>
+    /// <param name="otherPlayer"></param>
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
+        base.OnPlayerLeftRoom(otherPlayer);
+    }
+
+    //public  void CloseConnection(Photon.Realtime.Player kickPlayer) {
+
+    //}
+
+    /// <summary>
+    /// マスターだけが扱える
+    /// 他のプレイヤーをキックする
+    /// 呼び出した後はOnPlayerLeftRoomが呼ばれる(多分
+    /// </summary>
+    /// <param name="player"></param>
+    public void KickOutPlayer(Photon.Realtime.Player player) {
+        PhotonNetwork.CloseConnection(player);
     }
 
     ///// <summary>
