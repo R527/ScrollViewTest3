@@ -70,11 +70,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //部屋の各役職の人数を一度一つのストリングにまとめたもの→後程解凍
         string numListStr = room.GetStringFromIntArray(room.rollNumList.ToArray());
         //部屋IDを決定する　名前とリアルタイムで
-        string roomId = PlayerManager.instance.name + DateTime.Now.ToString("yyyyMMddHHmmss");
+        //string roomId = PlayerManager.instance.name + DateTime.Now.ToString("yyyyMMddHHmmss");
         //ルームオプションにカスタムプロパティを設定
         ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             //ルームネームの情報を部屋に与える
-            { "roomId", roomId},
+            //{ "roomId", roomId},
             {"roomName",  room.title},
             {"mainTime", room.mainTime },
             { "nightTime", room.nightTime },
@@ -89,14 +89,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             "nightTime",
             "fortuneType",
             "openVoting",
-            "roomId",
+            //"roomId",
             "numListStr"
         };
         roomOptions.CustomRoomProperties = customRoomProperties;
         //部屋のIdを取得
-        room.SetRoomId(roomId);
+        //room.SetRoomId(roomId);
 
-        PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
+        PhotonNetwork.CreateRoom(null, roomOptions, TypedLobby.Default);
 
 
     }
@@ -136,12 +136,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);
         }
         //シーン遷移
+        //PhotonNetwork.IsMessageQueueRunning = false;
         SceneStateManager.instance.NextScene(SCENE_TYPE.GAME);
 
 
         //プレイヤー作成
-        
-        //StartCoroutine(FirstCreatePlayerObj());
+        StartCoroutine(FirstCreatePlayerObj());
     }
 
     /// <summary>
@@ -201,40 +201,49 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
-        Debug.Log("OnPlayerEnteredRoom");
-        base.OnPlayerEnteredRoom(newPlayer);
 
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
-        Player players = playerObj.GetComponent<Player>();
-        players.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-        //menbarContentに出ないので改めて置きなおす
-        players.transform.SetParent(gameManager.menbarContent);
 
-        players.FirstSetUp(gameManager);
-
-        //自分の処理（ほかのプレイヤーが入室したときに自分を複数生成してしまうのを抑制する
-        if (gameManager.chatSystem.playersList.Count <= 0) {
-            gameManager.chatSystem.playersList.Add(players);
-            gameManager.chatSystem.myPlayer = players;
-            Debug.Log("一人目");
-        } else {
-            foreach (Player player in gameManager.chatSystem.playersList) {
-                if (players.playerID != player.playerID) {
-                    gameManager.chatSystem.playersList.Add(players);
-                    gameManager.chatSystem.myPlayer = players;
-                    Debug.Log("二人目生成");
-                } else {
-                    Destroy(players);
-                    Debug.Log("二人目削除");
-                }
-            }
-        }
+        StartCoroutine(OnPlayerUpdate(newPlayer));
 
         StartCoroutine(SetPlayerData());
     }
 
+    public IEnumerator OnPlayerUpdate(Photon.Realtime.Player newPlayer) {
+        yield return new WaitForSeconds(1.0f);
+        Debug.Log("OnPlayerEnteredRoom");
+        base.OnPlayerEnteredRoom(newPlayer);
+
+        //GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
+        //Player players = playerObj.GetComponent<Player>();
+        //players.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+        ////menbarContentに出ないので改めて置きなおす
+        //players.transform.SetParent(gameManager.menbarContent);
+
+        ////Player.csのSetup
+        //players.FirstSetUp(gameManager);
+
+        ////自分の処理（ほかのプレイヤーが入室したときに自分を複数生成してしまうのを抑制する
+        //if (gameManager.chatSystem.playersList.Count <= 0) {
+        //    gameManager.chatSystem.playersList.Add(players);
+        //    gameManager.chatSystem.myPlayer = players;
+        //    Debug.Log("一人目");
+        //} else {
+        //    foreach (Player player in gameManager.chatSystem.playersList) {
+        //        if (players.playerID != player.playerID) {
+        //            gameManager.chatSystem.playersList.Add(players);
+        //            gameManager.chatSystem.myPlayer = players;
+        //            Debug.Log("二人目生成");
+        //        } else {
+        //            Destroy(playerObj);
+        //            Debug.Log("削除予定のプレイヤーID"+players.playerID);
+        //            Debug.Log("二人目削除");
+        //        }
+        //    }
+        //}
+    }
     private IEnumerator SetPlayerData() {
-        //Debug.Log("SetPlayerData:Start");
+        yield return new WaitForSeconds(1.5f);
+        Debug.Log("SetPlayerData:Start");
         GameObject[] playerObjs = GameObject.FindGameObjectsWithTag("Player");
 
         //whileの条件式を満たしている間は、繰り返す。
@@ -249,7 +258,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //全キャラのPlayerSetUpを実行
         foreach (GameObject playerObj in playerObjs) {
+            Debug.Log("setUp");
             Player player = playerObj.GetComponent<Player>();
+            Debug.Log("playerData" + player.playerID);
             //plyaerIDが見つかったらcontinue
             if (gameManager.chatSystem.playersList.Find(x => x.playerID == player.playerID)) {
                 continue;
@@ -304,18 +315,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     ///// ゲーム開始前にプレイヤーを作成する
     ///// ロールなど詳細な情報は後程追加する
     ///// </summary>
-    //public IEnumerator FirstCreatePlayerObj() {
-    //    yield return new WaitForSeconds(1.0f);
+    public IEnumerator FirstCreatePlayerObj() {
+        yield return new WaitForSeconds(1.0f);
+        Debug.Log("FirstCreatePlayerObj");
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        GameObject playerObj;
+        Player player;
 
-    //    gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
+        player = playerObj.GetComponent<Player>();
+        player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+        player.transform.SetParent(gameManager.menbarContent);
+        gameManager.chatSystem.myPlayer = player;
 
-    //    GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
-    //    Player player = playerObj.GetComponent<Player>();
-    //    player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-
-    //    gameManager.chatSystem.myPlayer = player;
-    //    Debug.Log("Player" + gameManager.chatSystem.myPlayer);
-    //    player.PlayerSetUp(gameManager, gameManager.voteCount, gameManager.timeController);
-    //}
+        player.FirstSetUp(gameManager);
+        gameManager.chatSystem.playersList.Add(player);
+        StartCoroutine(SetPlayerData());
+    }
 
 }

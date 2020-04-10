@@ -66,10 +66,12 @@ public class Player : MonoBehaviourPunCallbacks {
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
 
         if (photonView.IsMine) {
+            Debug.Log("IsMine");
             chatSystem.myPlayer = this;
             playerName = PhotonNetwork.LocalPlayer.NickName;
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
         } else {
+            Debug.Log("othetrs");
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                 if (player.ActorNumber == photonView.OwnerActorNr) {
                     playerID = player.ActorNumber;
@@ -77,8 +79,9 @@ public class Player : MonoBehaviourPunCallbacks {
                     iconNo = player.ActorNumber;
                 }
             }
+            gameObject.GetComponent<Outline>().enabled = false;
         }
-        gameObject.GetComponent<Outline>().enabled = false;
+        
         playerText.text = rollType.ToString() + playerName;
     }
 
@@ -155,6 +158,7 @@ public class Player : MonoBehaviourPunCallbacks {
     /// オンラインチェック用
     /// </summary>
     private void Update() {
+        
         //masterのみ
         if (PhotonNetwork.IsMasterClient) {
 
@@ -165,7 +169,7 @@ public class Player : MonoBehaviourPunCallbacks {
             //}
 
             //全員が投票完了したら時短成立
-            if(gameManager.timeController.timeType == TIME.投票時間) { //ゲーム開始前にnullが返ってくる
+            if(gameManager.timeController.timeType == TIME.投票時間) { 
                 checkTimer += Time.deltaTime;
                 if(checkTimer >= 1) {
                     checkTimer = 0;
