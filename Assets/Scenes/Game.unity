@@ -388,7 +388,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -136.9, y: 70}
+  m_SizeDelta: {x: 0, y: 70}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &30259293
 MonoBehaviour:
@@ -4087,10 +4087,10 @@ RectTransform:
   m_Father: {fileID: 1360293660}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.05, y: -27.62783}
-  m_SizeDelta: {x: 48.1, y: 55.25566}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &429416297
 MonoBehaviour:
@@ -11450,37 +11450,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b5a28dc92d6c424a85663d09e0868bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rollAction: {fileID: 904789179}
   timeController: {fileID: 930455255}
   chatListManager: {fileID: 1130743579}
   chatSystem: {fileID: 4395145948522523302}
-  playerPrefab: {fileID: 5121418744333245873, guid: 2eadb5b040b8d524783320298b19b241,
-    type: 3}
   rollExplanation: {fileID: 904789181}
   voteCount: {fileID: 1130743580}
-  timeType: 0
   gameMasterChatManager: {fileID: 1130743577}
   fillter: {fileID: 1018169728}
   NumText: {fileID: 2035613864}
   num: 0
-  enterNum: 0
   numLimit: 9
   liveNum: 0
+  gameStart: 0
+  enterNum: 0
   enterNumTime: 25
-  second: 0
   confirmationImage: {fileID: 797423580}
   confirmationTimeText: {fileID: 1628576554}
   confirmationNumText: {fileID: 527031520}
   confirmationEnterButtonText: {fileID: 1790323956}
   ruleConfiramationButtonText: {fileID: 0}
   ruleConfiramationObj: {fileID: 0}
-  maskObj: {fileID: 0}
-  gameStart: 0
   damyObj: {fileID: 546607570}
   setEnterNumTime: 25
   menbarContent: {fileID: 30259292}
-  timeControllButton: {fileID: 0}
-  friendButton: {fileID: 1109161862}
+  isTimeUp: 0
   exitButton: {fileID: 391165869}
   enterButton: {fileID: 292037474}
   rollTypeList: 
@@ -16041,7 +16034,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1552074812
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17478,10 +17471,10 @@ RectTransform:
   m_Father: {fileID: 1360293660}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.05, y: -62.62783}
-  m_SizeDelta: {x: 48.1, y: 14.744336}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1694585463
 MonoBehaviour:
