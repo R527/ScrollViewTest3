@@ -203,7 +203,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
-
+        StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
         StartCoroutine(SetPlayerData());
     }
 

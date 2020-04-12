@@ -205,6 +205,28 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
 
     /// <summary>
+    /// 強制退出 ゲーム開始前にマスタークライアントのみが参加プレイヤーを退出させることができる
+    /// </summary>
+    public void ForcedEvictionRoom(Photon.Realtime.Player player) {
+        gameManager.chatSystem.gameMasterChat = player.NickName + "さんを強制退出させました。";
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        NetworkManager.instance.KickOutPlayer(player);
+    }
+
+    /// <summary>
+    /// 入室時のチャット
+    /// </summary>
+    public IEnumerator EnteredRoom(Photon.Realtime.Player player) {
+        yield return new WaitForSeconds(2.0f);
+        gameManager.chatSystem.gameMasterChat = player.NickName + "さんが参加しました。";
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+
+    }
+
+
+
+
+    /// <summary>
     /// 投票を完了させる
     /// </summary>
     public void Voted(Photon.Realtime.Player player, bool live) {

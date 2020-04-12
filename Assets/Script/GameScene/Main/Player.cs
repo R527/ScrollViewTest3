@@ -63,6 +63,9 @@ public class Player : MonoBehaviourPunCallbacks {
         transform.SetParent(gameManager.menbarContent);
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
 
+        //生存者にする
+        live = true;
+
         transform.SetParent(gameManager.menbarContent);
         //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
         if (photonView.IsMine) {
@@ -120,6 +123,7 @@ public class Player : MonoBehaviourPunCallbacks {
         this.timeController = timeController;
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
+        
 
         //ラムダ式で引数を充てる。
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
@@ -354,24 +358,12 @@ public class Player : MonoBehaviourPunCallbacks {
                                 //投票のチャット表示
                                 gameManager.gameMasterChatManager.Voted(player, live);
 
-                                //Debug.Log("player.ActorNumber:" + player.ActorNumber);
-                                //Debug.Log("voteNum:" + voteNum);
                                 Debug.Log("投票完了");
 
                                 
                             }
                         }
                         chatSystem.myPlayer.isVoteFlag = true;
-
-                        //全てのプレイヤーが投票したら時短
-                        //Debug.Log("生存数" + gameManager.liveNum);
-                        //Debug.Log("投票完了数" + GetVotingCompletedNum());
-                        //if (gameManager.liveNum == GetVotingCompletedNum()) {
-                        //    timeController.isVotingCompleted = timeController.GetIsVotingCompleted();
-                        //    timeController.isVotingCompleted = true;
-                        //    timeController.SetIsVotingCompleted();
-                        //    Debug.Log("全員投票完了");
-                        //}
                     }
 
                     break;
@@ -384,10 +376,17 @@ public class Player : MonoBehaviourPunCallbacks {
                         chatSystem.myPlayer.isRollAction = true;
                     }
                     break;
-                //default:
-                //    Debug.Log("フィルターOFF");
-                //    gameManager.chatListManager.OnFilter(playerID);
-                //    break;
+                case TIME.開始前:
+                    Debug.Log("強制退出");
+                    if (PhotonNetwork.IsMasterClient) {
+                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                            if (player.ActorNumber == playerID) {
+                                gameManager.gameMasterChatManager.ForcedEvictionRoom(player);
+                                Debug.Log(player.NickName);
+                            }
+                        }
+                    }
+                    break;
             }
         }
     }

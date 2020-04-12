@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //ボタンの追加
         exitButton.onClick.AddListener(ExitButton);
         enterButton.onClick.AddListener(EnterButton);
-
+        
     }
 
     
@@ -446,7 +446,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         rollExplanation.RollExplanationSetUp(rollTypeList);
         chatSystem.OnClickPlayerID();
         timeController.Init(isOffline);
-        chatListManager.PlayerListSetUp(numLimit, chatSystem.myPlayer.wolfChat, chatSystem.myPlayer.live);
+        chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat, chatSystem.myPlayer.live);
         voteCount.VoteCountListSetUp(numLimit);
         liveNum = PhotonNetwork.PlayerList.Length;
         if (PhotonNetwork.IsMasterClient) {

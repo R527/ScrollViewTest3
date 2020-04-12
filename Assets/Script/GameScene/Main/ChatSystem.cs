@@ -58,20 +58,10 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
 
 
-    //public void ChatSystemStartUp() {
-    //    //参加Playerを追加する
-    //    for(int i = 0; i < gameManager.numLimit; i++) {
-    //        playerNameList.Add("Player" + (i + 1));
-    //    }
-    //}
     //MineかOthersなのかをボタンで振り分ける
     public void OnClickMineButton() {
-        if (gameManager.numLimit > gameManager.num) {
-            CreateChatNode( false, SPEAKER_TYPE.UNNKOWN);
-        } else {
-            CreateChatNode(false);
-        }
-        
+        Debug.Log("OnClickMineButton");
+         CreateChatNode(false);
     }
 
     public void OnClickOtherButton() {
@@ -92,6 +82,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     //}
     private void Update() {
         if (Input.GetKeyUp(KeyCode.Return)) {
+            Debug.Log("ReturnKey");
             OnClickMineButton();
         } else if (Input.GetKeyUp(KeyCode.I)) {
             OnClickOtherButton();
@@ -116,6 +107,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     //第2引数がない場合は自動でNullを入れます。
     //指定がある場合はNullの代わりに別の引数が入る
     public  void CreateChatNode(bool comingOut, SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL) {
+        Debug.Log("CreateChatNode");
         if (chatInputField.text == "" && speaker_Type == SPEAKER_TYPE.NULL) {
             return;
         }
@@ -145,10 +137,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 //OnLine
             } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
                 photonView.RPC(nameof(CreateGameMasterChatNode), RpcTarget.All, id, inputData, boardColor, comingOut);
-                //GameObject chatNodeObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
-                //chatNodeObj.transform.SetParent(content.transform);
-                //chatNode = chatNodeObj.GetComponent<ChatNode>();
-                //Debug.Log("CreateNode: GM_ONLINE");
             }
             
 
@@ -158,23 +146,24 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             //色変更
             //ETC
 
-            //Debug.Log("WolfMode" + fillter.wolfMode);
-            //Debug.Log(myPlayer);
-            //if (speaker_Type == SPEAKER_TYPE.UNNKOWN) {
-            //    boardColor = 0;
-            //} else
+            Debug.Log("playerChat");
             if (myPlayer != null) {
+                Debug.Log("notNull");
                 //死亡しているプレイヤー
                 if (!myPlayer.live) {
+                    Debug.Log("死亡");
                     boardColor = 3;
                     //狼用の発言
                 } else if (fillter.wolfMode) {
+                    Debug.Log("赤");
                     boardColor = 2;
                     //青チャット
                 } else if (fillter.superChat) {
+                    Debug.Log("青");
                     boardColor = 1;
                     //通常のチャット
                 } else {
+                    Debug.Log("通常");
                     boardColor = 0;
                 }
                 Debug.Log("色変更通過");
@@ -309,6 +298,10 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         //フィルター中でないなら狼チャットに参加できるか否かを判別する
         if (!chatListManager.isfilter) {
+            if(gameManager.timeController.timeType == TIME.開始前) {
+                isChatSet = true;
+                return isChatSet;
+            }
             if (myPlayer != null) {
                 //市民の場合
                 if (!myPlayer.wolfChat) {

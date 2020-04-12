@@ -59,6 +59,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool firstDay;
     public List<NextDay> nextDayList = new List<NextDay>();
 
+
+
     /// <summary>
     /// 各ボタンの制御,
     /// </summary>

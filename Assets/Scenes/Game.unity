@@ -1757,7 +1757,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 194684092}
   m_OnClick:
     m_PersistentCalls:
@@ -9552,7 +9552,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 972337836}
   m_OnClick:
     m_PersistentCalls:
@@ -11491,7 +11491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74eb5454b463ae542a712a3c17c62355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatSystem: {fileID: 0}
+  gameManager: {fileID: 1130743578}
   normalList: []
   wlofList: []
   callOutList: []
@@ -18386,7 +18386,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1812546288}
   m_OnClick:
     m_PersistentCalls:
@@ -22982,7 +22982,27 @@ MonoBehaviour:
   calloutTimeLimit: 0
   inputData: 
   taboolist: {fileID: 1130743581}
-  comingOutPlayers: []
+  comingOutPlayers:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   playerNameList: []
   playersList: []
   myID: 0

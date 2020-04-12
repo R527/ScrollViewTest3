@@ -7,7 +7,7 @@ using System.Linq;
 /// </summary>
 public class ChatListManager : MonoBehaviour {
     //class
-    public ChatSystem chatSystem;
+    public GameManager gameManager;
     //ChatList
     public List<ChatNode> normalList = new List<ChatNode>();
     public List<ChatNode> wlofList = new List<ChatNode>();
@@ -28,20 +28,23 @@ public class ChatListManager : MonoBehaviour {
     public bool myLive;
 
 
-    /// <summary>
-    /// 参加人数分のListを用意する(中身のない箱を作るだけ
-    /// </summary>
-    /// <param name="numLimit"></param>
-    public void PlayerListSetUp(int numLimit, bool wolf, bool live) {
-
-        //MyPlayerの情報を取得
-        myWolfChat = wolf;
-        myLive = live;
-        for (int i = 0; i < numLimit; i++) {
+    private void Start() {
+        for (int i = 0; i < gameManager.numLimit; i++) {
             allnormalList.Add(new List<ChatNode>());
             allwolfList.Add(new List<ChatNode>());
             alldeathList.Add(new List<ChatNode>());
         }
+    }
+    /// <summary>
+    /// 参加人数分のListを用意する(中身のない箱を作るだけ
+    /// </summary>
+    /// <param name="numLimit"></param>
+    public void PlayerListSetUp( bool wolf, bool live) {
+
+        //MyPlayerの情報を取得
+        myWolfChat = wolf;
+        myLive = live;
+        
     }
 
 
