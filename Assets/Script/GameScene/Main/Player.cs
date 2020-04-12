@@ -184,61 +184,75 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <summary>
     /// オンラインチェック用
     /// </summary>
-    //private void Update() {
-        
-    //    //masterのみ
-    //    if (PhotonNetwork.IsMasterClient) {
+    private void Update() {
+
+        //masterのみ
+        if (PhotonNetwork.IsMasterClient) {
 
 
-    //        //参加意思表示確認画面の監視
-    //        //if(gameManager.numLimit == gameManager.GetEnterNum()) {
+            //参加意思表示確認画面の監視
+            if (gameManager.timeController.timeType == TIME.開始前 && gameManager.numLimit == gameManager.GetNum()) {
+                checkTimer += Time.deltaTime;
+                if (checkTimer >= 1) {
+                    checkTimer = 0;
+                    int num = 0;
+                    gameManager.enterNum = 0;
+                    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                        if ((bool)player.CustomProperties["isJoined"]) {
+                            num++;
+                        }
+                    }
+                    gameManager.enterNum = num;
+                    gameManager.SetEnterNum();
+                }
 
-    //        //}
+            //投票時の監視
+            }else if (gameManager.timeController.timeType == TIME.投票時間) {
+                checkTimer += Time.deltaTime;
+                if (checkTimer >= 1) {
+                    checkTimer = 0;
+                    checkNum = 0;
 
-    //        //全員が投票完了したら時短成立
-    //        if(gameManager.timeController.timeType == TIME.投票時間) { 
-    //            checkTimer += Time.deltaTime;
-    //            if(checkTimer >= 1) {
-    //                checkTimer = 0;
-    //                checkNum = 0;
+                    //投票完了しているかをチェックする
+                    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                        //Debug.Log((bool)player.CustomProperties["votingCompleted"]);
+                        Debug.Log((bool)player.CustomProperties["live"]);
 
-    //                //投票完了しているかをチェックする
-    //                foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-    //                    //Debug.Log((bool)player.CustomProperties["votingCompleted"]);
-    //                    Debug.Log((bool)player.CustomProperties["live"]);
+                        if (player.CustomProperties["votingCompleted"] == null) {
+                            if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
+                                votingCompleted = (bool)votingCompletedObj;
+                            }
+                            var propertiers = new ExitGames.Client.Photon.Hashtable {
+                                    {"votingCompleted",votingCompleted }
+                                };
+                            player.SetCustomProperties(propertiers);
+                        }
 
-    //                    if(player.CustomProperties["votingCompleted"] == null) {
-    //                        if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
-    //                            votingCompleted = (bool)votingCompletedObj;
-    //                        }
-    //                        var propertiers = new ExitGames.Client.Photon.Hashtable {
-    //                                {"votingCompleted",votingCompleted }
-    //                            };
-    //                        player.SetCustomProperties(propertiers);
-    //                    }
+                        if (!(bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
+                            Debug.Log("投票完了していないプレイヤー" + player.NickName);
+                            return;
+                        } else if ((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
+                            checkNum++;
+                            Debug.Log("投票完了したプレイヤー" + player.NickName);
+                        }
+                    }
+                    //投票完了人数が生存員数と一致したら時短する
+                    if (checkNum == gameManager.liveNum) {
+                        checkTimer = -2;
+                        timeController.isVotingCompleted = true;
+                        timeController.SetIsVotingCompleted();
+                        Debug.Log("全員投票完了");
+                    }
+                }
+            } else {
+                //処理なし
+            }
+        }
 
-    //                    if (!(bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
-    //                        Debug.Log("投票完了していないプレイヤー" + player.NickName);
-    //                        return;
-    //                    }else if((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
-    //                        checkNum++;
-    //                        Debug.Log("投票完了したプレイヤー" + player.NickName);
-    //                    }
-    //                }
-    //                //投票完了人数が生存員数と一致したら時短する
-    //                if(checkNum == gameManager.liveNum) {
-    //                    checkTimer = -2;
-    //                    timeController.isVotingCompleted = true;
-    //                    timeController.SetIsVotingCompleted();
-    //                    Debug.Log("全員投票完了");
-    //                }
-    //            }
-    //        } else {
-    //            //処理なし
-    //        }
-    //    }
-        
-    //}
+        //全員が投票完了したら時短成立
+
+
+    }
 
 
     /// <summary>
