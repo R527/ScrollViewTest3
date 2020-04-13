@@ -326,20 +326,20 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         return isChatSet;
     }
 
-    /// <summary>
-    /// Debug用
-    /// </summary>
-    /// <param name="id"></param>
-    public void OnClickPlayerID(int id = 0) {
-        myID = id;
-        foreach(Player player in playersList) {
-            if(player.playerID == myID) {
-                myPlayer = player;
-                MenbarViewText.text = myPlayer.rollType.ToString();
-                rollExplanation.rollExplanationButton.interactable = true;
-            }
-        }
-    }
+    ///// <summary>
+    ///// Debug用
+    ///// </summary>
+    ///// <param name="id"></param>
+    //public void OnClickPlayerID(int id = 0) {
+    //    myID = id;
+    //    foreach(Player player in playersList) {
+    //        if(player.playerID == myID) {
+    //            myPlayer = player;
+    //            MenbarViewText.text = myPlayer.rollType.ToString();
+    //            rollExplanation.rollExplanationButton.interactable = true;
+    //        }
+    //    }
+    //}
 
    }
 

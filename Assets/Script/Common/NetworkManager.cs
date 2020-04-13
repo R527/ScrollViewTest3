@@ -204,7 +204,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
         StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
-        StartCoroutine(SetPlayerData());
+        //StartCoroutine(SetPlayerData());
     }
 
     //public IEnumerator OnPlayerUpdate(Photon.Realtime.Player newPlayer) {
@@ -266,13 +266,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             Debug.Log("setUp");
             Player player = playerObj.GetComponent<Player>();
             Debug.Log("playerData" + player.playerID);
-            
+
 
             Debug.Log("AddplayerName" + player.playerName);
             foreach (Player players in gameManager.chatSystem.playersList) {
-                if(players.playerID != player.playerID) {
-                    continue;
-                }
+                //if(players.playerID == player.playerID) {
+                //    continue;
+                //}
                 gameManager.chatSystem.playersList.Add(player);
                 gameManager.chatSystem.playerNameList.Add(player.playerName);
                 Debug.Log("RemoveplayerName" + player.playerName);
@@ -324,12 +324,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
         Player player = playerObj.GetComponent<Player>();
+        gameManager.chatSystem.myPlayer = player;
         //player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
 
         
-        gameManager.chatSystem.playersList.Add(player);
+        //gameManager.chatSystem.playersList.Add(player);
         //player.FirstSetUp(gameManager);
-        StartCoroutine(SetPlayerData());
+        //StartCoroutine(SetPlayerData());
         
     }
 

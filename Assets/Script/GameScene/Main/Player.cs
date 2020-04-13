@@ -118,25 +118,25 @@ public class Player : MonoBehaviourPunCallbacks {
     public void PlayerSetUp(GameManager gameManager,VoteCount voteCount,TimeController timeController) {
         //Debug.Log("Setup");
         live = true;
-        this.gameManager = gameManager;
+        //this.gameManager = gameManager;
         this.voteCount = voteCount;
         this.timeController = timeController;
-        chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
-        tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
+        //chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
+        //tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
         
 
         //ラムダ式で引数を充てる。
-        playerButton.onClick.AddListener(() => OnClickPlayerButton());
+        //playerButton.onClick.AddListener(() => OnClickPlayerButton());
 
 
         
 
         //自分と他人を分ける分岐
         if (photonView.IsMine) {
-            chatSystem.myPlayer = this;
-            playerName = PhotonNetwork.LocalPlayer.NickName;
+            //chatSystem.myPlayer = this;
+            //playerName = PhotonNetwork.LocalPlayer.NickName;
             //Networkの自分の持っている番号を追加
-            iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
+            //iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
 
 
             //voteCountをプロパティーにセット
@@ -155,15 +155,15 @@ public class Player : MonoBehaviourPunCallbacks {
                 //player.ActorNumberもネットワーク上の自分の番号
                 //playerで回すから各プレイヤーの番号を検索できる
                 if (player.ActorNumber == photonView.OwnerActorNr) {
-                    playerID = player.ActorNumber;
+                    //playerID = player.ActorNumber;
                     rollType = (ROLLTYPE)player.CustomProperties["roll"];
-                    playerName = player.NickName;
-                    iconNo = player.ActorNumber;
+                    //playerName = player.NickName;
+                    //iconNo = player.ActorNumber;
                 }
             }
 
             //自分以外のプレイヤーは青色のラインがない
-            gameObject.GetComponent<Outline>().enabled = false;
+            //gameObject.GetComponent<Outline>().enabled = false;
         }
 
         //役職ごとの判定を追加
@@ -177,7 +177,7 @@ public class Player : MonoBehaviourPunCallbacks {
             wolfCamp = true;
         }
 
-        playerText.text = rollType.ToString() + playerName;
+        //playerText.text = rollType.ToString() + playerName;
     }
 
 
@@ -365,7 +365,7 @@ public class Player : MonoBehaviourPunCallbacks {
                                 Debug.Log((bool)player.CustomProperties["votingCompleted"]);
 
                                 //投票数の表示をディクショナリーで管理
-                                voteCount.voteCountTable[playerID] = voteNum;
+                                //voteCount.voteCountTable[playerID] = voteNum;
                                 
                                 
                                 Debug.Log(voteCount.voteNameTable[playerID]);

@@ -409,6 +409,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         bool isSetup = true;
 
         //マスターはゲームに使用する役職を用意する
+        //yield return StartCoroutineはそのメソッドの処理が終わるまで次の処理へと進まない
         if (PhotonNetwork.IsMasterClient) {
             yield return StartCoroutine(SettingRondomRollType());
         }
@@ -437,7 +438,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     private IEnumerator CreatePlayers() {
         //Debug.Log("CreatePlayers:通過");
         //各自が自分の分のプレイヤーを作る
-        CreatePlayerObj();
+        SetUpMyRollType();
 
         //自分が参加者全員のプレイヤーをもらってリストにする
         yield return StartCoroutine(SetPlayerData());
@@ -456,7 +457,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //Startで反応しない場合は処理中に書くとよい
 
         rollExplanation.RollExplanationSetUp(rollTypeList);
-        chatSystem.OnClickPlayerID();
+        //chatSystem.OnClickPlayerID();
         timeController.Init(isOffline);
         chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat, chatSystem.myPlayer.live);
         voteCount.VoteCountListSetUp(numLimit);
@@ -477,29 +478,27 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// PlayerObjの作成
     /// </summary>
-    private void CreatePlayerObj() {
+    private void SetUpMyRollType() {
 
         //ネットワークオブジェクトとして生成（相手の世界にも自分のプレイヤーが作られる）
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
-        Player player = playerObj.GetComponent<Player>();
-        player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-
+        //GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
+        //Player player = playerObj.GetComponent<Player>();
+        //player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+        
         //取得した自分の番号と同じ番号を探して役職を設定する
         foreach (Photon.Realtime.Player playerData in PhotonNetwork.PlayerList) {
 
-            if (player.playerID == playerData.ActorNumber) {
-                player.rollType = (ROLLTYPE)playerData.CustomProperties["roll"];
+            if (chatSystem.myPlayer.playerID == playerData.ActorNumber) {
+                chatSystem.myPlayer.rollType = (ROLLTYPE)playerData.CustomProperties["roll"];
                 break;
             }
 
 
-
+        }
             //自分だけにGameManager.csを入れる。
             //自分のプレイヤークラスを使う時用。
-            chatSystem.myPlayer = player;
             Debug.Log("Player" + chatSystem.myPlayer);
-            player.PlayerSetUp(this,voteCount,timeController);
-        }
+            chatSystem.myPlayer.PlayerSetUp(this,voteCount,timeController);
     }
 
     /// <summary>
@@ -719,7 +718,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("enterNum", out object enterNumObj)) {
             enterNum = (int)enterNumObj;
         }
-        Debug.Log("enterNum"+enterNum);
         return enterNum;
     }
 
