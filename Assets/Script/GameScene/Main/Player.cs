@@ -74,7 +74,7 @@ public class Player : MonoBehaviourPunCallbacks {
             playerName = PhotonNetwork.LocalPlayer.NickName;
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
             playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-            SetPlayerName();
+            //SetPlayerName();
             playerText.text = rollType.ToString() + playerName;
 
         } else {
@@ -88,28 +88,28 @@ public class Player : MonoBehaviourPunCallbacks {
     /// ゲーム参加直後にセットされる
     /// </summary>
     /// <param name="gameManager"></param>
-    public void FirstSetUp(GameManager gameManager) {
-        Debug.Log("FirstSetUp");
-        this.gameManager = gameManager;
-        chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
-        tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
-        transform.SetParent(gameManager.menbarContent);
-        playerButton.onClick.AddListener(() => OnClickPlayerButton());
+    //public void FirstSetUp(GameManager gameManager) {
+    //    Debug.Log("FirstSetUp");
+    //    this.gameManager = gameManager;
+    //    chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
+    //    tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
+    //    transform.SetParent(gameManager.menbarContent);
+    //    playerButton.onClick.AddListener(() => OnClickPlayerButton());
 
-        transform.SetParent(gameManager.menbarContent);
-        //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
-        if (photonView.IsMine) {
-            Debug.Log("IsMine");
-            chatSystem.myPlayer = this;
-            playerName = PhotonNetwork.LocalPlayer.NickName;
-            iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
-        } else {
-            //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
-            StartCoroutine(SetOtherPlayer());
-        }
+    //    transform.SetParent(gameManager.menbarContent);
+    //    //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
+    //    if (photonView.IsMine) {
+    //        Debug.Log("IsMine");
+    //        chatSystem.myPlayer = this;
+    //        playerName = PhotonNetwork.LocalPlayer.NickName;
+    //        iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
+    //    } else {
+    //        //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
+    //        StartCoroutine(SetOtherPlayer());
+    //    }
 
-        playerText.text = rollType.ToString() + playerName;
-    }
+    //    playerText.text = rollType.ToString() + playerName;
+    //}
 
 
     /// <summary>
@@ -412,7 +412,7 @@ public class Player : MonoBehaviourPunCallbacks {
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
                 playerID = player.ActorNumber;
-                playerName = GetPlayerName(player);
+                playerName = player.NickName;
                 Debug.Log("palyerName" + playerName);
                 iconNo = player.ActorNumber;
             }
