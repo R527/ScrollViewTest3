@@ -220,7 +220,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(2.0f);
         gameManager.chatSystem.gameMasterChat = player.NickName + "さんが参加しました。";
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
-
+        Debug.Log("EnteredRoom");
     }
 
 

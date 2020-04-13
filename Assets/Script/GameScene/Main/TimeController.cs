@@ -68,6 +68,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         firstDay = true;
         isGameOver = true;
         timeType = TIME.処刑後チェック;
+        Debug.Log(timeType);
         savingButton.interactable = true;
 
 

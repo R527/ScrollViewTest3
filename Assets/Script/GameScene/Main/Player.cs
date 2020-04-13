@@ -118,27 +118,12 @@ public class Player : MonoBehaviourPunCallbacks {
     public void PlayerSetUp(GameManager gameManager,VoteCount voteCount,TimeController timeController) {
         //Debug.Log("Setup");
         live = true;
-        //this.gameManager = gameManager;
         this.voteCount = voteCount;
         this.timeController = timeController;
-        //chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
-        //tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
-        
+     
 
-        //ラムダ式で引数を充てる。
-        //playerButton.onClick.AddListener(() => OnClickPlayerButton());
-
-
-        
-
-        //自分と他人を分ける分岐
+        //Aさんの世界のAさんの処理
         if (photonView.IsMine) {
-            //chatSystem.myPlayer = this;
-            //playerName = PhotonNetwork.LocalPlayer.NickName;
-            //Networkの自分の持っている番号を追加
-            //iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
-
-
             //voteCountをプロパティーにセット
             var properties = new ExitGames.Client.Photon.Hashtable {
                 {"voteNum", voteNum },
@@ -149,19 +134,15 @@ public class Player : MonoBehaviourPunCallbacks {
             //このクラスは参加人数が9人の場合81個ある状態になる。
             //上の9人分を除いた、72個分をこちらで処理する
         } else {
-            //自分の世界に作られたほかのPlayerの設定
+            //他の世界にいるAさんの処理
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                 //photonView.OwnerActorNrは自分の通し番号
                 //player.ActorNumberもネットワーク上の自分の番号
                 //playerで回すから各プレイヤーの番号を検索できる
                 if (player.ActorNumber == photonView.OwnerActorNr) {
-                    //playerID = player.ActorNumber;
                     rollType = (ROLLTYPE)player.CustomProperties["roll"];
-                    //playerName = player.NickName;
-                    //iconNo = player.ActorNumber;
                 }
             }
-
             //自分以外のプレイヤーは青色のラインがない
             //gameObject.GetComponent<Outline>().enabled = false;
         }
@@ -177,7 +158,7 @@ public class Player : MonoBehaviourPunCallbacks {
             wolfCamp = true;
         }
 
-        //playerText.text = rollType.ToString() + playerName;
+        playerText.text = rollType.ToString() + playerName;
     }
 
 

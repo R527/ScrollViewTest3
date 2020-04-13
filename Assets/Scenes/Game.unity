@@ -11458,7 +11458,7 @@ MonoBehaviour:
   fillter: {fileID: 1018169728}
   NumText: {fileID: 2035613864}
   num: 0
-  numLimit: 9
+  numLimit: 3
   liveNum: 0
   gameStart: 0
   enterNum: 0

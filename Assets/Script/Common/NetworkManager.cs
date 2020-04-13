@@ -51,7 +51,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     //部屋作成関連まとめ
     /// <summary>
-    /// サーバーに部屋情報を渡す？？　
+    /// サーバーに部屋情報を渡す　
     /// </summary>
     /// <param name="maxPlayer"></param>
     /// <param name="room"></param>
@@ -144,7 +144,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
 
         //プレイヤー作成
-        StartCoroutine(FirstCreatePlayerObj());
+        StartCoroutine(gameManager.FirstCreatePlayerObj());
     }
 
     /// <summary>
@@ -203,91 +203,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
-        StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
-        //StartCoroutine(SetPlayerData());
-    }
-
-    //public IEnumerator OnPlayerUpdate(Photon.Realtime.Player newPlayer) {
-    //    yield return new WaitForSeconds(1.0f);
-    //    Debug.Log("OnPlayerEnteredRoom");
-    //    base.OnPlayerEnteredRoom(newPlayer);
-
-    //    GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
-    //    Player players = playerObj.GetComponent<Player>();
-    //    players.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-    //    //menbarContentに出ないので改めて置きなおす
-    //    players.transform.SetParent(gameManager.menbarContent);
-
-    //    //Player.csのSetup
-    //    players.FirstSetUp(gameManager);
-
-    //    //自分の処理（ほかのプレイヤーが入室したときに自分を複数生成してしまうのを抑制する
-    //    if (gameManager.chatSystem.playersList.Count <= 0) {
-    //        gameManager.chatSystem.playersList.Add(players);
-    //        gameManager.chatSystem.myPlayer = players;
-    //        Debug.Log("一人目");
-    //    } else {
-    //        foreach (Player player in gameManager.chatSystem.playersList) {
-    //            if (players.playerID != player.playerID) {
-    //                gameManager.chatSystem.playersList.Add(players);
-    //                gameManager.chatSystem.myPlayer = players;
-    //                Debug.Log("二人目生成");
-    //            } else {
-    //                Destroy(playerObj);
-    //                gameManager.chatSystem.playersList.Remove(players);
-    //                Debug.Log("削除予定のプレイヤーID" + players.playerID);
-    //                Debug.Log("二人目削除");
-    //            }
-    //        }
-    //    }
-
-    //    StartCoroutine(SetPlayerData());
-    //}
-    private IEnumerator SetPlayerData() {
-        yield return new WaitForSeconds(3f);
-        Debug.Log("SetPlayerData:Start");
-        GameObject[] playerObjs = GameObject.FindGameObjectsWithTag("Player");
-
-        //whileの条件式を満たしている間は、繰り返す。
-        //参加している人数と探してきた人数が一致しているかどうか
-        //条件式をクリアするまで繰り返され、抜けない
-        Debug.Log(playerObjs.Length);
-        Debug.Log(PhotonNetwork.PlayerList.Length);
-        while (playerObjs.Length != PhotonNetwork.PlayerList.Length) {
-            Debug.Log(playerObjs);
-            playerObjs = GameObject.FindGameObjectsWithTag("Player");
-            //yield return null;は1フレーム待つ
-            yield return null;
+        if (PhotonNetwork.IsMasterClient) {
+            StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
         }
-        Debug.Log("参加プレイヤー人数：" + playerObjs.Length);
-
-        //全キャラのPlayerSetUpを実行
-        foreach (GameObject playerObj in playerObjs) {
-            Debug.Log("setUp");
-            Player player = playerObj.GetComponent<Player>();
-            Debug.Log("playerData" + player.playerID);
-
-
-            Debug.Log("AddplayerName" + player.playerName);
-            foreach (Player players in gameManager.chatSystem.playersList) {
-                //if(players.playerID == player.playerID) {
-                //    continue;
-                //}
-                gameManager.chatSystem.playersList.Add(player);
-                gameManager.chatSystem.playerNameList.Add(player.playerName);
-                Debug.Log("RemoveplayerName" + player.playerName);
-
-            }
-
-            yield return null;
-        }
-
-        //PlayerListを照準に並び替える（chatSystem.playersListの各要素をaに入れる foreachのようなもの
-        //＝＞　a.playerIDでは何を基準に並び替えているのかを決めている
-        gameManager.chatSystem.playersList.OrderByDescending(player => player.playerID);
-
     }
-
 
     /// <summary>
     /// ほかのプレイヤーが退出し時に呼び出される
@@ -311,27 +230,5 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CloseConnection(player);
     }
 
-    /// <summary>
-    /// ゲーム開始前にプレイヤーを作成する
-    /// ロールなど詳細な情報は後程追加する
-    /// </summary>
-    public IEnumerator FirstCreatePlayerObj() {
-        yield return new WaitForSeconds(1.0f);
-        PhotonNetwork.IsMessageQueueRunning = true;
-        Debug.Log("FirstCreatePlayerObj");
-        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-
-
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
-        Player player = playerObj.GetComponent<Player>();
-        gameManager.chatSystem.myPlayer = player;
-        //player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-
-        
-        //gameManager.chatSystem.playersList.Add(player);
-        //player.FirstSetUp(gameManager);
-        //StartCoroutine(SetPlayerData());
-        
-    }
 
 }

@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             }
         }
     }
-    
+
 
 
 
@@ -164,7 +164,20 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /////////////////////////////////
 
 
+    /// <summary>
+    /// ゲーム開始前にプレイヤーを作成する
+    /// ロールなど詳細な情報は後程追加する
+    /// </summary>
+    public IEnumerator FirstCreatePlayerObj() {
+        yield return new WaitForSeconds(1.0f);
+        PhotonNetwork.IsMessageQueueRunning = true;
+        Debug.Log("FirstCreatePlayerObj");
 
+        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
+        Player player = playerObj.GetComponent<Player>();
+        chatSystem.myPlayer = player;
+
+    }
 
     /// <summary>
     /// テスト、通常時両方を含めたメソッド
@@ -479,11 +492,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// PlayerObjの作成
     /// </summary>
     private void SetUpMyRollType() {
-
-        //ネットワークオブジェクトとして生成（相手の世界にも自分のプレイヤーが作られる）
-        //GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
-        //Player player = playerObj.GetComponent<Player>();
-        //player.playerID = PhotonNetwork.LocalPlayer.ActorNumber;
         
         //取得した自分の番号と同じ番号を探して役職を設定する
         foreach (Photon.Realtime.Player playerData in PhotonNetwork.PlayerList) {
@@ -492,8 +500,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 chatSystem.myPlayer.rollType = (ROLLTYPE)playerData.CustomProperties["roll"];
                 break;
             }
-
-
         }
             //自分だけにGameManager.csを入れる。
             //自分のプレイヤークラスを使う時用。
@@ -541,7 +547,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         var properties = new ExitGames.Client.Photon.Hashtable();
         properties.Add("player-state", "ready");
         PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
-        //Debug.Log("SetPlayerData:Complete");
     }
 
 
@@ -559,7 +564,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 retReadyPlayerCount++;
             }
         }
-        //Debug.Log(retReadyPlayerCount);
         return retReadyPlayerCount;
     }
 
@@ -606,10 +610,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             return;
         }
         //ネットワーク上に保存されているキーがあるかを確認
-        //保存されていたらEnterNumの値が書き換わる
-        //if (!isOffline) {
-        //    enterNum = GetEnterNum();
-        //}
+
         switch (confirmationEnterButtonText.text) {
             case "参加":
                 //参加するなら
@@ -629,12 +630,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             {"isJoined", isJoined }
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
-        //Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
 
-        //enterNumを更新
-        //SetEnterNum();
-
-        //confirmationNumText.text = enterNum + "/" + numLimit;
 
     }
 
