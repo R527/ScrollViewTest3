@@ -277,11 +277,12 @@ MonoBehaviour:
   testExecutionTime: 4
   testCheckGameOverTime: 3
   testResultTime: 3
-  num: 7
-  enterNum: 7
-  openVoting: 0
+  num: 0
+  enterNum: 0
+  setEnterNumTime: 30
+  openVoting: 1
   fortuneType: 1
-  timeType: 0
+  timeType: 4
   isTestPlay: 1
   testRollTypeList: 020000000400000000000000
 --- !u!4 &317373128

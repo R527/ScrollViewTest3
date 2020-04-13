@@ -53,32 +53,77 @@ public class Player : MonoBehaviourPunCallbacks {
     public bool def;//騎士のデバッグ用
 
 
+
+
+    private void Start() {
+        Debug.Log("FirstSetUp");
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
+        tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
+        transform.SetParent(gameManager.menbarContent);
+        playerButton.onClick.AddListener(() => OnClickPlayerButton());
+
+        //生存者にする
+        live = true;
+
+        transform.SetParent(gameManager.menbarContent);
+        //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
+        if (photonView.IsMine) {
+            Debug.Log("IsMine");
+            chatSystem.myPlayer = this;
+            playerName = PhotonNetwork.LocalPlayer.NickName;
+            iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
+            playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+            //SetPlayerName();
+            playerText.text = rollType.ToString() + playerName;
+
+        } else {
+            //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
+            StartCoroutine(SetOtherPlayer());
+        }
+
+        
+    }
+    /// <summary>
+    /// ゲーム参加直後にセットされる
+    /// </summary>
+    /// <param name="gameManager"></param>
+    //public void FirstSetUp(GameManager gameManager) {
+    //    Debug.Log("FirstSetUp");
+    //    this.gameManager = gameManager;
+    //    chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
+    //    tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
+    //    transform.SetParent(gameManager.menbarContent);
+    //    playerButton.onClick.AddListener(() => OnClickPlayerButton());
+
+    //    transform.SetParent(gameManager.menbarContent);
+    //    //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
+    //    if (photonView.IsMine) {
+    //        Debug.Log("IsMine");
+    //        chatSystem.myPlayer = this;
+    //        playerName = PhotonNetwork.LocalPlayer.NickName;
+    //        iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
+    //    } else {
+    //        //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
+    //        StartCoroutine(SetOtherPlayer());
+    //    }
+
+    //    playerText.text = rollType.ToString() + playerName;
+    //}
+
+
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
     public void PlayerSetUp(GameManager gameManager,VoteCount voteCount,TimeController timeController) {
         //Debug.Log("Setup");
         live = true;
-        this.gameManager = gameManager;
         this.voteCount = voteCount;
         this.timeController = timeController;
-        chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
-        tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
+     
 
-        //ラムダ式で引数を充てる。
-        playerButton.onClick.AddListener(() => OnClickPlayerButton());
-
-
-        
-
-        //自分と他人を分ける分岐
+        //Aさんの世界のAさんの処理
         if (photonView.IsMine) {
-            chatSystem.myPlayer = this;
-            playerName = PhotonNetwork.LocalPlayer.NickName;
-            //Networkの自分の持っている番号を追加
-            iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
-
-
             //voteCountをプロパティーにセット
             var properties = new ExitGames.Client.Photon.Hashtable {
                 {"voteNum", voteNum },
@@ -89,21 +134,17 @@ public class Player : MonoBehaviourPunCallbacks {
             //このクラスは参加人数が9人の場合81個ある状態になる。
             //上の9人分を除いた、72個分をこちらで処理する
         } else {
-            //自分の世界に作られたほかのPlayerの設定
+            //他の世界にいるAさんの処理
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                 //photonView.OwnerActorNrは自分の通し番号
                 //player.ActorNumberもネットワーク上の自分の番号
                 //playerで回すから各プレイヤーの番号を検索できる
                 if (player.ActorNumber == photonView.OwnerActorNr) {
-                    playerID = player.ActorNumber;
                     rollType = (ROLLTYPE)player.CustomProperties["roll"];
-                    playerName = player.NickName;
-                    iconNo = player.ActorNumber;
                 }
             }
-
             //自分以外のプレイヤーは青色のラインがない
-            gameObject.GetComponent<Outline>().enabled = false;
+            //gameObject.GetComponent<Outline>().enabled = false;
         }
 
         //役職ごとの判定を追加
@@ -125,13 +166,31 @@ public class Player : MonoBehaviourPunCallbacks {
     /// オンラインチェック用
     /// </summary>
     private void Update() {
+
         //masterのみ
         if (PhotonNetwork.IsMasterClient) {
 
-            //全員が投票完了したら時短成立
-            if(gameManager.timeController.timeType == TIME.投票時間) { //ゲーム開始前にnullが返ってくる
+
+            //参加意思表示確認画面の監視
+            if (gameManager.timeController.timeType == TIME.開始前 && gameManager.numLimit == gameManager.GetNum()) {
                 checkTimer += Time.deltaTime;
-                if(checkTimer >= 1) {
+                if (checkTimer >= 1) {
+                    checkTimer = 0;
+                    int num = 0;
+                    gameManager.enterNum = 0;
+                    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                        if ((bool)player.CustomProperties["isJoined"]) {
+                            num++;
+                        }
+                    }
+                    gameManager.enterNum = num;
+                    gameManager.SetEnterNum();
+                }
+
+            //投票時の監視
+            }else if (gameManager.timeController.timeType == TIME.投票時間) {
+                checkTimer += Time.deltaTime;
+                if (checkTimer >= 1) {
                     checkTimer = 0;
                     checkNum = 0;
 
@@ -140,7 +199,7 @@ public class Player : MonoBehaviourPunCallbacks {
                         //Debug.Log((bool)player.CustomProperties["votingCompleted"]);
                         Debug.Log((bool)player.CustomProperties["live"]);
 
-                        if(player.CustomProperties["votingCompleted"] == null) {
+                        if (player.CustomProperties["votingCompleted"] == null) {
                             if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
                                 votingCompleted = (bool)votingCompletedObj;
                             }
@@ -153,13 +212,13 @@ public class Player : MonoBehaviourPunCallbacks {
                         if (!(bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
                             Debug.Log("投票完了していないプレイヤー" + player.NickName);
                             return;
-                        }else if((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
+                        } else if ((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
                             checkNum++;
                             Debug.Log("投票完了したプレイヤー" + player.NickName);
                         }
                     }
                     //投票完了人数が生存員数と一致したら時短する
-                    if(checkNum == gameManager.liveNum) {
+                    if (checkNum == gameManager.liveNum) {
                         checkTimer = -2;
                         timeController.isVotingCompleted = true;
                         timeController.SetIsVotingCompleted();
@@ -170,7 +229,10 @@ public class Player : MonoBehaviourPunCallbacks {
                 //処理なし
             }
         }
-        
+
+        //全員が投票完了したら時短成立
+
+
     }
 
 
@@ -259,11 +321,6 @@ public class Player : MonoBehaviourPunCallbacks {
                                 }
                                 voteNum++;
 
-                                //var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                //    {"voteNum", voteNum }
-                                //};
-                                //player.SetCustomProperties(propertiers);
-
                                 //投票したプレイヤーの名前を登録します
                                 if (player.CustomProperties.TryGetValue("voteName", out object voteNameObj)) {
                                     voteName = (string)voteNameObj;
@@ -288,40 +345,20 @@ public class Player : MonoBehaviourPunCallbacks {
                                 Debug.Log((string)player.CustomProperties["voteName"]);
                                 Debug.Log((bool)player.CustomProperties["votingCompleted"]);
 
-                                //全てのプレイヤーが投票したら時短される処理を追加
-                                //votingCompletedNum = GetVotingCompletedNum();
-                                //votingCompletedNum++;
-                                //var num = new ExitGames.Client.Photon.Hashtable {
-                                //    {"VotingCompletedNum",votingCompletedNum }
-                                //};
-                                //PhotonNetwork.CurrentRoom.SetCustomProperties(num);
-
                                 //投票数の表示をディクショナリーで管理
-                                voteCount.voteCountTable[playerID] = voteNum;
+                                //voteCount.voteCountTable[playerID] = voteNum;
                                 
                                 
                                 Debug.Log(voteCount.voteNameTable[playerID]);
                                 //投票のチャット表示
                                 gameManager.gameMasterChatManager.Voted(player, live);
 
-                                //Debug.Log("player.ActorNumber:" + player.ActorNumber);
-                                //Debug.Log("voteNum:" + voteNum);
                                 Debug.Log("投票完了");
 
                                 
                             }
                         }
                         chatSystem.myPlayer.isVoteFlag = true;
-
-                        //全てのプレイヤーが投票したら時短
-                        //Debug.Log("生存数" + gameManager.liveNum);
-                        //Debug.Log("投票完了数" + GetVotingCompletedNum());
-                        //if (gameManager.liveNum == GetVotingCompletedNum()) {
-                        //    timeController.isVotingCompleted = timeController.GetIsVotingCompleted();
-                        //    timeController.isVotingCompleted = true;
-                        //    timeController.SetIsVotingCompleted();
-                        //    Debug.Log("全員投票完了");
-                        //}
                     }
 
                     break;
@@ -334,15 +371,54 @@ public class Player : MonoBehaviourPunCallbacks {
                         chatSystem.myPlayer.isRollAction = true;
                     }
                     break;
-                //default:
-                //    Debug.Log("フィルターOFF");
-                //    gameManager.chatListManager.OnFilter(playerID);
-                //    break;
+                case TIME.開始前:
+                    Debug.Log("強制退出");
+                    if (PhotonNetwork.IsMasterClient) {
+                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                            if (player.ActorNumber == playerID) {
+                                gameManager.gameMasterChatManager.ForcedEvictionRoom(player);
+                                Debug.Log(player.NickName);
+                            }
+                        }
+                    }
+                    break;
             }
         }
     }
 
+    private IEnumerator SetOtherPlayer() {
+        yield return new WaitForSeconds(3.0f);
+
+        Debug.Log("othetrs");
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if (player.ActorNumber == photonView.OwnerActorNr) {
+                playerID = player.ActorNumber;
+                playerName = player.NickName;
+                Debug.Log("palyerName" + playerName);
+                iconNo = player.ActorNumber;
+            }
+        }
+        playerText.text = rollType.ToString() + playerName;
+        gameObject.GetComponent<Outline>().enabled = false;
+    }
 
 
+    private void SetPlayerName() {
+        Debug.Log(playerName);
+        var propertis = new ExitGames.Client.Photon.Hashtable {
+                {"playerName",playerName }
+            };
+        Debug.Log(PhotonNetwork.LocalPlayer.NickName);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(propertis);
+        Debug.Log("playerName" + (string)PhotonNetwork.LocalPlayer.CustomProperties["playerName"]);
+    }
+
+    private string GetPlayerName(Photon.Realtime.Player player) {
+        if (player.CustomProperties.TryGetValue("playerName", out object playerNameObj)) {
+            playerName = (string)playerNameObj;
+        }
+        Debug.Log("playerName" + playerName);
+        return playerName;
+    }
 }
 

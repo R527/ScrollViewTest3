@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Photon.Realtime;
+using Photon.Pun;
 
 public class Fillter : MonoBehaviour
 {
@@ -38,6 +40,10 @@ public class Fillter : MonoBehaviour
         filterButton.onClick.AddListener(FilterButton);
         wolfModeButton.onClick.AddListener(WolfMode);
         superChatButton.onClick.AddListener(SuperChat);
+
+        if (PhotonNetwork.IsMasterClient) {
+            superChatButton.interactable = true;
+        }
     }
 
     /// <summary>

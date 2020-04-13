@@ -59,6 +59,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool firstDay;
     public List<NextDay> nextDayList = new List<NextDay>();
 
+
+
     /// <summary>
     /// 各ボタンの制御,
     /// </summary>
@@ -66,6 +68,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         firstDay = true;
         isGameOver = true;
         timeType = TIME.処刑後チェック;
+        Debug.Log(timeType);
         savingButton.interactable = true;
 
 
@@ -363,17 +366,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
                             var properties = new ExitGames.Client.Photon.Hashtable {
                             {"voteNum", 0 },
                             {"voteName", ""},
+                            {"votingCompleted",false }
                         };
                             player.SetCustomProperties(properties);
                             Debug.Log((int)player.CustomProperties["voteNum"]);
                             Debug.Log((string)player.CustomProperties["voteName"]);
+                            Debug.Log((bool)player.CustomProperties["votingCompleted"]);
                         }
 
-                        var num = new ExitGames.Client.Photon.Hashtable {
-                            {"VotingCompletedNum",false }
-                        };
-                        PhotonNetwork.CurrentRoom.SetCustomProperties(num);
-                        Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["VotingCompletedNum"]);
                     }
 
 

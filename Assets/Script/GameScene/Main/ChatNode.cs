@@ -53,12 +53,13 @@ public class ChatNode : MonoBehaviour {
         } else {
             //stringがnullかから文字化を判定し、その判定をbool型で返す。
             //(chatData.playerID - 1)はGM分をー１にする調整
-            if (string.IsNullOrEmpty(chatSystem.comingOutPlayers[(chatData.playerID - 1)])) {
+            Debug.Log(chatData.playerID);
+            if (string.IsNullOrEmpty(chatSystem.comingOutPlayers[chatData.playerID - 1])) {
                 Debug.Log("ComingOut : 未");
                 statusText.text = chatData.playerName;
             } else {
                 Debug.Log("Coming:済");
-                statusText.text = chatData.playerName + "【" + chatSystem.comingOutPlayers[(chatData.playerID - 1)] +
+                statusText.text = chatData.playerName + "【" + chatSystem.comingOutPlayers[chatData.playerID - 1] +
                     "CO】";
             }
         }

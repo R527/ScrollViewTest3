@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun;
+using System.Linq;
 
 
 /// <summary>
@@ -16,15 +17,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //class
     public RoomSetting roomSetting;
     public static NetworkManager instance;
+    public GameManager gameManager;
 
     //部屋入室処理関連
     public RoomNode roomNodePrefab;
-    public GameObject content;
+    public GameObject roomContent;
     private Dictionary<string, RoomNode> activeEntries = new Dictionary<string, RoomNode>();
     private Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
 
 
-    
+
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -38,7 +41,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public  void SetUp() {
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
-        content = GameObject.FindGameObjectWithTag("content");
+        roomContent = GameObject.FindGameObjectWithTag("content");
+        
     }
 
     public override void OnConnectedToMaster() {
@@ -47,7 +51,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     //部屋作成関連まとめ
     /// <summary>
-    /// サーバーに部屋情報を渡す？？　
+    /// サーバーに部屋情報を渡す　
     /// </summary>
     /// <param name="maxPlayer"></param>
     /// <param name="room"></param>
@@ -90,14 +94,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         };
         roomOptions.CustomRoomProperties = customRoomProperties;
         //部屋のIdを取得
-        room.SetRoomId(roomId);
+        //room.SetRoomId(roomId);
 
         PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
 
 
     }
 
-    //？？
+    /// <summary>
+    /// ただのメソッド　部屋に入室するときに使う
+    /// </summary>
+    /// <param name="roomName"></param>
     public void JoinRoom(string roomName) {
         Debug.Log("joinRoom");
         PhotonNetwork.JoinRoom(roomName);
@@ -132,7 +139,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);
         }
         //シーン遷移
+        PhotonNetwork.IsMessageQueueRunning = false;
         SceneStateManager.instance.NextScene(SCENE_TYPE.GAME);
+
+
+        //プレイヤー作成
+        StartCoroutine(gameManager.FirstCreatePlayerObj());
     }
 
     /// <summary>
@@ -160,7 +172,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 }
                 //部屋が一つも作られていないとき
             } else if (!info.RemovedFromList) {
-                roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, content.transform, false);
+                roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
                 roomNode.Activate(info);
                 activeEntries.Add(info.Name, roomNode);
             }
@@ -185,14 +197,38 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public override void OnLeftRoom() {
         base.OnLeftRoom();
-       // PhotonNetwork.IsMessageQueueRunning = false;
 
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
 
     }
 
-    //public static bool HasStartTime(this Room room) {
-    //    return room.CustomProperties.ContainsKey(KeyStartTime);
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
+        if (PhotonNetwork.IsMasterClient) {
+            StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
+        }
+    }
+
+    /// <summary>
+    /// ほかのプレイヤーが退出し時に呼び出される
+    /// </summary>
+    /// <param name="otherPlayer"></param>
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
+        base.OnPlayerLeftRoom(otherPlayer);
+    }
+
+    //public  void CloseConnection(Photon.Realtime.Player kickPlayer) {
+
     //}
+
+    /// <summary>
+    /// マスターだけが扱える
+    /// 他のプレイヤーをキックする
+    /// 呼び出した後はOnPlayerLeftRoomが呼ばれる(多分
+    /// </summary>
+    /// <param name="player"></param>
+    public void KickOutPlayer(Photon.Realtime.Player player) {
+        PhotonNetwork.CloseConnection(player);
+    }
+
 
 }

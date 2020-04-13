@@ -16,6 +16,8 @@ TagManager:
   - networkManager
   - ChatSystem
   - ChatContent
+  - GameManager
+  - MenbarContent
   layers:
   - Default
   - TransparentFX

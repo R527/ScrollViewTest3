@@ -1,4 +1,5 @@
 ﻿public enum TIME {
+    開始前,
     昼,
     投票時間,
     処刑,
