@@ -45,7 +45,7 @@ public class GameOver : MonoBehaviour {
                 }
                 Debug.Log(winnerList);
             }
-            chatSystem.gameMasterChat = "市民陣営の勝利" + winnerList;
+            gameManager.gameMasterChatManager.gameMasterChat = "市民陣営の勝利" + winnerList;
             Debug.Log("市民陣営の勝利");
 
             //狼の人数が生存者と同数かそれ以上の場合(人狼の勝利
@@ -57,7 +57,7 @@ public class GameOver : MonoBehaviour {
                 }
                 Debug.Log(winnerList);
             }
-            chatSystem.gameMasterChat = "人狼陣営の勝利" + winnerList;
+            gameManager.gameMasterChatManager.gameMasterChat = "人狼陣営の勝利" + winnerList;
             Debug.Log("人狼陣営の勝利");
 
         }else if (liverCount > wolfCount) {

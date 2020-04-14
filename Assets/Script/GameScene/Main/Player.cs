@@ -84,32 +84,6 @@ public class Player : MonoBehaviourPunCallbacks {
 
         
     }
-    /// <summary>
-    /// ゲーム参加直後にセットされる
-    /// </summary>
-    /// <param name="gameManager"></param>
-    //public void FirstSetUp(GameManager gameManager) {
-    //    Debug.Log("FirstSetUp");
-    //    this.gameManager = gameManager;
-    //    chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
-    //    tran = GameObject.FindGameObjectWithTag("ChatContent").transform;
-    //    transform.SetParent(gameManager.menbarContent);
-    //    playerButton.onClick.AddListener(() => OnClickPlayerButton());
-
-    //    transform.SetParent(gameManager.menbarContent);
-    //    //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
-    //    if (photonView.IsMine) {
-    //        Debug.Log("IsMine");
-    //        chatSystem.myPlayer = this;
-    //        playerName = PhotonNetwork.LocalPlayer.NickName;
-    //        iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
-    //    } else {
-    //        //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
-    //        StartCoroutine(SetOtherPlayer());
-    //    }
-
-    //    playerText.text = rollType.ToString() + playerName;
-    //}
 
 
     /// <summary>
@@ -169,26 +143,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //masterのみ
         if (PhotonNetwork.IsMasterClient) {
-
-
-            //参加意思表示確認画面の監視
-            if (gameManager.timeController.timeType == TIME.開始前 && gameManager.numLimit == gameManager.GetNum()) {
-                checkTimer += Time.deltaTime;
-                if (checkTimer >= 1) {
-                    checkTimer = 0;
-                    int num = 0;
-                    gameManager.enterNum = 0;
-                    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                        if ((bool)player.CustomProperties["isJoined"]) {
-                            num++;
-                        }
-                    }
-                    gameManager.enterNum = num;
-                    gameManager.SetEnterNum();
-                }
-
-            //投票時の監視
-            }else if (gameManager.timeController.timeType == TIME.投票時間) {
+            if (timeController.timeType == TIME.投票時間) {
                 checkTimer += Time.deltaTime;
                 if (checkTimer >= 1) {
                     checkTimer = 0;
@@ -196,23 +151,18 @@ public class Player : MonoBehaviourPunCallbacks {
 
                     //投票完了しているかをチェックする
                     foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                        //Debug.Log((bool)player.CustomProperties["votingCompleted"]);
-                        Debug.Log((bool)player.CustomProperties["live"]);
 
-                        if (player.CustomProperties["votingCompleted"] == null) {
-                            if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
-                                votingCompleted = (bool)votingCompletedObj;
-                            }
-                            var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                    {"votingCompleted",votingCompleted }
-                                };
-                            player.SetCustomProperties(propertiers);
-                        }
+                        //if (player.CustomProperties["votingCompleted"] == null) {
+                        //    if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
+                        //        votingCompleted = (bool)votingCompletedObj;
+                        //    }
+                        //    var propertiers = new ExitGames.Client.Photon.Hashtable {
+                        //            {"votingCompleted",votingCompleted }
+                        //        };
+                        //    player.SetCustomProperties(propertiers);
+                        //}
 
-                        if (!(bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
-                            Debug.Log("投票完了していないプレイヤー" + player.NickName);
-                            return;
-                        } else if ((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
+                        if ((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
                             checkNum++;
                             Debug.Log("投票完了したプレイヤー" + player.NickName);
                         }
@@ -229,6 +179,7 @@ public class Player : MonoBehaviourPunCallbacks {
                 //処理なし
             }
         }
+        
 
         //全員が投票完了したら時短成立
 

@@ -46,8 +46,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public Button wolfButton;
     public Text MenbarViewText;
 
-    //GameMaster関連
-    public string gameMasterChat;
 
     //色変更
     public Color [] color;
@@ -120,7 +118,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE || speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
             //GMは自分の世界のみでChatNodeを生成
             boardColor = 4;
-            inputData = gameMasterChat;
+            inputData = gameMasterChatManager.gameMasterChat;
             Debug.Log(inputData);
 
             ChatData chatData = new ChatData(id, inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);

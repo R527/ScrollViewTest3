@@ -24,6 +24,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public Text timeSavingButtonText;//時短or退出ボタン
     public GameObject LeavePopUp;//ゲーム終了後の退出用PopUP
     public Button exitButton;
+    public string gameMasterChat;
     //早朝用
     public int bitedID;//噛んだプレイヤーID
     public int protectedID;//守ったプレイヤーID
@@ -101,8 +102,31 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void TrueCharacter() {
         //本当の姿
-        gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんの本当の姿は" + gameManager.chatSystem.myPlayer.rollType.ToString() + "です！";
+        gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんの本当の姿は" + gameManager.chatSystem.myPlayer.rollType.ToString() + "です！";
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        gameMasterChat = string.Empty;
+    }
+
+    /// <summary>
+    /// 初日占いの設定
+    /// </summary>
+    public IEnumerator OpeningDayFortune() {
+        yield return new WaitForSeconds(2.4f);
+        Debug.Log(gameManager.chatSystem.myPlayer.rollType);
+        Debug.Log(RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.ランダム白);
+        if (RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.ランダム白 && gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.占い師) {
+            List<Player> playerObjList = new List<Player>();
+            int romdomValue = 0;
+            foreach (Player player in gameManager.chatSystem.playersList) {
+                if (!player.fortune && player != gameManager.chatSystem.myPlayer) {
+                    playerObjList.Add(player);
+                }
+            }
+            romdomValue = Random.Range(0, playerObjList.Count);
+            gameMasterChat = "【占い結果】\r\n" + playerObjList[romdomValue].playerName + "は人狼ではない（白）です。";
+            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+            gameMasterChat = string.Empty;
+        }
     }
 
     /// <summary>
@@ -112,16 +136,17 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         //string gmNode = string.Empty;
         switch (timeController.timeType) {
             case TIME.昼:
-                gameManager.chatSystem.gameMasterChat = "話し合う時間です。\r\n\r\n市民陣営は嘘をついている狼を探しましょう。\r\n\r\n人狼陣営は市民にうまく紛れて市民を騙しましょう！";
+                gameMasterChat = "話し合う時間です。\r\n\r\n市民陣営は嘘をついている狼を探しましょう。\r\n\r\n人狼陣営は市民にうまく紛れて市民を騙しましょう！";
                 break;
             case TIME.投票時間:
-                gameManager.chatSystem.gameMasterChat = "投票の時間です。\r\n\r\n人狼と思われるプレイヤーに投票しましょう。";
+                gameMasterChat = "投票の時間です。\r\n\r\n人狼と思われるプレイヤーに投票しましょう。";
                 break;
             case TIME.夜の行動:
-                gameManager.chatSystem.gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう。";
+                gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう。";
                 break;
         }
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        gameMasterChat = string.Empty;
     }
 
 
@@ -140,11 +165,11 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 if (!timeSaving) {
                     timeSavingNum++;
                     timeSaving = true;
-                    gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短を希望しました。" + "(" + timeSavingNum + "/" + gameManager.liveNum + ")※過半数を超えると時短されます。";
+                    gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短を希望しました。" + "(" + timeSavingNum + "/" + gameManager.liveNum + ")※過半数を超えると時短されます。";
                 } else {
                     timeSavingNum--;
                     timeSaving = false;
-                    gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短をキャンセルしました。" + timeSavingNum + "/" + gameManager.liveNum + "※過半数を超えると時短されます。";
+                    gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短をキャンセルしました。" + timeSavingNum + "/" + gameManager.liveNum + "※過半数を超えると時短されます。";
                 }
                 gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
                 //timeSavingNum更新
@@ -174,8 +199,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
                 //ゲーム開始前
                 if (!gameManager.gameStart) {
-                    gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
+                    gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
                     gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
+                    gameMasterChat = string.Empty;
                     //LeaveRoom();処理をするときにTimeControllerのエラーが出るので消去する
                     Destroy(timeController.gameObject);
                     NetworkManager.instance.LeaveRoom();
@@ -196,11 +222,12 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// ネットワークのチェック完了
     /// </summary>
     private IEnumerator ExitButton() {
-        gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
+        gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         yield return new WaitForSeconds(3.0f);
 
         NetworkManager.instance.LeaveRoom();
+        gameMasterChat = string.Empty;
     }
 
 
@@ -208,9 +235,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 強制退出 ゲーム開始前にマスタークライアントのみが参加プレイヤーを退出させることができる
     /// </summary>
     public void ForcedEvictionRoom(Photon.Realtime.Player player) {
-        gameManager.chatSystem.gameMasterChat = player.NickName + "さんを強制退出させました。";
+        gameMasterChat = player.NickName + "さんを強制退出させました。";
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         NetworkManager.instance.KickOutPlayer(player);
+        gameMasterChat = string.Empty;
     }
 
     /// <summary>
@@ -218,9 +246,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public IEnumerator EnteredRoom(Photon.Realtime.Player player) {
         yield return new WaitForSeconds(2.0f);
-        gameManager.chatSystem.gameMasterChat = player.NickName + "さんが参加しました。";
+        gameMasterChat = player.NickName + "さんが参加しました。";
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         Debug.Log("EnteredRoom");
+        gameMasterChat = string.Empty;
     }
 
 
@@ -234,21 +263,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             Debug.Log("押せません");
             return;
         }
-
-        gameManager.chatSystem.gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんは" + player.NickName + "に投票しました。";
-
-        //設定で投票を開示するか否か
-        //if (RoomData.instance.roomInfo.openVoting == VOTING.開示しない) {
-            //開示しない場合
-            gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        //} else {
-        //    //開示する場合
-        //    gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
-        //}
-
-        //投票開示する場合は一旦全てのプレイヤーにOFFLINEで表示し、そのあとまとめて投票先を表記する
-        //その際には投票先に合わせて表記を整頓する
-        //Debug.Log("Votedメソッド通過");
+        gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんは" + player.NickName + "に投票しました。";
+        gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        gameMasterChat = string.Empty;
     }
 
     /// <summary>
@@ -269,7 +286,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             Debug.Log("voteCount.executionID" + voteCount.executionID);
             Debug.Log("処刑されたプレイヤー" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"]);
 
-            gameManager.chatSystem.gameMasterChat = (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + "さんが処刑されました。";
+            gameMasterChat = (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + "さんが処刑されました。";
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
 
             //投票数の表示
@@ -312,9 +329,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             Debug.Log("処刑されたプレイヤーに投票したプレイヤー" + voteCount.voteNameTable[voteCount.GetExecutionPlayerID()]);
 
-            gameManager.chatSystem.gameMasterChat = "【投票結果】\r\n" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + ": " + PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"] + "票" + yajirusi + mostVotingNameList.TrimEnd(',') + str + votingNameList.TrimEnd();
+            gameMasterChat = "【投票結果】\r\n" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + ": " + PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"] + "票" + yajirusi + mostVotingNameList.TrimEnd(',') + str + votingNameList.TrimEnd();
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
         }
+        gameMasterChat = string.Empty;
     }
 
 
@@ -351,12 +369,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             return;
         }
 
-        //ボタンを押した対象のプレイヤーを代入
-        //Debug.Log(playerID - 1);
-        //Debug.Log(gameManager.chatSystem.playersList[playerID - 1]);
-        //Player thePlayer = gameManager.chatSystem.playersList[playerID - 1];
-        //Debug.Log(thePlayer.playerName);
-
         foreach(Player playerObj in gameManager.chatSystem.playersList) {
             if(playerObj.playerID == playerID) {
                 thePlayer = playerObj;
@@ -378,28 +390,33 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     Debug.Log("噛んだID" + thePlayer.playerID);
                     SetBitedPlayerID();
                     Debug.Log("噛んだID" + bitedID);
-                    gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを襲撃します。";
+                    gameMasterChat = thePlayer.playerName + "さんを襲撃します。";
                     Debug.Log(thePlayer.playerName + "襲撃します。");
                 }
+                gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
                 break;
 
             case ROLLTYPE.占い師:
-
-                if (!fortune) {
-                    gameManager.chatSystem.gameMasterChat = "【占い結果】\r\n" + thePlayer.playerName + "は人狼ではない（白）です。";
-                    Debug.Log("白");
-                } else {
-                    gameManager.chatSystem.gameMasterChat = "【占い結果】\r\n" + thePlayer.playerName + "は人狼（黒）です。";
-                    Debug.Log("黒");
+                //初日ではなく もしくは初日占いなし
+                if(!timeController.firstDay || RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.あり) {
+                    if (!fortune) {
+                        gameMasterChat = "【占い結果】\r\n" + thePlayer.playerName + "は人狼ではない（白）です。";
+                        Debug.Log("白");
+                    } else {
+                        gameMasterChat = "【占い結果】\r\n" + thePlayer.playerName + "は人狼（黒）です。";
+                        Debug.Log("黒");
+                    }
                 }
+                gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
                 break;
             case ROLLTYPE.騎士:
-                gameManager.chatSystem.gameMasterChat = thePlayer.playerName + "さんを護衛します。";
+                gameMasterChat = thePlayer.playerName + "さんを護衛します。";
                 Debug.Log("守ります");
                 //守ったプレイヤーを記録
                 protectedID = thePlayer.playerID;
                 SetProtectedPlayerID();
                 Debug.Log("守ったID" + protectedID);
+                gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
                 break;
             default:
                 Debug.Log("押せません。");
@@ -407,6 +424,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         }
         gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         Debug.Log("RollAction");
+        gameMasterChat = string.Empty;
+
     }
 
     /// <summary>
@@ -427,12 +446,12 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             //結果を実行する
             if (bitedID == protectedID) {
-                gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
+                gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
                 Debug.Log("犠牲者なし");
 
             } else {
                 //bitedPlayer = 
-                gameManager.chatSystem.gameMasterChat = "【朝の結果発表】\r\n\r\n" + bitedPlayer.playerName + "さんが襲撃されました。";
+                gameMasterChat = "【朝の結果発表】\r\n\r\n" + bitedPlayer.playerName + "さんが襲撃されました。";
                 Debug.Log("襲撃成功");
             }
             gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_ONLINE);
@@ -444,6 +463,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             SetProtectedPlayerID();
             SetBitedPlayerID();
         }
-
+        gameMasterChat = string.Empty;
     }
 }
