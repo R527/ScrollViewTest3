@@ -39,7 +39,7 @@ public class RollSetting : MonoBehaviour
     private Text nullText;
     private int nullNum;
     private int nullLimit;
-    public int settingNum;
+    public int numLimit;
     public Text sumNumText;
     public int citizenCampNum;
     public Text citizenCampNumText;
@@ -77,11 +77,11 @@ public class RollSetting : MonoBehaviour
         //SumNumber(joinNum);
 
         //表示設定
-        sumNumText.text = settingNum.ToString();
+        sumNumText.text = numLimit.ToString();
         werewolfPlusButton.interactable = false;
         citizenCampNumText.text = citizenCampNum + "人";
         wolfCampNumText.text = wolfCampNum + "人";
-        citizenText.text = citizenNum + "/" + (settingNum - 1);
+        citizenText.text = citizenNum + "/" + (numLimit - 1);
         fortuneText.text = fortuneNum + "/" + fortuneNumLimit;
         knightText.text = knightNum + "/" + knightNumLimit;
         psychicText.text = psychicNum + "/" + psychicNumLimit;
@@ -108,16 +108,16 @@ public class RollSetting : MonoBehaviour
     /// RoomSettingCanvasへ移行する 人数が合わないならポップアップが出る
     /// </summary>
     public void NextButton() {
-        if(settingNum > citizenCampNum + wolfCampNum) {
+        if(numLimit > citizenCampNum + wolfCampNum) {
             wrongPopUpObj.SetActive(true);
             wrongPopUp.wrongText.text = "役職が少ないです。";
-        } else if (settingNum < citizenCampNum + wolfCampNum) {
+        } else if (numLimit < citizenCampNum + wolfCampNum) {
             wrongPopUpObj.SetActive(true);
             wrongPopUp.wrongText.text = "役職が多すぎます。";
         } else if (werewolfNum　== 0) {
             wrongPopUpObj.SetActive(true);
             wrongPopUp.wrongText.text = "少なくとも狼が1匹以上必要です。";
-        }else if (settingNum == citizenCampNum + wolfCampNum) {
+        }else if (numLimit == citizenCampNum + wolfCampNum) {
             rollSettingObj.SetActive(false);
             roomSettingCanvas.SetActive(true);
             titleText.ActivateInputField();
@@ -141,16 +141,16 @@ public class RollSetting : MonoBehaviour
     /// 合計人数増加
     /// </summary>
     public void SumNumberPlusButton() {
-        settingNum++;
-        sumNumText.text = settingNum.ToString();
-        if(settingNum == 15) {
+        numLimit++;
+        sumNumText.text = numLimit.ToString();
+        if(numLimit == 15) {
             numberPlusButton.interactable = false;
-        }else if(settingNum == 5) {
+        }else if(numLimit == 5) {
             numberMinusButton.interactable = true;
         }
 
         //役職ごとの人数制限増加
-        switch(settingNum) {
+        switch(numLimit) {
             case 6:
                 werewolfNumLimit = 2;
                 werewolfPlusButton.interactable = true;
@@ -182,7 +182,7 @@ public class RollSetting : MonoBehaviour
                 psychicPlusButton.interactable = true;
                 break;
         }
-        citizenText.text = citizenNum + "/" + (settingNum - 1);
+        citizenText.text = citizenNum + "/" + (numLimit - 1);
         fortuneText.text = fortuneNum + "/" + fortuneNumLimit;
         knightText.text = knightNum + "/" + knightNumLimit;
         psychicText.text = psychicNum + "/" + psychicNumLimit;
@@ -199,17 +199,17 @@ public class RollSetting : MonoBehaviour
     /// 合計人数減少
     /// </summary>
     public void SumNumberMinusButton() {
-        settingNum--;
+        numLimit--;
         citizenCampNum--;
-        sumNumText.text = settingNum.ToString();
-        if (settingNum == 4) {
+        sumNumText.text = numLimit.ToString();
+        if (numLimit == 4) {
             numberMinusButton.interactable = false;
-        } else if (settingNum == 14) {
+        } else if (numLimit == 14) {
             numberPlusButton.interactable = true;
         }
 
         //役職ごとの人数制限
-        switch (settingNum) {
+        switch (numLimit) {
             case 5:
                 werewolfNumLimit = 1;
                 break;
@@ -254,7 +254,7 @@ public class RollSetting : MonoBehaviour
             wolfCampNum--;
             madmanPlusButton.interactable = false;
         }
-        citizenText.text = citizenNum + "/" + (settingNum - 1);
+        citizenText.text = citizenNum + "/" + (numLimit - 1);
         fortuneText.text = fortuneNum + "/" + fortuneNumLimit;
         knightText.text = knightNum + "/" + knightNumLimit;
         psychicText.text = psychicNum + "/" + psychicNumLimit;
@@ -266,7 +266,7 @@ public class RollSetting : MonoBehaviour
         //CitizenNum();
         if (citizenNum <= 0) {
             citizenNum = 0;
-            citizenText.text = citizenNum + "/" + settingNum;
+            citizenText.text = citizenNum + "/" + numLimit;
         }
     }
 
@@ -342,7 +342,7 @@ public class RollSetting : MonoBehaviour
             case "citizen":
                 nullNum = citizenNum;
                 nullText = citizenText;
-                nullLimit = settingNum - 1;
+                nullLimit = numLimit - 1;
                 nullPlusButton = citizenPlusButton;
                 nullMinusButton = citizenMinusButton;
                 break;

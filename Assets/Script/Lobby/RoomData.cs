@@ -12,7 +12,7 @@ public class RoomData : MonoBehaviour
 
     public RoomInfo roomInfo;
     public List<int> numList = new List<int>();
-    public int settingNum;
+    public int numLimit;
    
 
     private void Awake() {

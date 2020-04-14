@@ -62,25 +62,31 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
 
     void Start() {
-        if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
-            num = DebugManager.instance.num;
-            enterNum = DebugManager.instance.enterNum;
 
-            var customProperties = new ExitGames.Client.Photon.Hashtable {
+
+        //Onlineなら以下の処理をする
+        if (!isOffline) {
+
+            //人数制限をセットする
+            numLimit = RoomData.instance.numLimit;
+            //部屋を作った人は初めての人なのでこの処理はない
+            //二人目以降の人が値を取得する
+            
+            num = GetNum();
+            enterNum = GetEnterNum();
+
+            if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
+                num = DebugManager.instance.num;
+                enterNum = DebugManager.instance.enterNum;
+                numLimit = DebugManager.instance.numLimit;
+                var customProperties = new ExitGames.Client.Photon.Hashtable {
                 { "testMainTime", DebugManager.instance.testMainTime },
                 { "testNightTime", DebugManager.instance.testNightTime },
                 {"enterNumTime", DebugManager.instance.setEnterNumTime },
 
             };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-        }
-
-        //Onlineなら以下の処理をする
-        if (!isOffline) {
-            //部屋を作った人は初めての人なのでこの処理はない
-            //二人目以降の人が値を取得する
-            num = GetNum();
-            enterNum = GetEnterNum();
+                PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+            }
             //参加人数一人追加
             num++;
 
@@ -164,20 +170,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /////////////////////////////////
 
 
-    /// <summary>
-    /// ゲーム開始前にプレイヤーを作成する
-    /// ロールなど詳細な情報は後程追加する
-    /// </summary>
-    public IEnumerator FirstCreatePlayerObj() {
-        yield return new WaitForSeconds(1.0f);
-        PhotonNetwork.IsMessageQueueRunning = true;
-        Debug.Log("FirstCreatePlayerObj");
 
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
-        Player player = playerObj.GetComponent<Player>();
-        chatSystem.myPlayer = player;
-
-    }
 
     /// <summary>
     /// テスト、通常時両方を含めたメソッド
@@ -580,8 +573,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
             RoomData.instance.roomInfo.fortuneType = (FORTUNETYPE)PhotonNetwork.CurrentRoom.CustomProperties["fortuneType"];
             RoomData.instance.roomInfo.openVoting = (VOTING)PhotonNetwork.CurrentRoom.CustomProperties["openVoting"];
             RoomData.instance.roomInfo.title = (string)PhotonNetwork.CurrentRoom.CustomProperties["roomName"];
-            //Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["MaxPlayers"]);
-            RoomData.instance.settingNum = (int)PhotonNetwork.CurrentRoom.MaxPlayers;
+            Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["MaxPlayers"]);
+            RoomData.instance.numLimit = PhotonNetwork.CurrentRoom.MaxPlayers;
+            Debug.Log(RoomData.instance.numLimit);
             string roll = (string)PhotonNetwork.CurrentRoom.CustomProperties["numListStr"];
             int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
             RoomData.instance.numList = intArray.ToList();
@@ -589,10 +583,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         if (DebugManager.instance.isDebug) {
-            //Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"]);
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
             RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
-            //Debug.Log("isDebugOn");
+
         }
     }
 

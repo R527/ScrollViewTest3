@@ -11458,7 +11458,7 @@ MonoBehaviour:
   fillter: {fileID: 1018169728}
   NumText: {fileID: 2035613864}
   num: 0
-  numLimit: 3
+  numLimit: 9
   liveNum: 0
   gameStart: 0
   enterNum: 0
@@ -13956,7 +13956,7 @@ MonoBehaviour:
     nightTime: 2
     roomSelection: 0
   numList: 030000000100000001000000010000000200000001000000
-  settingNum: 9
+  numLimit: 0
 --- !u!4 &1364650106
 Transform:
   m_ObjectHideFlags: 0
