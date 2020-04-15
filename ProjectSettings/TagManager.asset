@@ -18,6 +18,7 @@ TagManager:
   - ChatContent
   - GameManager
   - MenbarContent
+  - ComingOut
   layers:
   - Default
   - TransparentFX

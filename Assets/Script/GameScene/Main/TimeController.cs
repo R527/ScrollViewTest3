@@ -18,7 +18,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public NextDay nextDay;
     public ChatSystem chatSystem;
     public VoteCount voteCount;
-    public RollAction rollAction;
     public GameOver gameOver;
     public GameMasterChatManager gameMasterChatManager;
     public InputView inputView;
@@ -526,8 +525,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
             if (chatSystem.myPlayer.wolfChat) {
                 wolfButton.interactable = true;
             }
+            if (chatSystem.myPlayer.live) {
+                COButton.interactable = true;
+            } else {
+                COButton.interactable = false;
+            }
             callOutButton.interactable = true;
-            COButton.interactable = true;
+            
             inputField.interactable = true;
         }
     }

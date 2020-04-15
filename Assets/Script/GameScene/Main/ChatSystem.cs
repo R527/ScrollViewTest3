@@ -11,12 +11,7 @@ using System;
 /// </summary>
 public class ChatSystem : MonoBehaviourPunCallbacks {
 
-    public enum SPEAKER_TYPE {
-        UNNKOWN,//ゲーム始まる前のプレイヤー
-        NULL,//そのほか
-        GAMEMASTER_OFFLINE,//Gamemaster
-        GAMEMASTER_ONLINE
-    }
+
     //他クラス
     public ChatNode lastChatNode;
     public Player myPlayer;
@@ -37,7 +32,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public int calloutTimeLimit;
     public string inputData;
     public NGList taboolist;
-    public string[] comingOutPlayers;//CO状況を保存
+    //public string[] comingOutPlayers;//CO状況を保存
     public List<string>playerNameList = new List<string>();
     public List<Player> playersList = new List<Player>();
     public int myID;
@@ -55,39 +50,18 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public ChatListManager chatListManager;
 
 
-
-    //MineかOthersなのかをボタンで振り分ける
-    public void OnClickMineButton() {
-        Debug.Log("OnClickMineButton");
-         CreateChatNode(false);
-    }
-
-    public void OnClickOtherButton() {
-        //CreateChatNode(ChatRoll.OTHERS, 2, ROLLTYPE.狂人, false, playerNameList[2]);
-    }
-
-
-    public void OnClickMineCO(string rollName) {
-        //CreateChatNode(ChatRoll.MINE, 1, ROLLTYPE.人狼, true, rollName);
-    }
-
-    public void OnClickOtherCO(string rollName) {
-        //CreateChatNode(ChatRoll.OTHERS, 2, ROLLTYPE.占い師, true, rollName);
-    }
-
-    //public void GameMasterChatNode() {
-    //    gameMasterChatManager.TimeManagementChat();
-    //}
     private void Update() {
         if (Input.GetKeyUp(KeyCode.Return)) {
-            Debug.Log("ReturnKey");
             OnClickMineButton();
-        } else if (Input.GetKeyUp(KeyCode.I)) {
-            OnClickOtherButton();
         }
-
-
     }
+    
+    public void OnClickMineButton() {
+        Debug.Log("OnClickMineButton");
+         CreateChatNode(false,SPEAKER_TYPE.UNNKOWN);
+    }
+
+
 
     [PunRPC]
     private void CreateGameMasterChatNode(int id, string inputData, int boardColor, bool comingOut) {
@@ -106,6 +80,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     //指定がある場合はNullの代わりに別の引数が入る
     public  void CreateChatNode(bool comingOut, SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL) {
         Debug.Log("CreateChatNode");
+        //チャットを無効化する
         if (chatInputField.text == "" && speaker_Type == SPEAKER_TYPE.NULL) {
             return;
         }
@@ -121,6 +96,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             inputData = gameMasterChatManager.gameMasterChat;
             Debug.Log(inputData);
 
+            //データを格納
             ChatData chatData = new ChatData(id, inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
             chatData.chatType = CHAT_TYPE.GM;
 
@@ -128,8 +104,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             ChatNode chatNode = null;
             //Offline
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
-                 chatNode = Instantiate(chatNodePrefab, content.transform, false);
-                //Debug.Log("CreateNode: GM_OFFLINE");
+                chatNode = Instantiate(chatNodePrefab, content.transform, false);
+                //チャットデータをもとにちゃっとNodeに情報を持たせる
                 chatNode.InitChatNode(chatData, 0, false);
                 SetChatNode(chatNode, chatData, false);
                 //OnLine
@@ -167,6 +143,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 Debug.Log("色変更通過");
             }
 
+            //禁止Wordチェック
             inputData = checkTabooWard.StrMatch(chatInputField.text, taboolist.ngWordList);
             //InputFieldを初期化
             chatInputField.text = "";
@@ -199,8 +176,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
-    /// 生成されたChatNodeの設定？？
-    /// 一旦放置（192～195）がわからない
+    /// 生成されたChatNodeの設定
+    /// 色の設定、Listの追加、連続投稿の制御
     /// </summary>
     /// <param name="chatNode"></param>
     /// <param name="chatData"></param>
@@ -324,20 +301,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         return isChatSet;
     }
 
-    ///// <summary>
-    ///// Debug用
-    ///// </summary>
-    ///// <param name="id"></param>
-    //public void OnClickPlayerID(int id = 0) {
-    //    myID = id;
-    //    foreach(Player player in playersList) {
-    //        if(player.playerID == myID) {
-    //            myPlayer = player;
-    //            MenbarViewText.text = myPlayer.rollType.ToString();
-    //            rollExplanation.rollExplanationButton.interactable = true;
-    //        }
-    //    }
-    //}
 
    }
 

@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public VoteCount voteCount;
     public GameMasterChatManager gameMasterChatManager;
     public Fillter fillter;
+    public ComingOut comingOut;
 
     //入室関連
     public Text NumText;//入室してる人数
@@ -47,9 +48,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Button exitButton;
     public Button enterButton;
 
+    //その他
+    
+
     [Header("役職リスト")]
     public List<ROLLTYPE> rollTypeList = new List<ROLLTYPE>();//設定されている役職を追加
-    //
+    public List<ROLLTYPE> ComingOutButtonList = new List<ROLLTYPE>();
 
 
     [Header("オフライン用(trueならOff)")]
@@ -186,8 +190,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
 
 
-
-　　public void CheckEnterNum() {
+    /// <summary>
+    /// マスターだけが参加意思表示あるプレイヤーを監視します。
+    /// 参加意思があるならenterNumを加算します。
+    /// </summary>
+    public void CheckEnterNum() {
         checkTimer += Time.deltaTime;
         if (checkTimer >= 1) {
             checkTimer = 0;
@@ -411,8 +418,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     randomRollTypeList.Add((ROLLTYPE)x);
                     //Debug.Log((ROLLTYPE)x);
                 }
+            　   ComingOutButtonList.Add((ROLLTYPE)x);
                 //役職説明のボタンを追加している
                 rollTypeList.Add((ROLLTYPE)x);
+                
             }
         }
 
@@ -495,7 +504,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //Startで反応しない場合は処理中に書くとよい
 
         rollExplanation.RollExplanationSetUp(rollTypeList);
-        //chatSystem.OnClickPlayerID();
+        comingOut.ComingOutSetUp(ComingOutButtonList);
         timeController.Init(isOffline);
         chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat, chatSystem.myPlayer.live);
         voteCount.VoteCountListSetUp(numLimit);
@@ -566,7 +575,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         chatSystem.playersList.OrderByDescending(player => player.playerID);
 
         //人数分のカミングアウトを用意(要素数を要しただけで初期化はしてないため、中身は””ではなくnull
-        chatSystem.comingOutPlayers = new string[playerObjs.Length];
+        //chatSystem.comingOutPlayers = new string[playerObjs.Length];
 
         //自分のステートを準備完了に変更しカスタムプロパティを更新(個人のフラグではなく、ネットワークで管理できるフラグにする
         var properties = new ExitGames.Client.Photon.Hashtable();
