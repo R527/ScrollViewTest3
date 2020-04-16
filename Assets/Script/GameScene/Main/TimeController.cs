@@ -18,7 +18,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public NextDay nextDay;
     public ChatSystem chatSystem;
     public VoteCount voteCount;
-    public RollAction rollAction;
     public GameOver gameOver;
     public GameMasterChatManager gameMasterChatManager;
     public InputView inputView;
@@ -80,7 +79,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             resultTime = DebugManager.instance.testResultTime;
             timeType = DebugManager.instance.timeType;
         }
-
+        Debug.Log(timeType);
         //狼の場合
         if (chatSystem.myPlayer.wolfChat) {
             wolfButton.interactable = true;
@@ -394,8 +393,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     if (firstDay) {
                         StartCoroutine(NextDay());
                         StartCoroutine(UpInputView());
+                        Debug.Log("firstDay");
                     }
                     StartCoroutine(GameMasterChat());
+                    StartCoroutine(gameMasterChatManager.OpeningDayFortune());
                     if (!firstDay) {
                         StartCoroutine(PsychicAction());
                     }
@@ -524,8 +525,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
             if (chatSystem.myPlayer.wolfChat) {
                 wolfButton.interactable = true;
             }
+            if (chatSystem.myPlayer.live) {
+                COButton.interactable = true;
+            } else {
+                COButton.interactable = false;
+            }
             callOutButton.interactable = true;
-            COButton.interactable = true;
+            
             inputField.interactable = true;
         }
     }

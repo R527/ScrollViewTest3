@@ -11,12 +11,7 @@ using System;
 /// </summary>
 public class ChatSystem : MonoBehaviourPunCallbacks {
 
-    public enum SPEAKER_TYPE {
-        UNNKOWN,//ゲーム始まる前のプレイヤー
-        NULL,//そのほか
-        GAMEMASTER_OFFLINE,//Gamemaster
-        GAMEMASTER_ONLINE
-    }
+
     //他クラス
     public ChatNode lastChatNode;
     public Player myPlayer;
@@ -37,7 +32,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public int calloutTimeLimit;
     public string inputData;
     public NGList taboolist;
-    public string[] comingOutPlayers;//CO状況を保存
+    //public string[] comingOutPlayers;//CO状況を保存
     public List<string>playerNameList = new List<string>();
     public List<Player> playersList = new List<Player>();
     public int myID;
@@ -46,8 +41,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public Button wolfButton;
     public Text MenbarViewText;
 
-    //GameMaster関連
-    public string gameMasterChat;
 
     //色変更
     public Color [] color;
@@ -57,39 +50,18 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public ChatListManager chatListManager;
 
 
-
-    //MineかOthersなのかをボタンで振り分ける
-    public void OnClickMineButton() {
-        Debug.Log("OnClickMineButton");
-         CreateChatNode(false);
-    }
-
-    public void OnClickOtherButton() {
-        //CreateChatNode(ChatRoll.OTHERS, 2, ROLLTYPE.狂人, false, playerNameList[2]);
-    }
-
-
-    public void OnClickMineCO(string rollName) {
-        //CreateChatNode(ChatRoll.MINE, 1, ROLLTYPE.人狼, true, rollName);
-    }
-
-    public void OnClickOtherCO(string rollName) {
-        //CreateChatNode(ChatRoll.OTHERS, 2, ROLLTYPE.占い師, true, rollName);
-    }
-
-    //public void GameMasterChatNode() {
-    //    gameMasterChatManager.TimeManagementChat();
-    //}
     private void Update() {
         if (Input.GetKeyUp(KeyCode.Return)) {
-            Debug.Log("ReturnKey");
             OnClickMineButton();
-        } else if (Input.GetKeyUp(KeyCode.I)) {
-            OnClickOtherButton();
         }
-
-
     }
+    
+    public void OnClickMineButton() {
+        Debug.Log("OnClickMineButton");
+         CreateChatNode(false,SPEAKER_TYPE.UNNKOWN);
+    }
+
+
 
     [PunRPC]
     private void CreateGameMasterChatNode(int id, string inputData, int boardColor, bool comingOut) {
@@ -106,9 +78,11 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
     //第2引数がない場合は自動でNullを入れます。
     //指定がある場合はNullの代わりに別の引数が入る
-    public  void CreateChatNode(bool comingOut, SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL) {
+    //SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL
+    public void CreateChatNode(bool comingOut,SPEAKER_TYPE speaker_Type) {
         Debug.Log("CreateChatNode");
-        if (chatInputField.text == "" && speaker_Type == SPEAKER_TYPE.NULL) {
+        //通常チャット時にInputFieldが空だったらリターン
+        if (chatInputField.text == "" && !comingOut) {
             return;
         }
         //チャットを管理するためのID
@@ -120,9 +94,10 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE || speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
             //GMは自分の世界のみでChatNodeを生成
             boardColor = 4;
-            inputData = gameMasterChat;
+            inputData = gameMasterChatManager.gameMasterChat;
             Debug.Log(inputData);
 
+            //データを格納
             ChatData chatData = new ChatData(id, inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
             chatData.chatType = CHAT_TYPE.GM;
 
@@ -130,8 +105,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             ChatNode chatNode = null;
             //Offline
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
-                 chatNode = Instantiate(chatNodePrefab, content.transform, false);
-                //Debug.Log("CreateNode: GM_OFFLINE");
+                chatNode = Instantiate(chatNodePrefab, content.transform, false);
+                //チャットデータをもとにちゃっとNodeに情報を持たせる
                 chatNode.InitChatNode(chatData, 0, false);
                 SetChatNode(chatNode, chatData, false);
                 //OnLine
@@ -147,8 +122,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             //ETC
 
             Debug.Log("playerChat");
-            if (myPlayer != null) {
-                Debug.Log("notNull");
+            //if (myPlayer != null) {
+            //    Debug.Log("notNull");
                 //死亡しているプレイヤー
                 if (!myPlayer.live) {
                     Debug.Log("死亡");
@@ -167,42 +142,44 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                     boardColor = 0;
                 }
                 Debug.Log("色変更通過");
-            }
+            //}
 
+            //禁止Wordチェック
             inputData = checkTabooWard.StrMatch(chatInputField.text, taboolist.ngWordList);
             //InputFieldを初期化
             chatInputField.text = "";
 
             //発言を生成
-            if (myPlayer != null) {
+            //if (myPlayer != null) {
                 //PlayerはRPCを利用してすべての世界でChatNodeを生成
                 myPlayer.CreateNode(id, inputData, boardColor, comingOut);
-            } else {
-                //ETCはネットワーク・インスタンスを利用してすべての世界でChatNodeを生成
-                ChatData chatData = new ChatData(id, inputData, PhotonNetwork.LocalPlayer.ActorNumber, boardColor, PhotonNetwork.LocalPlayer.NickName, ROLLTYPE.ETC);
-                if (photonView.IsMine) {
-                    chatData.chatType = CHAT_TYPE.MINE;
-                } else {
-                    chatData.chatType = CHAT_TYPE.OTHERS;
-                }
+            
+            //    //ETCはネットワーク・インスタンスを利用してすべての世界でChatNodeを生成
+            //    ChatData chatData = new ChatData(id, inputData, PhotonNetwork.LocalPlayer.ActorNumber, boardColor, PhotonNetwork.LocalPlayer.NickName, ROLLTYPE.ETC);
+            //    if (photonView.IsMine) {
+            //        chatData.chatType = CHAT_TYPE.MINE;
+            //    } else {
+            //        chatData.chatType = CHAT_TYPE.OTHERS;
+            //    }
 
-                GameObject chatObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
-                chatObj.transform.SetParent(content.transform);
+            //    GameObject chatObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
+            //    chatObj.transform.SetParent(content.transform);
 
-                ChatNode chatNode = chatObj.GetComponent<ChatNode>();
-                chatNode.InitChatNode(chatData, PhotonNetwork.LocalPlayer.ActorNumber, comingOut);
+            //    ChatNode chatNode = chatObj.GetComponent<ChatNode>();
+            //Debug.Log("ComingOut" + comingOut);
+            //    chatNode.InitChatNode(chatData, PhotonNetwork.LocalPlayer.ActorNumber, comingOut);
 
-                Debug.Log("CreateNode : ETC");
+            //    Debug.Log("CreateNode : ETC");
 
-                SetChatNode(chatNode, chatData, comingOut);
+            //    SetChatNode(chatNode, chatData, comingOut);
 
-            }
+            ////}
         }
     }
 
     /// <summary>
-    /// 生成されたChatNodeの設定？？
-    /// 一旦放置（192～195）がわからない
+    /// 生成されたChatNodeの設定
+    /// 色の設定、Listの追加、連続投稿の制御
     /// </summary>
     /// <param name="chatNode"></param>
     /// <param name="chatData"></param>
@@ -294,52 +271,43 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public bool SetActiveChatObj() {
+        Debug.Log("SetActiveChatObj");
         bool isChatSet = true;
 
-        //フィルター中でないなら狼チャットに参加できるか否かを判別する
-        if (!chatListManager.isfilter) {
-            if(gameManager.timeController.timeType == TIME.開始前) {
-                isChatSet = true;
-                return isChatSet;
-            }
-            if (myPlayer != null) {
-                //市民の場合
-                if (!myPlayer.wolfChat) {
-                    //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
-                    if ((myPlayer.live && (boardColor == 3 || boardColor == 2)) || (!myPlayer.live && boardColor == 2)) {
-                        isChatSet = false;
-                    }
-                }
+        ////フィルター中でないなら狼チャットに参加できるか否かを判別する
+        //if (!chatListManager.isfilter) {
+        //    //if (gameManager.timeController.timeType == TIME.開始前) {
+        //    //    isChatSet = true;
+        //    //    return isChatSet;
+        //    //}
+        //    if (myPlayer != null) {
+        //        //市民の場合
+        //        if (!myPlayer.wolfChat) {
+        //            Debug.Log("boardColor"+boardColor);
+        //            Debug.Log("live"+myPlayer.live);
+        //            //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
+        //            if (myPlayer.live && (boardColor == 3 || boardColor == 2)) {
+        //                isChatSet = false;
+        //                //|| (!myPlayer.live && boardColor == 2)
+        //            }
+        //        }
 
-                //人狼の場合
-                if (myPlayer.wolfChat) {
-                    //自分が生きていている場合は死亡チャットをfalse　
-                    if (myPlayer.live && boardColor == 3) {
-                        isChatSet = false;
-                    }
-                }
-            }
-        } else {
-            isChatSet = false;
-        }
-        
+        //        //人狼の場合
+        //        if (myPlayer.wolfChat) {
+        //            //自分が生きていている場合は死亡チャットをfalse　
+        //            if (myPlayer.live && boardColor == 3) {
+        //                isChatSet = false;
+        //            }
+        //        }
+        //    }
+        //} 
+        ////else {
+        ////    isChatSet = false;
+        ////}
+
         return isChatSet;
     }
 
-    ///// <summary>
-    ///// Debug用
-    ///// </summary>
-    ///// <param name="id"></param>
-    //public void OnClickPlayerID(int id = 0) {
-    //    myID = id;
-    //    foreach(Player player in playersList) {
-    //        if(player.playerID == myID) {
-    //            myPlayer = player;
-    //            MenbarViewText.text = myPlayer.rollType.ToString();
-    //            rollExplanation.rollExplanationButton.interactable = true;
-    //        }
-    //    }
-    //}
 
    }
 

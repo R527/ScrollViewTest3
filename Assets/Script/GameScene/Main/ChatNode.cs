@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Photon.Pun;
+using Photon.Realtime;
 
 /// <summary>
 /// chatNodeにつけるクラス
 /// ChatSystemから引き受けたデータをもとにCOなのか、誰がチャット打つのか判断する
 /// </summary>
-public class ChatNode : MonoBehaviour {
+public class ChatNode : MonoBehaviourPunCallbacks {
 
     //class
     public ChatSystem chatSystem;
+    public ComingOut comingOutClass;
 
     //main
     public GameObject COPopup;
@@ -24,6 +27,7 @@ public class ChatNode : MonoBehaviour {
     public  Image chatBoard;
     [SerializeField] Image chatIcon;
     public LayoutElement iconObjLayoutElement;
+    public LayoutElement chatObjLayoutElement;
 
     public bool chatLive;
     public bool chatWolf;
@@ -36,11 +40,13 @@ public class ChatNode : MonoBehaviour {
     /// <param name="chatData"></param>
     public void InitChatNode(ChatData chatData, int iconNo, bool comingOut) {
 
-        //ChatDataはChatSystemのdataを取り入れている
         COPopup = GameObject.FindGameObjectWithTag("COPopup");
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
+        comingOutClass = GameObject.FindGameObjectWithTag("ComingOut").GetComponent<ComingOut>();
+
+        //ChatDataはChatSystemのdataを取り入れている
         chatText.text = chatData.inputData;
-        chatIcon.sprite = Resources.Load<Sprite>("CoImage/Player" + iconNo);//Spriteの配列ではなくResouces.Loatにして取得
+        //chatIcon.sprite = Resources.Load<Sprite>("CoImage/Player" + iconNo);//Spriteの配列ではなくResouces.Loatにして取得
 
         //チャットにデータを持たせる
         playerID = chatData.playerID;
@@ -53,13 +59,12 @@ public class ChatNode : MonoBehaviour {
         } else {
             //stringがnullかから文字化を判定し、その判定をbool型で返す。
             //(chatData.playerID - 1)はGM分をー１にする調整
-            Debug.Log(chatData.playerID);
-            if (string.IsNullOrEmpty(chatSystem.comingOutPlayers[chatData.playerID - 1])) {
+            if (comingOutClass.GetComingOutText(playerID) == "") {
                 Debug.Log("ComingOut : 未");
                 statusText.text = chatData.playerName;
             } else {
                 Debug.Log("Coming:済");
-                statusText.text = chatData.playerName + "【" + chatSystem.comingOutPlayers[chatData.playerID - 1] +
+                statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) +
                     "CO】";
             }
         }
@@ -75,23 +80,25 @@ public class ChatNode : MonoBehaviour {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
 
-
+        Debug.Log("CO" + comingOut);
         //COした場合幅等を変更する
         if (comingOut) {
             Debug.Log("ComingOut:" + chatData.playerName);
             chatSystem.chatInputField.text = "";
             //chatBoard.sprite = Resources.Load<Sprite>("CoImage/" + chatData.rollName);
             chatBoard.color = new Color(1f, 1f, 1f, 1f);
-            chatBoard.GetComponent<LayoutElement>().preferredWidth = 60;
-            chatBoard.GetComponent<LayoutElement>().preferredHeight = 60;
-            if(COPopup != null) {
-                COPopup.SetActive(false);
-            }
+            chatObjLayoutElement.preferredWidth = 60;
+            chatObjLayoutElement.preferredHeight = 60;
+            //if(COPopup != null) {
+            //    COPopup.SetActive(false);
+            //}
             //COすると名前の横にCO状況を表示
-            chatSystem.comingOutPlayers[chatData.playerID - 1] = chatData.rollType.ToString();
-            statusText.text = chatData.playerName + "【" + chatSystem.comingOutPlayers[chatData.playerID - 1] + "CO】";
-        }
-        StartCoroutine(CheckTextSize());
+            //chatSystem.comingOutPlayers[chatData.playerID - 1] = chatData.rollType.ToString();
+            statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) + "CO】";
+        } 
+            StartCoroutine(CheckTextSize());
+        
+        
     }
 
 

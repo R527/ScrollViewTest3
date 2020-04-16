@@ -59,8 +59,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //部屋情報を確定する
         RoomOptions roomOptions = new RoomOptions {
             //プロパティを設定している
-            //MaxPlayers = (byte)maxPlayer,
-            MaxPlayers = 3,
+            MaxPlayers = (byte)maxPlayer,
+            //MaxPlayers = 3,
             //プライベートにするかしないか
             IsVisible = true,
             //部屋が開いている状態にする
@@ -80,7 +80,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             { "nightTime", room.nightTime },
             {"fortuneType", room.fortuneType },
             {"openVoting", room.openVoting },
-            {"numListStr", numListStr}
+            {"numListStr", numListStr},
         };
         //カスタムプロパティで設定したキーをロービーで参照できるようにする
         roomOptions.CustomRoomPropertiesForLobby = new string[] {
@@ -144,7 +144,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
 
         //プレイヤー作成
-        StartCoroutine(gameManager.FirstCreatePlayerObj());
+        StartCoroutine(FirstCreatePlayerObj());
     }
 
     /// <summary>
@@ -230,5 +230,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CloseConnection(player);
     }
 
+    /// <summary>
+    /// ゲーム開始前にプレイヤーを作成する
+    /// ロールなど詳細な情報は後程追加する
+    /// </summary>
+    public IEnumerator FirstCreatePlayerObj() {
+        yield return new WaitForSeconds(1.0f);
+        PhotonNetwork.IsMessageQueueRunning = true;
+        Debug.Log("FirstCreatePlayerObj");
 
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
+        Player player = playerObj.GetComponent<Player>();
+        gameManager.chatSystem.myPlayer = player;
+
+    }
 }

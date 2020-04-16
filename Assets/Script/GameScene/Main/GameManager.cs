@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public VoteCount voteCount;
     public GameMasterChatManager gameMasterChatManager;
     public Fillter fillter;
+    public ComingOut comingOut;
 
     //入室関連
     public Text NumText;//入室してる人数
@@ -47,9 +48,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Button exitButton;
     public Button enterButton;
 
+    //その他
+    
+
     [Header("役職リスト")]
     public List<ROLLTYPE> rollTypeList = new List<ROLLTYPE>();//設定されている役職を追加
-    //
+    public List<ROLLTYPE> ComingOutButtonList = new List<ROLLTYPE>();
 
 
     [Header("オフライン用(trueならOff)")]
@@ -62,32 +66,43 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
 
     void Start() {
-        if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
-            num = DebugManager.instance.num;
-            enterNum = DebugManager.instance.enterNum;
 
-            var customProperties = new ExitGames.Client.Photon.Hashtable {
+
+        //Onlineなら以下の処理をする
+        if (!isOffline) {
+
+            //人数制限をセットする
+            if (DebugManager.instance.isDebug) {
+                numLimit = DebugManager.instance.numLimit;
+            } else {
+                numLimit = RoomData.instance.numLimit;
+
+            }
+            //部屋を作った人は初めての人なのでこの処理はない
+            //二人目以降の人が値を取得する
+
+            num = GetNum();
+            enterNum = GetEnterNum();
+
+            if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
+                num = DebugManager.instance.num;
+                enterNum = DebugManager.instance.enterNum;
+                var customProperties = new ExitGames.Client.Photon.Hashtable {
                 { "testMainTime", DebugManager.instance.testMainTime },
                 { "testNightTime", DebugManager.instance.testNightTime },
                 {"enterNumTime", DebugManager.instance.setEnterNumTime },
 
             };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-        }
-
-        //Onlineなら以下の処理をする
-        if (!isOffline) {
-            //部屋を作った人は初めての人なのでこの処理はない
-            //二人目以降の人が値を取得する
-            num = GetNum();
-            enterNum = GetEnterNum();
+                PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+            }
             //参加人数一人追加
             num++;
 
             //トータルの参加人数を更新して、カスタムプロパティに保存する
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"num", num },
-            {"enterNum", enterNum },
+                {"num", num },
+                {"enterNum", enterNum },
+                //{"numLimit",numLimit }
         };
 
             if (PhotonNetwork.CurrentRoom.IsOpen && PhotonNetwork.CurrentRoom.PlayerCount >= PhotonNetwork.CurrentRoom.MaxPlayers) {
@@ -123,6 +138,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
     void Update() {
         //ルームにいる場合のみ
         if (PhotonNetwork.InRoom || isOffline) {
+
+
+            //監視
+            if (PhotonNetwork.IsMasterClient && timeController.timeType == TIME.開始前 && numLimit == GetNum()) {
+                //参加意思表示確認画面の監視
+                CheckEnterNum();
+            }
             if (!gameStart) {
 
                 //一人以上のプレイヤーが退出した場合
@@ -139,6 +161,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 //人数を確認する
                 CountNum();
 
+                Debug.Log("GetEntrerNUm" + GetEnterNum());
+                Debug.Log("numLimit" + numLimit);
+                Debug.Log("GetNum" + GetNum());
                 //入場人数と制限人数が一致してかつ、参加希望人数と制限人数が一致していない場合
                 if (GetNum() == numLimit && GetEnterNum() != numLimit) {
                     Debug.Log(gameStart);
@@ -164,26 +189,32 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /////////////////////////////////
 
 
+
     /// <summary>
-    /// ゲーム開始前にプレイヤーを作成する
-    /// ロールなど詳細な情報は後程追加する
+    /// マスターだけが参加意思表示あるプレイヤーを監視します。
+    /// 参加意思があるならenterNumを加算します。
     /// </summary>
-    public IEnumerator FirstCreatePlayerObj() {
-        yield return new WaitForSeconds(1.0f);
-        PhotonNetwork.IsMessageQueueRunning = true;
-        Debug.Log("FirstCreatePlayerObj");
-
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", menbarContent.position, menbarContent.rotation);
-        Player player = playerObj.GetComponent<Player>();
-        chatSystem.myPlayer = player;
-
+    public void CheckEnterNum() {
+        checkTimer += Time.deltaTime;
+        if (checkTimer >= 1) {
+            checkTimer = 0;
+            int num = 0;
+            enterNum = 0;
+            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                if ((bool)player.CustomProperties["isJoined"]) {
+                    num++;
+                }
+            }
+            enterNum = num;
+            SetEnterNum();
+        }
     }
-
     /// <summary>
     /// テスト、通常時両方を含めたメソッド
     /// 役職をセットします。
     /// </summary>
     public void SetRoll() {
+        Debug.Log("SetRoll");
         //テスト用役職を決定してゲーム開始
         if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
             confirmationImage.SetActive(false);
@@ -221,6 +252,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// 参加意思表示を確認する時間をカウントダウンします。
     /// </summary>
     public void CountDownEnterNumTime() {
+        Debug.Log("CountDown");
         timeController.savingText.text = "時短";
         //フレンド招待ボタン
         //friendButton.gameObject.SetActive(false);
@@ -366,7 +398,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         SetRoomData();
 
         //Playerの生成
-        StartCoroutine(CreatePlayers());
+        StartCoroutine(StartGame());
 
     }
 
@@ -386,8 +418,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     randomRollTypeList.Add((ROLLTYPE)x);
                     //Debug.Log((ROLLTYPE)x);
                 }
-                //役職説明のボタンを追加している
-                rollTypeList.Add((ROLLTYPE)x);
+            　   
+                
             }
         }
 
@@ -440,7 +472,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         SetRoomData();
 
         //Playerの生成
-        StartCoroutine(CreatePlayers());
+        StartCoroutine(StartGame());
 
     }
 
@@ -448,7 +480,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// Player作成　ゲームスタート
     /// </summary>
     /// <returns></returns>
-    private IEnumerator CreatePlayers() {
+    private IEnumerator StartGame() {
         //Debug.Log("CreatePlayers:通過");
         //各自が自分の分のプレイヤーを作る
         SetUpMyRollType();
@@ -456,7 +488,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //自分が参加者全員のプレイヤーをもらってリストにする
         yield return StartCoroutine(SetPlayerData());
         //Debug.Log("Playerリスト　作成完了");
-
+        Debug.Log("SetPlayerData:end");
         //参加者全員がPlayerのリストを作りおわるまで（上の処理が終わるまで）待機する
         //WatiUntilは条件を満たすまで待機（Trueになるまで）
         //CheckPlayerInGame()で取得できるReadyのフラグはネットワークで共有化されている情報
@@ -464,13 +496,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //PhotonNetwork.PlayerListは配列だからLengthで対応する
         yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckPlayerInGame());
-
+        Debug.Log("CheckPlayerInGame:end");
 
 
         //Startで反応しない場合は処理中に書くとよい
 
         rollExplanation.RollExplanationSetUp(rollTypeList);
-        //chatSystem.OnClickPlayerID();
+        comingOut.ComingOutSetUp(ComingOutButtonList);
         timeController.Init(isOffline);
         chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat, chatSystem.myPlayer.live);
         voteCount.VoteCountListSetUp(numLimit);
@@ -492,7 +524,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// PlayerObjの作成
     /// </summary>
     private void SetUpMyRollType() {
-        
+        Debug.Log("SetUpMyRollType");
         //取得した自分の番号と同じ番号を探して役職を設定する
         foreach (Photon.Realtime.Player playerData in PhotonNetwork.PlayerList) {
 
@@ -541,7 +573,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         chatSystem.playersList.OrderByDescending(player => player.playerID);
 
         //人数分のカミングアウトを用意(要素数を要しただけで初期化はしてないため、中身は””ではなくnull
-        chatSystem.comingOutPlayers = new string[playerObjs.Length];
+        //chatSystem.comingOutPlayers = new string[playerObjs.Length];
 
         //自分のステートを準備完了に変更しカスタムプロパティを更新(個人のフラグではなく、ネットワークで管理できるフラグにする
         var properties = new ExitGames.Client.Photon.Hashtable();
@@ -580,19 +612,24 @@ public class GameManager : MonoBehaviourPunCallbacks {
             RoomData.instance.roomInfo.fortuneType = (FORTUNETYPE)PhotonNetwork.CurrentRoom.CustomProperties["fortuneType"];
             RoomData.instance.roomInfo.openVoting = (VOTING)PhotonNetwork.CurrentRoom.CustomProperties["openVoting"];
             RoomData.instance.roomInfo.title = (string)PhotonNetwork.CurrentRoom.CustomProperties["roomName"];
-            //Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["MaxPlayers"]);
-            RoomData.instance.settingNum = (int)PhotonNetwork.CurrentRoom.MaxPlayers;
+            RoomData.instance.numLimit = PhotonNetwork.CurrentRoom.MaxPlayers;
+            Debug.Log(RoomData.instance.numLimit);
             string roll = (string)PhotonNetwork.CurrentRoom.CustomProperties["numListStr"];
             int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
             RoomData.instance.numList = intArray.ToList();
 
         }
+        //全員の世界にComingOutBottonと役職説明用のボタンを追加する
+        for(int i = 0; i < RoomData.instance.numList.Count; i++) {
+            ComingOutButtonList.Add((ROLLTYPE)i);
+            //役職説明のボタンを追加している
+            rollTypeList.Add((ROLLTYPE)i);
+        }
 
         if (DebugManager.instance.isDebug) {
-            //Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"]);
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
             RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
-            //Debug.Log("isDebugOn");
+
         }
     }
 
@@ -801,5 +838,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
         return isExit;
     }
+
+    //public int GetNumLimit() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("numLimit", out object numLimitObj)) {
+    //        numLimit = (int)numLimitObj;
+    //    }
+    //    return numLimit;
+    //}
 }
 

@@ -76,7 +76,7 @@ public class RoomSetting : MonoBehaviour
             fortuneType = DebugManager.instance.fortuneType;
         }
         RoomInfo roomInfo = new RoomInfo(openVoting, title, fortuneType, mainTime, nightTime, roomSelection);
-        room.InitRoomNode(roomInfo, rollSetting.NumList,rollSetting.settingNum);
+        room.InitRoomNode(roomInfo, rollSetting.NumList,rollSetting.numLimit);
 
         //List管理
         roomNodeList.Add(room);
@@ -84,7 +84,7 @@ public class RoomSetting : MonoBehaviour
         //RoomDataにデータ保存
         RoomData.instance.roomInfo = roomInfo;
         RoomData.instance.numList = rollSetting.NumList;
-        RoomData.instance.settingNum = rollSetting.settingNum;
+        RoomData.instance.numLimit = rollSetting.numLimit;
 
         //一旦SetActive（false);にしておく→更新や、難易度変更で後程制御
         room.gameObject.SetActive(false);
