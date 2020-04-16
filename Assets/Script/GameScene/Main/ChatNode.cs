@@ -94,9 +94,9 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             //COすると名前の横にCO状況を表示
             //chatSystem.comingOutPlayers[chatData.playerID - 1] = chatData.rollType.ToString();
             statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText() + "CO】";
-        } else {
+        } 
             StartCoroutine(CheckTextSize());
-        }
+        
         
     }
 

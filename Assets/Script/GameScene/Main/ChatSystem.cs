@@ -269,20 +269,24 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public bool SetActiveChatObj() {
+        Debug.Log("SetActiveChatObj");
         bool isChatSet = true;
 
         //フィルター中でないなら狼チャットに参加できるか否かを判別する
         if (!chatListManager.isfilter) {
-            if(gameManager.timeController.timeType == TIME.開始前) {
-                isChatSet = true;
-                return isChatSet;
-            }
+            //if (gameManager.timeController.timeType == TIME.開始前) {
+            //    isChatSet = true;
+            //    return isChatSet;
+            //}
             if (myPlayer != null) {
                 //市民の場合
                 if (!myPlayer.wolfChat) {
+                    Debug.Log("boardColor"+boardColor);
+                    Debug.Log("live"+myPlayer.live);
                     //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
-                    if ((myPlayer.live && (boardColor == 3 || boardColor == 2)) || (!myPlayer.live && boardColor == 2)) {
+                    if (myPlayer.live && (boardColor == 3 || boardColor == 2)) {
                         isChatSet = false;
+                        //|| (!myPlayer.live && boardColor == 2)
                     }
                 }
 
@@ -294,10 +298,11 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                     }
                 }
             }
-        } else {
-            isChatSet = false;
-        }
-        
+        } 
+        //else {
+        //    isChatSet = false;
+        //}
+
         return isChatSet;
     }
 
