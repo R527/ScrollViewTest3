@@ -27,6 +27,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     public  Image chatBoard;
     [SerializeField] Image chatIcon;
     public LayoutElement iconObjLayoutElement;
+    public LayoutElement chatObjLayoutElement;
 
     public bool chatLive;
     public bool chatWolf;
@@ -58,12 +59,12 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         } else {
             //stringがnullかから文字化を判定し、その判定をbool型で返す。
             //(chatData.playerID - 1)はGM分をー１にする調整
-            if (comingOutClass.GetComingOutText() == "") {
+            if (comingOutClass.GetComingOutText(playerID) == "") {
                 Debug.Log("ComingOut : 未");
                 statusText.text = chatData.playerName;
             } else {
                 Debug.Log("Coming:済");
-                statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText() +
+                statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) +
                     "CO】";
             }
         }
@@ -79,21 +80,21 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
 
-
+        Debug.Log("CO" + comingOut);
         //COした場合幅等を変更する
         if (comingOut) {
             Debug.Log("ComingOut:" + chatData.playerName);
             chatSystem.chatInputField.text = "";
             //chatBoard.sprite = Resources.Load<Sprite>("CoImage/" + chatData.rollName);
             chatBoard.color = new Color(1f, 1f, 1f, 1f);
-            chatBoard.GetComponent<LayoutElement>().preferredWidth = 60;
-            chatBoard.GetComponent<LayoutElement>().preferredHeight = 60;
+            chatObjLayoutElement.preferredWidth = 60;
+            chatObjLayoutElement.preferredHeight = 60;
             //if(COPopup != null) {
             //    COPopup.SetActive(false);
             //}
             //COすると名前の横にCO状況を表示
             //chatSystem.comingOutPlayers[chatData.playerID - 1] = chatData.rollType.ToString();
-            statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText() + "CO】";
+            statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) + "CO】";
         } 
             StartCoroutine(CheckTextSize());
         

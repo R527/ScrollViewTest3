@@ -867,6 +867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chatSystem: {fileID: 0}
+  comingOutClass: {fileID: 0}
   COPopup: {fileID: 0}
   chatText: {fileID: 4466735831423285711}
   statusObj: {fileID: 1235808738732009459}
@@ -876,6 +877,7 @@ MonoBehaviour:
   chatBoard: {fileID: 6995840903809688898}
   chatIcon: {fileID: 6432085198602546823}
   iconObjLayoutElement: {fileID: 6187143868307752041}
+  chatObjLayoutElement: {fileID: 4857243788529812121}
   chatLive: 0
   chatWolf: 0
   playerID: 0

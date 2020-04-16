@@ -78,10 +78,11 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
     //第2引数がない場合は自動でNullを入れます。
     //指定がある場合はNullの代わりに別の引数が入る
-    public  void CreateChatNode(bool comingOut, SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL) {
+    //SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL
+    public void CreateChatNode(bool comingOut,SPEAKER_TYPE speaker_Type) {
         Debug.Log("CreateChatNode");
-        //チャットを無効化する
-        if (chatInputField.text == "" && speaker_Type == SPEAKER_TYPE.NULL) {
+        //通常チャット時にInputFieldが空だったらリターン
+        if (chatInputField.text == "" && !comingOut) {
             return;
         }
         //チャットを管理するためのID
@@ -121,8 +122,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             //ETC
 
             Debug.Log("playerChat");
-            if (myPlayer != null) {
-                Debug.Log("notNull");
+            //if (myPlayer != null) {
+            //    Debug.Log("notNull");
                 //死亡しているプレイヤー
                 if (!myPlayer.live) {
                     Debug.Log("死亡");
@@ -141,7 +142,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                     boardColor = 0;
                 }
                 Debug.Log("色変更通過");
-            }
+            //}
 
             //禁止Wordチェック
             inputData = checkTabooWard.StrMatch(chatInputField.text, taboolist.ngWordList);
@@ -149,29 +150,30 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             chatInputField.text = "";
 
             //発言を生成
-            if (myPlayer != null) {
+            //if (myPlayer != null) {
                 //PlayerはRPCを利用してすべての世界でChatNodeを生成
                 myPlayer.CreateNode(id, inputData, boardColor, comingOut);
-            } else {
-                //ETCはネットワーク・インスタンスを利用してすべての世界でChatNodeを生成
-                ChatData chatData = new ChatData(id, inputData, PhotonNetwork.LocalPlayer.ActorNumber, boardColor, PhotonNetwork.LocalPlayer.NickName, ROLLTYPE.ETC);
-                if (photonView.IsMine) {
-                    chatData.chatType = CHAT_TYPE.MINE;
-                } else {
-                    chatData.chatType = CHAT_TYPE.OTHERS;
-                }
+            
+            //    //ETCはネットワーク・インスタンスを利用してすべての世界でChatNodeを生成
+            //    ChatData chatData = new ChatData(id, inputData, PhotonNetwork.LocalPlayer.ActorNumber, boardColor, PhotonNetwork.LocalPlayer.NickName, ROLLTYPE.ETC);
+            //    if (photonView.IsMine) {
+            //        chatData.chatType = CHAT_TYPE.MINE;
+            //    } else {
+            //        chatData.chatType = CHAT_TYPE.OTHERS;
+            //    }
 
-                GameObject chatObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
-                chatObj.transform.SetParent(content.transform);
+            //    GameObject chatObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
+            //    chatObj.transform.SetParent(content.transform);
 
-                ChatNode chatNode = chatObj.GetComponent<ChatNode>();
-                chatNode.InitChatNode(chatData, PhotonNetwork.LocalPlayer.ActorNumber, comingOut);
+            //    ChatNode chatNode = chatObj.GetComponent<ChatNode>();
+            //Debug.Log("ComingOut" + comingOut);
+            //    chatNode.InitChatNode(chatData, PhotonNetwork.LocalPlayer.ActorNumber, comingOut);
 
-                Debug.Log("CreateNode : ETC");
+            //    Debug.Log("CreateNode : ETC");
 
-                SetChatNode(chatNode, chatData, comingOut);
+            //    SetChatNode(chatNode, chatData, comingOut);
 
-            }
+            ////}
         }
     }
 
@@ -272,36 +274,36 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         Debug.Log("SetActiveChatObj");
         bool isChatSet = true;
 
-        //フィルター中でないなら狼チャットに参加できるか否かを判別する
-        if (!chatListManager.isfilter) {
-            //if (gameManager.timeController.timeType == TIME.開始前) {
-            //    isChatSet = true;
-            //    return isChatSet;
-            //}
-            if (myPlayer != null) {
-                //市民の場合
-                if (!myPlayer.wolfChat) {
-                    Debug.Log("boardColor"+boardColor);
-                    Debug.Log("live"+myPlayer.live);
-                    //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
-                    if (myPlayer.live && (boardColor == 3 || boardColor == 2)) {
-                        isChatSet = false;
-                        //|| (!myPlayer.live && boardColor == 2)
-                    }
-                }
+        ////フィルター中でないなら狼チャットに参加できるか否かを判別する
+        //if (!chatListManager.isfilter) {
+        //    //if (gameManager.timeController.timeType == TIME.開始前) {
+        //    //    isChatSet = true;
+        //    //    return isChatSet;
+        //    //}
+        //    if (myPlayer != null) {
+        //        //市民の場合
+        //        if (!myPlayer.wolfChat) {
+        //            Debug.Log("boardColor"+boardColor);
+        //            Debug.Log("live"+myPlayer.live);
+        //            //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
+        //            if (myPlayer.live && (boardColor == 3 || boardColor == 2)) {
+        //                isChatSet = false;
+        //                //|| (!myPlayer.live && boardColor == 2)
+        //            }
+        //        }
 
-                //人狼の場合
-                if (myPlayer.wolfChat) {
-                    //自分が生きていている場合は死亡チャットをfalse　
-                    if (myPlayer.live && boardColor == 3) {
-                        isChatSet = false;
-                    }
-                }
-            }
-        } 
-        //else {
-        //    isChatSet = false;
-        //}
+        //        //人狼の場合
+        //        if (myPlayer.wolfChat) {
+        //            //自分が生きていている場合は死亡チャットをfalse　
+        //            if (myPlayer.live && boardColor == 3) {
+        //                isChatSet = false;
+        //            }
+        //        }
+        //    }
+        //} 
+        ////else {
+        ////    isChatSet = false;
+        ////}
 
         return isChatSet;
     }

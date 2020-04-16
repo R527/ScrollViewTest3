@@ -33,12 +33,19 @@ public class ComingOut : MonoBehaviourPunCallbacks {
     /// Coのテキストをもらいます。
     /// </summary>
     /// <returns></returns>
-    public string GetComingOutText() {
+    public string GetComingOutText(int playerID) {
         string str = string.Empty;
-        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("comingOutText", out object comingOutTextObj)) {
-            str = (string)comingOutTextObj;
+
+        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if(player.ActorNumber == playerID) {
+                if (player.CustomProperties.TryGetValue("comingOutText", out object comingOutTextObj)) {
+                    str = (string)comingOutTextObj;
+                    break;
+                }
+                Debug.Log("IsTimeUp" + str);
+            }
         }
-        Debug.Log("IsTimeUp" + str);
+        
         return str;
     }
 }

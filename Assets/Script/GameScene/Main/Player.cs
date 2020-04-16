@@ -143,7 +143,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //masterのみ
         if (PhotonNetwork.IsMasterClient) {
-            if (timeController.timeType == TIME.投票時間) {
+            if (timeController != null && timeController.timeType == TIME.投票時間) {
                 checkTimer += Time.deltaTime;
                 if (checkTimer >= 1) {
                     checkTimer = 0;

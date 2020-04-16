@@ -418,9 +418,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     randomRollTypeList.Add((ROLLTYPE)x);
                     //Debug.Log((ROLLTYPE)x);
                 }
-            　   ComingOutButtonList.Add((ROLLTYPE)x);
-                //役職説明のボタンを追加している
-                rollTypeList.Add((ROLLTYPE)x);
+            　   
                 
             }
         }
@@ -620,6 +618,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
             int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
             RoomData.instance.numList = intArray.ToList();
 
+        }
+        //全員の世界にComingOutBottonと役職説明用のボタンを追加する
+        for(int i = 0; i < RoomData.instance.numList.Count; i++) {
+            ComingOutButtonList.Add((ROLLTYPE)i);
+            //役職説明のボタンを追加している
+            rollTypeList.Add((ROLLTYPE)i);
         }
 
         if (DebugManager.instance.isDebug) {
