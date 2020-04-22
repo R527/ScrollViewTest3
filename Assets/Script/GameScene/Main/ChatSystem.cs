@@ -273,41 +273,45 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public bool SetActiveChatObj() {
         Debug.Log("SetActiveChatObj");
         bool isChatSet = true;
+        //Debug.Log("boardColor" + boardColor);
+        //Debug.Log("live" + myPlayer.live);
+        //フィルター中でないなら狼チャットに参加できるか否かを判別する
+        if (!chatListManager.isfilter) {
+            if (gameManager.timeController.timeType == TIME.開始前) {
+                isChatSet = true;
+                return isChatSet;
+            }
+            if (myPlayer != null) {
+                //市民の場合
+                if (!myPlayer.wolfChat) {
+                    Debug.Log("boardColor" + boardColor);
+                    Debug.Log("live" + myPlayer.live);
+                    //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
+                    if (myPlayer.live && (boardColor == 3 || boardColor == 2)) {
+                        isChatSet = false;
+                        //|| (!myPlayer.live && boardColor == 2)
+                    }
+                }
 
-        ////フィルター中でないなら狼チャットに参加できるか否かを判別する
-        //if (!chatListManager.isfilter) {
-        //    //if (gameManager.timeController.timeType == TIME.開始前) {
-        //    //    isChatSet = true;
-        //    //    return isChatSet;
-        //    //}
-        //    if (myPlayer != null) {
-        //        //市民の場合
-        //        if (!myPlayer.wolfChat) {
-        //            Debug.Log("boardColor"+boardColor);
-        //            Debug.Log("live"+myPlayer.live);
-        //            //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
-        //            if (myPlayer.live && (boardColor == 3 || boardColor == 2)) {
-        //                isChatSet = false;
-        //                //|| (!myPlayer.live && boardColor == 2)
-        //            }
-        //        }
+                //人狼の場合
+                if (myPlayer.wolfChat) {
+                    //自分が生きていている場合は死亡チャットをfalse　
+                    if (myPlayer.live && boardColor == 3) {
+                        isChatSet = false;
+                    }
+                }
+            }
+        } else {
+            isChatSet = false;
+        }
 
-        //        //人狼の場合
-        //        if (myPlayer.wolfChat) {
-        //            //自分が生きていている場合は死亡チャットをfalse　
-        //            if (myPlayer.live && boardColor == 3) {
-        //                isChatSet = false;
-        //            }
-        //        }
-        //    }
-        //} 
-        ////else {
-        ////    isChatSet = false;
-        ////}
+        //if (!myPlayer.wolfChat && myPlayer.live) {
+        //    isChatSet = false;
+        //}
 
         return isChatSet;
     }
 
 
-   }
+}
 

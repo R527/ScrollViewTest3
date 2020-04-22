@@ -224,9 +224,11 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //チャットにデータを持たせる用
         chatData.chatLive = live;
-        chatData.chatWolf = wolf;
+        chatData.chatWolf = wolfChat;
 
         ChatNode chatNode = Instantiate(chatNodePrefab, tran, false);
+        //RPC内にあるメソッドもRPCと同じ挙動をする
+        //そのメソッドの先で呼ばれるメソッドもRPCと同じ挙動をする
         chatNode.InitChatNode(chatData, iconNo, comingOut);
         Debug.Log(comingOut);
         chatSystem.SetChatNode(chatNode, chatData, comingOut);

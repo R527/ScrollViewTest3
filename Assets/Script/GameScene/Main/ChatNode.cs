@@ -53,6 +53,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         chatLive = chatData.chatLive;
         chatWolf = chatData.chatWolf;
 
+
         //PlayerがCOしているか否か（COしている場合は名前の横に職業名を記載
         if (chatData.chatType == CHAT_TYPE.GM) {
             statusText.text = "GM";
@@ -101,7 +102,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         
     }
 
-
+    
 
     /// <summary>
     /// チャットの長さに応じて折り返すか否かを決める
