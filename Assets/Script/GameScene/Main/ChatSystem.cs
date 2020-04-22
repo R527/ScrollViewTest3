@@ -143,6 +143,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 }
                 Debug.Log("色変更通過");
             //}
+            Debug.Log("boardcolor" + boardColor);
 
             //禁止Wordチェック
             inputData = checkTabooWard.StrMatch(chatInputField.text, taboolist.ngWordList);
@@ -229,7 +230,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         }
 
         //SetActiveを制御する
-        chatNode.gameObject.SetActive(SetActiveChatObj());
+        chatNode.gameObject.SetActive(SetActiveChatObj(chatNode));
 
 
 
@@ -270,44 +271,26 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// ChatObjectのActive状態を制御
     /// </summary>
     /// <returns></returns>
-    public bool SetActiveChatObj() {
+    public bool SetActiveChatObj(ChatNode chatNode) {
         Debug.Log("SetActiveChatObj");
-        bool isChatSet = true;
-        //Debug.Log("boardColor" + boardColor);
-        //Debug.Log("live" + myPlayer.live);
-        //フィルター中でないなら狼チャットに参加できるか否かを判別する
-        if (!chatListManager.isfilter) {
-            if (gameManager.timeController.timeType == TIME.開始前) {
-                isChatSet = true;
-                return isChatSet;
-            }
-            if (myPlayer != null) {
-                //市民の場合
-                if (!myPlayer.wolfChat) {
-                    Debug.Log("boardColor" + boardColor);
-                    Debug.Log("live" + myPlayer.live);
-                    //生存していてかつ狼or死亡チャット　もしくは自分が死んでいてかつ狼の発言の場合false
-                    if (myPlayer.live && (boardColor == 3 || boardColor == 2)) {
-                        isChatSet = false;
-                        //|| (!myPlayer.live && boardColor == 2)
-                    }
-                }
+        bool isChatSet = false;
 
-                //人狼の場合
-                if (myPlayer.wolfChat) {
-                    //自分が生きていている場合は死亡チャットをfalse　
-                    if (myPlayer.live && boardColor == 3) {
-                        isChatSet = false;
-                    }
-                }
-            }
-        } else {
-            isChatSet = false;
+        if (!chatNode.chatWolf && chatNode.chatLive) {
+            //通常チャットは全員が見れる
+            isChatSet = true;
+            Debug.Log("通常チャット");
+        }else if (!chatNode.chatLive && !myPlayer.live) {
+            //死亡チャットは死亡したプレイヤーのみが見れる
+            isChatSet = true;
+            Debug.Log("死亡チャット");
+
+        } else if (chatNode.chatLive && chatNode.chatWolf && myPlayer.wolfChat && myPlayer.live) {
+            //狼チャットは狼でいて生きているプレイヤーだけが見れる
+            isChatSet = true;
+            Debug.Log("狼チャット");
+
         }
 
-        //if (!myPlayer.wolfChat && myPlayer.live) {
-        //    isChatSet = false;
-        //}
 
         return isChatSet;
     }

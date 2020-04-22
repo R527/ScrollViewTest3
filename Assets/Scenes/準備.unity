@@ -285,7 +285,7 @@ MonoBehaviour:
   fortuneType: 2
   timeType: 4
   isTestPlay: 1
-  testRollTypeList: 040000000000000000000000
+  testRollTypeList: 040000000400000000000000
 --- !u!4 &317373128
 Transform:
   m_ObjectHideFlags: 0
