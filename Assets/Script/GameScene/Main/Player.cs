@@ -91,7 +91,7 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     public void PlayerSetUp(GameManager gameManager,VoteCount voteCount,TimeController timeController) {
         //Debug.Log("Setup");
-        live = true;
+        //live = true;
         this.voteCount = voteCount;
         this.timeController = timeController;
      
@@ -152,15 +152,15 @@ public class Player : MonoBehaviourPunCallbacks {
                     //投票完了しているかをチェックする
                     foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
 
-                        //if (player.CustomProperties["votingCompleted"] == null) {
-                        //    if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
-                        //        votingCompleted = (bool)votingCompletedObj;
-                        //    }
-                        //    var propertiers = new ExitGames.Client.Photon.Hashtable {
-                        //            {"votingCompleted",votingCompleted }
-                        //        };
-                        //    player.SetCustomProperties(propertiers);
-                        //}
+                        if (player.CustomProperties["votingCompleted"] == null) {
+                            if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
+                                votingCompleted = (bool)votingCompletedObj;
+                            }
+                            var propertiers = new ExitGames.Client.Photon.Hashtable {
+                                    {"votingCompleted",votingCompleted }
+                                };
+                            player.SetCustomProperties(propertiers);
+                        }
 
                         if ((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
                             checkNum++;

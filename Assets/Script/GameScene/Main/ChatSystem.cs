@@ -80,18 +80,17 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     //指定がある場合はNullの代わりに別の引数が入る
     //SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL
     public void CreateChatNode(bool comingOut,SPEAKER_TYPE speaker_Type) {
-        Debug.Log("CreateChatNode");
+
+        Debug.Log("CreateChatNode1");
         //通常チャット時にInputFieldが空だったらリターン
-        if (chatInputField.text == "" && !comingOut) {
-            return;
-        }
+
         //チャットを管理するためのID
         id++;
 
 
         //発言者（ETC、GM、Player）の分岐
         //GMの発言
-        if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE || speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
+        if (!comingOut && (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE || speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE)) {
             //GMは自分の世界のみでChatNodeを生成
             boardColor = 4;
             inputData = gameMasterChatManager.gameMasterChat;
@@ -118,9 +117,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
             //Playerの発言
         } else {
-            //色変更
-            //ETC
-
+            if (chatInputField.text == "") {
+                return;
+            }
             Debug.Log("playerChat");
             //if (myPlayer != null) {
             //    Debug.Log("notNull");
@@ -275,6 +274,10 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         Debug.Log("SetActiveChatObj");
         bool isChatSet = false;
 
+        //GameMasterChat
+        if(chatNode.playerID == 999){
+            return isChatSet = true ;
+        }
         if (!chatNode.chatWolf && chatNode.chatLive) {
             //通常チャットは全員が見れる
             isChatSet = true;
@@ -290,8 +293,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             Debug.Log("狼チャット");
 
         }
-
-
         return isChatSet;
     }
 

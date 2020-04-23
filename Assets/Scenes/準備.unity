@@ -271,9 +271,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  testMainTime: 6000
+  testMainTime: 10
   testNightTime: 3
-  testVotingTime: 3
+  testVotingTime: 20
   testExecutionTime: 4
   testCheckGameOverTime: 3
   testResultTime: 3
@@ -283,9 +283,9 @@ MonoBehaviour:
   setEnterNumTime: 30
   openVoting: 1
   fortuneType: 2
-  timeType: 4
+  timeType: 1
   isTestPlay: 1
-  testRollTypeList: 040000000400000000000000
+  testRollTypeList: 040000000000000000000000
 --- !u!4 &317373128
 Transform:
   m_ObjectHideFlags: 0

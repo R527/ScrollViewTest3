@@ -99,7 +99,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                 }
             }
 
-        //ランダム処刑処理or処刑処理
+        //ランダム処刑処理
             if(ExecutionPlayerList.Count >= 2) {
                 mostVotePlayer = ExecutionPlayerList[Random.Range(0, ExecutionPlayerList.Count)];
             } else {
@@ -166,6 +166,8 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         //foreach(int playerID in voteCountList.Keys) {
         //    voteCountList[playerID] = 0;
         //}
+
+
 
     }
 }
