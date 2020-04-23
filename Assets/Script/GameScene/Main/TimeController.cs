@@ -352,6 +352,17 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     totalTime = executionTime;
                     voteCount.Execution();
                     gameManager.gameMasterChatManager.ExecutionChat();
+                    //自分のプレイヤーが死亡した場合の処理をする
+                    if (!chatSystem.myPlayer.live) {
+                        //狼モード、superチャット、COのボタンを無効
+                        fillter.wolfModeButton.interactable = false;
+                        fillter.comingOutButton.interactable = false;
+                        fillter.superChatButton.interactable = false;
+                        if (chatSystem.myPlayer.wolfChat) {
+                            gameManager.chatListManager.OffWolfMode();
+                            fillter.wolfModeButtonText.text = "市民";
+                        }
+                    }
                     break;
 
                 //処刑後チェック
@@ -496,6 +507,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //Debug.Log("EndInterval: 終了");
     }
 
+    /// <summary>
+    /// InPutViewを上げます
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator UpInputView() {
         fillter.folding = true;
         inputView.foldingButton.interactable = false;
@@ -506,6 +521,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
         inputView.foldingText.text = "↓";
     }
 
+    /// <summary>
+    /// InPutViewを下げます
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator DownInputView() {
         fillter.folding = false;
         inputView.foldingButton.interactable = true;

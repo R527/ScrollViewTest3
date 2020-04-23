@@ -100,11 +100,6 @@ public class ChatListManager : MonoBehaviour {
     /// </summary>
     /// <param name="id"></param>
     public void OffFilter() {
-        //for (int i = 0; i < allPlayerList.Count; i++) {
-        //    foreach (ChatNode chatObj in allPlayerList[i]) {
-        //        chatObj.gameObject.SetActive(true);
-        //    }
-        //}
 
         //GMチャット
         foreach (ChatNode chatObj in gameMasterList) {
@@ -117,22 +112,21 @@ public class ChatListManager : MonoBehaviour {
             }
         }
         //狼チャット
-        foreach (List<ChatNode> chatList in allwolfList) {
-            foreach (ChatNode chatObj in chatList) {
-                if (myWolfChat) {
+        if (myWolfChat) {
+            foreach (List<ChatNode> chatList in allwolfList) {
+                foreach (ChatNode chatObj in chatList) {
                     chatObj.gameObject.SetActive(true);
                 }
             }
         }
         //死亡チャット
-        foreach (List<ChatNode> chatList in alldeathList) {
-            foreach (ChatNode chatObj in chatList) {
-                if (!myLive) {
+        if (!myLive) {
+            foreach (List<ChatNode> chatList in alldeathList) {
+                foreach (ChatNode chatObj in chatList) {
                     chatObj.gameObject.SetActive(true);
                 }
             }
         }
-        //isfilter = false;
     }
 
 
@@ -151,9 +145,9 @@ public class ChatListManager : MonoBehaviour {
             }
         }
         //狼チャット
-        foreach (List<ChatNode> chatList in allwolfList) {
-            foreach (ChatNode chatObj in chatList) {
-                if (myWolfChat) {
+        if (myWolfChat) {
+            foreach (List<ChatNode> chatList in allwolfList) {
+                foreach (ChatNode chatObj in chatList) {
                     chatObj.gameObject.SetActive(true);
                 }
             }
@@ -180,85 +174,14 @@ public class ChatListManager : MonoBehaviour {
                 chatObj.gameObject.SetActive(true);
             }
         }
-
         //死亡チャット
-        foreach (List<ChatNode> chatList in alldeathList) {
-            foreach (ChatNode chatObj in chatList) {
-                if (!myLive) {
+        if (!myLive) {
+            foreach (List<ChatNode> chatList in alldeathList) {
+                foreach (ChatNode chatObj in chatList) {
                     chatObj.gameObject.SetActive(true);
                 }
             }
         }
-
-        //public void PlayerFilterFalse(int num) {
-        //    foreach (ChatNode chatObj in allPlayerList[num]) {
-        //        chatObj.gameObject.SetActive(false);
-        //    }
-        //}
-
-
-        //メソッドまとめ。状態によりそれぞれ処理をする
-
-        ///// <summary>
-        ///// ノーマルチャット、GMチャット、吹き出し色変更チャット一括で管理
-        ///// </summary>
-        //public void NormalListSetActiveTrue() {
-        //    foreach (ChatNode normal in normalList) {
-        //        normal.gameObject.SetActive(true);
-        //    }
-        //    foreach (ChatNode callout in callOutList) {
-        //        callout.gameObject.SetActive(true);
-        //    }
-        //    foreach (ChatNode gamemaster in gameMasterList) {
-        //        gamemaster.gameObject.SetActive(true);
-        //    }
-        //}
-        ///// <summary>
-        ///// ノーマルチャット、GMチャット、吹き出し色変更チャット一括で管理
-        ///// </summary>
-        //public void NormalListSetActiveFalse() {
-        //    foreach (ChatNode normal in normalList) {
-        //        normal.gameObject.SetActive(false);
-        //    }
-        //    foreach (ChatNode callout in callOutList) {
-        //        callout.gameObject.SetActive(false);
-        //    }
-        //    foreach (ChatNode gamemaster in gameMasterList) {
-        //        gamemaster.gameObject.SetActive(false);
-        //    }
-        //}
-        ///// <summary>
-        ///// 狼チャット管理
-        ///// </summary>
-        //public void WolfListSetActiveTrue() {
-        //    foreach (ChatNode wolf in wlofList) {
-        //        wolf.gameObject.SetActive(true);
-        //    }
-        //}
-        ///// <summary>
-        ///// 狼チャット管理
-        ///// </summary>
-        //public void WolfListSetActiveFalse(){
-        //    foreach (ChatNode wolf in wlofList) {
-        //        wolf.gameObject.SetActive(false);
-        //    }
-        //}
-        ///// <summary>
-        ///// 死亡チャット管理
-        ///// </summary>
-        //public void DeathListSetActiveTrue() {
-        //    foreach (ChatNode death in deathList) {
-        //        death.gameObject.SetActive(true);
-        //    }
-        //}
-        ///// <summary>
-        ///// 死亡チャット管理
-        ///// </summary>
-        //public void DeathListSetActiveFalse() {
-        //    foreach (ChatNode death in deathList) {
-        //        death.gameObject.SetActive(false);
-        //    }
-        //}
     }
 }
 

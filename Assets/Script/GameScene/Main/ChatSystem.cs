@@ -80,14 +80,15 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     //指定がある場合はNullの代わりに別の引数が入る
     //SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL
     public void CreateChatNode(bool comingOut,SPEAKER_TYPE speaker_Type) {
-        Debug.Log("CreateChatNode");
+
+        Debug.Log("CreateChatNode1");
         //通常チャット時にInputFieldが空だったらリターン
-        if (chatInputField.text == "" && !comingOut) {
+        if (chatInputField.text == "" && !comingOut && (speaker_Type != SPEAKER_TYPE.GAMEMASTER_OFFLINE || speaker_Type !=SPEAKER_TYPE.GAMEMASTER_ONLINE)) {
             return;
         }
         //チャットを管理するためのID
         id++;
-
+        Debug.Log("CreateChatNode2");
 
         //発言者（ETC、GM、Player）の分岐
         //GMの発言
