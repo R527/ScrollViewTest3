@@ -40,7 +40,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public Button savingButton;//時短ボタン
     public Text savingText;
     public Button COButton;
-    public Button callOutButton;
+    public Button superChatButton;
     public Button wolfButton;
     public InputField inputField;//文字入力部分
     public GameObject mainPopup;
@@ -89,7 +89,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             inputField.interactable = false;
         }
 
-        callOutButton.interactable = false;
+        superChatButton.interactable = false;
         COButton.interactable = false;
         mainTime = RoomData.instance.roomInfo.mainTime;
         nightTime = RoomData.instance.roomInfo.nightTime;
@@ -352,17 +352,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     totalTime = executionTime;
                     voteCount.Execution();
                     gameManager.gameMasterChatManager.ExecutionChat();
-                    ////自分のプレイヤーが死亡した場合の処理をする
-                    //if (!chatSystem.myPlayer.live) {
-                    //    //狼モード、superチャット、COのボタンを無効
-                    //    fillter.wolfModeButton.interactable = false;
-                    //    fillter.comingOutButton.interactable = false;
-                    //    fillter.superChatButton.interactable = false;
-                    //    if (chatSystem.myPlayer.wolfChat) {
-                    //        gameManager.chatListManager.OffWolfMode();
-                    //        fillter.wolfModeButtonText.text = "市民";
-                    //    }
-                    //}
+                    DeathPlayer();
                     break;
 
                 //処刑後チェック
@@ -424,7 +414,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     } else {
                         firstDay = false;
                     }
-                    
                     break;
 
                 //結果発表チェック
@@ -432,6 +421,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.結果発表後チェック;
                     totalTime = checkGameOverTime;
                     //gameOver.CheckGameOver();
+                    DeathPlayer();
                     break;
             }
 
@@ -464,7 +454,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator NextDay() {
-        //Debug.Log("oldday" + day);
+        Debug.Log("NextDay" + day);
         yield return new WaitForSeconds(intervalTime + 0.1f);
         day++;
         chatSystem.id++;
@@ -539,17 +529,29 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// ButtonなどをRollに応じてtrueにする
     /// </summary>
     public void TimesavingControllerTrue() {
+        //昼にそれぞれのボタンをtrueにする
         if (timeType == TIME.昼) {
             savingButton.interactable = true;
+            //狼プレイヤー
             if (chatSystem.myPlayer.wolfChat) {
-                wolfButton.interactable = true;
+                if (chatSystem.myPlayer.live) {
+                    wolfButton.interactable = true;
+                } else {
+                    wolfButton.interactable = false;
+                }
+                //狼以外のプレイヤー
+            }else {
+                wolfButton.interactable = false;
             }
+            //生存者
             if (chatSystem.myPlayer.live) {
                 COButton.interactable = true;
+                superChatButton.interactable = true;
+                //死亡者
             } else {
                 COButton.interactable = false;
+                superChatButton.interactable = false;
             }
-            callOutButton.interactable = true;
             
             inputField.interactable = true;
         }
@@ -561,7 +563,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public void TimesavingControllerFalse() {
         savingButton.interactable = false;
-        callOutButton.interactable = false;
+        superChatButton.interactable = false;
         COButton.interactable = false;
 
         //WolfChatが使えるプレイヤーの場合
@@ -574,6 +576,22 @@ public class TimeController : MonoBehaviourPunCallbacks {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    private void DeathPlayer() {
+        //自分のプレイヤーが死亡した場合の処理をする
+        if (!chatSystem.myPlayer.live) {
+            //狼モード、superチャット、COのボタンを無効
+            fillter.wolfModeButton.interactable = false;
+            fillter.comingOutButton.interactable = false;
+            fillter.superChatButton.interactable = false;
+            if (chatSystem.myPlayer.wolfChat) {
+                gameManager.chatListManager.OffWolfMode();
+                fillter.wolfModeButtonText.text = "市民";
+            }
+        }
+    }
     ///// <summary>
     ///// 投票時PlayerButtonをRollに応じてOFFにする((フィルターにも対応させる必要があるから別の方法を考える
     ///// /// </summary>

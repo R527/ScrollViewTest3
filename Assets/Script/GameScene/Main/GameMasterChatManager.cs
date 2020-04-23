@@ -135,14 +135,29 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public void TimeManagementChat() {
         //string gmNode = string.Empty;
         switch (timeController.timeType) {
+
             case TIME.昼:
-                gameMasterChat = "話し合う時間です。\r\n\r\n市民陣営は嘘をついている狼を探しましょう。\r\n\r\n人狼陣営は市民にうまく紛れて市民を騙しましょう！";
+                if (gameManager.chatSystem.myPlayer.live) {
+                    gameMasterChat = "話し合う時間です。\r\n\r\n市民陣営は嘘をついている狼を探しましょう。\r\n\r\n人狼陣営は市民にうまく紛れて市民を騙しましょう！";
+                } else {
+                    gameMasterChat = "話し合う時間です。\r\n\r\n観戦を楽しめ";
+                }
                 break;
+
             case TIME.投票時間:
-                gameMasterChat = "投票の時間です。\r\n\r\n人狼と思われるプレイヤーに投票しましょう。";
+                if (gameManager.chatSystem.myPlayer.live) {
+                    gameMasterChat = "投票の時間です。\r\n\r\n人狼と思われるプレイヤーに投票しましょう。";
+                } else {
+                    gameMasterChat = "投票の時間です。\r\n\r\n投票時間が終わるまで待ってください。";
+                }
+                
                 break;
             case TIME.夜の行動:
-                gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう。";
+                if (gameManager.chatSystem.myPlayer.live) {
+                    gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう。";
+                } else {
+                    gameMasterChat = "夜の行動時間です。待ってくれ。";
+                }
                 break;
         }
         gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);

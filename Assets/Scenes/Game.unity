@@ -8531,7 +8531,7 @@ MonoBehaviour:
   savingButton: {fileID: 163000424}
   savingText: {fileID: 256122106}
   COButton: {fileID: 1812546287}
-  callOutButton: {fileID: 194684091}
+  superChatButton: {fileID: 194684091}
   wolfButton: {fileID: 972337835}
   inputField: {fileID: 943886673}
   mainPopup: {fileID: 8321133781094590611}
