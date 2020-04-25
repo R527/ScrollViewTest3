@@ -16,38 +16,25 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public ChatNode lastChatNode;
     public Player myPlayer;
     public CheckTabooWard checkTabooWard;
-    public TimeController timeController;
-    public RollExplanation rollExplanation;
-    public GameManager gameManager;
     public GameMasterChatManager gameMasterChatManager;
-    public TIME timeType;
     public Fillter fillter;
+    public ChatListManager chatListManager;
+    public NGList taboolist;
+    public ChatNode chatNodePrefab;
     //共通項目
     public int id = 0;
-    [SerializeField] public InputField chatInputField;
-    [SerializeField] ChatNode chatNodePrefab;
-    [SerializeField] GameObject content;
-    public string comingOutImage;
+    public int myID;//??
     public int coTimeLimit;
     public int calloutTimeLimit;
     public string inputData;
-    public NGList taboolist;
-    //public string[] comingOutPlayers;//CO状況を保存
     public List<string>playerNameList = new List<string>();
     public List<Player> playersList = new List<Player>();
-    public int myID;
-    public bool citizen;//市民か否か
-    public ScrollRect scrollRect;
-    public Button wolfButton;
-    public Text MenbarViewText;
-
+    public InputField chatInputField;
+    public GameObject chatContent;
 
     //色変更
     public Color [] color;
     public int boardColor;
-
-    //LIst管理
-    public ChatListManager chatListManager;
 
 
     private void Update() {
@@ -56,37 +43,30 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         }
     }
     
+    ////////////////////////////
+    ///メソッド関連
+    ///////////////////////////
+
+    /// <summary>
+    /// 自分のチャットを生成するときに呼ばれる
+    /// </summary>
     public void OnClickMineButton() {
         Debug.Log("OnClickMineButton");
          CreateChatNode(false,SPEAKER_TYPE.UNNKOWN);
     }
 
-
-
-    [PunRPC]
-    private void CreateGameMasterChatNode(int id, string inputData, int boardColor, bool comingOut) {
-        ChatNode chatNode = Instantiate(chatNodePrefab, content.transform, false);
-        chatNode.transform.SetParent(content.transform);
-
-        //Debug.Log("CreatNode:GM_ONLINE");
-
-        ChatData chatData = new ChatData(id, inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
-        chatData.chatType = CHAT_TYPE.GM;
-        chatNode.InitChatNode(chatData, 0, comingOut);
-        SetChatNode(chatNode, chatData, comingOut);
-    }
-
     //第2引数がない場合は自動でNullを入れます。
     //指定がある場合はNullの代わりに別の引数が入る
     //SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL
+    /// <summary>
+    /// チャットの生成をまとめている。
+    /// GMチャットとPlayerのチャットを分けたり色分けしたりDataを入力するなど
+    /// </summary>
+    /// <param name="comingOut"></param>
+    /// <param name="speaker_Type"></param>
     public void CreateChatNode(bool comingOut,SPEAKER_TYPE speaker_Type) {
-
-        Debug.Log("CreateChatNode1");
-        //通常チャット時にInputFieldが空だったらリターン
-
         //チャットを管理するためのID
         id++;
-
 
         //発言者（ETC、GM、Player）の分岐
         //GMの発言
@@ -100,11 +80,12 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             ChatData chatData = new ChatData(id, inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
             chatData.chatType = CHAT_TYPE.GM;
 
-            //オンラインオフラインで分ける(GMChat
+            //チャットNodeの初期化
             ChatNode chatNode = null;
+            //オンラインオフラインで分ける(GMChat
             //Offline
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
-                chatNode = Instantiate(chatNodePrefab, content.transform, false);
+                chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
                 //チャットデータをもとにちゃっとNodeに情報を持たせる
                 chatNode.InitChatNode(chatData, 0, false);
                 SetChatNode(chatNode, chatData, false);
@@ -113,35 +94,33 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 photonView.RPC(nameof(CreateGameMasterChatNode), RpcTarget.All, id, inputData, boardColor, comingOut);
             }
             
-
+        } else {
 
             //Playerの発言
-        } else {
-            if (chatInputField.text == "") {
+            Debug.Log(chatInputField.text);
+            //チャットが空かつ通常チャットは生成しない
+            if (!comingOut && chatInputField.text == string.Empty) {
                 return;
             }
-            Debug.Log("playerChat");
-            //if (myPlayer != null) {
-            //    Debug.Log("notNull");
-                //死亡しているプレイヤー
-                if (!myPlayer.live) {
-                    Debug.Log("死亡");
-                    boardColor = 3;
-                    //狼用の発言
-                } else if (fillter.wolfMode) {
-                    Debug.Log("赤");
-                    boardColor = 2;
-                    //青チャット
-                } else if (fillter.superChat) {
-                    Debug.Log("青");
-                    boardColor = 1;
-                    //通常のチャット
-                } else {
-                    Debug.Log("通常");
-                    boardColor = 0;
-                }
-                Debug.Log("色変更通過");
-            //}
+
+            //死亡しているプレイヤー
+            if (!myPlayer.live) {
+                Debug.Log("死亡");
+                boardColor = 3;
+                //狼用の発言
+            } else if (fillter.wolfMode) {
+                Debug.Log("赤");
+                boardColor = 2;
+                //青チャット
+            } else if (fillter.superChat) {
+                Debug.Log("青");
+                boardColor = 1;
+                //通常のチャット
+            } else {
+                Debug.Log("通常");
+                boardColor = 0;
+            }
+            Debug.Log("色変更通過");
             Debug.Log("boardcolor" + boardColor);
 
             //禁止Wordチェック
@@ -150,31 +129,28 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             chatInputField.text = "";
 
             //発言を生成
-            //if (myPlayer != null) {
-                //PlayerはRPCを利用してすべての世界でChatNodeを生成
-                myPlayer.CreateNode(id, inputData, boardColor, comingOut);
-            
-            //    //ETCはネットワーク・インスタンスを利用してすべての世界でChatNodeを生成
-            //    ChatData chatData = new ChatData(id, inputData, PhotonNetwork.LocalPlayer.ActorNumber, boardColor, PhotonNetwork.LocalPlayer.NickName, ROLLTYPE.ETC);
-            //    if (photonView.IsMine) {
-            //        chatData.chatType = CHAT_TYPE.MINE;
-            //    } else {
-            //        chatData.chatType = CHAT_TYPE.OTHERS;
-            //    }
-
-            //    GameObject chatObj = PhotonNetwork.Instantiate("Prefab/Game/ChatNode", content.transform.position, content.transform.rotation);
-            //    chatObj.transform.SetParent(content.transform);
-
-            //    ChatNode chatNode = chatObj.GetComponent<ChatNode>();
-            //Debug.Log("ComingOut" + comingOut);
-            //    chatNode.InitChatNode(chatData, PhotonNetwork.LocalPlayer.ActorNumber, comingOut);
-
-            //    Debug.Log("CreateNode : ETC");
-
-            //    SetChatNode(chatNode, chatData, comingOut);
-
-            ////}
+            myPlayer.CreateNode(id, inputData, boardColor, comingOut);
         }
+    }
+
+    /// <summary>
+    /// GMチャットを生成する
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="inputData"></param>
+    /// <param name="boardColor"></param>
+    /// <param name="comingOut"></param>
+    [PunRPC]
+    private void CreateGameMasterChatNode(int id, string inputData, int boardColor, bool comingOut) {
+        ChatNode chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
+        chatNode.transform.SetParent(chatContent.transform);
+
+        //Debug.Log("CreatNode:GM_ONLINE");
+
+        ChatData chatData = new ChatData(id, inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
+        chatData.chatType = CHAT_TYPE.GM;
+        chatNode.InitChatNode(chatData, 0, comingOut);
+        SetChatNode(chatNode, chatData, comingOut);
     }
 
     /// <summary>
@@ -185,13 +161,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// <param name="chatData"></param>
     /// <param name="comingOut"></param>
     public void SetChatNode(ChatNode chatNode, ChatData chatData, bool comingOut) {
-    //    Debug.Log("SetChatNode:問題あり");
-
-    //    float tempPosition = content.transform.localPosition.y;
-    //    if (tempPosition <= -280) {
-    //        Vector2 returnPos = new Vector2(content.transform.localPosition.x, tempPosition + chatNode.gameObject.transform.localPosition.y);
-    //        content.transform.localPosition = returnPos;
-    //    }
 
         //ボードの色を変える
         chatNode.chatBoard.color = color[chatData.boardColor];
@@ -225,17 +194,11 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             } else {
                 chatListManager.allnormalList[chatData.playerID - 1].Add(chatNode);
             }
-            
         }
 
         //SetActiveを制御する
         chatNode.gameObject.SetActive(SetActiveChatObj(chatNode));
 
-
-
-        //if(chatListManager.isfilter == true) {
-        //    chat.gameObject.SetActive(false);
-        //}
 
         //playerが連続でチャットを投稿した場合、アイコンObj等を削除する
         if (lastChatNode != null)
@@ -257,13 +220,14 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         
 
         //ComingOutと吹き出しの制御
-            if (comingOut == true) {
-                coTimeLimit++;
-                if (coTimeLimit == 3) {
-                    //Buttoncomponentにアクセスしないとinteractableが取れない
-                    GameObject.FindGameObjectWithTag("COButton").GetComponent<Button>().interactable = false;
-                }
+        if (comingOut) {
+            coTimeLimit++;
+            if (coTimeLimit == 4) {
+                //Buttoncomponentにアクセスしないとinteractableが取れない
+                //GameObject.FindGameObjectWithTag("COButton").GetComponent<Button>().interactable = false;
+                fillter.comingOutButton.interactable = false;
             }
+        }
     }
 
     /// <summary>
@@ -295,7 +259,5 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         }
         return isChatSet;
     }
-
-
 }
 

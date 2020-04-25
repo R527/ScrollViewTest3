@@ -271,15 +271,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  testMainTime: 10
+  testMainTime: 6000
   testNightTime: 3
-  testVotingTime: 20
+  testVotingTime: 10
   testExecutionTime: 4
   testCheckGameOverTime: 3
   testResultTime: 3
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 1
   setEnterNumTime: 30
   openVoting: 1
   fortuneType: 2

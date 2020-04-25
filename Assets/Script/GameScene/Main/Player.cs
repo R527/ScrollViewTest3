@@ -52,8 +52,14 @@ public class Player : MonoBehaviourPunCallbacks {
     //仮
     public bool def;//騎士のデバッグ用
 
+    /////////////////////////
+    ///SetUp関連
+    /////////////////////////
 
-
+    /// <summary>
+    /// Playerが生成されたらそれぞれの設定を追加する
+    /// 役職などの詳細は後程設定する
+    /// </summary>
 
     private void Start() {
         Debug.Log("FirstSetUp");
@@ -81,8 +87,6 @@ public class Player : MonoBehaviourPunCallbacks {
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
             StartCoroutine(SetOtherPlayer());
         }
-
-        
     }
 
 
@@ -136,6 +140,10 @@ public class Player : MonoBehaviourPunCallbacks {
     }
 
 
+    ////////////////
+    ///監視関連
+    ////////////////
+
     /// <summary>
     /// オンラインチェック用
     /// </summary>
@@ -186,6 +194,10 @@ public class Player : MonoBehaviourPunCallbacks {
 
     }
 
+    ///////////////////////
+    ///メソッド関連
+    ////////////////////////
+
 
     /// <summary>
     /// ChatNodeの生成準備
@@ -227,6 +239,7 @@ public class Player : MonoBehaviourPunCallbacks {
         chatData.chatWolf = wolfChat;
 
         ChatNode chatNode = Instantiate(chatNodePrefab, tran, false);
+
         //RPC内にあるメソッドもRPCと同じ挙動をする
         //そのメソッドの先で呼ばれるメソッドもRPCと同じ挙動をする
         chatNode.InitChatNode(chatData, iconNo, comingOut);
@@ -339,6 +352,12 @@ public class Player : MonoBehaviourPunCallbacks {
         }
     }
 
+
+    /// <summary>
+    /// 自分以外のPlayerの情報をセットする
+    /// </summary>
+    /// <returns></returns>
+
     private IEnumerator SetOtherPlayer() {
         yield return new WaitForSeconds(3.0f);
 
@@ -354,6 +373,12 @@ public class Player : MonoBehaviourPunCallbacks {
         playerText.text = rollType.ToString() + playerName;
         gameObject.GetComponent<Outline>().enabled = false;
     }
+
+
+
+    /////////////////////
+    ///カスタムプロパティ関連
+    /////////////////////
 
 
     private void SetPlayerName() {

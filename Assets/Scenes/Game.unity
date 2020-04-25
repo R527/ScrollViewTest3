@@ -8751,18 +8751,7 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4395145948522523302}
-        m_MethodName: OnClickMineButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.InputField+SubmitEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnValueChanged:
@@ -21141,29 +21130,21 @@ MonoBehaviour:
   lastChatNode: {fileID: 0}
   myPlayer: {fileID: 0}
   checkTabooWard: {fileID: 1130743575}
-  timeController: {fileID: 930455255}
-  rollExplanation: {fileID: 904789181}
-  gameManager: {fileID: 1130743578}
   gameMasterChatManager: {fileID: 1130743577}
-  timeType: 0
   fillter: {fileID: 1018169728}
-  id: 0
-  chatInputField: {fileID: 943886673}
+  chatListManager: {fileID: 1130743579}
+  taboolist: {fileID: 1130743581}
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
     type: 3}
-  content: {fileID: 4395145949336749762}
-  comingOutImage: "\u4EE4\u548C"
+  id: 0
+  myID: 0
   coTimeLimit: 0
   calloutTimeLimit: 0
   inputData: 
-  taboolist: {fileID: 1130743581}
   playerNameList: []
   playersList: []
-  myID: 0
-  citizen: 0
-  scrollRect: {fileID: 4395145949457617573}
-  wolfButton: {fileID: 972337835}
-  MenbarViewText: {fileID: 429416297}
+  chatInputField: {fileID: 943886673}
+  chatContent: {fileID: 4395145949336749762}
   color:
   - {r: 1, g: 0.8163534, b: 0, a: 1}
   - {r: 0, g: 0.9489832, b: 1, a: 1}
@@ -21171,7 +21152,6 @@ MonoBehaviour:
   - {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   - {r: 0.4038179, g: 1, b: 0, a: 1}
   boardColor: 0
-  chatListManager: {fileID: 1130743579}
 --- !u!114 &4395145948522523303
 MonoBehaviour:
   m_ObjectHideFlags: 0

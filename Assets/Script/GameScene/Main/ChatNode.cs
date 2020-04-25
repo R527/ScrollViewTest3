@@ -54,11 +54,13 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         chatWolf = chatData.chatWolf;
 
 
-        //PlayerがCOしているか否か（COしている場合は名前の横に職業名を記載
+        //GMか否か
         if (chatData.chatType == CHAT_TYPE.GM) {
             statusText.text = "GM";
         } else {
-            //stringがnullかから文字化を判定し、その判定をbool型で返す。
+
+            //PlayerがCOしているか否か（COしている場合は名前の横に職業名を記載
+            //stringがnullかから文字かを判定し、その判定をbool型で返す。
             //(chatData.playerID - 1)はGM分をー１にする調整
             if (comingOutClass.GetComingOutText(playerID) == "") {
                 Debug.Log("ComingOut : 未");
@@ -69,37 +71,39 @@ public class ChatNode : MonoBehaviourPunCallbacks {
                     "CO】";
             }
         }
-        //Debug.Log(chatData.chatType);
+
         //発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
         if (chatData.chatType == CHAT_TYPE.MINE) {
             Debug.Log("UpperRight");
             layoutGroup.childAlignment = TextAnchor.UpperRight;
-        } else if (chatData.chatType == CHAT_TYPE.OTHERS) {
-            Debug.Log("UpperLeft");
-            layoutGroup.childAlignment = TextAnchor.UpperLeft;
-        } else if (chatData.chatType == CHAT_TYPE.GM) {
+        } else {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
+        //} else if (chatData.chatType == CHAT_TYPE.OTHERS) {
+        //    Debug.Log("UpperLeft");
+        //    layoutGroup.childAlignment = TextAnchor.UpperLeft;
+        //} else if (chatData.chatType == CHAT_TYPE.GM) {
+        //    layoutGroup.childAlignment = TextAnchor.UpperLeft;
+        //}
 
         Debug.Log("CO" + comingOut);
         //COした場合幅等を変更する
         if (comingOut) {
             Debug.Log("ComingOut:" + chatData.playerName);
             chatSystem.chatInputField.text = "";
-            //chatBoard.sprite = Resources.Load<Sprite>("CoImage/" + chatData.rollName);
-            chatBoard.color = new Color(1f, 1f, 1f, 1f);
-            chatObjLayoutElement.preferredWidth = 60;
-            chatObjLayoutElement.preferredHeight = 60;
-            //if(COPopup != null) {
-            //    COPopup.SetActive(false);
-            //}
+
             //COすると名前の横にCO状況を表示
-            //chatSystem.comingOutPlayers[chatData.playerID - 1] = chatData.rollType.ToString();
-            statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) + "CO】";
+            if (comingOutClass.GetComingOutText(playerID) != string.Empty) {
+               
+                chatObjLayoutElement.preferredWidth = 60;
+                chatObjLayoutElement.preferredHeight = 60;
+                statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) + "CO】";
+            } else {
+                chatText.text = "カミングアウトを取り消します。";
+            }
+            
         } 
             StartCoroutine(CheckTextSize());
-        
-        
     }
 
     
@@ -109,7 +113,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator CheckTextSize() {
-        //スクリーン上のレンダリングが終わるまで待つ？
+        //スクリーン上のレンダリングが終わるまで待つ
         yield return new WaitForEndOfFrame();
         if (chatBoard.rectTransform.sizeDelta.x > this.GetComponent<RectTransform>().sizeDelta.x * 0.64f) {
             //ChatBoardのLayout ElementのpreferredWidthを64％にする
