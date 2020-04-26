@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-
+using Photon.Pun;
 
 /// <summary>
 /// Input部分の折り畳みボタンとCOボタンスタンプボタン等を制御
 /// </summary>
 public class InputView : MonoBehaviour {
+
+    //class
+    public ChatListManager chatListManager;
 
     //main
     public Text foldingText; //折り畳みボタンのテキスト
@@ -20,25 +23,52 @@ public class InputView : MonoBehaviour {
     public Button comingButton;
     public GameObject menberViewPopUpObj;//メンバーの入ってるPrefab
     public GameObject coPopUpObj;//Coの入っているPrefab
-    
+    public Button comingOutButton;
 
+    //wolfMode（狼チャットの制御関連
+    public Button wolfModeButton;
+    public Text wolfModeButtonText;
+    public bool wolfMode;//trueで狼モード
+
+
+    //superChatButton
+    public Button superChatButton;
+    public Text superChatButtonText;
+    public bool superChat;
 
     private void Start() {
         foldingButton.onClick.AddListener(FoldingPosition);
         comingButton.onClick.AddListener(ComingOut);
+
+        wolfModeButton.onClick.AddListener(WolfMode);
+        superChatButton.onClick.AddListener(SuperChat);
+
+        if (PhotonNetwork.IsMasterClient) {
+            superChatButton.interactable = true;
+        }
     }
     /// <summary>
     /// 折り畳みボタンの制御
     /// </summary>
     public void FoldingPosition() {
+
+        //COPopUp
         if (coPopUpObj.activeSelf && foldingText.text == "↓") {
             coPopUpObj.SetActive(false);
             menberViewPopUpObj.SetActive(true);
+
+            //ボタン有効にする
+            availabilityButton();
+
             return;
         } else if (menberViewPopUpObj.activeSelf && foldingText.text == "↓" ) {
             inputRectTransform.DOLocalMoveY(-67, 0.5f);
             mainRectTransform.DOLocalMoveY(0, 0.5f);
             filterButton.interactable = true;
+
+            //ボタン有効にする
+            availabilityButton();
+
             //stampButton.interactable = true;
             foldingText.text = "↑";
             StartCoroutine(PopUpFalse());
@@ -50,12 +80,6 @@ public class InputView : MonoBehaviour {
             //stampButton.interactable = false;
             foldingText.text = "↓";
         }
-
-        //Unityで用意されている数字などは直接変更してはいけない。
-        //float PosY = 84;
-        //Vector3 temp = rectTransform.localPosition;
-        //temp.y = PosY;
-        //rectTransform.localPosition = temp;
     }
 
 
@@ -64,26 +88,75 @@ public class InputView : MonoBehaviour {
     /// カミングアウトボタンを制御
     /// </summary>
     public void ComingOut() {
+        //メンバーが表示されている状態でCOボタン押したときの処理
         if (menberViewPopUpObj.activeSelf && foldingText.text == "↓") {
-            //change = false;
             coPopUpObj.SetActive(true);
             menberViewPopUpObj.SetActive(false);
-        }else if (coPopUpObj.activeSelf && foldingText.text == "↓") {
+
+            //ほかのボタン無効
+            InvalidButton();
+
+            //COPopUpがアクティブ状態の時の処理
+        } else if (coPopUpObj.activeSelf && foldingText.text == "↓") {
             inputRectTransform.DOLocalMoveY(-67, 0.5f);
             mainRectTransform.DOLocalMoveY(0, 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = true;
             foldingText.text = "↑";
-            //change = true;
+
+            //ボタン有効にする
+            availabilityButton();
+
             StartCoroutine(PopUpFalse());
+
+            //InPutViewが閉じている時
         } else if (foldingText.text == "↑") {
-            //change = false;
             coPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             mainRectTransform.DOLocalMoveY(72, 0.5f);
             filterButton.interactable = false;
+
+            //ほかのボタン無効
+            InvalidButton();
             //stampButton.interactable = false;
             foldingText.text = "↓";
+        }
+    }
+
+    /// <summary>
+    /// 狼チャットのONOF
+    /// </summary>
+    public void WolfMode() {
+
+        //On
+        if (wolfModeButtonText.text == "市民") {
+            wolfModeButtonText.text = "狼";
+            wolfMode = true;
+            chatListManager.OnWolfMode();
+            //Off
+        } else {
+            wolfModeButtonText.text = "市民";
+            wolfMode = false;
+            chatListManager.OffWolfMode();
+
+        }
+    }
+
+    /// <summary>
+    /// 青チャットの制御
+    /// </summary>
+    public void SuperChat() {
+        //On
+        if (superChatButtonText.text == "通常") {
+            superChatButtonText.text = "青";
+            superChat = true;
+            Debug.Log("superChat" + superChat);
+            //Off
+        } else {
+            superChatButtonText.text = "通常";
+            superChat = false;
+            Debug.Log("superChat" + superChat);
+
         }
     }
 
@@ -93,4 +166,23 @@ public class InputView : MonoBehaviour {
         coPopUpObj.SetActive(false);
     }
 
+
+    /// <summary>
+    /// Coボタン押したときにそれぞれのボタンを無効化する
+    /// </summary>
+    private void InvalidButton() {
+        //狼ボタンとスパーチャットボタンを無効にする
+        wolfModeButtonText.text = "市民";
+        wolfMode = false;
+        wolfModeButton.interactable = false;
+        superChatButtonText.text = "通常";
+        superChat = false;
+        superChatButton.interactable = false;
+    }
+
+    private void availabilityButton() {
+        //ボタン有効にする
+        wolfModeButton.interactable = true;
+        superChatButton.interactable = true;
+    }
 }

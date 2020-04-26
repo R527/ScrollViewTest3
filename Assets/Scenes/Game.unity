@@ -8509,14 +8509,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1130743578}
-  nextDay: {fileID: -8829115933934691925, guid: 7384babc9c2ecd245b217a6c263d54f9,
-    type: 3}
   chatSystem: {fileID: 4395145948522523302}
   voteCount: {fileID: 1130743580}
   gameOver: {fileID: 1130743582}
   gameMasterChatManager: {fileID: 1130743577}
   inputView: {fileID: 1018169722}
   fillter: {fileID: 1018169728}
+  timeType: 0
   timerText: {fileID: 575804562}
   totalTime: 0
   mainTime: 20
@@ -8528,6 +8527,8 @@ MonoBehaviour:
   intervalTime: 2
   isPlaying: 0
   gameReady: 0
+  isGameOver: 0
+  isVotingCompleted: 0
   savingButton: {fileID: 163000424}
   savingText: {fileID: 256122106}
   COButton: {fileID: 1812546287}
@@ -8537,9 +8538,6 @@ MonoBehaviour:
   mainPopup: {fileID: 8321133781094590611}
   votingPopup: {fileID: 2013277211932191152}
   nightPopup: {fileID: 2556784974386083991}
-  timeType: 0
-  isGameOver: 0
-  isVotingCompleted: 0
   chatContent: {fileID: 4395145949336749762}
   day: 0
   dayPrefab: {fileID: -8829115933934691925, guid: 7384babc9c2ecd245b217a6c263d54f9,
@@ -9007,6 +9005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7695b27fed1fa7438968ca6513ca20d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatListManager: {fileID: 1130743579}
   foldingText: {fileID: 468840154}
   mainRectTransform: {fileID: 4395145947911845164}
   inputRectTransform: {fileID: 4395145949375906982}
@@ -9016,6 +9015,13 @@ MonoBehaviour:
   comingButton: {fileID: 1812546287}
   menberViewPopUpObj: {fileID: 1552074811}
   coPopUpObj: {fileID: 327988790}
+  comingOutButton: {fileID: 1812546287}
+  wolfModeButton: {fileID: 972337835}
+  wolfModeButtonText: {fileID: 1484097463}
+  wolfMode: 0
+  superChatButton: {fileID: 194684091}
+  superChatButtonText: {fileID: 812473625}
+  superChat: 0
 --- !u!4 &1018169723
 Transform:
   m_ObjectHideFlags: 0
@@ -9062,12 +9068,6 @@ MonoBehaviour:
   filterButton: {fileID: 474407752}
   flodingButton: {fileID: 48525514}
   comingOutButton: {fileID: 1812546287}
-  wolfModeButton: {fileID: 972337835}
-  wolfModeButtonText: {fileID: 1484097463}
-  wolfMode: 0
-  superChatButton: {fileID: 194684091}
-  superChatButtonText: {fileID: 812473625}
-  superChat: 0
   folding: 0
 --- !u!1 &1018278468
 GameObject:
@@ -10532,6 +10532,7 @@ MonoBehaviour:
   gameMasterChatManager: {fileID: 1130743577}
   fillter: {fileID: 1018169728}
   comingOut: {fileID: 355552696}
+  inputView: {fileID: 1018169722}
   NumText: {fileID: 2035613864}
   num: 0
   numLimit: 9
@@ -10593,7 +10594,6 @@ MonoBehaviour:
   chatSystem: {fileID: 4395145948522523302}
   gameManager: {fileID: 1130743578}
   mostVotes: 0
-  executionPlayer: {fileID: 0}
   executionPlayerName: 
   executionID: 999
 --- !u!114 &1130743581
@@ -21136,6 +21136,7 @@ MonoBehaviour:
   taboolist: {fileID: 1130743581}
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
     type: 3}
+  inputView: {fileID: 1018169722}
   id: 0
   myID: 0
   coTimeLimit: 0

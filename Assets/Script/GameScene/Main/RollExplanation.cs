@@ -21,14 +21,12 @@ public class RollExplanation : MonoBehaviour
     public GameObject extRoll;//その他のボタンを置く場所
     public RollExplanationButtonPrefab RollExplanationButtonPrefab;//その他の
     public Button rollExplanationButton;//自分の役職詳細ボタン
-    //public List<ROLLTYPE> ROLLTYPEList = new List<ROLLTYPE>(); 
 
 
     /// <summary>
     /// 役職説明ボタンの無効化と部屋設定ごとに役職説明用のボタンを用意する
     /// </summary>
     private void Start() {
-
         rollExplanationButton.interactable = false;
     }
 
@@ -39,10 +37,13 @@ public class RollExplanation : MonoBehaviour
     public void RollExplanationSetUp(List<ROLLTYPE> rollTypeList) {
         for (int i = 0; i < rollTypeList.Count; i++) {
             RollExplanationButtonPrefab Obj = Instantiate(RollExplanationButtonPrefab, extRoll.transform, false);
-            //string roll = ROLLTYPEList[i];
             Obj.rollText.text = rollTypeList[i].ToString();
         }
     }
+
+    /// <summary>
+    /// 役職説明ボタン
+    /// </summary>
     public void RollExplanationButton() {
         rollExplanationPopUp.SetActive(true);
         switch (chatSystem.myPlayer.rollType) {
@@ -77,6 +78,5 @@ public class RollExplanation : MonoBehaviour
                 statusText.text = "占い結果：白 \r\n霊能結果：白　\r\n勝利条件：市民陣営の勝利";
                 break;
         }
-
     }
 }

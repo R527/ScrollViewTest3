@@ -17,15 +17,11 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     public ComingOut comingOutClass;
 
     //main
-    public GameObject COPopup;
     public Text chatText;
     public GameObject statusObj;
     public Text statusText;
-    //public Sprite[] iconSprite;//Icon画像配列
-    public string playerName;
     [SerializeField] LayoutGroup layoutGroup;
     public  Image chatBoard;
-    [SerializeField] Image chatIcon;
     public LayoutElement iconObjLayoutElement;
     public LayoutElement chatObjLayoutElement;
 
@@ -40,7 +36,6 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     /// <param name="chatData"></param>
     public void InitChatNode(ChatData chatData, int iconNo, bool comingOut) {
 
-        COPopup = GameObject.FindGameObjectWithTag("COPopup");
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         comingOutClass = GameObject.FindGameObjectWithTag("ComingOut").GetComponent<ComingOut>();
 
@@ -79,12 +74,6 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         } else {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
-        //} else if (chatData.chatType == CHAT_TYPE.OTHERS) {
-        //    Debug.Log("UpperLeft");
-        //    layoutGroup.childAlignment = TextAnchor.UpperLeft;
-        //} else if (chatData.chatType == CHAT_TYPE.GM) {
-        //    layoutGroup.childAlignment = TextAnchor.UpperLeft;
-        //}
 
         Debug.Log("CO" + comingOut);
         //COした場合幅等を変更する
@@ -103,7 +92,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             }
             
         } 
-            StartCoroutine(CheckTextSize());
+        StartCoroutine(CheckTextSize());
     }
 
     

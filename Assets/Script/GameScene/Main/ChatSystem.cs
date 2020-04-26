@@ -21,6 +21,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public ChatListManager chatListManager;
     public NGList taboolist;
     public ChatNode chatNodePrefab;
+    public InputView inputView;
     //共通項目
     public int id = 0;
     public int myID;//??
@@ -108,11 +109,11 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 Debug.Log("死亡");
                 boardColor = 3;
                 //狼用の発言
-            } else if (fillter.wolfMode) {
+            } else if (inputView.wolfMode) {
                 Debug.Log("赤");
                 boardColor = 2;
                 //青チャット
-            } else if (fillter.superChat) {
+            } else if (inputView.superChat) {
                 Debug.Log("青");
                 boardColor = 1;
                 //通常のチャット
@@ -122,6 +123,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             }
             Debug.Log("色変更通過");
             Debug.Log("boardcolor" + boardColor);
+
+            inputView.superChatButtonText.text = "通常";
+            inputView.superChat = false;
 
             //禁止Wordチェック
             inputData = checkTabooWard.StrMatch(chatInputField.text, taboolist.ngWordList);
@@ -176,9 +180,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         } else {
             if (myPlayer.live == false) {
                 chatListManager.deathList.Add(chatNode);
-            } else if (fillter.wolfMode) {
+            } else if (inputView.wolfMode) {
                 chatListManager.wlofList.Add(chatNode);
-            } else if (fillter.superChat) {
+            } else if (inputView.superChat) {
                 chatListManager.callOutList.Add(chatNode);
             } else {
                 chatListManager.normalList.Add(chatNode);
@@ -189,7 +193,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         if (chatData.rollType != ROLLTYPE.ETC && chatData.rollType != ROLLTYPE.GM) {
             if (myPlayer.live == false) {
                 chatListManager.alldeathList[chatData.playerID - 1].Add(chatNode);
-            } else if (fillter.wolfMode == true) {
+            } else if (inputView.wolfMode == true) {
                 chatListManager.allwolfList[chatData.playerID - 1].Add(chatNode);
             } else {
                 chatListManager.allnormalList[chatData.playerID - 1].Add(chatNode);

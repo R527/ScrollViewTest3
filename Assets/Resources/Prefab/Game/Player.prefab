@@ -135,7 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollType: 0
-  chatType: 0
   gameManager: {fileID: 0}
   chatSystem: {fileID: 0}
   voteCount: {fileID: 0}
@@ -158,7 +157,6 @@ MonoBehaviour:
   voteName: 
   votingCompleted: 0
   isRollAction: 0
-  def: 0
 --- !u!222 &5807723990393611466
 CanvasRenderer:
   m_ObjectHideFlags: 0
