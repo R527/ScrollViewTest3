@@ -18,7 +18,7 @@ public class RollExplanation : MonoBehaviour
     public Text explanationText;//役職説明
     public Text statusText;//ステータス
     public GameObject rollExplanationPopUp;
-    public GameObject extRoll;//その他のボタンを置く場所
+    public GameObject rollButtonContent;//その他のボタンを置く場所
     public RollExplanationButtonPrefab RollExplanationButtonPrefab;//その他の
     public Button rollExplanationButton;//自分の役職詳細ボタン
 
@@ -27,7 +27,7 @@ public class RollExplanation : MonoBehaviour
     /// 役職説明ボタンの無効化と部屋設定ごとに役職説明用のボタンを用意する
     /// </summary>
     private void Start() {
-        rollExplanationButton.interactable = false;
+        rollExplanationButton.onClick.AddListener(RollExplanationButton);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public class RollExplanation : MonoBehaviour
     /// <param name="rollTypeList"></param>
     public void RollExplanationSetUp(List<ROLLTYPE> rollTypeList) {
         for (int i = 0; i < rollTypeList.Count; i++) {
-            RollExplanationButtonPrefab Obj = Instantiate(RollExplanationButtonPrefab, extRoll.transform, false);
+            RollExplanationButtonPrefab Obj = Instantiate(RollExplanationButtonPrefab, rollButtonContent.transform, false);
             Obj.rollText.text = rollTypeList[i].ToString();
         }
     }

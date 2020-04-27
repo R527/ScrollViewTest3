@@ -48,7 +48,7 @@ public class Vocabulary : MonoBehaviour
                 glossaryText.text = "占い、霊能結果から一人のプレイヤーが白黒確定したこと。";
                 break;
             case "グレー":
-                glossaryText.text = "占われていない、かつ、役職が確定していないプレイヤーを指す。占い、処刑対象になりやすい。";
+                glossaryText.text = "占われていない、役職が確定していないプレイヤーを指す。占い、処刑対象になりやすい。";
                 break;
             case "人外":
                 glossaryText.text = "人狼陣営、第3陣営を指す。";

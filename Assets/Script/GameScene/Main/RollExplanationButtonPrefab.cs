@@ -11,7 +11,7 @@ public class RollExplanationButtonPrefab : MonoBehaviour {
 
 
     private void Start() {
-        rollExplanation = GameObject.Find("RollAction").GetComponent<RollExplanation>();
+        rollExplanation = GameObject.Find("RollExplanation").GetComponent<RollExplanation>();
     }
 
     public void RollExplanationButton() {
@@ -36,9 +36,9 @@ public class RollExplanationButtonPrefab : MonoBehaviour {
                 rollExplanation.explanationText.text = "狂人";
                 rollExplanation.statusText.text = "占い結果：白 \r\n霊能結果：白　\r\n勝利条件：狼陣営の勝利";
                 break;
-            case "狩人":
+            case "騎士":
                 rollExplanation.rollText.text = ROLLTYPE.騎士.ToString();
-                rollExplanation.explanationText.text = "狩人";
+                rollExplanation.explanationText.text = "騎士";
                 rollExplanation.statusText.text = "占い結果：白 \r\n霊能結果：白　\r\n勝利条件：市民陣営の勝利";
                 break;
             case "霊能者":
