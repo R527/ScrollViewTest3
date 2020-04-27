@@ -7,8 +7,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 初心者ガイドPopUpの制御
 /// </summary>
-public class BegginerGuidePopUp : MonoBehaviour
-{
+public class BegginerGuidePopUp : BasePopUP {
 
 
     //Button
@@ -22,14 +21,15 @@ public class BegginerGuidePopUp : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         foreach(Button Obj in guideButtonList) {
             Obj.onClick.AddListener(GuideButton);
         }
-        foreach (Button Obj in destroyButtonList) {
-            Obj.onClick.AddListener(OnDestroy);
-        }
+        //foreach (Button Obj in destroyButtonList) {
+        //    Obj.onClick.AddListener(OnDestroy);
+        //}
 
     }
 
@@ -61,7 +61,8 @@ public class BegginerGuidePopUp : MonoBehaviour
                 obj.guideTitleText.text = GUIDE_TYPE.役職紹介.ToString();
                 break;
         }
-        OnDestroy();
+        //OnDestroy();
+        DestroyPopUP();
     }
     /// <summary>
     /// 押したボタンのテキストを読み取りGuideButton（）で利用
@@ -70,10 +71,10 @@ public class BegginerGuidePopUp : MonoBehaviour
     public void PushJudge(GameObject obj) {
         thatText = obj.GetComponentInChildren<Text>().text;
     }
-    /// <summary>
-    /// このスクリプトがついているGameObjectを削除
-    /// </summary>
-    public void OnDestroy() {
-        Destroy(gameObject);
-    }
+    ///// <summary>
+    ///// このスクリプトがついているGameObjectを削除
+    ///// </summary>
+    //public void OnDestroy() {
+    //    Destroy(gameObject);
+    //}
 }

@@ -36,5 +36,6 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - CreateGameMasterChatNode
+  - CreatePlayerButton
   DisableAutoOpenWizard: 1
   ShowSettings: 1

@@ -465,6 +465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14a0148ffbbf374d81c09e32ebf84d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  closeButton: {fileID: 5866543904658638902}
+  closeButtonSwich: 0
   guideButtonList:
   - {fileID: 4143953717885224198}
   - {fileID: 8648761965618131884}
