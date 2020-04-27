@@ -717,7 +717,7 @@ GameObject:
   - component: {fileID: 9058563480494422043}
   - component: {fileID: 9058563480494422042}
   - component: {fileID: 9058563480494422037}
-  - component: {fileID: 1927987706625386874}
+  - component: {fileID: 6683787965474469182}
   m_Layer: 5
   m_Name: Game_MenuPopUp
   m_TagString: Untagged
@@ -806,7 +806,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1927987706625386874
+--- !u!114 &6683787965474469182
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -815,7 +815,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9058563480494422036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7018d7435c7c97d40864723221e033fc, type: 3}
+  m_Script: {fileID: 11500000, guid: f6aaa9f99764c3241a3f9b75620bb784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   beginnerButton: {fileID: 9058563479753547982}
@@ -823,10 +823,10 @@ MonoBehaviour:
   settingButton: {fileID: 9058563480983176463}
   ruleButton: {fileID: 555969362858411660}
   backButton: {fileID: 9058563480367447060}
-  maskButton: {fileID: 9058563480286864513}
+  maskButton: {fileID: 9058563480367447060}
   settingPopUpObj: {fileID: 8189307270004751238, guid: c25cf77a6390a87429932aa8a1a49fe5,
     type: 3}
-  begginerGuidePopUpObj: {fileID: 2645508698204678958, guid: 8df5b0f5c5e2d1d48bd483ec6d04b22f,
+  begginerGuidePopUpObj: {fileID: 8136206898632055133, guid: beabe2b1c5b1c0d40b1814e461940a47,
     type: 3}
   rulePopUpObj: {fileID: 0}
 --- !u!1 &9058563480701391804
