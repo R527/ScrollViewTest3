@@ -10920,6 +10920,7 @@ MonoBehaviour:
   damyObj: {fileID: 546607570}
   setEnterNumTime: 25
   menbarContent: {fileID: 30259292}
+  playerListContent: {fileID: 1857312062}
   isTimeUp: 0
   isExit: 0
   exitButton: {fileID: 391165869}
@@ -17914,6 +17915,36 @@ MonoBehaviour:
   m_FlexibleWidth: 0.2
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!1 &1857312061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1857312062}
+  m_Layer: 0
+  m_Name: PlayerList
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1857312062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857312061}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 30, y: -30, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1859579684
 GameObject:
   m_ObjectHideFlags: 0

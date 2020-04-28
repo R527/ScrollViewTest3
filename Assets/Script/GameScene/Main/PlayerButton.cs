@@ -33,6 +33,10 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     private Transform menbartran;
 
     public IEnumerator SetUp(string playerName,int iconNo, int playerID,GameManager gameManager) {
+        yield return new WaitForSeconds(3.0f);
+        Debug.Log(playerName);
+        Debug.Log(iconNo);
+        Debug.Log(playerID);
         this.gameManager = gameManager;
         this.playerName = playerName;
         this.iconNo = iconNo;
@@ -40,10 +44,10 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         live = true;
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
         gameObject.GetComponent<Outline>().enabled = false;
-
-        yield return new WaitForSeconds(2.0f);
+        playerText.text = playerName;
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         transform.SetParent(menbartran);
+        
     }
 
 
@@ -142,9 +146,11 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                     Debug.Log("強制退出");
                     if (PhotonNetwork.IsMasterClient) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                            if (player.ActorNumber == playerID) {
+                            if (player.ActorNumber == playerID && gameManager.chatSystem.myID != playerID) {
                                 gameManager.gameMasterChatManager.ForcedEvictionRoom(player);
+                                gameManager.DestroyPlayerButton(playerID);
                                 Debug.Log(player.NickName);
+                                break;
                             }
                         }
                     }
@@ -153,9 +159,5 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         }
     }
 
-    //private void Update() {
-    //    if(menbartran != null) {
-           
-    //    }
-    //}
+
 }

@@ -42,8 +42,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
     private float checkEnterTimer;//人数チェック用タイム
     private bool isJoined = false;//参加不参加の確認用
     public Transform menbarContent;
+    public Transform playerListContent;
     public bool isTimeUp;
     public bool isExit;//確認画面で退出時に使われる
+    public List<PlayerButton> playerButtonList = new List<PlayerButton>();
 
     //ボタン
     public Button exitButton;
@@ -565,7 +567,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //各リストに登録
             chatSystem.playersList.Add(player);
             chatSystem.playerNameList.Add(player.playerName);
-            playerObj.transform.SetParent(menbarContent);
+            playerObj.transform.SetParent(playerListContent);
             yield return null;
         }
 
@@ -631,6 +633,48 @@ public class GameManager : MonoBehaviourPunCallbacks {
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
             RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
 
+        }
+    }
+
+    /// <summary>
+    /// PlayerButtonのListに追加する
+    /// </summary>
+    public IEnumerator SetPlayerButtonList() {
+        yield return new WaitForSeconds(3.3f);
+        //プレイヤーが入室したらPlayerButtonを取得
+        GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
+
+        //すでにListに追加されているButtonを除外して新たに追加されたButtonだけを追加する
+        foreach (GameObject obj in buttonObjs) {
+            PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
+            foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                if (buttonObj.playerID != player.ActorNumber) {
+                    playerButtonList.Add(buttonObj);
+                    break;
+                }
+            }
+            
+        }
+        
+    }
+
+    public void DestroyPlayerButton(int playerID) {
+        //Listから削除する
+        foreach(PlayerButton obj in playerButtonList) {
+            if(obj.playerID == playerID) {
+                playerButtonList.Remove(obj);
+                break;
+            }
+        }
+        //メンバービューから削除する
+        GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
+        foreach (GameObject obj in buttonObjs) {
+            PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
+            if(buttonObj.playerID == playerID) {
+                Debug.Log(buttonObj.playerName);
+                Destroy(buttonObj);
+                break;
+            }
         }
     }
 
