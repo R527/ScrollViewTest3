@@ -658,10 +658,15 @@ public class GameManager : MonoBehaviourPunCallbacks {
         
     }
 
-    public void DestroyPlayerButton(int playerID) {
+    /// <summary>
+    /// Playerが退出したときにButtonを削除する処理
+    /// </summary>
+    /// <param name="playerID"></param>
+    /// <param name="otherPlayer"></param>
+    public void DestroyPlayerButton(Photon.Realtime.Player otherPlayer) {
         //Listから削除する
         foreach(PlayerButton obj in playerButtonList) {
-            if(obj.playerID == playerID) {
+            if(obj.playerID == otherPlayer.ActorNumber) {
                 playerButtonList.Remove(obj);
                 break;
             }
@@ -670,9 +675,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
         GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
         foreach (GameObject obj in buttonObjs) {
             PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
-            if(buttonObj.playerID == playerID) {
+            if(buttonObj.playerID == otherPlayer.ActorNumber) {
                 Debug.Log(buttonObj.playerName);
-                Destroy(buttonObj);
+                Destroy(obj);
                 break;
             }
         }
@@ -782,10 +787,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
         return num;
     }
 
-    private void SetNum() {
+    public void SetNum() {
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"num", num }
-                        };
+            {"num", num }
+        };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 

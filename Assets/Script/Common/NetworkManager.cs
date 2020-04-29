@@ -214,6 +214,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="otherPlayer"></param>
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
         base.OnPlayerLeftRoom(otherPlayer);
+
+        //ゲーム開始前のみPlayerButtonを削除する
+        if (!gameManager.gameStart) {
+            gameManager.DestroyPlayerButton(otherPlayer);
+        }
     }
 
     //public  void CloseConnection(Photon.Realtime.Player kickPlayer) {

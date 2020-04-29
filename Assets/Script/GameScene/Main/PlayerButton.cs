@@ -32,6 +32,10 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
     private Transform menbartran;
 
+
+    private void Start() {
+        playerButton.onClick.AddListener(() => OnClickPlayerButton());
+    }
     public IEnumerator SetUp(string playerName,int iconNo, int playerID,GameManager gameManager) {
         yield return new WaitForSeconds(3.0f);
         Debug.Log(playerName);
@@ -42,7 +46,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         this.iconNo = iconNo;
         this.playerID = playerID;
         live = true;
-        playerButton.onClick.AddListener(() => OnClickPlayerButton());
+        
         gameObject.GetComponent<Outline>().enabled = false;
         playerText.text = playerName;
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
@@ -147,9 +151,9 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                     if (PhotonNetwork.IsMasterClient) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                             if (player.ActorNumber == playerID && gameManager.chatSystem.myID != playerID) {
+                                gameManager.num--;
+                                gameManager.SetNum();
                                 gameManager.gameMasterChatManager.ForcedEvictionRoom(player);
-                                gameManager.DestroyPlayerButton(playerID);
-                                Debug.Log(player.NickName);
                                 break;
                             }
                         }
