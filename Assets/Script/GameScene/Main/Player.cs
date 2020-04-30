@@ -148,7 +148,7 @@ public class Player : MonoBehaviourPunCallbacks {
             wolf = true;
             wolfChat = true;
             wolfCamp = true;
-        } else if(rollType == ROLLTYPE.狂人) {
+        } else if (rollType == ROLLTYPE.狂人) {
             wolfCamp = true;
         }
 

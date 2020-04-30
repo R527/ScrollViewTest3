@@ -122,6 +122,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// カウントダウンタイマー
     /// </summary>
     void Update() {
+        if (!isGameOver) {
+            return;
+        }
         //全員の投票が完了したら
         if (GetIsVotingCompleted() && PhotonNetwork.IsMasterClient) {
             isVotingCompleted = false;

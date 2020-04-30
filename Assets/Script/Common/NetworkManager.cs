@@ -185,6 +185,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// 部屋から退出させる。
     /// </summary>
     public void LeaveRoom() {
+        gameManager.timeController.isGameOver = false;
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
             Debug.Log("退出完了");

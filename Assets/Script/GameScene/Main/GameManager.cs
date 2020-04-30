@@ -638,6 +638,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     /// <summary>
     /// PlayerButtonのListに追加する
+    /// PlayerButtonに情報を追加する
     /// </summary>
     public IEnumerator SetPlayerButtonList() {
         yield return null;
@@ -668,23 +669,17 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <param name="playerID"></param>
     /// <param name="otherPlayer"></param>
     public void DestroyPlayerButton(Photon.Realtime.Player otherPlayer) {
+        Debug.Log("Destory");
         //Listから削除する
-        foreach (PlayerButton obj in playerButtonList) {
-            if (obj.playerID == otherPlayer.ActorNumber) {
-                playerButtonList.Remove(obj);
-                break;
-            }
-        }
-        //メンバービューから削除する
         GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
         foreach (GameObject obj in buttonObjs) {
             PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
-            if(buttonObj.playerID == otherPlayer.ActorNumber) {
-                Debug.Log(buttonObj.playerName);
-                Destroy(obj);
+            if (buttonObj.playerID == otherPlayer.ActorNumber) {
+                Destroy(obj.gameObject);
                 break;
             }
         }
+
     }
 
 
@@ -708,13 +703,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
             case "参加":
                 //参加するなら
                 isJoined = true;
-                //enterNum++;
                 confirmationEnterButtonText.text = "キャンセル";
                 break;
             case "キャンセル":
                 //不参加なら
                 isJoined = false;
-                //enterNum--;
                 confirmationEnterButtonText.text = "参加";
                 break;
         }
@@ -752,9 +745,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         confirmationImage.SetActive(false);
         NetworkManager.instance.LeaveRoom();
-        //friendButton.gameObject.SetActive(true);
-        //damyObj.SetActive(false);
-        //maskObj.SetActive(true);
+
     }
 
 
