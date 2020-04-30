@@ -11,8 +11,10 @@ public class RulePopUp : BasePopUP {
     public Text entryLevelText;//募集レベル
     public Text timeText;
     public Text votedText;
+
+    
     // Start is called before the first frame update
-    protected override void Start()
+     protected override void Start()
     {
         base.Start();
         //ルールを確認画面とゲームシーン専用のメニューに記入する

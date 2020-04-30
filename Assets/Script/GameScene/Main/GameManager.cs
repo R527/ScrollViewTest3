@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Fillter fillter;
     public ComingOut comingOut;
     public InputView inputView;
-    public SetRule setRule;
 
     //入室関連
     public Text NumText;//入室してる人数
