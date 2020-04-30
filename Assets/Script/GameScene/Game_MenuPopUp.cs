@@ -17,7 +17,9 @@ public class Game_MenuPopUp : MonoBehaviour
     public GameObject begginerGuidePopUpObj;
     public GameObject rulePopUpObj;
 
+    public Transform objTran;
     private void Start() {
+        objTran = GameObject.FindGameObjectWithTag("GameCanvas").GetComponent<Transform>();
         beginnerButton.onClick.AddListener(BegginerPopUp);
         upDateButton.onClick.AddListener(UpDatePopUp);
         settingButton.onClick.AddListener(SettingPopUp);
@@ -50,7 +52,7 @@ public class Game_MenuPopUp : MonoBehaviour
 
     public void rulePopUp() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
-        Instantiate(rulePopUpObj);
+        Instantiate(rulePopUpObj, objTran,false);
         OnDestroy();
     }
     /// <summary>

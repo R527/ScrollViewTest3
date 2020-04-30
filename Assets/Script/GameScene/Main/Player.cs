@@ -107,7 +107,7 @@ public class Player : MonoBehaviourPunCallbacks {
         Debug.Log(iconNo);
         Debug.Log(playerID);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
-        StartCoroutine(gameManager.SetPlayerButtonList());
+        //StartCoroutine(gameManager.SetPlayerButtonList());
     }
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Fillter fillter;
     public ComingOut comingOut;
     public InputView inputView;
+    public SetRule setRule;
 
     //入室関連
     public Text NumText;//入室してる人数
@@ -34,8 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Text confirmationTimeText;//30秒タイマー
     public Text confirmationNumText;//参加人数
     public Text confirmationEnterButtonText;//参加ボタン
-    public Text ruleConfiramationButtonText;//ルール確認ボタン
-    public GameObject ruleConfiramationObj;//ルール確認Obj
+
     public GameObject damyObj;
     private bool isNumComplete;//ルームの規定人数が揃ったら
     public float setEnterNumTime;//規定人数が揃ったら使われる
@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public bool isTimeUp;
     public bool isExit;//確認画面で退出時に使われる
     public List<PlayerButton> playerButtonList = new List<PlayerButton>();
+
+
 
     //ボタン
     public Button exitButton;
@@ -130,7 +132,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //ボタンの追加
         exitButton.onClick.AddListener(ExitButton);
         enterButton.onClick.AddListener(EnterButton);
-        
     }
 
     
@@ -399,7 +400,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //時間などのRooｍDataにある情報を追加する
         SetRoomData();
-
         //Playerの生成
         StartCoroutine(StartGame());
 
@@ -622,7 +622,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             RoomData.instance.numList = intArray.ToList();
 
         }
-        //全員の世界にComingOutBottonと役職説明用のボタンを追加する
+        //全員の世界にComingOuottonと役職説明用のボタンを追加する
         for(int i = 0; i < RoomData.instance.numList.Count; i++) {
             ComingOutButtonList.Add((ROLLTYPE)i);
             //役職説明のボタンを追加している
@@ -636,27 +636,27 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
     }
 
-    /// <summary>
-    /// PlayerButtonのListに追加する
-    /// </summary>
-    public IEnumerator SetPlayerButtonList() {
-        yield return new WaitForSeconds(3.3f);
-        //プレイヤーが入室したらPlayerButtonを取得
-        GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
+    ///// <summary>
+    ///// PlayerButtonのListに追加する
+    ///// </summary>
+    //public IEnumerator SetPlayerButtonList() {
+    //    yield return new WaitForSeconds(3.3f);
+    //    //プレイヤーが入室したらPlayerButtonを取得
+    //    GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
 
-        //すでにListに追加されているButtonを除外して新たに追加されたButtonだけを追加する
-        foreach (GameObject obj in buttonObjs) {
-            PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
-            foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                if (buttonObj.playerID != player.ActorNumber) {
-                    playerButtonList.Add(buttonObj);
-                    break;
-                }
-            }
+    //    //すでにListに追加されているButtonを除外して新たに追加されたButtonだけを追加する
+    //    foreach (GameObject obj in buttonObjs) {
+    //        PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
+    //        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+    //            if (buttonObj.playerID != player.ActorNumber) {
+    //                playerButtonList.Add(buttonObj);
+    //                break;
+    //            }
+    //        }
             
-        }
+    //    }
         
-    }
+    //}
 
     /// <summary>
     /// Playerが退出したときにButtonを削除する処理
@@ -664,13 +664,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <param name="playerID"></param>
     /// <param name="otherPlayer"></param>
     public void DestroyPlayerButton(Photon.Realtime.Player otherPlayer) {
-        //Listから削除する
-        foreach(PlayerButton obj in playerButtonList) {
-            if(obj.playerID == otherPlayer.ActorNumber) {
-                playerButtonList.Remove(obj);
-                break;
-            }
-        }
+        ////Listから削除する
+        //foreach(PlayerButton obj in playerButtonList) {
+        //    if(obj.playerID == otherPlayer.ActorNumber) {
+        //        playerButtonList.Remove(obj);
+        //        break;
+        //    }
+        //}
         //メンバービューから削除する
         GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
         foreach (GameObject obj in buttonObjs) {
@@ -682,6 +682,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
             }
         }
     }
+
+
 
 
     /////////////////////////////////////
@@ -753,18 +755,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
 
 
-　   /// <summary>
-    /// 人数が規定人数揃った後の確認UIにあるルール表示ボタン
-    /// </summary>
-    public void RuleConfirmation() {
-        if (ruleConfiramationButtonText.text == "↓") {
-            ruleConfiramationObj.SetActive(true);
-            ruleConfiramationButtonText.text = "↑";
-        } else {
-            ruleConfiramationObj.SetActive(false);
-            ruleConfiramationButtonText.text = "↓";
-        }
-    }
+
 
 
 

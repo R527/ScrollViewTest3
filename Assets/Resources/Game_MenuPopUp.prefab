@@ -828,7 +828,9 @@ MonoBehaviour:
     type: 3}
   begginerGuidePopUpObj: {fileID: 8136206898632055133, guid: beabe2b1c5b1c0d40b1814e461940a47,
     type: 3}
-  rulePopUpObj: {fileID: 0}
+  rulePopUpObj: {fileID: 7277491064392280501, guid: ecb3b9bf6b611d244aa5f65d2ca34baf,
+    type: 3}
+  objTran: {fileID: 0}
 --- !u!1 &9058563480701391804
 GameObject:
   m_ObjectHideFlags: 0
