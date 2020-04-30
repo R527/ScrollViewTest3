@@ -500,9 +500,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
         yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckPlayerInGame());
         Debug.Log("CheckPlayerInGame:end");
 
+        //取得したPlayerButtonに役職をセットしてListに追加
+        yield return StartCoroutine(SetPlayerButtonList());
 
         //Startで反応しない場合は処理中に書くとよい
-
         rollExplanation.RollExplanationSetUp(rollTypeList);
         comingOut.ComingOutSetUp(ComingOutButtonList);
         timeController.Init(isOffline);
@@ -635,27 +636,31 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
     }
 
-    ///// <summary>
-    ///// PlayerButtonのListに追加する
-    ///// </summary>
-    //public IEnumerator SetPlayerButtonList() {
-    //    yield return new WaitForSeconds(3.3f);
-    //    //プレイヤーが入室したらPlayerButtonを取得
-    //    GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
+    /// <summary>
+    /// PlayerButtonのListに追加する
+    /// </summary>
+    public IEnumerator SetPlayerButtonList() {
+        yield return null;
+        //ゲーム名にあるPlyaerButtonをすべて取得
+        //プレイヤーが入室したらPlayerButtonを取得
+        GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
 
-    //    //すでにListに追加されているButtonを除外して新たに追加されたButtonだけを追加する
-    //    foreach (GameObject obj in buttonObjs) {
-    //        PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
-    //        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-    //            if (buttonObj.playerID != player.ActorNumber) {
-    //                playerButtonList.Add(buttonObj);
-    //                break;
-    //            }
-    //        }
-            
-    //    }
-        
-    //}
+        //取得したPlayerButtonに役職をセットしてListに追加
+        //すでにListに追加されているButtonを除外して新たに追加されたButtonだけを追加する
+        foreach (GameObject obj in buttonObjs) {
+            PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
+            foreach (Player player in chatSystem.playersList) {
+                if (buttonObj.playerID == player.playerID) {
+                    buttonObj.SetRollSetting(player);
+
+                    playerButtonList.Add(buttonObj);
+                    //break;
+                }
+            }
+
+        }
+
+    }
 
     /// <summary>
     /// Playerが退出したときにButtonを削除する処理
@@ -663,13 +668,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <param name="playerID"></param>
     /// <param name="otherPlayer"></param>
     public void DestroyPlayerButton(Photon.Realtime.Player otherPlayer) {
-        ////Listから削除する
-        //foreach(PlayerButton obj in playerButtonList) {
-        //    if(obj.playerID == otherPlayer.ActorNumber) {
-        //        playerButtonList.Remove(obj);
-        //        break;
-        //    }
-        //}
+        //Listから削除する
+        foreach (PlayerButton obj in playerButtonList) {
+            if (obj.playerID == otherPlayer.ActorNumber) {
+                playerButtonList.Remove(obj);
+                break;
+            }
+        }
         //メンバービューから削除する
         GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
         foreach (GameObject obj in buttonObjs) {

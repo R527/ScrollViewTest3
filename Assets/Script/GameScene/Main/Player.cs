@@ -97,15 +97,15 @@ public class Player : MonoBehaviourPunCallbacks {
     }
 
 
+    /// <summary>
+    /// Player.csとは別にPlayerButtonを作成する
+    /// </summary>
     [PunRPC]
     private void CreatePlayerButton() {
         Debug.Log(playerButtonPrefab);
         Debug.Log(gameManager);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
-        Debug.Log(playerName);
-        Debug.Log(iconNo);
-        Debug.Log(playerID);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
         //StartCoroutine(gameManager.SetPlayerButtonList());
     }

@@ -36,11 +36,17 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     private void Start() {
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="playerName"></param>
+    /// <param name="iconNo"></param>
+    /// <param name="playerID"></param>
+    /// <param name="gameManager"></param>
+    /// <returns></returns>
     public IEnumerator SetUp(string playerName,int iconNo, int playerID,GameManager gameManager) {
-        yield return new WaitForSeconds(3.0f);
-        Debug.Log(playerName);
-        Debug.Log(iconNo);
-        Debug.Log(playerID);
+        yield return null;
         this.gameManager = gameManager;
         this.playerName = playerName;
         this.iconNo = iconNo;
@@ -54,6 +60,19 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         
     }
 
+    public void SetRollSetting(Player player) {
+        rollType = player.rollType;
+
+        if (rollType == ROLLTYPE.人狼) {
+            fortune = true;
+            spiritual = true;
+            wolf = true;
+            wolfChat = true;
+            wolfCamp = true;
+        } else if (rollType == ROLLTYPE.狂人) {
+            wolfCamp = true;
+        }
+    }
 
     /// <summary>
     ///投票、フィルター、夜の行動を制御 
