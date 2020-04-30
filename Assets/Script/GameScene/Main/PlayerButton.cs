@@ -32,20 +32,47 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
     private Transform menbartran;
 
+
+    private void Start() {
+        playerButton.onClick.AddListener(() => OnClickPlayerButton());
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="playerName"></param>
+    /// <param name="iconNo"></param>
+    /// <param name="playerID"></param>
+    /// <param name="gameManager"></param>
+    /// <returns></returns>
     public IEnumerator SetUp(string playerName,int iconNo, int playerID,GameManager gameManager) {
+        yield return null;
         this.gameManager = gameManager;
         this.playerName = playerName;
         this.iconNo = iconNo;
         this.playerID = playerID;
         live = true;
-        playerButton.onClick.AddListener(() => OnClickPlayerButton());
+        
         gameObject.GetComponent<Outline>().enabled = false;
-
-        yield return new WaitForSeconds(2.0f);
+        playerText.text = playerName;
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         transform.SetParent(menbartran);
+        
     }
 
+    public void SetRollSetting(Player player) {
+        rollType = player.rollType;
+
+        if (rollType == ROLLTYPE.人狼) {
+            fortune = true;
+            spiritual = true;
+            wolf = true;
+            wolfChat = true;
+            wolfCamp = true;
+        } else if (rollType == ROLLTYPE.狂人) {
+            wolfCamp = true;
+        }
+    }
 
     /// <summary>
     ///投票、フィルター、夜の行動を制御 
@@ -142,9 +169,11 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                     Debug.Log("強制退出");
                     if (PhotonNetwork.IsMasterClient) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                            if (player.ActorNumber == playerID) {
+                            if (player.ActorNumber == playerID && gameManager.chatSystem.myID != playerID) {
+                                gameManager.num--;
+                                gameManager.SetNum();
                                 gameManager.gameMasterChatManager.ForcedEvictionRoom(player);
-                                Debug.Log(player.NickName);
+                                break;
                             }
                         }
                     }
@@ -153,9 +182,5 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         }
     }
 
-    //private void Update() {
-    //    if(menbartran != null) {
-           
-    //    }
-    //}
+
 }

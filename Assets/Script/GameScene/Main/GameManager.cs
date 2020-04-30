@@ -34,16 +34,19 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Text confirmationTimeText;//30秒タイマー
     public Text confirmationNumText;//参加人数
     public Text confirmationEnterButtonText;//参加ボタン
-    public Text ruleConfiramationButtonText;//ルール確認ボタン
-    public GameObject ruleConfiramationObj;//ルール確認Obj
+
     public GameObject damyObj;
     private bool isNumComplete;//ルームの規定人数が揃ったら
     public float setEnterNumTime;//規定人数が揃ったら使われる
     private float checkEnterTimer;//人数チェック用タイム
     private bool isJoined = false;//参加不参加の確認用
     public Transform menbarContent;
+    public Transform playerListContent;
     public bool isTimeUp;
     public bool isExit;//確認画面で退出時に使われる
+    public List<PlayerButton> playerButtonList = new List<PlayerButton>();
+
+
 
     //ボタン
     public Button exitButton;
@@ -128,7 +131,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //ボタンの追加
         exitButton.onClick.AddListener(ExitButton);
         enterButton.onClick.AddListener(EnterButton);
-        
     }
 
     
@@ -397,7 +399,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //時間などのRooｍDataにある情報を追加する
         SetRoomData();
-
         //Playerの生成
         StartCoroutine(StartGame());
 
@@ -499,9 +500,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
         yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckPlayerInGame());
         Debug.Log("CheckPlayerInGame:end");
 
+        //取得したPlayerButtonに役職をセットしてListに追加
+        yield return StartCoroutine(SetPlayerButtonList());
 
         //Startで反応しない場合は処理中に書くとよい
-
         rollExplanation.RollExplanationSetUp(rollTypeList);
         comingOut.ComingOutSetUp(ComingOutButtonList);
         timeController.Init(isOffline);
@@ -565,7 +567,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //各リストに登録
             chatSystem.playersList.Add(player);
             chatSystem.playerNameList.Add(player.playerName);
-            playerObj.transform.SetParent(menbarContent);
+            playerObj.transform.SetParent(playerListContent);
             yield return null;
         }
 
@@ -620,7 +622,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             RoomData.instance.numList = intArray.ToList();
 
         }
-        //全員の世界にComingOutBottonと役職説明用のボタンを追加する
+        //全員の世界にComingOuottonと役職説明用のボタンを追加する
         for(int i = 0; i < RoomData.instance.numList.Count; i++) {
             ComingOutButtonList.Add((ROLLTYPE)i);
             //役職説明のボタンを追加している
@@ -633,6 +635,54 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         }
     }
+
+    /// <summary>
+    /// PlayerButtonのListに追加する
+    /// PlayerButtonに情報を追加する
+    /// </summary>
+    public IEnumerator SetPlayerButtonList() {
+        yield return null;
+        //ゲーム名にあるPlyaerButtonをすべて取得
+        //プレイヤーが入室したらPlayerButtonを取得
+        GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
+
+        //取得したPlayerButtonに役職をセットしてListに追加
+        //すでにListに追加されているButtonを除外して新たに追加されたButtonだけを追加する
+        foreach (GameObject obj in buttonObjs) {
+            PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
+            foreach (Player player in chatSystem.playersList) {
+                if (buttonObj.playerID == player.playerID) {
+                    buttonObj.SetRollSetting(player);
+
+                    playerButtonList.Add(buttonObj);
+                    //break;
+                }
+            }
+
+        }
+
+    }
+
+    /// <summary>
+    /// Playerが退出したときにButtonを削除する処理
+    /// </summary>
+    /// <param name="playerID"></param>
+    /// <param name="otherPlayer"></param>
+    public void DestroyPlayerButton(Photon.Realtime.Player otherPlayer) {
+        Debug.Log("Destory");
+        //Listから削除する
+        GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
+        foreach (GameObject obj in buttonObjs) {
+            PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
+            if (buttonObj.playerID == otherPlayer.ActorNumber) {
+                Destroy(obj.gameObject);
+                break;
+            }
+        }
+
+    }
+
+
 
 
     /////////////////////////////////////
@@ -653,13 +703,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
             case "参加":
                 //参加するなら
                 isJoined = true;
-                //enterNum++;
                 confirmationEnterButtonText.text = "キャンセル";
                 break;
             case "キャンセル":
                 //不参加なら
                 isJoined = false;
-                //enterNum--;
                 confirmationEnterButtonText.text = "参加";
                 break;
         }
@@ -697,25 +745,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         confirmationImage.SetActive(false);
         NetworkManager.instance.LeaveRoom();
-        //friendButton.gameObject.SetActive(true);
-        //damyObj.SetActive(false);
-        //maskObj.SetActive(true);
+
     }
 
 
 
-　   /// <summary>
-    /// 人数が規定人数揃った後の確認UIにあるルール表示ボタン
-    /// </summary>
-    public void RuleConfirmation() {
-        if (ruleConfiramationButtonText.text == "↓") {
-            ruleConfiramationObj.SetActive(true);
-            ruleConfiramationButtonText.text = "↑";
-        } else {
-            ruleConfiramationObj.SetActive(false);
-            ruleConfiramationButtonText.text = "↓";
-        }
-    }
+
 
 
 
@@ -738,10 +773,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
         return num;
     }
 
-    private void SetNum() {
+    public void SetNum() {
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"num", num }
-                        };
+            {"num", num }
+        };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 

@@ -68,6 +68,7 @@ MonoBehaviour:
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
     type: 3}
   iconNo: 0
+  playerButton: {fileID: 0}
   isVoteFlag: 0
   isRollAction: 0
   playerButtonPrefab: {fileID: 7299260294203596066, guid: 765fafd58a705684babe9cc1ecafa704,

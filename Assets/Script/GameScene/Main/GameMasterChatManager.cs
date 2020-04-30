@@ -202,6 +202,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     }
 
 
+
+
     /// <summary>
     /// 強制退出 ゲーム開始前にマスタークライアントのみが参加プレイヤーを退出させることができる
     /// </summary>

@@ -185,6 +185,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// 部屋から退出させる。
     /// </summary>
     public void LeaveRoom() {
+        gameManager.timeController.isGameOver = false;
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
             Debug.Log("退出完了");
@@ -214,6 +215,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="otherPlayer"></param>
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
         base.OnPlayerLeftRoom(otherPlayer);
+
+        //ゲーム開始前のみPlayerButtonを削除する
+        if (!gameManager.gameStart) {
+            gameManager.DestroyPlayerButton(otherPlayer);
+        }
     }
 
     //public  void CloseConnection(Photon.Realtime.Player kickPlayer) {

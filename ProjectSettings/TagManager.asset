@@ -19,6 +19,8 @@ TagManager:
   - GameManager
   - MenbarContent
   - ComingOut
+  - PlayerButton
+  - GameCanvas
   layers:
   - Default
   - TransparentFX
