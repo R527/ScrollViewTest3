@@ -47,7 +47,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public List<PlayerButton> playerButtonList = new List<PlayerButton>();
 
 
-
     //ボタン
     public Button exitButton;
     public Button enterButton;
@@ -124,7 +123,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
 
 
-
+            SetRoomData();
         }
 
 
@@ -142,32 +141,36 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //ルームにいる場合のみ
         if (PhotonNetwork.InRoom || isOffline) {
 
-
             //監視
             if (PhotonNetwork.IsMasterClient && timeController.timeType == TIME.開始前 && numLimit == GetNum()) {
                 //参加意思表示確認画面の監視
                 CheckEnterNum();
             }
+
+            //ゲーム開始前
             if (!gameStart) {
 
-                //一人以上のプレイヤーが退出した場合
+                //一人以上のプレイヤーが退出した場合isJoinedisExitの値をリセットして確認PopUPを削除する
                 if (GetIsExit()) {
+                    confirmationImage.SetActive(false);
                     isJoined = false;
-                    ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
-                    {"isJoined", isJoined }
-                };
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
-                    Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
+                    isExit = false;
+                    enterNumTime = 25.0f;
+                    SetEnterNumTime();
+                    SetIsJoin();
+                    SetIsExit();
                 }
-                //役職セット
+
+                //人数が揃ったら役職セット
                 SetRoll();
                 //人数を確認する
                 CountNum();
 
-                Debug.Log("GetEntrerNUm" + GetEnterNum());
-                Debug.Log("numLimit" + numLimit);
-                Debug.Log("GetNum" + GetNum());
-                //入場人数と制限人数が一致してかつ、参加希望人数と制限人数が一致していない場合
+                //Debug.Log("GetEntrerNUm" + GetEnterNum());
+                //Debug.Log("numLimit" + numLimit);
+                //Debug.Log("GetNum" + GetNum());
+
+                //確認PopUP表示して参加確認を行う
                 if (GetNum() == numLimit && GetEnterNum() != numLimit) {
                     Debug.Log(gameStart);
                     //参加意思表示の人数確認
@@ -262,13 +265,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
         damyObj.SetActive(true);
         confirmationImage.SetActive(true);
 
-        //時間を書き込む
+        //マスターだけ時間を書き込む
         if (PhotonNetwork.IsMasterClient) {
 
             //人数が揃ったらenterNumTimeをセットする
             if (!isNumComplete) {
                 isNumComplete = true;
-                enterNumTime = GetEnterNumTime();
+                enterNumTime = 25.0f;
                 SetEnterNumTime();
                 Debug.Log("enterNumTime" + enterNumTime);
             }
@@ -280,6 +283,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 enterNumTime--;
                 SetEnterNumTime();
             }
+
+            //マスター以外の処理
         } else {
             enterNumTime = GetEnterNumTime();
         }
@@ -398,7 +403,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         //時間などのRooｍDataにある情報を追加する
-        SetRoomData();
+        //SetRoomData();
         //Playerの生成
         StartCoroutine(StartGame());
 
@@ -471,7 +476,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         //時間などのRooｍDataにある情報を追加する
-        SetRoomData();
+        //SetRoomData();
 
         //Playerの生成
         StartCoroutine(StartGame());
@@ -712,12 +717,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 break;
         }
         //isJoinedを各プレイヤーごとに更新（LocalPlayer
-        var customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
-            {"isJoined", isJoined }
-        };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
-
-
+        SetIsJoin();
     }
 
     /// <summary>
@@ -733,17 +733,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         SetNum();
         SetEnterNum();
+
+        //誰かが退出したことを知らせるためのbool型
         isExit = true;
+        SetIsExit();
 
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isExit", out object isExitObj)) {
-            isExit = (bool)isExitObj;
-        }
-        var propertiers = new ExitGames.Client.Photon.Hashtable {
-            {"isExit",isExit }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
-
-        confirmationImage.SetActive(false);
         NetworkManager.instance.LeaveRoom();
 
     }
@@ -867,19 +861,44 @@ public class GameManager : MonoBehaviourPunCallbacks {
         Debug.Log("IsTimeUp" + isTimeUp);
         return isTimeUp;
     }
-
+    /// <summary>
+    /// 確認画面にて誰が退出した場合に使われる
+    /// </summary>
     private bool GetIsExit() {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isExit", out object isExitObj)) {
             isExit = (bool)isExitObj;
         }
         return isExit;
     }
-
+    /// <summary>
+    /// 確認画面にて誰が退出した場合に使われる
+    /// </summary>
+    private void SetIsExit() {
+        ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
+                    {"isExit", isExit }
+                };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customPlayerProperties);
+        Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["isExit"]);
+    }
     //public int GetNumLimit() {
     //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("numLimit", out object numLimitObj)) {
     //        numLimit = (int)numLimitObj;
     //    }
     //    return numLimit;
     //}
+
+
+    /// <summary>
+    /// 参加者の意思表示のbool型をセットする
+    /// </summary>
+    private void SetIsJoin() {
+        ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
+                    {"isJoined", isJoined }
+                };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
+        Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
+    }
+
+    
 }
 

@@ -187,10 +187,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void LeaveRoom() {
         gameManager.timeController.isGameOver = false;
         if (PhotonNetwork.InRoom) {
+            gameManager.gameMasterChatManager.LeaveRoomChat();
             PhotonNetwork.LeaveRoom();
             Debug.Log("退出完了");
         }
-        
     }
 
     /// <summary>
