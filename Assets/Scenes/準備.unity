@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  testMainTime: 6000
+  testMainTime: 10
   testNightTime: 3
   testVotingTime: 10
   testExecutionTime: 4

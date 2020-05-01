@@ -145,7 +145,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 return;
 
                 //カウントダウン処理
-            } else if (GetPlayState() && gameManager.gameStart) {
+            } else if (isPlaying && gameManager.gameStart) {
                 //マスターだけトータルタイムを管理する
                 if (PhotonNetwork.IsMasterClient) {
                     chekTimer += Time.deltaTime;
@@ -161,19 +161,18 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 }
                 //トータルタイム表示
                 //トータルタイムを受け取る側はー1秒から始まるのでその調整用
-                if(totalTime > 0) {
+                if(totalTime >= 0) {
                     timerText.text = totalTime.ToString("F0");
                 }
                 
                 //0秒になったら次のシーンへ移行する
-                if (totalTime < 0) {
+                if (totalTime < 0 && PhotonNetwork.IsMasterClient) {
                     //マスターだけがisPlayingをfalseに
-                    if (PhotonNetwork.IsMasterClient) {
-                        isPlaying = false;
-                        SetPlayState(isPlaying);
-                    }
+                    isPlaying = false;
+                    SetPlayState(isPlaying);
                 }
-
+                Debug.Log(GetPlayState());
+                Debug.Log(totalTime);
                 //次のシーンへ移行する処理
             } else if (!GetPlayState() && totalTime < 0) {
                 timerText.text = string.Empty;
@@ -194,8 +193,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public void StartInterval() {
         Debug.Log("StartInterval:開始");
+        //!isPlaying &&
+        if (gameManager.gameStart) {
 
-        if (!isPlaying && gameManager.gameStart) {
             switch (timeType) {
                 //お昼
                 case TIME.結果発表後チェック:
