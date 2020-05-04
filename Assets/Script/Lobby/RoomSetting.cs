@@ -83,7 +83,7 @@ public class RoomSetting : MonoBehaviour
 
         //RoomDataにデータ保存
         RoomData.instance.roomInfo = roomInfo;
-        RoomData.instance.numList = rollSetting.NumList;
+        RoomData.instance.rollList = rollSetting.NumList;
         RoomData.instance.numLimit = rollSetting.numLimit;
 
         //一旦SetActive（false);にしておく→更新や、難易度変更で後程制御

@@ -8,18 +8,23 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Lobbyに関するボタン等を管理
 /// </summary>
-public class Lobby : MonoBehaviour
+public class LobbyButtonManager : MonoBehaviour
 {
 
+    //main
     public Button backButton;
     public Button menuButton;
     public GameObject menuPopUp;
     public NetworkManager networkManagerPrefab;
 
+    //createRoom
+    public Button createRoomButton;
+    public GameObject roomSelectCanvasObj;
+    public GameObject rollSettingCanvasObj;
 
-    　
-　   /// <summary>
-    /// NetworkManager.csをインスタンス
+
+    /// <summary>
+    /// NetworkManagerのSetUpをする
     /// </summary>
     private void Awake() {
 
@@ -31,9 +36,12 @@ public class Lobby : MonoBehaviour
             network.GetComponent<NetworkManager>().SetUp();
         }
     }
+
+
     private void Start() {
         backButton.onClick.AddListener(() => SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE));
         menuButton.onClick.AddListener(MenuPopUp);
+        createRoomButton.onClick.AddListener(CreateRoomButton);
     }
 
     /// <summary>
@@ -43,4 +51,8 @@ public class Lobby : MonoBehaviour
         Instantiate(menuPopUp);
     }
 
+    public void CreateRoomButton() {
+        roomSelectCanvasObj.SetActive(false);
+        rollSettingCanvasObj.SetActive(true);
+    }
 }

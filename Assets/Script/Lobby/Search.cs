@@ -11,6 +11,9 @@ public class Search : MonoBehaviour
 {
     //class
     public RoomSetting roomSetting;
+    public FORTUNETYPE searchFortuneType;
+    public ROOMSELECTION searchRoomSelection;
+    public VOTING searchOpenVoting;
 
     //Lobby
     public Text roomSelectionText;
@@ -20,13 +23,14 @@ public class Search : MonoBehaviour
     public Text openVotingText;
     public Text joinNumText;
     public Text searchRoomSelectText;
+    public GameObject searchPopUpObj;
+    public Button searchPopUPButton;
+    public Button selectionButtonLeftButton;
+    public Button selectionButtonRightButton;
     public Button searchJoinPlusButton;
     public Button searchJoinMinusButton;
-    public Button initSearchButton;
+    public Button initSearchButton;//検索初期化
     public Button upDateButton;//更新ボタン
-    public FORTUNETYPE searchFortuneType;
-    public VOTING searchOpenVoting;
-    public ROOMSELECTION searchRoomSelection;
     public int searchJoinNum;
     public bool join;//参加人数未設定か否かの判定
 
@@ -38,8 +42,12 @@ public class Search : MonoBehaviour
         searchRoomSelectText.text = searchRoomSelection.ToString();
         joinNumText.text = "未設定";
 
+        //button
         initSearchButton.onClick.AddListener(InitSearch);
         upDateButton.onClick.AddListener(UpDateButton);
+        searchPopUPButton.onClick.AddListener(SearchPopUP);
+        selectionButtonLeftButton.onClick.AddListener(SelectionButtonLeft);
+        selectionButtonRightButton.onClick.AddListener(SelectionButtonRight);
     }
 
     /// <summary>
@@ -50,6 +58,8 @@ public class Search : MonoBehaviour
         foreach (RoomNode roomObj in roomSetting.roomNodeList) {
             roomObj.gameObject.SetActive(false);
         }
+
+
         foreach (RoomNode roomObj in roomSetting.roomNodeList) {
 
             //未設定を処理する
@@ -138,7 +148,9 @@ public class Search : MonoBehaviour
         SearchRoomNode();
     }
 
-    //検索PopUp
+    public void SearchPopUP() {
+        searchPopUpObj.SetActive(true);
+    }
 
     /// <summary>
     /// 検索初期化

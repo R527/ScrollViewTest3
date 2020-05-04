@@ -5892,18 +5892,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 759419381}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &759419381
@@ -7060,6 +7049,10 @@ MonoBehaviour:
   openVotingText: {fileID: 1688390958}
   joinNumText: {fileID: 1403312923}
   searchRoomSelectText: {fileID: 1248470059}
+  searchPopUpObj: {fileID: 727840329}
+  searchPopUPButton: {fileID: 853730785}
+  selectionButtonLeftButton: {fileID: 1407515932}
+  selectionButtonRightButton: {fileID: 1152217984}
   searchJoinPlusButton: {fileID: 1171436549}
   searchJoinMinusButton: {fileID: 1596512707}
   initSearchButton: {fileID: 712073784}
@@ -7829,18 +7822,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 853730786}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 727840329}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &853730786
@@ -9993,7 +9975,7 @@ GameObject:
   - component: {fileID: 1152217984}
   - component: {fileID: 1152217983}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10081,18 +10063,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1152217985}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 827804779}
-        m_MethodName: SelectionButtonRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1152217985
@@ -12837,29 +12808,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1379937401}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1792950986}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1536450138}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1379937401
@@ -13398,7 +13347,7 @@ GameObject:
   - component: {fileID: 1407515932}
   - component: {fileID: 1407515931}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13486,18 +13435,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1407515933}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 827804779}
-        m_MethodName: SelectionButtonLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1407515933
@@ -13724,7 +13662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 153.19525}
+  m_AnchoredPosition: {x: 0, y: 156.72726}
   m_SizeDelta: {x: 205, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1417060680
@@ -14608,7 +14546,7 @@ GameObject:
   - component: {fileID: 1536450140}
   - component: {fileID: 1536450139}
   m_Layer: 5
-  m_Name: RollSetting
+  m_Name: RollSettingCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17400,6 +17338,9 @@ MonoBehaviour:
     type: 3}
   networkManagerPrefab: {fileID: 2031278994399130302, guid: 1f3cfe8d6b38662418f7143d411f9ca0,
     type: 3}
+  createRoomButton: {fileID: 1379937400}
+  roomSelectCanvasObj: {fileID: 1792950986}
+  rollSettingCanvasObj: {fileID: 1536450138}
 --- !u!82 &1788921843
 AudioSource:
   m_ObjectHideFlags: 0
