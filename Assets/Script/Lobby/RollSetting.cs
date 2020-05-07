@@ -69,12 +69,6 @@ public class RollSetting : MonoBehaviour
 
 
     private void Start() {
-        //int[] joinNum = new int[3] {
-        //    citizenCampNum,
-        //    wolfCampNum,
-        //    etcCampNum
-        //};
-        //SumNumber(joinNum);
 
         //表示設定
         sumNumText.text = numLimit.ToString();
@@ -95,14 +89,6 @@ public class RollSetting : MonoBehaviour
         numberMinusButton.onClick.AddListener(SumNumberMinusButton);
     }
 
-    //public void SumNumber(int [] nums) {
-    //    int total = 0;
-    //    // sumNum = citizenCampNum + wolfCampNum + etcCampNum;
-    //    for (int i = 0; i < nums.Length; i++) {
-    //        total += nums[i];
-    //    }
-    //    sumNumText.text = sumNum.ToString();
-    //}
 
     /// <summary>
     /// RoomSettingCanvasへ移行する 人数が合わないならポップアップが出る
@@ -191,7 +177,6 @@ public class RollSetting : MonoBehaviour
         citizenCampNumText.text = citizenCampNum + "人";
         wolfCampNumText.text = wolfCampNum + "人";
         SumNumber();
-        //CitizenNum();
     }
 
 
@@ -279,58 +264,9 @@ public class RollSetting : MonoBehaviour
         citizenCampNumText.text = citizenCampNum + "人";
         wolfCampNumText.text = wolfCampNum + "人";
     }
-    ///// <summary>
-    ///// 市民陣営プラスボタンの制御
-    ///// </summary>
-    //public void CitizenCampPlus() {
-    //    if(citizenNum == 0) {
-    //        citizenCampNum++;
-    //    }
-    //    citizenCampNumText.text = citizenCampNum + "人";
-    //}
-
-    ///// <summary>
-    ///// 狼陣営プラスボタンの制御
-    ///// </summary>
-    //public void WolfCampPlus() {
-    //    //if (citizenNum == 0) {
-    //        wolfCampNum++;
-    //    //}
-    //    citizenCampNum--;
-    //    citizenCampNumText.text = citizenCampNum + "人";
-    //    wolfCampNumText.text = wolfCampNum + "人";
-    //}
-
-    ///// <summary>
-    ///// 市民陣営マイナスボタンの制御
-    ///// </summary>
-    //public void CitizenCampMinus() {
-    //    if (citizenNum == 0) {
-    //        citizenCampNum--;
-    //    }
-    //    citizenCampNumText.text = citizenCampNum + "人";
-    //}
-
-    ///// <summary>
-    ///// 狼陣営マイナスボタンの制御
-    ///// </summary>
-    //public void WolfCampMinus() {
-    //    //if (citizenNum == 0) {
-    //        wolfCampNum--;
-    //    //}
-    //    citizenCampNum++;
-    //    citizenCampNumText.text = citizenCampNum + "人";
-    //    wolfCampNumText.text = wolfCampNum + "人";
-    //}
 
 
-    ///// <summary>
-    ///// 市民の人数を計算する
-    ///// </summary>
-    //public void CitizenNum() {
-    //    citizenNum = citizenCampNum - (fortuneNum + knightNum + psychicNum);
-    //    citizenText.text = citizenNum + "/" + "-";
-    //}
+
 
 
     /// <summary>

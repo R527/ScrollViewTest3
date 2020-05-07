@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 43691387}
   - component: {fileID: 43691388}
   m_Layer: 5
-  m_Name: SettingObj (6)
+  m_Name: "\u9A0E\u58EB"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -780,6 +780,7 @@ GameObject:
   - component: {fileID: 205627655}
   - component: {fileID: 205627654}
   - component: {fileID: 205627653}
+  - component: {fileID: 205627657}
   m_Layer: 5
   m_Name: MuinusButton
   m_TagString: Untagged
@@ -869,18 +870,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 205627655}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: knight
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &205627655
@@ -920,6 +910,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205627651}
   m_CullTransparentMesh: 0
+--- !u!114 &205627657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205627651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 2
+  numText: {fileID: 2028679920}
+  plusOrMinus: 0
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 205627654}
 --- !u!1 &218400699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,6 +1751,7 @@ GameObject:
   - component: {fileID: 300078281}
   - component: {fileID: 300078280}
   - component: {fileID: 300078279}
+  - component: {fileID: 300078283}
   m_Layer: 5
   m_Name: PulasButton
   m_TagString: Untagged
@@ -1831,18 +1841,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 300078281}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: psychic
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &300078281
@@ -1882,6 +1881,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300078277}
   m_CullTransparentMesh: 0
+--- !u!114 &300078283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300078277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 3
+  numText: {fileID: 1807867454}
+  plusOrMinus: 1
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 300078280}
 --- !u!1 &322359394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,6 +2424,7 @@ GameObject:
   - component: {fileID: 357271005}
   - component: {fileID: 357271004}
   - component: {fileID: 357271003}
+  - component: {fileID: 357271007}
   m_Layer: 5
   m_Name: PulasButton
   m_TagString: Untagged
@@ -2495,18 +2514,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 357271005}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: fortune
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &357271005
@@ -2546,6 +2554,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 357271001}
   m_CullTransparentMesh: 0
+--- !u!114 &357271007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357271001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 1
+  numText: {fileID: 1184008999}
+  plusOrMinus: 1
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 357271004}
 --- !u!1 &368814985
 GameObject:
   m_ObjectHideFlags: 0
@@ -3062,7 +3089,7 @@ MonoBehaviour:
     mainTime: 0
     nightTime: 0
     roomSelection: 0
-  numList: 
+  rollList: 
   numLimit: 0
 --- !u!4 &408547132
 Transform:
@@ -4478,6 +4505,7 @@ GameObject:
   - component: {fileID: 663342783}
   - component: {fileID: 663342782}
   - component: {fileID: 663342781}
+  - component: {fileID: 663342785}
   m_Layer: 5
   m_Name: PulasButton
   m_TagString: Untagged
@@ -4567,18 +4595,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 663342783}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: knight
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &663342783
@@ -4618,6 +4635,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663342779}
   m_CullTransparentMesh: 0
+--- !u!114 &663342785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663342779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 2
+  numText: {fileID: 2028679920}
+  plusOrMinus: 1
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 663342782}
 --- !u!1 &663575112
 GameObject:
   m_ObjectHideFlags: 0
@@ -6267,6 +6303,7 @@ GameObject:
   - component: {fileID: 791283556}
   - component: {fileID: 791283555}
   - component: {fileID: 791283554}
+  - component: {fileID: 791283558}
   m_Layer: 5
   m_Name: PulasButton
   m_TagString: Untagged
@@ -6356,18 +6393,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 791283556}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: WolfPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: werewolf
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &791283556
@@ -6407,6 +6433,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 791283552}
   m_CullTransparentMesh: 0
+--- !u!114 &791283558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791283552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 4
+  numText: {fileID: 837090294}
+  plusOrMinus: 1
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 791283555}
 --- !u!1 &796405487
 GameObject:
   m_ObjectHideFlags: 0
@@ -6420,6 +6465,7 @@ GameObject:
   - component: {fileID: 796405491}
   - component: {fileID: 796405490}
   - component: {fileID: 796405489}
+  - component: {fileID: 796405493}
   m_Layer: 5
   m_Name: MuinusButton
   m_TagString: Untagged
@@ -6509,18 +6555,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 796405491}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: WolfMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: werewolf
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &796405491
@@ -6560,6 +6595,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796405487}
   m_CullTransparentMesh: 0
+--- !u!114 &796405493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796405487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 4
+  numText: {fileID: 837090294}
+  plusOrMinus: 0
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 796405490}
 --- !u!1 &796525583
 GameObject:
   m_ObjectHideFlags: 0
@@ -7044,6 +7098,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomSetting: {fileID: 1850661070}
+  searchFortuneType: 3
+  searchRoomSelection: 0
+  searchOpenVoting: 2
   roomSelectionText: {fileID: 1669192079}
   firstDayFrotuneText: {fileID: 603758899}
   openVotingText: {fileID: 1688390958}
@@ -7057,9 +7114,6 @@ MonoBehaviour:
   searchJoinMinusButton: {fileID: 1596512707}
   initSearchButton: {fileID: 712073784}
   upDateButton: {fileID: 620037191}
-  searchFortuneType: 3
-  searchOpenVoting: 2
-  searchRoomSelection: 0
   searchJoinNum: 3
   join: 1
 --- !u!4 &827804780
@@ -8769,7 +8823,7 @@ GameObject:
   - component: {fileID: 993823237}
   - component: {fileID: 993823238}
   m_Layer: 5
-  m_Name: SettingObj (7)
+  m_Name: "\u970A\u80FD\u8005"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9686,7 +9740,7 @@ GameObject:
   - component: {fileID: 1147483292}
   - component: {fileID: 1147483293}
   m_Layer: 5
-  m_Name: SettingObj (5)
+  m_Name: "\u5360\u3044\u5E2B"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10501,6 +10555,7 @@ GameObject:
   - component: {fileID: 1175404713}
   - component: {fileID: 1175404712}
   - component: {fileID: 1175404711}
+  - component: {fileID: 1175404715}
   m_Layer: 5
   m_Name: PulasButton
   m_TagString: Untagged
@@ -10590,18 +10645,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1175404713}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: WolfPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: madman
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1175404713
@@ -10641,6 +10685,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175404709}
   m_CullTransparentMesh: 0
+--- !u!114 &1175404715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175404709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 5
+  numText: {fileID: 801230966}
+  plusOrMinus: 1
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 1175404712}
 --- !u!1 &1179731220
 GameObject:
   m_ObjectHideFlags: 0
@@ -10654,6 +10717,7 @@ GameObject:
   - component: {fileID: 1179731224}
   - component: {fileID: 1179731223}
   - component: {fileID: 1179731222}
+  - component: {fileID: 1179731226}
   m_Layer: 5
   m_Name: MuinusButton
   m_TagString: Untagged
@@ -10743,18 +10807,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1179731224}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: citizen
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1179731224
@@ -10794,6 +10847,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179731220}
   m_CullTransparentMesh: 0
+--- !u!114 &1179731226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179731220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 0
+  numText: {fileID: 842000208}
+  plusOrMinus: 0
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 1179731223}
 --- !u!1 &1184008996
 GameObject:
   m_ObjectHideFlags: 0
@@ -13488,6 +13560,7 @@ GameObject:
   - component: {fileID: 1412804316}
   - component: {fileID: 1412804315}
   - component: {fileID: 1412804314}
+  - component: {fileID: 1412804318}
   m_Layer: 5
   m_Name: PulasButton
   m_TagString: Untagged
@@ -13577,18 +13650,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1412804316}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: citizen
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1412804316
@@ -13628,6 +13690,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1412804312}
   m_CullTransparentMesh: 0
+--- !u!114 &1412804318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412804312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 0
+  numText: {fileID: 842000208}
+  plusOrMinus: 1
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 1412804315}
 --- !u!1 &1417060678
 GameObject:
   m_ObjectHideFlags: 0
@@ -13662,7 +13743,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 156.72726}
+  m_AnchoredPosition: {x: 0, y: 156.72765}
   m_SizeDelta: {x: 205, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1417060680
@@ -13715,7 +13796,7 @@ GameObject:
   - component: {fileID: 1426186515}
   - component: {fileID: 1426186516}
   m_Layer: 5
-  m_Name: SettingObj (9)
+  m_Name: "\u72C2\u4EBA"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14902,7 +14983,7 @@ GameObject:
   - component: {fileID: 1544108533}
   - component: {fileID: 1544108534}
   m_Layer: 5
-  m_Name: SettingObj (8)
+  m_Name: "\u4EBA\u72FC"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16267,6 +16348,7 @@ GameObject:
   - component: {fileID: 1668479568}
   - component: {fileID: 1668479567}
   - component: {fileID: 1668479566}
+  - component: {fileID: 1668479570}
   m_Layer: 5
   m_Name: MuinusButton
   m_TagString: Untagged
@@ -16356,18 +16438,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1668479568}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: WolfMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: madman
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1668479568
@@ -16407,6 +16478,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668479564}
   m_CullTransparentMesh: 0
+--- !u!114 &1668479570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668479564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 5
+  numText: {fileID: 801230966}
+  plusOrMinus: 0
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 1668479567}
 --- !u!1 &1669192076
 GameObject:
   m_ObjectHideFlags: 0
@@ -16940,7 +17030,7 @@ GameObject:
   - component: {fileID: 1743069544}
   - component: {fileID: 1743069545}
   m_Layer: 5
-  m_Name: SettingObj (4)
+  m_Name: "\u5E02\u6C11"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18286,6 +18376,7 @@ GameObject:
   - component: {fileID: 1843899108}
   - component: {fileID: 1843899107}
   - component: {fileID: 1843899106}
+  - component: {fileID: 1843899110}
   m_Layer: 5
   m_Name: MuinusButton
   m_TagString: Untagged
@@ -18375,18 +18466,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1843899108}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: psychic
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1843899108
@@ -18426,6 +18506,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1843899104}
   m_CullTransparentMesh: 0
+--- !u!114 &1843899110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843899104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 3
+  numText: {fileID: 1807867454}
+  plusOrMinus: 0
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 1843899107}
 --- !u!1 &1848742577
 GameObject:
   m_ObjectHideFlags: 0
@@ -19575,6 +19674,7 @@ GameObject:
   - component: {fileID: 1978284041}
   - component: {fileID: 1978284040}
   - component: {fileID: 1978284039}
+  - component: {fileID: 1978284043}
   m_Layer: 5
   m_Name: MuinusButton
   m_TagString: Untagged
@@ -19664,18 +19764,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1978284041}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: fortune
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1978284041
@@ -19715,6 +19804,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1978284037}
   m_CullTransparentMesh: 0
+--- !u!114 &1978284043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978284037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 0}
+  rollType: 1
+  numText: {fileID: 1184008999}
+  plusOrMinus: 0
+  num: 0
+  numLimit: 0
+  rollSettingButton: {fileID: 1978284040}
 --- !u!1 &1992630755
 GameObject:
   m_ObjectHideFlags: 0
