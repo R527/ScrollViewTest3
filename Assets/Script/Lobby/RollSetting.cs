@@ -170,39 +170,29 @@ public class RollSetting : MonoBehaviour
         switch(numLimit) {
             case 6:
                 werewolf.numLimit = 2;
-                //werewolfPlusButton.interactable = true;
                 break;
             case 8:
                 fortune.numLimit = 2;
                 knight.numLimit = 2;
                 psychic.numLimit = 2;
                 madman.numLimit = 2;
-                //fortunePlusButton.interactable = true;
-                //knightPlusButton.interactable = true;
-                //psychicPlusButton.interactable = true;
-                //madmanPlusButton.interactable = true;
                 break;
             case 12:
                 werewolf.numLimit = 3;
-                //werewolfPlusButton.interactable = true;
                 break;
             case 13:
                 madman.numLimit = 3;
-                //madmanPlusButton.interactable = true;
                 break;
             case 14:
                 fortune.numLimit = 3;
                 knight.numLimit = 3;
                 psychic.numLimit = 3;
-                //fortunePlusButton.interactable = true;
-                //knightPlusButton.interactable = true;
-                //psychicPlusButton.interactable = true;
                 break;
         }
 
+
         citizenCampNumText.text = citizenCampNum + "人";
         wolfCampNumText.text = wolfCampNum + "人";
-        UpdateRollNumAndNumLimitText();
         SumNumber();
     }
 
@@ -243,33 +233,11 @@ public class RollSetting : MonoBehaviour
                 psychic.numLimit = 2;
                 break;
         }
-        //今の設定人数と最大人数が食い違っている時の処理
-        if (fortune.num > fortune.numLimit) {
-            fortune.num = fortune.numLimit;
-            //fortunePlusButton.interactable = false;
-        }
-        if (knight.num > knight.numLimit) {
-            knight.num = knight.numLimit;
-           // knightPlusButton.interactable = false;
-        }
-        if (psychic.num > psychic.numLimit) {
-            psychic.num = psychic.numLimit;
-            //psychicPlusButton.interactable = false;
-        }
-        if (werewolf.num > werewolf.numLimit) {
-            werewolf.num = werewolf.numLimit;
-            wolfCampNum--;
-            //werewolfPlusButton.interactable = false;
-        }
-        if (madman.num > madman.numLimit) {
-            madman.num = madman.numLimit;
-            wolfCampNum--;
-            //madmanPlusButton.interactable = false;
-        }
+
 
         citizenCampNumText.text = citizenCampNum + "人";
         wolfCampNumText.text = wolfCampNum + "人";
-        UpdateRollNumAndNumLimitText();
+        
         SumNumber();
 
         if (citizen.num <= 0) {

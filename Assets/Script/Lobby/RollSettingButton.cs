@@ -41,6 +41,37 @@ public class RollSettingButton : MonoBehaviour
         minusButton.rollSettingButton.onClick.AddListener(() => PushJudge(minusButton.applicant_Type));
 
         SetUpButton();
+        SwitchValue();
+        rollSetting.numberPlusButton.onClick.AddListener(() => StartCoroutine(CheckLimit()));
+        rollSetting.numberMinusButton.onClick.AddListener(() => StartCoroutine(CheckLimit()));
+
+        
+        
+    }
+
+    private IEnumerator CheckLimit() {
+        yield return new WaitForSeconds(0.1f);
+
+        //今までのSwithNumLimit
+        int oldNumLimit = switchNumLimit;
+
+        SwitchValue();
+
+        if (switchNumLimit < oldNumLimit) {
+            //SwithNumLimitがoldNumLimitより低い場合
+            if (switchNum >= switchNumLimit) {
+                //今の設定人数と最大人数が食い違っている時の処理
+                plusButton.rollSettingButton.interactable = false;
+                switchNum = switchNumLimit;
+                ReturnValue();
+            }
+
+        } else if(switchNumLimit > oldNumLimit) {
+            //SwithNumLimitがoldNumLimitよりも高い場合
+            plusButton.rollSettingButton.interactable = true;
+        }
+
+        numText.text = switchNum + " / " + switchNumLimit;
     }
 
 
@@ -53,43 +84,22 @@ public class RollSettingButton : MonoBehaviour
         plusButton.rollSettingButton.interactable = true;
         minusButton.rollSettingButton.interactable = true;
 
-        //市民
-        if (rollType == ROLLTYPE.市民) {
-            if (applicant_Type == Applicant_Type.Plus && rollSetting.citizen.num != rollSetting.numLimit - 1) {
-                rollSetting.citizen.num++;
-                if (rollSetting.citizen.num >= rollSetting.numLimit - 1) {
-                    plusButton.rollSettingButton.interactable = false;
-                }
-            } else if (applicant_Type == Applicant_Type.Minus && rollSetting.citizen.num != 0) {
-                rollSetting.citizen.num--;
-                if (rollSetting.citizen.num <= 0) {
-                    minusButton.rollSettingButton.interactable = false;
-                }
+        
+        if (applicant_Type == Applicant_Type.Plus && switchNum != switchNumLimit) {
+            switchNum++;
+            if (switchNum >= switchNumLimit) {
+                plusButton.rollSettingButton.interactable = false;
             }
-            numText.text = rollSetting.citizen.num + " / " + (rollSetting.numLimit - 1);
-
-        //市民以外
-        } else {
-            //変数をロールごとに変更する
-            SwitchValue();
-
-            //市民以外の処理
-            if (applicant_Type == Applicant_Type.Plus && switchNum != switchNumLimit) {
-                switchNum++;
-                if (switchNum >= switchNumLimit) {
-                    plusButton.rollSettingButton.interactable = false;
-                }
-            } else if (applicant_Type == Applicant_Type.Minus && switchNum != 0) {
-                switchNum--;
-                if (switchNum <= 0) {
-                    minusButton.rollSettingButton.interactable = false;
-                }
+        } else if (applicant_Type == Applicant_Type.Minus && switchNum != 0) {
+            switchNum--;
+            if (switchNum <= 0) {
+                minusButton.rollSettingButton.interactable = false;
             }
-            numText.text = switchNum + " / " + switchNumLimit;
-
-            //変更された値を元の変数に戻す
-            ReturnValue();
         }
+        numText.text = switchNum + " / " + switchNumLimit;
+
+        //変更された値を元の変数に戻す
+        ReturnValue();
 
         //合計をテキスト表示
         rollSetting.SumNumber();
@@ -101,6 +111,10 @@ public class RollSettingButton : MonoBehaviour
     /// </summary>
     private void SwitchValue() {
         switch (rollType) {
+            case ROLLTYPE.市民:
+                switchNum = rollSetting.citizen.num;
+                switchNumLimit = rollSetting.numLimit - 1;
+                break;
             case ROLLTYPE.占い師:
                 switchNum = rollSetting.fortune.num;
                 switchNumLimit = rollSetting.fortune.numLimit;
@@ -129,6 +143,9 @@ public class RollSettingButton : MonoBehaviour
     /// </summary>
     private void ReturnValue() {
         switch (rollType) {
+            case ROLLTYPE.市民:
+                rollSetting.citizen.num = switchNum;
+                break;
             case ROLLTYPE.占い師:
                 rollSetting.fortune.num = switchNum;
                 break;
@@ -166,4 +183,5 @@ public class RollSettingButton : MonoBehaviour
             }
         }
     }
+
 }
