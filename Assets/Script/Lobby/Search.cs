@@ -148,6 +148,9 @@ public class Search : MonoBehaviour
         SearchRoomNode();
     }
 
+    /// <summary>
+    /// 検索PopUpアクティブ化
+    /// </summary>
     public void SearchPopUP() {
         searchPopUpObj.SetActive(true);
     }
@@ -164,7 +167,6 @@ public class Search : MonoBehaviour
         firstDayFrotuneText.text = "未設定";
         join = true;
     }
-    //部屋選択
     /// <summary>
     /// 募集条件
     /// </summary>
@@ -204,7 +206,9 @@ public class Search : MonoBehaviour
         roomSelectionText.text = searchRoomSelection.ToString();
         searchRoomSelectText.text = searchRoomSelection.ToString();
     }
-    //初日占い
+    /// <summary>
+    /// 初日占い右
+    /// </summary>
     public void FirstDayFortuneRight() {
         switch (searchFortuneType) {
             case FORTUNETYPE.ランダム白:
@@ -222,7 +226,9 @@ public class Search : MonoBehaviour
         }
         firstDayFrotuneText.text = searchFortuneType.ToString();
     }
-
+    /// <summary>
+    /// 初日占い　左
+    /// </summary>
     public void FirstDayFortuneLeft() {
         switch (searchFortuneType) {
             case FORTUNETYPE.ランダム白:
@@ -241,7 +247,9 @@ public class Search : MonoBehaviour
         firstDayFrotuneText.text = searchFortuneType.ToString();
     }
 
-    //投票開示
+    /// <summary>
+    /// 投票開示右
+    /// </summary>
     public void OpenVotingRight() {
         switch (searchOpenVoting) {
             case VOTING.開示しない:
@@ -256,7 +264,9 @@ public class Search : MonoBehaviour
         }
         openVotingText.text = searchOpenVoting.ToString();
     }
-
+    /// <summary>
+    /// 投票開示設定　左
+    /// </summary>
     public void OpenVotingLeft() {
         switch (searchOpenVoting) {
             case VOTING.開示する:
@@ -271,7 +281,9 @@ public class Search : MonoBehaviour
         }
         openVotingText.text = searchOpenVoting.ToString();
     }
-
+    /// <summary>
+    /// 人数設定　プラスボタン
+    /// </summary>
     public void SumNumberPlusButton() {
         searchJoinNum++;
         if(searchJoinNum == 3) {
@@ -289,6 +301,9 @@ public class Search : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 人数設定　マイナスボタン
+    /// </summary>
     public void SumNumberMinusButton() {
         searchJoinNum--;
         if (searchJoinNum == 3) {
