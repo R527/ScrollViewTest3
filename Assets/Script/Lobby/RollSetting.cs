@@ -35,6 +35,7 @@ public class RollSetting : MonoBehaviour
     public Text wolfCampNumText;
     public int etcCampNum;
     public Text etcCampNumText;
+    public Text differenceNumText;//差異表示テキスト
 
     //役職関係
     public RollNum citizen;
@@ -113,7 +114,7 @@ public class RollSetting : MonoBehaviour
 
             switch (rollType) {
                 case ROLLTYPE.市民:
-                    citizen.num = 6;
+                    citizen.num = 3;
                     citizen.numLimit = 8;
                     rollNumList.Add(citizen);
                     break;
@@ -254,6 +255,20 @@ public class RollSetting : MonoBehaviour
         wolfCampNum = werewolf.num + madman.num;
         citizenCampNumText.text = citizenCampNum + "人";
         wolfCampNumText.text = wolfCampNum + "人";
+
+
+        //人数差異を表示
+        if(numLimit > citizenCampNum + wolfCampNum) {
+            //人数が不足している時
+            differenceNumText.text = numLimit - (citizenCampNum + wolfCampNum) + "人不足";
+        }else if(numLimit < citizenCampNum + wolfCampNum) {
+            //人数が超過している時
+            differenceNumText.text = - (numLimit - (citizenCampNum + wolfCampNum)) + "人超過";
+        } else {
+            //人数が指定通りの時
+            differenceNumText.text = "";
+        }
+
     }
 }
 

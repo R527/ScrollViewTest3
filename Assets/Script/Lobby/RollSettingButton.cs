@@ -44,13 +44,10 @@ public class RollSettingButton : MonoBehaviour
         SwitchValue();
         rollSetting.numberPlusButton.onClick.AddListener(() => StartCoroutine(CheckLimit()));
         rollSetting.numberMinusButton.onClick.AddListener(() => StartCoroutine(CheckLimit()));
-
-        
-        
     }
 
     private IEnumerator CheckLimit() {
-        yield return new WaitForSeconds(0.1f);
+        yield return null;
 
         //今までのSwithNumLimit
         int oldNumLimit = switchNumLimit;
