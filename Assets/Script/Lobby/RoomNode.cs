@@ -81,7 +81,10 @@ public class RoomNode : MonoBehaviour
         titleText.text = title;
         enterButtonText.text = info.PlayerCount + "/" + settingNum + "入室";
         enterButton.interactable = (info.PlayerCount < info.MaxPlayers);
-        gameObject.SetActive(true);
+        if(gameObject != null) {
+            gameObject.SetActive(true);
+        }
+        
 
         //ルール設定を表示する
         mainTime = (int)info.CustomProperties["mainTime"];

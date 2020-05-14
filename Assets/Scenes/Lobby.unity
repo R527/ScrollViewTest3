@@ -1274,7 +1274,7 @@ GameObject:
   - component: {fileID: 257509314}
   - component: {fileID: 257509313}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1362,18 +1362,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 257509315}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: OpenVotingRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &257509315
@@ -2612,7 +2601,7 @@ GameObject:
   - component: {fileID: 368814988}
   - component: {fileID: 368814987}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2700,18 +2689,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 368814989}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: OpenVotingLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &368814989
@@ -2913,8 +2891,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25.914894, y: -13.867654}
-  m_SizeDelta: {x: 51.82979, y: 15.117022}
+  m_AnchoredPosition: {x: 26.917126, y: -14.130143}
+  m_SizeDelta: {x: 53.83425, y: 15.701657}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &392417192
 MonoBehaviour:
@@ -4763,8 +4741,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 127.414894, y: -13.867654}
-  m_SizeDelta: {x: 151.17021, y: 27.735308}
+  m_AnchoredPosition: {x: 128.41711, y: -14.130143}
+  m_SizeDelta: {x: 149.16574, y: 28.260286}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &675581620
 MonoBehaviour:
@@ -5650,8 +5628,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -185.46388}
-  m_SizeDelta: {x: 203, y: 315.45715}
+  m_AnchoredPosition: {x: 101.5, y: -185.24315}
+  m_SizeDelta: {x: 203, y: 313.96573}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &749385070
 MonoBehaviour:
@@ -8188,8 +8166,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -389.59625}
-  m_SizeDelta: {x: 203, y: 32.807545}
+  m_AnchoredPosition: {x: 101.5, y: -388.55225}
+  m_SizeDelta: {x: 203, y: 32.652435}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &943010949
 MonoBehaviour:
@@ -8401,7 +8379,7 @@ GameObject:
   - component: {fileID: 956188005}
   - component: {fileID: 956188004}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8489,18 +8467,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 956188006}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: DifficultySelectionLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &956188006
@@ -9195,7 +9162,7 @@ GameObject:
   - component: {fileID: 1062458221}
   - component: {fileID: 1062458220}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9283,18 +9250,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1062458222}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: NightTimeLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1062458222
@@ -9413,7 +9369,7 @@ GameObject:
   - component: {fileID: 1097614575}
   - component: {fileID: 1097614574}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9501,18 +9457,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1097614576}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: DifficultySelectionRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1097614576
@@ -12089,8 +12034,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -201.59624}
-  m_SizeDelta: {x: 203, y: 343.19247}
+  m_AnchoredPosition: {x: 101.5, y: -201.113}
+  m_SizeDelta: {x: 203, y: 342.226}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1315222229
 MonoBehaviour:
@@ -12545,7 +12490,7 @@ GameObject:
   - component: {fileID: 1358517335}
   - component: {fileID: 1358517334}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12633,18 +12578,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1358517336}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: FirstDayFortuneRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1358517336
@@ -12982,7 +12916,7 @@ GameObject:
   - component: {fileID: 1386404074}
   - component: {fileID: 1386404073}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13070,18 +13004,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1386404075}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: MainTimeRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1386404075
@@ -13771,7 +13694,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 156.72742}
+  m_AnchoredPosition: {x: 0, y: 156.21803}
   m_SizeDelta: {x: 205, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1417060680
@@ -14094,8 +14017,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -13.867654}
-  m_SizeDelta: {x: 203, y: 27.735308}
+  m_AnchoredPosition: {x: 101.5, y: -14.130143}
+  m_SizeDelta: {x: 203, y: 28.260286}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1465388384
 MonoBehaviour:
@@ -14804,7 +14727,7 @@ GameObject:
   - component: {fileID: 1540467028}
   - component: {fileID: 1540467027}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14892,18 +14815,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1540467029}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: MainTimeLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1540467029
@@ -15123,7 +15035,7 @@ GameObject:
   - component: {fileID: 1547369987}
   - component: {fileID: 1547369986}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15211,18 +15123,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1547369988}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: FirstDayFortuneLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1547369988
@@ -18775,18 +18676,8 @@ MonoBehaviour:
   nightTime: 30
   openVoting: 0
   title: 
-  minusButtonList:
-  - {fileID: 1547369987}
-  - {fileID: 1540467028}
-  - {fileID: 1062458221}
-  - {fileID: 368814988}
-  plusButtonList:
-  - {fileID: 1358517335}
-  - {fileID: 1386404074}
-  - {fileID: 1996477032}
-  - {fileID: 257509314}
   firstDayFrotuneText: {fileID: 1254408074}
-  roomSelectionText: {fileID: 1520257335}
+  roomLevelText: {fileID: 1520257335}
   mainTimeText: {fileID: 1534659818}
   nightTimeText: {fileID: 625758435}
   openVotingText: {fileID: 494398072}
@@ -18798,6 +18689,21 @@ MonoBehaviour:
   roomSettingCanvas: {fileID: 371853315}
   roomNodeList: []
   createRoomButton: {fileID: 1376616116}
+  roomLevelButton:
+    rightButton: {fileID: 1097614575}
+    leftButton: {fileID: 956188005}
+  firstFortuneButton:
+    rightButton: {fileID: 1358517335}
+    leftButton: {fileID: 1547369987}
+  mainTimeButton:
+    rightButton: {fileID: 1386404074}
+    leftButton: {fileID: 1540467028}
+  nightTimeButton:
+    rightButton: {fileID: 1996477032}
+    leftButton: {fileID: 1062458221}
+  openVotingButton:
+    rightButton: {fileID: 257509314}
+    leftButton: {fileID: 368814988}
 --- !u!1 &1860775792
 GameObject:
   m_ObjectHideFlags: 0
@@ -19937,7 +19843,7 @@ GameObject:
   - component: {fileID: 1996477032}
   - component: {fileID: 1996477031}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20025,18 +19931,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1996477033}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: NightTimeRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1996477033

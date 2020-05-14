@@ -190,8 +190,7 @@ public class RollSetting : MonoBehaviour
                 psychic.numLimit = 3;
                 break;
         }
-
-
+        
         citizenCampNumText.text = citizenCampNum + "人";
         wolfCampNumText.text = wolfCampNum + "人";
         SumNumber();

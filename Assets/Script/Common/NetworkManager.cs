@@ -162,7 +162,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 //最後のプレイヤーがRoomに入った時にfalseにする
                 if (!info.RemovedFromList && info.IsOpen) {
                     //部屋情報を読み取ってアクティブ化する
-                       roomNode.Activate(info);
+                    Debug.Log("Activate1");
+                    roomNode.Activate(info);
+                   
                 } else {
                     //部屋がなくなった場合
                     activeEntries.Remove(info.Name);
@@ -172,8 +174,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 }
                 //部屋が一つも作られていないとき
             } else if (!info.RemovedFromList) {
+                
                 roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
+                Debug.Log("Activate2");
                 roomNode.Activate(info);
+                
                 activeEntries.Add(info.Name, roomNode);
             }
         }

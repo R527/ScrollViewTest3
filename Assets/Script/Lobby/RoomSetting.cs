@@ -21,10 +21,8 @@ public class RoomSetting : MonoBehaviour
     public int nightTime;//夜の時間
     public VOTING openVoting;//投票開示するか否か
     public string title;//部屋のタイトル
-    public List<Button> minusButtonList = new List<Button>();//各設定のマイナスボタン
-    public List<Button> plusButtonList = new List<Button>();//各設定のプラスボタン
     public Text firstDayFrotuneText;//各設定のテキスト
-    public Text roomSelectionText;
+    public Text roomLevelText;
     public Text mainTimeText;
     public Text nightTimeText;
     public Text openVotingText;//各設定のテキスト
@@ -36,16 +34,40 @@ public class RoomSetting : MonoBehaviour
     public List<RoomNode> roomNodeList = new List<RoomNode>();//検索用に用意したRoomNodeList
     public Button createRoomButton;//部屋作成用ボタン
 
+    [System.Serializable]
+    public class RoomSettingButton {
+        public Button rightButton;
+        public Button leftButton;
+    }
+
+    public RoomSettingButton roomLevelButton;
+    public RoomSettingButton firstFortuneButton;
+    public RoomSettingButton mainTimeButton;
+    public RoomSettingButton nightTimeButton;
+    public RoomSettingButton openVotingButton;
+
     private void Start() {
         firstDayFrotuneText.text = firstDayFortune;
-        roomSelectionText.text = roomSelection.ToString();
+        roomLevelText.text = roomSelection.ToString();
         mainTimeText.text = mainTime.ToString();
         nightTimeText.text = nightTime.ToString();
         openVotingText.text = openVoting.ToString();
 
         //ボタン設定
+        nightTimeButton.leftButton.interactable = false;//夜の時間が最低値なのでfalseで制御
+
         createRoomButton.onClick.AddListener(() => StartCoroutine(CreateRoomNode()));
-        minusButtonList[2].interactable = false;//夜の時間が最低値なのでfalseで制御
+        
+        roomLevelButton.rightButton.onClick.AddListener(DifficultySelectionRight);
+        roomLevelButton.leftButton.onClick.AddListener(DifficultySelectionLeft);
+        firstFortuneButton.rightButton.onClick.AddListener(FirstDayFortuneRight);
+        firstFortuneButton.leftButton.onClick.AddListener(FirstDayFortuneLeft);
+        mainTimeButton.rightButton.onClick.AddListener(MainTimeRight);
+        mainTimeButton.leftButton.onClick.AddListener(MainTimeLeft);
+        nightTimeButton.rightButton.onClick.AddListener(NightTimeRight);
+        nightTimeButton.leftButton.onClick.AddListener(NightTimeLeft);
+        openVotingButton.rightButton.onClick.AddListener(OpenVoting);
+        openVotingButton.leftButton.onClick.AddListener(OpenVoting);
     }
 
 
@@ -84,8 +106,10 @@ public class RoomSetting : MonoBehaviour
         //一旦SetActive（false);にしておく→更新や、難易度変更で後程制御
         room.gameObject.SetActive(false);
 
+
+        //部屋作成時にエラーが発生するので待つ
         yield return new WaitForSeconds(0.5f);
-        //サーバーに部屋情報を渡す。？
+        //サーバーに部屋情報を渡す。
         NetworkManager.instance.PreparateCreateRoom(room.settingNum, room);
 
     }
@@ -148,7 +172,7 @@ public class RoomSetting : MonoBehaviour
                 roomSelection = ROOMSELECTION.初心者;
                 break;
         }
-        roomSelectionText.text = roomSelection.ToString();
+        roomLevelText.text = roomSelection.ToString();
     }
 
     /// <summary>
@@ -163,7 +187,7 @@ public class RoomSetting : MonoBehaviour
                 roomSelection = ROOMSELECTION.初心者;
                 break;
         }
-        roomSelectionText.text = roomSelection.ToString();
+        roomLevelText.text = roomSelection.ToString();
     }
 
     /// <summary>
@@ -173,10 +197,10 @@ public class RoomSetting : MonoBehaviour
         mainTime = mainTime + 100;
         switch (mainTime) {
             case 400:
-                minusButtonList[1].interactable = true;
+                mainTimeButton.leftButton.interactable = true;
                 break;
             case 900:
-                plusButtonList[1].interactable = false;
+                mainTimeButton.rightButton.interactable = false;
                 break;
         }
         mainTimeText.text = mainTime.ToString();
@@ -189,10 +213,10 @@ public class RoomSetting : MonoBehaviour
         mainTime = mainTime - 100;
         switch (mainTime) {
             case 300:
-                minusButtonList[1].interactable = false;
+                mainTimeButton.leftButton.interactable = false;
                 break;
             case 800:
-                plusButtonList[1].interactable = true;
+                mainTimeButton.rightButton.interactable = true;
                 break;
         }
         mainTimeText.text = mainTime.ToString();
@@ -205,10 +229,10 @@ public class RoomSetting : MonoBehaviour
         nightTime = nightTime + 30;
         switch (nightTime) {
             case 60:
-                minusButtonList[2].interactable = true;
+                nightTimeButton.leftButton.interactable = true;
                 break;
             case 90:
-                plusButtonList[2].interactable = false;
+                nightTimeButton.rightButton.interactable = false;
                 break;
         }
         nightTimeText.text = nightTime.ToString();
@@ -222,10 +246,10 @@ public class RoomSetting : MonoBehaviour
         nightTime = nightTime - 30;
         switch (nightTime) {
             case 30:
-                minusButtonList[2].interactable = false;
+                nightTimeButton.leftButton.interactable = false;
                 break;
             case 60:
-                plusButtonList[2].interactable = true;
+                nightTimeButton.rightButton.interactable = true;
                 break;
         }
         nightTimeText.text = nightTime.ToString();
@@ -234,7 +258,7 @@ public class RoomSetting : MonoBehaviour
     /// <summary>
     /// 投票開示設定　右
     /// </summary>
-    public void OpenVotingRight() {
+    public void OpenVoting() {
         switch (openVoting) {
             case VOTING.開示しない:
                 openVoting = VOTING.開示する;
@@ -246,20 +270,7 @@ public class RoomSetting : MonoBehaviour
         openVotingText.text = openVoting.ToString();
     }
 
-    /// <summary>
-    /// 投票開示設定　左
-    /// </summary>
-    public void OpenVotingLeft() {
-        switch (openVoting) {
-            case VOTING.開示する:
-                openVoting = VOTING.開示しない;
-                break;
-            case VOTING.開示しない:
-                openVoting = VOTING.開示する;
-                break;
-        }
-        openVotingText.text = openVoting.ToString();
-    }
+
 
 }
 

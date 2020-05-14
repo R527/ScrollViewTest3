@@ -221,17 +221,30 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void SetRoll() {
         Debug.Log("SetRoll");
-        //テスト用役職を決定してゲーム開始
-        if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
-            confirmationImage.SetActive(false);
-            gameStart = true;
-            StartCoroutine(SetTestRoll());
-        }
+        ////テスト用役職を決定してゲーム開始
+        //if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
+        //    confirmationImage.SetActive(false);
+        //    gameStart = true;
+        //    PhotonNetwork.CurrentRoom.IsOpen = false;
+        //    StartCoroutine(SetTestRoll());
+        //}
 
-        //正規のデータを利用してゲーム開始
-        if (GetEnterNum() == numLimit && !DebugManager.instance.isTestPlay) {
-            confirmationImage.SetActive(false);
-            gameStart = true;
+        ////正規のデータを利用してゲーム開始
+        //if (GetEnterNum() == numLimit && !DebugManager.instance.isTestPlay) {
+        //    confirmationImage.SetActive(false);
+        //    gameStart = true;
+        //    StartCoroutine(SetRandomRoll());
+        //}
+
+        if (GetEnterNum() == numLimit) return;
+
+        confirmationImage.SetActive(false);
+        gameStart = true;
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+
+        if (DebugManager.instance.isTestPlay) {
+            StartCoroutine(SetTestRoll());
+        } else {
             StartCoroutine(SetRandomRoll());
         }
     }

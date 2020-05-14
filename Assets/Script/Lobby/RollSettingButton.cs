@@ -42,13 +42,15 @@ public class RollSettingButton : MonoBehaviour
 
         SetUpButton();
         SwitchValue();
-        rollSetting.numberPlusButton.onClick.AddListener(() => StartCoroutine(CheckLimit()));
-        rollSetting.numberMinusButton.onClick.AddListener(() => StartCoroutine(CheckLimit()));
+        rollSetting.numberPlusButton.onClick.AddListener(CheckLimit);
+        rollSetting.numberMinusButton.onClick.AddListener(CheckLimit);
     }
 
-    private IEnumerator CheckLimit() {
-        yield return null;
-
+    /// <summary>
+    /// 参加人数の設定のメソッドが呼ばれてからこのメソッドは呼ばれる（AddListener二つ目
+    /// 各ロールごとの人数制限をチェックしてボタンのONOFFを決定する
+    /// </summary>
+    private void CheckLimit() {
         //今までのSwithNumLimit
         int oldNumLimit = switchNumLimit;
 
