@@ -11,6 +11,9 @@ public class Search : MonoBehaviour
 {
     //class
     public RoomSetting roomSetting;
+    public FORTUNETYPE searchFortuneType;
+    public ROOMSELECTION searchRoomSelection;
+    public VOTING searchOpenVoting;
 
     //Lobby
     public Text roomSelectionText;
@@ -20,13 +23,14 @@ public class Search : MonoBehaviour
     public Text openVotingText;
     public Text joinNumText;
     public Text searchRoomSelectText;
+    public GameObject searchPopUpObj;
+    public Button searchPopUPButton;
+    public Button selectionButtonLeftButton;
+    public Button selectionButtonRightButton;
     public Button searchJoinPlusButton;
     public Button searchJoinMinusButton;
-    public Button initSearchButton;
+    public Button initSearchButton;//検索初期化
     public Button upDateButton;//更新ボタン
-    public FORTUNETYPE searchFortuneType;
-    public VOTING searchOpenVoting;
-    public ROOMSELECTION searchRoomSelection;
     public int searchJoinNum;
     public bool join;//参加人数未設定か否かの判定
 
@@ -38,8 +42,12 @@ public class Search : MonoBehaviour
         searchRoomSelectText.text = searchRoomSelection.ToString();
         joinNumText.text = "未設定";
 
+        //button
         initSearchButton.onClick.AddListener(InitSearch);
         upDateButton.onClick.AddListener(UpDateButton);
+        searchPopUPButton.onClick.AddListener(SearchPopUP);
+        selectionButtonLeftButton.onClick.AddListener(SelectionButtonLeft);
+        selectionButtonRightButton.onClick.AddListener(SelectionButtonRight);
     }
 
     /// <summary>
@@ -50,6 +58,8 @@ public class Search : MonoBehaviour
         foreach (RoomNode roomObj in roomSetting.roomNodeList) {
             roomObj.gameObject.SetActive(false);
         }
+
+
         foreach (RoomNode roomObj in roomSetting.roomNodeList) {
 
             //未設定を処理する
@@ -138,7 +148,12 @@ public class Search : MonoBehaviour
         SearchRoomNode();
     }
 
-    //検索PopUp
+    /// <summary>
+    /// 検索PopUpアクティブ化
+    /// </summary>
+    public void SearchPopUP() {
+        searchPopUpObj.SetActive(true);
+    }
 
     /// <summary>
     /// 検索初期化
@@ -152,7 +167,6 @@ public class Search : MonoBehaviour
         firstDayFrotuneText.text = "未設定";
         join = true;
     }
-    //部屋選択
     /// <summary>
     /// 募集条件
     /// </summary>
@@ -192,7 +206,9 @@ public class Search : MonoBehaviour
         roomSelectionText.text = searchRoomSelection.ToString();
         searchRoomSelectText.text = searchRoomSelection.ToString();
     }
-    //初日占い
+    /// <summary>
+    /// 初日占い右
+    /// </summary>
     public void FirstDayFortuneRight() {
         switch (searchFortuneType) {
             case FORTUNETYPE.ランダム白:
@@ -210,7 +226,9 @@ public class Search : MonoBehaviour
         }
         firstDayFrotuneText.text = searchFortuneType.ToString();
     }
-
+    /// <summary>
+    /// 初日占い　左
+    /// </summary>
     public void FirstDayFortuneLeft() {
         switch (searchFortuneType) {
             case FORTUNETYPE.ランダム白:
@@ -229,7 +247,9 @@ public class Search : MonoBehaviour
         firstDayFrotuneText.text = searchFortuneType.ToString();
     }
 
-    //投票開示
+    /// <summary>
+    /// 投票開示右
+    /// </summary>
     public void OpenVotingRight() {
         switch (searchOpenVoting) {
             case VOTING.開示しない:
@@ -244,7 +264,9 @@ public class Search : MonoBehaviour
         }
         openVotingText.text = searchOpenVoting.ToString();
     }
-
+    /// <summary>
+    /// 投票開示設定　左
+    /// </summary>
     public void OpenVotingLeft() {
         switch (searchOpenVoting) {
             case VOTING.開示する:
@@ -259,7 +281,9 @@ public class Search : MonoBehaviour
         }
         openVotingText.text = searchOpenVoting.ToString();
     }
-
+    /// <summary>
+    /// 人数設定　プラスボタン
+    /// </summary>
     public void SumNumberPlusButton() {
         searchJoinNum++;
         if(searchJoinNum == 3) {
@@ -277,6 +301,9 @@ public class Search : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 人数設定　マイナスボタン
+    /// </summary>
     public void SumNumberMinusButton() {
         searchJoinNum--;
         if (searchJoinNum == 3) {

@@ -221,17 +221,30 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void SetRoll() {
         Debug.Log("SetRoll");
-        //テスト用役職を決定してゲーム開始
-        if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
-            confirmationImage.SetActive(false);
-            gameStart = true;
-            StartCoroutine(SetTestRoll());
-        }
+        ////テスト用役職を決定してゲーム開始
+        //if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
+        //    confirmationImage.SetActive(false);
+        //    gameStart = true;
+        //    PhotonNetwork.CurrentRoom.IsOpen = false;
+        //    StartCoroutine(SetTestRoll());
+        //}
 
-        //正規のデータを利用してゲーム開始
-        if (GetEnterNum() == numLimit && !DebugManager.instance.isTestPlay) {
-            confirmationImage.SetActive(false);
-            gameStart = true;
+        ////正規のデータを利用してゲーム開始
+        //if (GetEnterNum() == numLimit && !DebugManager.instance.isTestPlay) {
+        //    confirmationImage.SetActive(false);
+        //    gameStart = true;
+        //    StartCoroutine(SetRandomRoll());
+        //}
+
+        if (GetEnterNum() == numLimit) return;
+
+        confirmationImage.SetActive(false);
+        gameStart = true;
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+
+        if (DebugManager.instance.isTestPlay) {
+            StartCoroutine(SetTestRoll());
+        } else {
             StartCoroutine(SetRandomRoll());
         }
     }
@@ -419,9 +432,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
         List<ROLLTYPE> randomRollTypeList = new List<ROLLTYPE>();
 
         //ルームデータから取得する
-        for (int x = 0; x < RoomData.instance.numList.Count; x++) {
-            if (RoomData.instance.numList[x] > 0) {
-                for (int i = 0; i < RoomData.instance.numList[x]; i++) {
+        for (int x = 0; x < RoomData.instance.rollList.Count; x++) {
+            if (RoomData.instance.rollList[x] > 0) {
+                for (int i = 0; i < RoomData.instance.rollList[x]; i++) {
                     randomRollTypeList.Add((ROLLTYPE)x);
                     //Debug.Log((ROLLTYPE)x);
                 }
@@ -624,11 +637,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
             Debug.Log(RoomData.instance.numLimit);
             string roll = (string)PhotonNetwork.CurrentRoom.CustomProperties["numListStr"];
             int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
-            RoomData.instance.numList = intArray.ToList();
+            RoomData.instance.rollList = intArray.ToList();
 
         }
         //全員の世界にComingOuottonと役職説明用のボタンを追加する
-        for(int i = 0; i < RoomData.instance.numList.Count; i++) {
+        for(int i = 0; i < RoomData.instance.rollList.Count; i++) {
             ComingOutButtonList.Add((ROLLTYPE)i);
             //役職説明のボタンを追加している
             rollTypeList.Add((ROLLTYPE)i);

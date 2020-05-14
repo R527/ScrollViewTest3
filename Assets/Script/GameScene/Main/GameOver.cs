@@ -45,7 +45,7 @@ public class GameOver : MonoBehaviour {
                 }
                 Debug.Log(winnerList);
             }
-            gameManager.gameMasterChatManager.gameMasterChat = "市民陣営の勝利\r\n\r\n" + winnerList;
+            gameManager.gameMasterChatManager.gameMasterChat = "市民陣営の勝利\r\n" + winnerList;
             Debug.Log("市民陣営の勝利");
 
             //狼の人数が生存者と同数かそれ以上の場合(人狼の勝利
@@ -57,7 +57,7 @@ public class GameOver : MonoBehaviour {
                 }
                 Debug.Log(winnerList);
             }
-            gameManager.gameMasterChatManager.gameMasterChat = "人狼陣営の勝利\r\n\r\n" + winnerList;
+            gameManager.gameMasterChatManager.gameMasterChat = "人狼陣営の勝利\r\n" + winnerList;
             Debug.Log("人狼陣営の勝利");
 
         }else if (liverCount > wolfCount) {
@@ -71,8 +71,7 @@ public class GameOver : MonoBehaviour {
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         timeController.isGameOver = false;
-        //gameManager.gameStart = false;
-        Debug.Log("gameStart:" + gameManager.gameStart);
+        gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
 
     }
 

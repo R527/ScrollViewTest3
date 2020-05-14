@@ -288,8 +288,9 @@ GameObject:
   m_Component:
   - component: {fileID: 43691387}
   - component: {fileID: 43691388}
+  - component: {fileID: 43691389}
   m_Layer: 5
-  m_Name: SettingObj (6)
+  m_Name: "\u9A0E\u58EB"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -343,6 +344,27 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &43691389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43691386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 1850661069}
+  rollType: 2
+  numText: {fileID: 2028679920}
+  plusButton:
+    rollSettingButton: {fileID: 663342782}
+    applicant_Type: 0
+  minusButton:
+    rollSettingButton: {fileID: 205627654}
+    applicant_Type: 1
 --- !u!1 &64288497
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,8 +400,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 42, y: -10}
-  m_SizeDelta: {x: 74, y: 20}
+  m_AnchoredPosition: {x: 43.500004, y: -10}
+  m_SizeDelta: {x: 77.00001, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &64288499
 MonoBehaviour:
@@ -475,6 +497,7 @@ RectTransform:
   - {fileID: 801614511}
   - {fileID: 220885839}
   - {fileID: 1767326665}
+  - {fileID: 317170919}
   m_Father: {fileID: 845909087}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -869,18 +892,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 205627655}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: knight
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &205627655
@@ -1262,7 +1274,7 @@ GameObject:
   - component: {fileID: 257509314}
   - component: {fileID: 257509313}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1350,18 +1362,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 257509315}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: OpenVotingRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &257509315
@@ -1613,7 +1614,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 191, y: -10}
+  m_AnchoredPosition: {x: 194, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &296125132
@@ -1831,18 +1832,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 300078281}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: psychic
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &300078281
@@ -1882,6 +1872,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300078277}
   m_CullTransparentMesh: 0
+--- !u!1 &317170918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 317170919}
+  - component: {fileID: 317170920}
+  m_Layer: 5
+  m_Name: "\u5DEE\u7570\u4EBA\u6570"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &317170919
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317170918}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1241275033}
+  m_Father: {fileID: 74207248}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 151.5, y: -45}
+  m_SizeDelta: {x: 90, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &317170920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317170918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -405508275, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!1 &322359394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2198,7 +2250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 191, y: -10}
+  m_AnchoredPosition: {x: 194, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &343898749
@@ -2495,18 +2547,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 357271005}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: fortune
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &357271005
@@ -2560,7 +2601,7 @@ GameObject:
   - component: {fileID: 368814988}
   - component: {fileID: 368814987}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2648,18 +2689,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 368814989}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: OpenVotingLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &368814989
@@ -2861,8 +2891,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 27.196173, y: -13.936227}
-  m_SizeDelta: {x: 54.392345, y: 15.54067}
+  m_AnchoredPosition: {x: 26.917126, y: -14.130143}
+  m_SizeDelta: {x: 53.83425, y: 15.701657}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &392417192
 MonoBehaviour:
@@ -2961,8 +2991,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 42, y: -10}
-  m_SizeDelta: {x: 74, y: 20}
+  m_AnchoredPosition: {x: 43.500004, y: -10}
+  m_SizeDelta: {x: 77.00001, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &406930803
 MonoBehaviour:
@@ -3062,7 +3092,7 @@ MonoBehaviour:
     mainTime: 0
     nightTime: 0
     roomSelection: 0
-  numList: 
+  rollList: 
   numLimit: 0
 --- !u!4 &408547132
 Transform:
@@ -3089,7 +3119,7 @@ GameObject:
   - component: {fileID: 419525883}
   - component: {fileID: 419525884}
   m_Layer: 5
-  m_Name: SettingObj (2)
+  m_Name: "\u52DF\u96C6\u6761\u4EF6"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3115,8 +3145,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 103, y: -15}
-  m_SizeDelta: {x: 206, y: 20}
+  m_AnchoredPosition: {x: 104.5, y: -15}
+  m_SizeDelta: {x: 209, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419525884
 MonoBehaviour:
@@ -3154,7 +3184,7 @@ GameObject:
   - component: {fileID: 420371451}
   - component: {fileID: 420371452}
   m_Layer: 5
-  m_Name: SettingObj
+  m_Name: "\u521D\u65E5\u5360\u3044"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3176,11 +3206,11 @@ RectTransform:
   - {fileID: 1254408072}
   - {fileID: 1358517333}
   m_Father: {fileID: 769253570}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -15}
+  m_AnchoredPosition: {x: 101.5, y: -42}
   m_SizeDelta: {x: 203, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &420371452
@@ -3322,8 +3352,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 42, y: -10}
-  m_SizeDelta: {x: 74, y: 20}
+  m_AnchoredPosition: {x: 43.5, y: -10}
+  m_SizeDelta: {x: 77, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &430448432
 MonoBehaviour:
@@ -4079,7 +4109,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 141.5, y: -10}
+  m_AnchoredPosition: {x: 144.5, y: -10}
   m_SizeDelta: {x: 73, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &603758898
@@ -4567,18 +4597,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 663342783}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: knight
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &663342783
@@ -4629,7 +4648,7 @@ GameObject:
   - component: {fileID: 663575113}
   - component: {fileID: 663575114}
   m_Layer: 5
-  m_Name: SettingObj (1)
+  m_Name: "\u4EBA\u6570\u8A2D\u5B9A"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4655,8 +4674,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 103, y: -42}
-  m_SizeDelta: {x: 206, y: 20}
+  m_AnchoredPosition: {x: 104.5, y: -42}
+  m_SizeDelta: {x: 209, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &663575114
 MonoBehaviour:
@@ -4722,8 +4741,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 128.69617, y: -13.936227}
-  m_SizeDelta: {x: 148.60765, y: 27.872454}
+  m_AnchoredPosition: {x: 128.41711, y: -14.130143}
+  m_SizeDelta: {x: 149.16574, y: 28.260286}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &675581620
 MonoBehaviour:
@@ -5212,8 +5231,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 129.375, y: -16.25}
-  m_SizeDelta: {x: 47.75, y: 32.5}
+  m_AnchoredPosition: {x: 155.75, y: -16.25}
+  m_SizeDelta: {x: 100.5, y: 32.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &712073783
 MonoBehaviour:
@@ -5609,8 +5628,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -182.01974}
-  m_SizeDelta: {x: 203, y: 308.2946}
+  m_AnchoredPosition: {x: 101.5, y: -185.24315}
+  m_SizeDelta: {x: 203, y: 313.96573}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &749385070
 MonoBehaviour:
@@ -5892,18 +5911,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 759419381}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &759419381
@@ -6055,8 +6063,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 420371451}
   - {fileID: 1230382548}
+  - {fileID: 420371451}
   - {fileID: 1763959141}
   - {fileID: 819816105}
   - {fileID: 1332772857}
@@ -6367,18 +6375,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 791283556}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: WolfPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: werewolf
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &791283556
@@ -6520,18 +6517,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 796405491}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: WolfMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: werewolf
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &796405491
@@ -6971,7 +6957,7 @@ GameObject:
   - component: {fileID: 819816105}
   - component: {fileID: 819816106}
   m_Layer: 5
-  m_Name: SettingObj (2)
+  m_Name: "\u591C\u306E\u6642\u9593"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7055,18 +7041,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomSetting: {fileID: 1850661070}
+  searchFortuneType: 3
+  searchRoomSelection: 0
+  searchOpenVoting: 2
   roomSelectionText: {fileID: 1669192079}
   firstDayFrotuneText: {fileID: 603758899}
   openVotingText: {fileID: 1688390958}
   joinNumText: {fileID: 1403312923}
   searchRoomSelectText: {fileID: 1248470059}
+  searchPopUpObj: {fileID: 727840329}
+  searchPopUPButton: {fileID: 853730785}
+  selectionButtonLeftButton: {fileID: 1407515932}
+  selectionButtonRightButton: {fileID: 1152217984}
   searchJoinPlusButton: {fileID: 1171436549}
   searchJoinMinusButton: {fileID: 1596512707}
   initSearchButton: {fileID: 712073784}
   upDateButton: {fileID: 620037191}
-  searchFortuneType: 3
-  searchOpenVoting: 2
-  searchRoomSelection: 0
   searchJoinNum: 3
   join: 1
 --- !u!4 &827804780
@@ -7829,18 +7819,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 853730786}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 727840329}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &853730786
@@ -8187,8 +8166,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -382.19833}
-  m_SizeDelta: {x: 203, y: 32.062634}
+  m_AnchoredPosition: {x: 101.5, y: -388.55225}
+  m_SizeDelta: {x: 203, y: 32.652435}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &943010949
 MonoBehaviour:
@@ -8400,7 +8379,7 @@ GameObject:
   - component: {fileID: 956188005}
   - component: {fileID: 956188004}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8423,7 +8402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 88.99999, y: -10}
+  m_AnchoredPosition: {x: 89.00001, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &956188004
@@ -8488,18 +8467,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 956188006}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: DifficultySelectionLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &956188006
@@ -8786,8 +8754,9 @@ GameObject:
   m_Component:
   - component: {fileID: 993823237}
   - component: {fileID: 993823238}
+  - component: {fileID: 993823239}
   m_Layer: 5
-  m_Name: SettingObj (7)
+  m_Name: "\u970A\u80FD\u8005"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8841,6 +8810,27 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &993823239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993823236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 1850661069}
+  rollType: 3
+  numText: {fileID: 1807867454}
+  plusButton:
+    rollSettingButton: {fileID: 300078280}
+    applicant_Type: 0
+  minusButton:
+    rollSettingButton: {fileID: 1843899107}
+    applicant_Type: 1
 --- !u!1 &1013037036
 GameObject:
   m_ObjectHideFlags: 0
@@ -9172,7 +9162,7 @@ GameObject:
   - component: {fileID: 1062458221}
   - component: {fileID: 1062458220}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9260,18 +9250,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1062458222}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: NightTimeLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1062458222
@@ -9322,7 +9301,7 @@ GameObject:
   - component: {fileID: 1076093407}
   - component: {fileID: 1076093408}
   m_Layer: 5
-  m_Name: SettingObj
+  m_Name: "\u521D\u65E5\u5360\u3044"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9348,8 +9327,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 103, y: -69}
-  m_SizeDelta: {x: 206, y: 20}
+  m_AnchoredPosition: {x: 104.5, y: -69}
+  m_SizeDelta: {x: 209, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1076093408
 MonoBehaviour:
@@ -9390,7 +9369,7 @@ GameObject:
   - component: {fileID: 1097614575}
   - component: {fileID: 1097614574}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9478,18 +9457,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1097614576}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: DifficultySelectionRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1097614576
@@ -9703,8 +9671,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1147483292}
   - component: {fileID: 1147483293}
+  - component: {fileID: 1147483294}
   m_Layer: 5
-  m_Name: SettingObj (5)
+  m_Name: "\u5360\u3044\u5E2B"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9758,6 +9727,27 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &1147483294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147483291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 1850661069}
+  rollType: 1
+  numText: {fileID: 1184008999}
+  plusButton:
+    rollSettingButton: {fileID: 357271004}
+    applicant_Type: 0
+  minusButton:
+    rollSettingButton: {fileID: 1978284040}
+    applicant_Type: 1
 --- !u!1 &1149635255
 GameObject:
   m_ObjectHideFlags: 0
@@ -9993,7 +9983,7 @@ GameObject:
   - component: {fileID: 1152217984}
   - component: {fileID: 1152217983}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10081,18 +10071,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1152217985}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 827804779}
-        m_MethodName: SelectionButtonRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1152217985
@@ -10248,7 +10227,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92, y: -10}
+  m_AnchoredPosition: {x: 95.00001, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1156322964
@@ -10401,7 +10380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 191, y: -10}
+  m_AnchoredPosition: {x: 194, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171436548
@@ -10619,18 +10598,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1175404713}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: WolfPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: madman
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1175404713
@@ -10772,18 +10740,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1179731224}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: citizen
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1179731224
@@ -11171,7 +11128,7 @@ GameObject:
   - component: {fileID: 1230382548}
   - component: {fileID: 1230382549}
   m_Layer: 5
-  m_Name: SettingObj (4)
+  m_Name: "\u52DF\u96C6\u6761\u4EF6"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11193,11 +11150,11 @@ RectTransform:
   - {fileID: 1520257333}
   - {fileID: 1097614573}
   m_Father: {fileID: 769253570}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -42}
+  m_AnchoredPosition: {x: 101.5, y: -15}
   m_SizeDelta: {x: 203, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1230382549
@@ -11225,6 +11182,85 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!1 &1241275032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1241275033}
+  - component: {fileID: 1241275035}
+  - component: {fileID: 1241275034}
+  m_Layer: 5
+  m_Name: Num
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1241275033
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241275032}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 317170919}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -7.558511}
+  m_SizeDelta: {x: 0, y: 15.117022}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1241275034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241275032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!222 &1241275035
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241275032}
+  m_CullTransparentMesh: 0
 --- !u!1 &1245309472
 GameObject:
   m_ObjectHideFlags: 0
@@ -11260,8 +11296,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 42, y: -10}
-  m_SizeDelta: {x: 74, y: 20}
+  m_AnchoredPosition: {x: 43.500004, y: -10}
+  m_SizeDelta: {x: 77.00001, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1245309474
 MonoBehaviour:
@@ -11360,7 +11396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 141.5, y: -10}
+  m_AnchoredPosition: {x: 144.5, y: -10}
   m_SizeDelta: {x: 73, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1248470058
@@ -11998,8 +12034,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -198.08351}
-  m_SizeDelta: {x: 203, y: 336.16702}
+  m_AnchoredPosition: {x: 101.5, y: -201.113}
+  m_SizeDelta: {x: 203, y: 342.226}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1315222229
 MonoBehaviour:
@@ -12057,7 +12093,7 @@ GameObject:
   - component: {fileID: 1332772857}
   - component: {fileID: 1332772858}
   m_Layer: 5
-  m_Name: SettingObj (3)
+  m_Name: "\u6295\u7968\u958B\u793A"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12454,7 +12490,7 @@ GameObject:
   - component: {fileID: 1358517335}
   - component: {fileID: 1358517334}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12542,18 +12578,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1358517336}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: FirstDayFortuneRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1358517336
@@ -12837,29 +12862,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1379937401}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1792950986}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1536450138}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1379937401
@@ -12913,7 +12916,7 @@ GameObject:
   - component: {fileID: 1386404074}
   - component: {fileID: 1386404073}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13001,18 +13004,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1386404075}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: MainTimeRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1386404075
@@ -13089,7 +13081,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 191, y: -10}
+  m_AnchoredPosition: {x: 194, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1390649669
@@ -13319,7 +13311,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 141.5, y: -10}
+  m_AnchoredPosition: {x: 144.5, y: -10}
   m_SizeDelta: {x: 73, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1403312922
@@ -13398,7 +13390,7 @@ GameObject:
   - component: {fileID: 1407515932}
   - component: {fileID: 1407515931}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13486,18 +13478,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1407515933}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 827804779}
-        m_MethodName: SelectionButtonLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1407515933
@@ -13639,18 +13620,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1412804316}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenPlusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: citizen
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1412804316
@@ -13724,7 +13694,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 153.19525}
+  m_AnchoredPosition: {x: 0, y: 156.21803}
   m_SizeDelta: {x: 205, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1417060680
@@ -13776,8 +13746,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1426186515}
   - component: {fileID: 1426186516}
+  - component: {fileID: 1426186517}
   m_Layer: 5
-  m_Name: SettingObj (9)
+  m_Name: "\u72C2\u4EBA"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13831,6 +13802,27 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &1426186517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426186514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 1850661069}
+  rollType: 5
+  numText: {fileID: 801230966}
+  plusButton:
+    rollSettingButton: {fileID: 1175404712}
+    applicant_Type: 0
+  minusButton:
+    rollSettingButton: {fileID: 1668479567}
+    applicant_Type: 1
 --- !u!1 &1426863081
 GameObject:
   m_ObjectHideFlags: 0
@@ -14025,8 +14017,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.5, y: -13.936227}
-  m_SizeDelta: {x: 203, y: 27.872454}
+  m_AnchoredPosition: {x: 101.5, y: -14.130143}
+  m_SizeDelta: {x: 203, y: 28.260286}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1465388384
 MonoBehaviour:
@@ -14187,8 +14179,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 40.499996, y: -10}
-  m_SizeDelta: {x: 70.99999, y: 20}
+  m_AnchoredPosition: {x: 40.500004, y: -10}
+  m_SizeDelta: {x: 71.00001, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1489334322
 MonoBehaviour:
@@ -14608,7 +14600,7 @@ GameObject:
   - component: {fileID: 1536450140}
   - component: {fileID: 1536450139}
   m_Layer: 5
-  m_Name: RollSetting
+  m_Name: RollSettingCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14735,7 +14727,7 @@ GameObject:
   - component: {fileID: 1540467028}
   - component: {fileID: 1540467027}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14823,18 +14815,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1540467029}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: MainTimeLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1540467029
@@ -14963,8 +14944,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1544108533}
   - component: {fileID: 1544108534}
+  - component: {fileID: 1544108535}
   m_Layer: 5
-  m_Name: SettingObj (8)
+  m_Name: "\u4EBA\u72FC"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15018,6 +15000,27 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &1544108535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544108532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 1850661069}
+  rollType: 4
+  numText: {fileID: 837090294}
+  plusButton:
+    rollSettingButton: {fileID: 791283555}
+    applicant_Type: 0
+  minusButton:
+    rollSettingButton: {fileID: 796405490}
+    applicant_Type: 1
 --- !u!1 &1547369984
 GameObject:
   m_ObjectHideFlags: 0
@@ -15032,7 +15035,7 @@ GameObject:
   - component: {fileID: 1547369987}
   - component: {fileID: 1547369986}
   m_Layer: 5
-  m_Name: MuinusButton
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15120,18 +15123,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1547369988}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: FirstDayFortuneLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1547369988
@@ -15550,7 +15542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92, y: -10}
+  m_AnchoredPosition: {x: 95, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1596512706
@@ -15810,7 +15802,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 800036818}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -16418,18 +16410,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1668479568}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: WolfMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: madman
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1668479568
@@ -16683,7 +16664,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 141.5, y: -10}
+  m_AnchoredPosition: {x: 144.5, y: -10}
   m_SizeDelta: {x: 73, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1688390957
@@ -17001,8 +16982,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1743069544}
   - component: {fileID: 1743069545}
+  - component: {fileID: 1743069546}
   m_Layer: 5
-  m_Name: SettingObj (4)
+  m_Name: "\u5E02\u6C11"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17056,6 +17038,27 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &1743069546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743069543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520d7b315b04e45a5dc22eb59311cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSetting: {fileID: 1850661069}
+  rollType: 0
+  numText: {fileID: 842000208}
+  plusButton:
+    rollSettingButton: {fileID: 1412804315}
+    applicant_Type: 0
+  minusButton:
+    rollSettingButton: {fileID: 1179731223}
+    applicant_Type: 1
 --- !u!1 &1759006843
 GameObject:
   m_ObjectHideFlags: 0
@@ -17175,7 +17178,7 @@ GameObject:
   - component: {fileID: 1763959141}
   - component: {fileID: 1763959142}
   m_Layer: 5
-  m_Name: SettingObj (1)
+  m_Name: "\u663C\u306E\u6642\u9593"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17400,6 +17403,9 @@ MonoBehaviour:
     type: 3}
   networkManagerPrefab: {fileID: 2031278994399130302, guid: 1f3cfe8d6b38662418f7143d411f9ca0,
     type: 3}
+  createRoomButton: {fileID: 1379937400}
+  roomSelectCanvasObj: {fileID: 1792950986}
+  rollSettingCanvasObj: {fileID: 1536450138}
 --- !u!82 &1788921843
 AudioSource:
   m_ObjectHideFlags: 0
@@ -18037,8 +18043,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 76.625, y: -16.25}
-  m_SizeDelta: {x: 47.75, y: 32.5}
+  m_AnchoredPosition: {x: 50.25, y: -16.25}
+  m_SizeDelta: {x: 100.5, y: 32.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1822545048
 MonoBehaviour:
@@ -18434,18 +18440,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1843899108}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: psychic
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1843899108
@@ -18576,7 +18571,7 @@ GameObject:
   - component: {fileID: 1850661069}
   - component: {fileID: 1850661070}
   m_Layer: 0
-  m_Name: RoomSetting
+  m_Name: Setting
   m_TagString: roomSetting
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18618,18 +18613,7 @@ MonoBehaviour:
   NumList: 
   numberPlusButton: {fileID: 1630278353}
   numberMinusButton: {fileID: 1350707600}
-  citizenPlusButton: {fileID: 1412804315}
-  citizenMinusButton: {fileID: 1179731223}
-  fortunePlusButton: {fileID: 357271004}
-  fortuneMinusButton: {fileID: 1978284040}
-  knightPlusButton: {fileID: 663342782}
-  knightMinusButton: {fileID: 205627654}
-  psychicPlusButton: {fileID: 300078280}
-  psychicMinusButton: {fileID: 1843899107}
-  werewolfPlusButton: {fileID: 791283555}
-  werewolfMinusButton: {fileID: 796405490}
-  madmanPlusButton: {fileID: 1175404712}
-  madmanMinusButton: {fileID: 1668479567}
+  titleText: {fileID: 675581621}
   numLimit: 9
   sumNumText: {fileID: 1811118756}
   citizenCampNum: 6
@@ -18638,25 +18622,38 @@ MonoBehaviour:
   wolfCampNumText: {fileID: 1541119762}
   etcCampNum: 0
   etcCampNumText: {fileID: 1198924953}
-  citizenText: {fileID: 842000208}
-  citizenNum: 3
-  citizenNumLimit: 0
-  fortuneText: {fileID: 1184008999}
-  fortuneNum: 1
-  fortuneNumLimit: 2
-  knightText: {fileID: 2028679920}
-  knightNum: 1
-  knightNumLimit: 2
-  psychicText: {fileID: 1807867454}
-  psychicNum: 1
-  psychicNumLimit: 2
-  werewolfText: {fileID: 837090294}
-  werewolfNum: 2
-  werewolfNumLimit: 2
-  madmanText: {fileID: 801230966}
-  madmanNum: 1
-  madmanNumLimit: 2
-  titleText: {fileID: 675581621}
+  differenceNumText: {fileID: 1241275034}
+  citizen:
+    rollType: 0
+    num: 0
+    numLimit: 0
+    rollText: {fileID: 842000208}
+  fortune:
+    rollType: 1
+    num: 0
+    numLimit: 0
+    rollText: {fileID: 1184008999}
+  knight:
+    rollType: 2
+    num: 0
+    numLimit: 0
+    rollText: {fileID: 2028679920}
+  psychic:
+    rollType: 3
+    num: 0
+    numLimit: 0
+    rollText: {fileID: 1807867454}
+  werewolf:
+    rollType: 4
+    num: 0
+    numLimit: 0
+    rollText: {fileID: 837090294}
+  madman:
+    rollType: 5
+    num: 0
+    numLimit: 0
+    rollText: {fileID: 801230966}
+  rollNumList: []
 --- !u!114 &1850661070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18679,18 +18676,8 @@ MonoBehaviour:
   nightTime: 30
   openVoting: 0
   title: 
-  minusButtonList:
-  - {fileID: 1547369987}
-  - {fileID: 1540467028}
-  - {fileID: 1062458221}
-  - {fileID: 368814988}
-  plusButtonList:
-  - {fileID: 1358517335}
-  - {fileID: 1386404074}
-  - {fileID: 1996477032}
-  - {fileID: 257509314}
   firstDayFrotuneText: {fileID: 1254408074}
-  roomSelectionText: {fileID: 1520257335}
+  roomLevelText: {fileID: 1520257335}
   mainTimeText: {fileID: 1534659818}
   nightTimeText: {fileID: 625758435}
   openVotingText: {fileID: 494398072}
@@ -18702,6 +18689,21 @@ MonoBehaviour:
   roomSettingCanvas: {fileID: 371853315}
   roomNodeList: []
   createRoomButton: {fileID: 1376616116}
+  roomLevelButton:
+    rightButton: {fileID: 1097614575}
+    leftButton: {fileID: 956188005}
+  firstFortuneButton:
+    rightButton: {fileID: 1358517335}
+    leftButton: {fileID: 1547369987}
+  mainTimeButton:
+    rightButton: {fileID: 1386404074}
+    leftButton: {fileID: 1540467028}
+  nightTimeButton:
+    rightButton: {fileID: 1996477032}
+    leftButton: {fileID: 1062458221}
+  openVotingButton:
+    rightButton: {fileID: 257509314}
+    leftButton: {fileID: 368814988}
 --- !u!1 &1860775792
 GameObject:
   m_ObjectHideFlags: 0
@@ -18839,7 +18841,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92, y: -10}
+  m_AnchoredPosition: {x: 95.00001, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1878089995
@@ -19203,7 +19205,7 @@ GameObject:
   - component: {fileID: 1929083708}
   - component: {fileID: 1929083709}
   m_Layer: 5
-  m_Name: SettingObj (3)
+  m_Name: "\u6295\u7968\u958B\u793A"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19229,8 +19231,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 103, y: -96}
-  m_SizeDelta: {x: 206, y: 20}
+  m_AnchoredPosition: {x: 104.5, y: -96}
+  m_SizeDelta: {x: 209, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1929083709
 MonoBehaviour:
@@ -19723,18 +19725,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1978284041}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661069}
-        m_MethodName: CitizenMinusButton
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: fortune
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1978284041
@@ -19852,7 +19843,7 @@ GameObject:
   - component: {fileID: 1996477032}
   - component: {fileID: 1996477031}
   m_Layer: 5
-  m_Name: PulasButton
+  m_Name: RightButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19940,18 +19931,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1996477033}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1850661070}
-        m_MethodName: NightTimeRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1996477033
@@ -20551,7 +20531,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92, y: -10}
+  m_AnchoredPosition: {x: 95.00001, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2127735237

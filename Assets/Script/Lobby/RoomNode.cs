@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
-using Photon.Realtime;
 using System;
 using System.Linq;
 
@@ -21,7 +19,6 @@ public class RoomNode : MonoBehaviour
     public Text ruleText;
     public Text enterButtonText;
     public Button enterButton;//入室ボタン
-    public int roomNum;
     public List<ROLLTYPE> rollList = new List<ROLLTYPE>();
     public RectTransform rectTransform;
  
@@ -84,7 +81,10 @@ public class RoomNode : MonoBehaviour
         titleText.text = title;
         enterButtonText.text = info.PlayerCount + "/" + settingNum + "入室";
         enterButton.interactable = (info.PlayerCount < info.MaxPlayers);
-        gameObject.SetActive(true);
+        if(gameObject != null) {
+            gameObject.SetActive(true);
+        }
+        
 
         //ルール設定を表示する
         mainTime = (int)info.CustomProperties["mainTime"];
@@ -98,12 +98,9 @@ public class RoomNode : MonoBehaviour
         roomId = (string)info.CustomProperties["roomId"];
 
         //役職情報取得
-        //rollList = new List<ROLLTYPE>();
-        //string roll = (string)info.CustomProperties[rollList[0].ToString()];
-        //rollList.Add((ROLLTYPE)Enum.Parse(typeof(ROLLTYPE), roll));
         string roll = (string)info.CustomProperties["numListStr"];
         Debug.Log(roll);
-        //NumLisｔを解凍する
+        //NumListを解凍する
         int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
         rollNumList = intArray.ToList();
 
@@ -135,13 +132,21 @@ public class RoomNode : MonoBehaviour
     //public void Deactivate() {
     //    gameObject.SetActive(false);
     //}
-    //部屋のListのTransformを一番下へ
+
+
+    /// <summary>
+    ///部屋のListのTransformを一番下へ
+    /// </summary>
+    /// <returns></returns>
     public RoomNode SetAsLastSibling() {
         rectTransform.SetAsLastSibling();
         return this;
     }
 
-    //部屋のIDを取得する
+    /// <summary>
+    /// 部屋のIDを取得する
+    /// </summary>
+    /// <param name="roomId"></param>
     public void SetRoomId(string roomId) {
         this.roomId = roomId;
     }

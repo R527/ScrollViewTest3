@@ -284,8 +284,8 @@ MonoBehaviour:
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isTestPlay: 0
-  testRollTypeList: 010000000000000000000000
+  isTestPlay: 1
+  testRollTypeList: 010000000400000000000000
 --- !u!4 &317373128
 Transform:
   m_ObjectHideFlags: 0

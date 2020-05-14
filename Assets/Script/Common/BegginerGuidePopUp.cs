@@ -71,10 +71,5 @@ public class BegginerGuidePopUp : BasePopUP {
     public void PushJudge(GameObject obj) {
         thatText = obj.GetComponentInChildren<Text>().text;
     }
-    ///// <summary>
-    ///// このスクリプトがついているGameObjectを削除
-    ///// </summary>
-    //public void OnDestroy() {
-    //    Destroy(gameObject);
-    //}
+
 }
