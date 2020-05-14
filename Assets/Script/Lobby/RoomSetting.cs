@@ -84,7 +84,7 @@ public class RoomSetting : MonoBehaviour
         //一旦SetActive（false);にしておく→更新や、難易度変更で後程制御
         room.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         //サーバーに部屋情報を渡す。？
         NetworkManager.instance.PreparateCreateRoom(room.settingNum, room);
 
