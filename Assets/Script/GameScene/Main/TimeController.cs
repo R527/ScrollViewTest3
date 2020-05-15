@@ -42,7 +42,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
     //ボタン・Input関連
     public Button savingButton;//時短ボタン
-    public Text savingText;
+    
     public Button COButton;
     public Button superChatButton;
     public Button wolfButton;
@@ -72,7 +72,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         firstDay = true;
         isGameOver = true;
         timeType = TIME.処刑後チェック;
-        savingButton.interactable = true;
+        //savingButton.interactable = true;
 
 
         //Debug用

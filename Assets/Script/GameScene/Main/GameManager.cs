@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Text confirmationTimeText;//30秒タイマー
     public Text confirmationNumText;//参加人数
     public Text confirmationEnterButtonText;//参加ボタン
+    public Text savingText;
+    public bool confirmation;//確認画面開始の判定　trueなら開始されている
 
     public GameObject damyObj;
     private bool isNumComplete;//ルームの規定人数が揃ったら
@@ -166,10 +168,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 //人数を確認する
                 CountNum();
 
-                //Debug.Log("GetEntrerNUm" + GetEnterNum());
-                //Debug.Log("numLimit" + numLimit);
-                //Debug.Log("GetNum" + GetNum());
-
                 //確認PopUP表示して参加確認を行う
                 if (GetNum() == numLimit && GetEnterNum() != numLimit) {
                     Debug.Log(gameStart);
@@ -179,7 +177,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
                     TimeUpEnterNumTime();
                     //左上の参加人数記載
                     NumText.text = GetNum() + "/" + numLimit;
-                    Debug.Log("GetEnterNumUpdate"+GetEnterNum());
                     confirmationNumText.text = enterNum + "/" + numLimit;
                     confirmationTimeText.text = (int)enterNumTime + "秒";
                 }
@@ -221,22 +218,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void SetRoll() {
         Debug.Log("SetRoll");
-        ////テスト用役職を決定してゲーム開始
-        //if (GetEnterNum() == numLimit && DebugManager.instance.isTestPlay) {
-        //    confirmationImage.SetActive(false);
-        //    gameStart = true;
-        //    PhotonNetwork.CurrentRoom.IsOpen = false;
-        //    StartCoroutine(SetTestRoll());
-        //}
-
-        ////正規のデータを利用してゲーム開始
-        //if (GetEnterNum() == numLimit && !DebugManager.instance.isTestPlay) {
-        //    confirmationImage.SetActive(false);
-        //    gameStart = true;
-        //    StartCoroutine(SetRandomRoll());
-        //}
-
-        if (GetEnterNum() == numLimit) return;
+        if (GetEnterNum() != numLimit) return;
 
         confirmationImage.SetActive(false);
         gameStart = true;
@@ -272,11 +254,14 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void CountDownEnterNumTime() {
         Debug.Log("CountDown");
-        timeController.savingText.text = "時短";
-        //フレンド招待ボタン
-        //friendButton.gameObject.SetActive(false);
-        damyObj.SetActive(true);
-        confirmationImage.SetActive(true);
+        if (!confirmation) {
+            confirmation = true;
+            savingText.text = "時短";
+            damyObj.SetActive(true);
+            confirmationImage.SetActive(true);
+            timeController.savingButton.interactable = false;
+        }
+        
 
         //マスターだけ時間を書き込む
         if (PhotonNetwork.IsMasterClient) {
@@ -331,9 +316,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
             }
             
-            //friendButton.gameObject.SetActive(true);
             damyObj.SetActive(false);
             confirmationImage.SetActive(false);
+            confirmation = false;
+            timeController.savingButton.interactable = true;
 
             //マスターに管理(リセット
             if (PhotonNetwork.IsMasterClient) {

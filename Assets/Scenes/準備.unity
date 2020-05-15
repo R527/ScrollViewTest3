@@ -279,13 +279,13 @@ MonoBehaviour:
   testResultTime: 3
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 1
   setEnterNumTime: 30
   openVoting: 1
   fortuneType: 1
   timeType: 4
   isTestPlay: 1
-  testRollTypeList: 010000000400000000000000
+  testRollTypeList: 01000000
 --- !u!4 &317373128
 Transform:
   m_ObjectHideFlags: 0

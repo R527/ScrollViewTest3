@@ -8622,7 +8622,6 @@ MonoBehaviour:
   isGameOver: 0
   isVotingCompleted: 0
   savingButton: {fileID: 163000424}
-  savingText: {fileID: 256122106}
   COButton: {fileID: 1812546287}
   superChatButton: {fileID: 194684091}
   wolfButton: {fileID: 972337835}
@@ -10652,6 +10651,8 @@ MonoBehaviour:
   confirmationTimeText: {fileID: 1628576554}
   confirmationNumText: {fileID: 527031520}
   confirmationEnterButtonText: {fileID: 1790323956}
+  savingText: {fileID: 256122106}
+  confirmation: 0
   damyObj: {fileID: 546607570}
   setEnterNumTime: 25
   menbarContent: {fileID: 30259292}
@@ -13106,7 +13107,7 @@ MonoBehaviour:
     mainTime: 30
     nightTime: 2
     roomSelection: 0
-  numList: 030000000100000001000000010000000200000001000000
+  rollList: 
   numLimit: 0
 --- !u!4 &1364650106
 Transform:
