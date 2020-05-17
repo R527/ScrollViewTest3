@@ -122,65 +122,71 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// カウントダウンタイマー
     /// </summary>
     void Update() {
+        //ゲーム終了したら実行しない
         if (!isGameOver) {
             return;
         }
+
+
+
+        //ゲーム待機中かどうかを確認する
+        if (!GetGameReady()) {
+            return;
+        }
+
+        //ゲーム開始したら以下のUpdateを通過する
+        //ゲームが終了したらUpdateを止める
+        if (timeType == TIME.終了) {
+            timerText.text = string.Empty;
+            gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
+            return;
+        }
+
+        //カウントダウン処理
+        if (isPlaying && gameManager.gameStart) {
+            //マスターだけトータルタイムを管理する
+            if (PhotonNetwork.IsMasterClient) {
+                chekTimer += Time.deltaTime;
+                if (chekTimer >= 1) {
+                    chekTimer = 0;
+                    totalTime--;
+
+                    SetGameTime();
+                }
+            //マスター以外はトータルタイムをもらう
+            } else {
+                totalTime = GetGameTime();
+            }
+
+            //トータルタイム表示
+            //トータルタイムを受け取る側はー1秒から始まるのでその調整用
+            if(totalTime >= 0) {
+                timerText.text = totalTime.ToString("F0");
+            }
+                
+            //0秒になったら次のシーンへ移行する
+            if (totalTime < 0 && PhotonNetwork.IsMasterClient) {
+                //マスターだけがisPlayingをfalseに
+                isPlaying = false;
+                SetPlayState(isPlaying);
+            }
+
+            //次のシーンへ移行する処理
+        } else if (!GetPlayState() && totalTime < 0) {
+            timerText.text = string.Empty;
+            StartInterval();
+            Debug.Log(timeType);
+        }
+
         //全員の投票が完了したら
-        if (GetIsVotingCompleted() && PhotonNetwork.IsMasterClient) {
+        if(!GetIsVotingCompleted() || !PhotonNetwork.IsMasterClient) {
+            return;
+        }else if (GetIsVotingCompleted() && PhotonNetwork.IsMasterClient) {
             isVotingCompleted = false;
             SetIsVotingCompleted();
             totalTime = 0;
             SetGameTime();
         }
-        //ゲーム待機中かどうかを確認する
-        if (!GetGameReady()) {
-            return;
-        } else { 
-        //ゲーム開始したら以下のUpdateを通過する
-        
-            //ゲームが終了したらUpdateを止める
-            if (timeType == TIME.終了) {
-                timerText.text = string.Empty;
-                gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
-                return;
-
-                //カウントダウン処理
-            } else if (isPlaying && gameManager.gameStart) {
-                //マスターだけトータルタイムを管理する
-                if (PhotonNetwork.IsMasterClient) {
-                    chekTimer += Time.deltaTime;
-                    if (chekTimer >= 1) {
-                        chekTimer = 0;
-                        totalTime--;
-
-                        SetGameTime();
-                    }
-                    //マスター以外はトータルタイムをもらう
-                } else {
-                    totalTime = GetGameTime();
-                }
-                //トータルタイム表示
-                //トータルタイムを受け取る側はー1秒から始まるのでその調整用
-                if(totalTime >= 0) {
-                    timerText.text = totalTime.ToString("F0");
-                }
-                
-                //0秒になったら次のシーンへ移行する
-                if (totalTime < 0 && PhotonNetwork.IsMasterClient) {
-                    //マスターだけがisPlayingをfalseに
-                    isPlaying = false;
-                    SetPlayState(isPlaying);
-                }
-                Debug.Log(GetPlayState());
-                Debug.Log(totalTime);
-                //次のシーンへ移行する処理
-            } else if (!GetPlayState() && totalTime < 0) {
-                timerText.text = string.Empty;
-                StartInterval();
-                Debug.Log(timeType);
-            }
-        }
-        
     }
 
 

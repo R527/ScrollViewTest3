@@ -140,47 +140,49 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// 人数設定と入室者が同じ数になるとゲーム参加再確認を行う
     /// </summary>
     void Update() {
-        //ルームにいる場合のみ
-        if (PhotonNetwork.InRoom || isOffline) {
+        //ルームにいない場合、オフラインでない場合は処理しない
+        if (!PhotonNetwork.InRoom) {
+            Debug.Log("notInRoom,return");
+            return;
+        }
+        //ゲーム開始したら処理しない
+        if(gameStart) {
+            Debug.Log("gameStart,return");
+            return;
+        }
 
-            //監視
-            if (PhotonNetwork.IsMasterClient && timeController.timeType == TIME.開始前 && numLimit == GetNum()) {
-                //参加意思表示確認画面の監視
-                CheckEnterNum();
-            }
+        //参加意思表示確認画面の監視
+        if (PhotonNetwork.IsMasterClient && timeController.timeType == TIME.開始前 && numLimit == GetNum()) {
+            CheckEnterNum();
+        }
 
-            //ゲーム開始前
-            if (!gameStart) {
+        //一人以上のプレイヤーが退出した場合isJoinedisExitの値をリセットして確認PopUPを削除する
+        if (GetIsExit()) {
+            confirmationImage.SetActive(false);
+            isJoined = false;
+            isExit = false;
+            enterNumTime = 25.0f;
+            SetEnterNumTime();
+            SetIsJoin();
+            SetIsExit();
+        }
 
-                //一人以上のプレイヤーが退出した場合isJoinedisExitの値をリセットして確認PopUPを削除する
-                if (GetIsExit()) {
-                    confirmationImage.SetActive(false);
-                    isJoined = false;
-                    isExit = false;
-                    enterNumTime = 25.0f;
-                    SetEnterNumTime();
-                    SetIsJoin();
-                    SetIsExit();
-                }
+        //人数が揃ったら役職セット
+        SetRoll();
+        //人数を確認する
+        CountNum();
 
-                //人数が揃ったら役職セット
-                SetRoll();
-                //人数を確認する
-                CountNum();
-
-                //確認PopUP表示して参加確認を行う
-                if (GetNum() == numLimit && GetEnterNum() != numLimit) {
-                    Debug.Log(gameStart);
-                    //参加意思表示の人数確認
-                    CountDownEnterNumTime();
-                    //参加意思表示の確認の時間切れ
-                    TimeUpEnterNumTime();
-                    //左上の参加人数記載
-                    NumText.text = GetNum() + "/" + numLimit;
-                    confirmationNumText.text = enterNum + "/" + numLimit;
-                    confirmationTimeText.text = (int)enterNumTime + "秒";
-                }
-            }
+        //確認PopUP表示して参加確認を行う
+        if (GetNum() == numLimit && GetEnterNum() != numLimit) {
+            Debug.Log(gameStart);
+            //参加意思表示の人数確認
+            CountDownEnterNumTime();
+            //参加意思表示の確認の時間切れ
+            TimeUpEnterNumTime();
+            //左上の参加人数記載
+            NumText.text = GetNum() + "/" + numLimit;
+            confirmationNumText.text = enterNum + "/" + numLimit;
+            confirmationTimeText.text = (int)enterNumTime + "秒";
         }
     }
 
