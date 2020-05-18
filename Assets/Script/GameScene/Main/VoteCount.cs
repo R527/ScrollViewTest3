@@ -37,13 +37,10 @@ public class VoteCount : MonoBehaviourPunCallbacks {
 
     private void Start() {
         //カスタムプロパティ
-        if (!gameManager.isOffline) {
-            var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                {"executionID",executionID }
-            };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-            
-        }
+        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+            {"executionID",executionID }
+        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 
     

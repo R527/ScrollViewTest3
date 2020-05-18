@@ -68,7 +68,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <summary>
     /// 各ボタンの制御,
     /// </summary>
-    public void Init(bool isOffline) {
+    public void Init() {
         firstDay = true;
         isGameOver = true;
         timeType = TIME.処刑後チェック;
@@ -100,7 +100,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         
 
         //マスターだけトータルタイムとIsPlayingを取得する
-        if (!isOffline && PhotonNetwork.IsMasterClient) {
+        if (PhotonNetwork.IsMasterClient) {
             isPlaying = true;
             gameReady = true;
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
@@ -122,15 +122,19 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// カウントダウンタイマー
     /// </summary>
     void Update() {
+
         //ゲーム終了したら実行しない
         if (!isGameOver) {
             return;
         }
 
-
-
         //ゲーム待機中かどうかを確認する
         if (!GetGameReady()) {
+            return;
+        }
+
+        //ゲームがスタートしてないなら実行しない
+        if (!gameManager.gameStart) {
             return;
         }
 
@@ -141,16 +145,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
             gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
             return;
         }
-
+                
         //カウントダウン処理
-        if (isPlaying && gameManager.gameStart) {
+        if (isPlaying) {
+
             //マスターだけトータルタイムを管理する
             if (PhotonNetwork.IsMasterClient) {
                 chekTimer += Time.deltaTime;
                 if (chekTimer >= 1) {
                     chekTimer = 0;
                     totalTime--;
-
                     SetGameTime();
                 }
             //マスター以外はトータルタイムをもらう
@@ -169,17 +173,19 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //マスターだけがisPlayingをfalseに
                 isPlaying = false;
                 SetPlayState(isPlaying);
+            } else if(totalTime < 0 && !PhotonNetwork.IsMasterClient) {
+                GetPlayState();
             }
 
             //次のシーンへ移行する処理
-        } else if (!GetPlayState() && totalTime < 0) {
+        } else if (!GetPlayState() && totalTime < 0){
             timerText.text = string.Empty;
             StartInterval();
             Debug.Log(timeType);
         }
-
+        
         //全員の投票が完了したら
-        if(!GetIsVotingCompleted() || !PhotonNetwork.IsMasterClient) {
+        if (!GetIsVotingCompleted() || !PhotonNetwork.IsMasterClient) {
             return;
         }else if (GetIsVotingCompleted() && PhotonNetwork.IsMasterClient) {
             isVotingCompleted = false;
@@ -271,7 +277,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                     //生存者数を取得
                     gameManager.liveNum = gameManager.GetLiveNum();
-                    gameOver.CheckGameOver();
+                    //gameOver.CheckGameOver();
                     break;
 
                 //夜の行動
@@ -318,7 +324,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.結果発表後チェック;
                     totalTime = checkGameOverTime;
 
-                    gameOver.CheckGameOver();
+                    //gameOver.CheckGameOver();
                     DeathPlayer();
                     break;
             }
@@ -487,9 +493,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     private bool GetGameReady() {
         gameReady = false;
-        if (!gameManager.isOffline && PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
             gameReady = (bool)gameReadyObj;
         }
+        Debug.Log("gameReady" + gameReady);
         return gameReady;
     }
 

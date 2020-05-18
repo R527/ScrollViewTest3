@@ -37,7 +37,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         timeSavingButton.onClick.AddListener(() => TimeSavingChat());
         exitButton.onClick.AddListener(ExitButton);
         //カスタムプロパティ
-        if (!gameManager.isOffline) {
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"timeSavingNum",timeSavingNum },//時短の人数確認
             {"bitedID", bitedID },//噛んだプレイヤー
@@ -45,7 +44,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
-        }
     }
 
 
@@ -128,60 +126,58 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     public void TimeSavingChat() {
 
-        if (!gameManager.isOffline) {
-            //時短処理
-            if (timeSavingButtonText.text == "時短") {
-                GetimeSavingNum();
+        //時短処理
+        if (timeSavingButtonText.text == "時短") {
+            GetimeSavingNum();
 
-                //キャンセルorまだ希望していない状態なら
-                //時短ボタンの色を変更する処理を後程追加したい
-                if (!timeSaving) {
-                    timeSavingNum++;
-                    timeSaving = true;
-                    gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短を希望しました。(" + timeSavingNum + "/" + gameManager.liveNum + ")※過半数を超えると時短されます。";
-                } else {
-                    timeSavingNum--;
-                    timeSaving = false;
-                    gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短をキャンセルしました。(" + timeSavingNum + "/" + gameManager.liveNum + ")※過半数を超えると時短されます。";
-                }
+            //キャンセルorまだ希望していない状態なら
+            //時短ボタンの色を変更する処理を後程追加したい
+            if (!timeSaving) {
+                timeSavingNum++;
+                timeSaving = true;
+                gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短を希望しました。(" + timeSavingNum + "/" + gameManager.liveNum + ")※過半数を超えると時短されます。";
+            } else {
+                timeSavingNum--;
+                timeSaving = false;
+                gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが時短をキャンセルしました。(" + timeSavingNum + "/" + gameManager.liveNum + ")※過半数を超えると時短されます。";
+            }
+            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+
+            //timeSavingNum更新
+            var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                {"timeSavingNum",timeSavingNum }
+            };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+            Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["timeSavingNum"]);
+
+            //もう一度チェック
+            GetimeSavingNum();
+
+            //時短判定(過半数以上なら時短成立
+            //Mathf.CeilToIntは切り上げ
+            if (Mathf.CeilToInt(gameManager.liveNum / 2) <= timeSavingNum) {
+                timeController.totalTime = 0;
+                Debug.Log("時短成立");
+            } else {
+                Debug.Log("時短不成立");
+            }
+
+
+            //退出処理
+        } else if (timeSavingButtonText.text == "退出") {
+
+            //ゲーム開始前
+            if (!gameManager.gameStart) {
+                gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
                 gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+                gameMasterChat = string.Empty;
+                //LeaveRoom();処理をするときにTimeControllerのエラーが出るので消去する
+                NetworkManager.instance.LeaveRoom();
 
-                //timeSavingNum更新
-                var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                    {"timeSavingNum",timeSavingNum }
-                };
-                PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-                Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["timeSavingNum"]);
-
-                //もう一度チェック
-                GetimeSavingNum();
-
-                //時短判定(過半数以上なら時短成立
-                //Mathf.CeilToIntは切り上げ
-                if (Mathf.CeilToInt(gameManager.liveNum / 2) <= timeSavingNum) {
-                    timeController.totalTime = 0;
-                    Debug.Log("時短成立");
-                } else {
-                    Debug.Log("時短不成立");
-                }
-
-
-                //退出処理
-            } else if (timeSavingButtonText.text == "退出") {
-
-                //ゲーム開始前
-                if (!gameManager.gameStart) {
-                    gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
-                    gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-                    gameMasterChat = string.Empty;
-                    //LeaveRoom();処理をするときにTimeControllerのエラーが出るので消去する
-                    NetworkManager.instance.LeaveRoom();
-
-                    //ゲーム終了後or死亡後
-                } else {
-                    //PoPUpを出したい
-                    LeavePopUp.SetActive(true);
-                }
+                //ゲーム終了後or死亡後
+            } else {
+                //PoPUpを出したい
+                LeavePopUp.SetActive(true);
             }
         }
     }
