@@ -400,7 +400,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         if (PhotonNetwork.IsMasterClient) {
             //isPlaying = true;
             //playState = PlayState.Play;
-            SetTimeType(nowTimeType);
+            //SetTimeType(nowTimeType);
             SetPlayState(PlayState.Play);
         }
 
@@ -411,9 +411,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //    yield return null;
         //}
         //違うタイムタイプなら訂正する
-        if(timeType != GetTimeType()) {
-            timeType = GetTimeType();
-        }
+        //if(timeType != GetTimeType()) {
+        //    timeType = GetTimeType();
+        //}
     }
 
     /// <summary>
