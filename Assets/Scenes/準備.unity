@@ -272,11 +272,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 1
   testMainTime: 10
-  testNightTime: 3
+  testNightTime: 10
   testVotingTime: 10
-  testExecutionTime: 4
-  testCheckGameOverTime: 3
-  testResultTime: 3
+  testExecutionTime: 10
+  testCheckGameOverTime: 10
+  testResultTime: 10
   num: 0
   enterNum: 0
   numLimit: 2
