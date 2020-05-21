@@ -543,7 +543,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //Startで反応しない場合は処理中に書くとよい
         rollExplanation.RollExplanationSetUp(rollTypeList);
         comingOut.ComingOutSetUp(ComingOutButtonList);
-        timeController.Init();
+        StartCoroutine(timeController.Init());
         chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat, chatSystem.myPlayer.live);
         //voteCount.VoteCountListSetUp(numLimit);
         liveNum = PhotonNetwork.PlayerList.Length;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using DG.Tweening;
-
+using System;
 
 
 /// <summary>
@@ -60,6 +60,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool firstDay;
     public List<NextDay> nextDayList = new List<NextDay>();
 
+    public enum PlayState {
+        Play,
+        Stop,
+        Interval
+    }
+    public PlayState playState;
+
 
     ////////////////////////
     ///SetUp関連
@@ -68,10 +75,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <summary>
     /// 各ボタンの制御,
     /// </summary>
-    public void Init() {
+    public IEnumerator Init() {
         firstDay = true;
         isGameOver = true;
         timeType = TIME.処刑後チェック;
+        playState = PlayState.Interval;
         //savingButton.interactable = true;
 
 
@@ -101,12 +109,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         //マスターだけトータルタイムとIsPlayingを取得する
         if (PhotonNetwork.IsMasterClient) {
-            isPlaying = true;
-            gameReady = true;
+            //isPlaying = true;
+            //gameReady = true;
+            //playState = PlayState.Play;
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                 { "totalTime", totalTime },
-                {"isPlaying", isPlaying },
-                {"gameReady",gameReady },
+                {"playState", PlayState.Stop.ToString() },
+                {"gameReady",true },
                 {"timeType",timeType }
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
@@ -115,6 +124,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         // 本当の姿を表示する
         gameMasterChatManager.TrueCharacter();
+
+        yield return new WaitForSeconds(2.0f);
+
+        playState = GetPlayState();
+
+        //ゲームスタート
+        gameReady = GetGameReady();
     }
 
 
@@ -129,7 +145,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         }
 
         //ゲーム待機中かどうかを確認する
-        if (!GetGameReady()) {
+        if (!gameReady) {
             return;
         }
 
@@ -147,7 +163,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         }
                 
         //カウントダウン処理
-        if (isPlaying) {
+        if (playState == PlayState.Play) {
 
             //マスターだけトータルタイムを管理する
             if (PhotonNetwork.IsMasterClient) {
@@ -171,14 +187,17 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //0秒になったら次のシーンへ移行する
             if (totalTime < 0 && PhotonNetwork.IsMasterClient) {
                 //マスターだけがisPlayingをfalseに
-                isPlaying = false;
-                SetPlayState(isPlaying);
-            } else if(totalTime < 0 && !PhotonNetwork.IsMasterClient) {
-                GetPlayState();
-            }
+                //isPlaying = false;
+                //playState = PlayState.Stop;
+                SetPlayState(PlayState.Stop);
+            } //else if(totalTime < 0 && !PhotonNetwork.IsMasterClient) {
+
+            GetPlayState();
+            //}
 
             //次のシーンへ移行する処理
-        } else if (!GetPlayState() && totalTime < 0){
+        } else if (playState == PlayState.Stop){
+            playState = PlayState.Interval;
             timerText.text = string.Empty;
             StartInterval();
             Debug.Log(timeType);
@@ -206,7 +225,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public void StartInterval() {
         Debug.Log("StartInterval:開始");
         //!isPlaying &&
-        if (gameManager.gameStart) {
+        //if (gameManager.gameStart) {
 
             switch (timeType) {
                 //お昼
@@ -329,8 +348,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     break;
             }
 
-            StartCoroutine(EndInterval());
-        }
+            StartCoroutine(EndInterval(timeType));
+        //}
     }
 
     /// <summary>
@@ -372,7 +391,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// 昼、夜、投票後にあるインターバル時間を設定
     /// </summary>
     /// <returns></returns>
-    private IEnumerator EndInterval() {
+    private IEnumerator EndInterval(TIME nowTimeType) {
         yield return new WaitForSeconds(intervalTime);//コルーチンでインターバル時間を設ける
         mainPopup.SetActive(false);
         votingPopup.SetActive(false);
@@ -380,10 +399,22 @@ public class TimeController : MonoBehaviourPunCallbacks {
         TimesavingControllerTrue();
 
         if (PhotonNetwork.IsMasterClient) {
-            isPlaying = true;
-            SetPlayState(isPlaying);
+            //isPlaying = true;
+            //playState = PlayState.Play;
+            //SetTimeType(nowTimeType);
+            SetPlayState(PlayState.Play);
         }
 
+        yield return new WaitForSeconds(2.0f);
+        playState = GetPlayState();
+        //while (playState == PlayState.Interval) {
+        //    playState = GetPlayState();
+        //    yield return null;
+        //}
+        //違うタイムタイプなら訂正する
+        //if(timeType != GetTimeType()) {
+        //    timeType = GetTimeType();
+        //}
     }
 
     /// <summary>
@@ -505,8 +536,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     private void SetGameTime() {
         ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"totalTime", totalTime }
-                        };
+            {"totalTime", totalTime }
+        };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 
@@ -528,12 +559,26 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// isPlayingのオンライン化をbool型で返す
     /// </summary>
     /// <returns></returns>
-    private bool GetPlayState() {
-        isPlaying = false;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isPlaying", out object isPlayingeObj)) {
-            isPlaying = (bool)isPlayingeObj;
+    private PlayState  GetPlayState() {
+        //isPlaying = false;
+        //playState = PlayerState.Stop;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playState", out object isPlayingeObj)) {
+            playState = (PlayState)Enum.Parse(typeof(PlayState),isPlayingeObj.ToString());
+            Debug.Log(playState);
         }
-        return isPlaying;
+        return playState;
+    }
+
+    /// <summary>
+    /// bool型IsPlayingをRoomPropertiesに保存する
+    /// </summary>
+    /// <returns></returns>
+    private void SetPlayState(PlayState nowPlayState) {
+        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+            {"playState",nowPlayState.ToString() }
+        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+        Debug.Log("SetPlayState" + (PlayState)Enum.Parse(typeof(PlayState),PhotonNetwork.CurrentRoom.CustomProperties["playState"].ToString()));
     }
 
     /// <summary>
@@ -548,45 +593,33 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
     public void SetIsVotingCompleted() {
         var propertis = new ExitGames.Client.Photon.Hashtable {
-                                    {"isVotingCompleted",isVotingCompleted }
-                                };
+            {"isVotingCompleted",isVotingCompleted }
+        };
         PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
     }
 
+
     /// <summary>
-    /// bool型IsPlayingをRoomPropertiesに保存する
+    /// TimeTypeをもらう
     /// </summary>
     /// <returns></returns>
-    private void SetPlayState(bool isPlayState) {
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                    {"isPlaying",isPlayState }
-                };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-
+    private TIME GetTimeType() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeType", out object timeTypeObj)) {
+            timeType = (TIME)Enum.Parse(typeof(TIME),timeTypeObj.ToString());
+        }
+        return timeType;
     }
 
-    ///// <summary>
-    ///// TimeTypeをもらう
-    ///// </summary>
-    ///// <returns></returns>
-    //private TIME GetTimeType() {
-    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeType", out object timeTypeObj)) {
-    //        timeType = (TIME)timeTypeObj;
-    //    }
-    //    return timeType;
-    //}
 
-
-    ///// <summary>
-    ///// TimeTypeをセットする
-    ///// </summary>
-    //private void SetTimeType() {
-    //    ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-    //                        {"timeType", timeType }
-    //                    };
-    //    PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    //    Debug.Log((TIME)PhotonNetwork.CurrentRoom.CustomProperties["timeType"]);
-    //}
+    /// <summary>
+    /// TimeTypeをセットする
+    /// </summary>
+    private void SetTimeType(TIME nowTimeType) {
+        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                            {"timeType", nowTimeType.ToString() }
+                        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    }
 }
 
 
