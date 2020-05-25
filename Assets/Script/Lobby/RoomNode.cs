@@ -155,8 +155,10 @@ public class RoomNode : MonoBehaviour
     /// roomIDをもとに部屋に参加する
     /// </summary>
     public void OnClickJoinRoom() {
-            NetworkManager.instance.JoinRoom(roomId);
-            Debug.Log(roomId);
+
+        //banListのチェックを入れる、はじく場合はPopUpを出して
+        NetworkManager.instance.JoinRoom(roomId);
+        Debug.Log(roomId);
     }
 
     /// <summary>

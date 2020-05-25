@@ -227,9 +227,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
     }
 
-    //public  void CloseConnection(Photon.Realtime.Player kickPlayer) {
 
-    //}
 
     /// <summary>
     /// マスターだけが扱える
