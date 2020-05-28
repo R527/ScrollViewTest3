@@ -70,7 +70,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //部屋の各役職の人数を一度一つのストリングにまとめたもの→後程解凍
         string numListStr = room.GetStringFromIntArray(room.rollNumList.ToArray());
         //部屋IDを決定する　名前とリアルタイムで
-        string roomId = PlayerManager.instance.name + DateTime.Now.ToString("yyyyMMddHHmmss");
+        string roomId = PlayerManager.instance.playerName + DateTime.Now.ToString("yyyyMMddHHmmss");
         //ルームオプションにカスタムプロパティを設定
         ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             //ルームネームの情報を部屋に与える
@@ -132,7 +132,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         Debug.Log("OnJoinedRoom");
         //InRoom＝そのプレイヤーが部屋にいるかどうか～tureなら
         if (PhotonNetwork.InRoom) {
-            PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.name;
+            PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
             Debug.Log("NickName;" + PhotonNetwork.LocalPlayer.NickName);
             Debug.Log("RoomName:" + PhotonNetwork.CurrentRoom.Name);
             Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);

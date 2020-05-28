@@ -15,20 +15,29 @@ public class CreatePlayerName : MonoBehaviour
         createNameButton.onClick.AddListener(OnClickSubmit);
     }
 
+    /// <summary>
+    /// 名前を登録します。
+    /// </summary>
     public void OnClickSubmit() {
+        //禁止用語のチェック
         inputFieldName.text = checkTabooWard.StrMatch(inputFieldName.text, nGList.ngWordList);
         if (inputFieldName.text.Contains("*")) {
             Debug.Log("禁止Word含まれてます");
             inputFieldName.text = string.Empty;
             return;
         }
-        //Debug.Log(inputFieldName.text.Trim().Length);
+        //文字数制限のチェック
         if (inputFieldName.text.Trim().Length >= 3 && inputFieldName.text.Trim().Length <= 12) {
-            PlayerManager.instance.name = inputFieldName.text;
+            //名前を登録する
+            PlayerManager.instance.playerName = inputFieldName.text;
+            
+            PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.playerName, PlayerManager.ID_TYPE.playerName);
             SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
         } else {
             Debug.Log("文字数制限にかかっています。");
             inputFieldName.text = string.Empty;
         }
+
+
     }
 }

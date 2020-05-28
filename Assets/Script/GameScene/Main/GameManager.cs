@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
         //PhotonのPlayerクラスに新しい情報を追加
-        PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.name;
+        PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
         ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
             { "isJoined", isJoined }
         };

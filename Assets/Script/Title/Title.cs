@@ -18,12 +18,23 @@ public class Title : MonoBehaviour
     public GameObject begginerGuidePopUp;
     public Button playerInfoButton;
 
+    //test
+    public Button bantest1;
+    public Button bantest2;
+    public Button bantest3;
+
     private void Start() {
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);
         begginerButton.onClick.AddListener(BegginerGuideMenu);
         gameStartButton.onClick.AddListener(() => SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY));
         menuButton.onClick.AddListener(MenuPopUp);
         playerInfoButton.onClick.AddListener(PlayerInfoPopUP);
+
+        //test
+        bantest1.onClick.AddListener(() => SetBanList(0));
+        bantest2.onClick.AddListener(() => SetBanList(1));
+        bantest3.onClick.AddListener(() => SetBanList(2));
+
 
     }
     public void PlayerInfoPopUP() {
@@ -44,5 +55,14 @@ public class Title : MonoBehaviour
     public void BegginerGuideMenu() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         Instantiate(begginerGuidePopUp);
+    }
+
+    /// <summary>
+    /// banListにプレイヤーを追加します。
+    /// </summary>
+    public void SetBanList(int banIndex) {
+        PlayerManager.instance.banIndex = banIndex;
+        PlayerManager.instance.SetStringForPlayerPrefs("player" + banIndex, PlayerManager.ID_TYPE.banId);
+        PlayerManager.instance.banList[banIndex] = PlayerPrefs.GetString((PlayerManager.ID_TYPE.banId + banIndex).ToString(), "");
     }
 }

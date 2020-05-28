@@ -14,7 +14,7 @@ public class PlayerInfoButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerNameText.text = PlayerManager.instance.name;
+        playerNameText.text = PlayerManager.instance.playerName;
     }
 
     // Update is called once per frame
