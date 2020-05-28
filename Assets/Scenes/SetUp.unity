@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f725455f805c746843577cfe5cdc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resetSwich: 0
 --- !u!1 &1414915281379757486
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,11 +317,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  banList:
-  - 
-  - 
-  - 
+  banList: []
   myUniqueId: 
+  banIndex: 0
+  banListMaxIndex: 3
 --- !u!1 &2820532273166376551
 GameObject:
   m_ObjectHideFlags: 0

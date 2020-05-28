@@ -61,8 +61,21 @@ public class Title : MonoBehaviour
     /// banListにプレイヤーを追加します。
     /// </summary>
     public void SetBanList(int banIndex) {
+        if(PlayerManager.instance.banList.Count >= 3) {
+            return;
+        }
         PlayerManager.instance.banIndex = banIndex;
         PlayerManager.instance.SetStringForPlayerPrefs("player" + banIndex, PlayerManager.ID_TYPE.banId);
-        PlayerManager.instance.banList[banIndex] = PlayerPrefs.GetString((PlayerManager.ID_TYPE.banId + banIndex).ToString(), "");
+        PlayerManager.instance.banList.Add("player" + banIndex);
+        Debug.Log(PlayerPrefs.GetString(PlayerManager.ID_TYPE.playerName.ToString(), ""));
     }
+
+    public void DeleteBanList(int banIndex) {
+        PlayerManager.instance.banList.RemoveAt(banIndex);
+
+    }
+
+    //ブロックしたプレイヤーを削除する処理
+    //ブロックしたいプレイヤーをインスタンスする
+    //ブロックしたいプレイヤーのBanIndexをもとに削除する
 }

@@ -11,9 +11,11 @@ public class PlayerManager : MonoBehaviour
     //main
     public string playerName;
     public List<string> banList = new List<string>();
+    public Dictionary<string, string> banTable = new Dictionary<string, string>();
     public string myUniqueId;//自分の端末番号
     public static PlayerManager instance;
     public int banIndex;
+    public int banListMaxIndex;
 
     public enum ID_TYPE {
         myUniqueId,
@@ -53,7 +55,7 @@ public class PlayerManager : MonoBehaviour
                 if (PlayerPrefs.HasKey(ID_TYPE.banId.ToString() + banIndex.ToString())) {
                     Debug.Log(ID_TYPE.banId.ToString() + banIndex.ToString() + "Keyあり");
                 } else {
-                    Debug.Log((ID_TYPE.banId.ToString() + banIndex.ToString()) + "Keyなし");
+                    Debug.Log(ID_TYPE.banId.ToString() + banIndex.ToString() + "Keyなし");
                 }
                 break;
             case ID_TYPE.playerName:
@@ -71,14 +73,6 @@ public class PlayerManager : MonoBehaviour
         
         //端末の中に保存する
         PlayerPrefs.Save();
-    }
-
-    /// <summary>
-    /// banListにプレイヤーを追加します。
-    /// </summary>
-    public void SetBanList(int banIndex) {
-        SetStringForPlayerPrefs("player" + banIndex, ID_TYPE.banId);
-        banList[banIndex] = PlayerPrefs.GetString((ID_TYPE.banId + banIndex).ToString(), "");
     }
 
 }

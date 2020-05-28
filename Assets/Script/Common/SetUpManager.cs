@@ -10,11 +10,16 @@ using System;
 public class SetUpManager : MonoBehaviour
 {
 
-    //test
+    public bool resetSwich;
     
     void Start()
     {
-        //PlayerPrefs.DeleteAll();
+
+        //DeBug用　trueならPlayerPrefsのKeyを削除する
+        if (resetSwich) {
+            PlayerPrefs.DeleteAll();
+        }
+        
 
         //自分のIDのロードをする、ない場合は空白を入れる
         PlayerManager.instance.myUniqueId = PlayerPrefs.GetString(PlayerManager.ID_TYPE.myUniqueId.ToString(),"");
@@ -39,11 +44,19 @@ public class SetUpManager : MonoBehaviour
         //    PlayerManager.instance.banIndex++;
         //}
 
-        //BanListのロード
-        for (int i = 0; i < PlayerManager.instance.banList.Count; i++) {
-            PlayerManager.instance.banList[i] = PlayerPrefs.GetString((PlayerManager.ID_TYPE.banId +i).ToString(), "");
-            Debug.Log(PlayerManager.instance.banList[i]);
+
+
+        //BanListのロード,BanListが0人の場合は回さない
+        for (int i = 0; i < PlayerManager.instance.banListMaxIndex; i++) {
+            if (PlayerPrefs.HasKey(PlayerManager.ID_TYPE.banId.ToString() + i.ToString())) {
+
+
+                PlayerManager.instance.banList.Add(PlayerPrefs.GetString(PlayerManager.ID_TYPE.banId.ToString() + i.ToString(), ""));
+                Debug.Log(PlayerManager.instance.banList[i]);
+                Debug.Log(PlayerManager.ID_TYPE.banId.ToString() + i.ToString());
+            }
         }
+        
 
         //PlayerNameが登録されてない場合は準備シーンにて名前を登録する
         //自分の名前をロードする
