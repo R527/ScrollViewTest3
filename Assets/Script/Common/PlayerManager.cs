@@ -10,16 +10,19 @@ public class PlayerManager : MonoBehaviour
 
     //main
     public string playerName;
-    public List<string> banList = new List<string>();
+    public List<string> banUniqueIDList = new List<string>();
+    public List<string> banUserNickNameList = new List<string>();
+    public int banIndex;//ban番号の通し番号
     public Dictionary<string, string> banTable = new Dictionary<string, string>();
     public string myUniqueId;//自分の端末番号
     public static PlayerManager instance;
-    public int banIndex;
     public int banListMaxIndex;
 
     public enum ID_TYPE {
         myUniqueId,
-        banId,
+        banUniqueID,
+        banUserNickName,
+        banIndex,
         playerName,
         friendId
     }
@@ -34,8 +37,9 @@ public class PlayerManager : MonoBehaviour
     }
 
 
+
     /// <summary>
-    /// PlayerPrefsにデータをセットする
+    /// PlayerPrefsにstringをセットする
     /// </summary>
     /// <param name="setString"></param>
     /// <param name="idType"></param>
@@ -49,22 +53,16 @@ public class PlayerManager : MonoBehaviour
                 PlayerPrefs.SetString(ID_TYPE.myUniqueId.ToString(), setString);
                 break;
 
-                //banListへPlayerIDを追加する
-            case ID_TYPE.banId:
-                PlayerPrefs.SetString(ID_TYPE.banId.ToString() + banIndex.ToString(), setString);
-                if (PlayerPrefs.HasKey(ID_TYPE.banId.ToString() + banIndex.ToString())) {
-                    Debug.Log(ID_TYPE.banId.ToString() + banIndex.ToString() + "Keyあり");
-                } else {
-                    Debug.Log(ID_TYPE.banId.ToString() + banIndex.ToString() + "Keyなし");
-                }
+            //banUniqueIDListへUniqueIDを追加する
+            case ID_TYPE.banUniqueID:
+                PlayerPrefs.SetString(ID_TYPE.banUniqueID.ToString() + banIndex.ToString(), setString);
+                break;
+            //banUserNickNameListへバンした名前を追加
+            case ID_TYPE.banUserNickName:
+                PlayerPrefs.SetString(ID_TYPE.banUserNickName.ToString() + banIndex.ToString(), setString);
                 break;
             case ID_TYPE.playerName:
                 PlayerPrefs.SetString(ID_TYPE.playerName.ToString(), setString);
-                //if (PlayerPrefs.HasKey(ID_TYPE.playerName.ToString())) {
-                //    Debug.Log("Keyあり");
-                //} else {
-                //    Debug.Log("Keyなし");
-                //}
                 break;
             case ID_TYPE.friendId:
                 break;
@@ -73,6 +71,44 @@ public class PlayerManager : MonoBehaviour
         
         //端末の中に保存する
         PlayerPrefs.Save();
+    }
+
+
+    /// <summary>
+    /// PlayerPrefsに数字をセットする
+    /// </summary>
+    /// <param name="setInt"></param>
+    /// <param name="idType"></param>
+    public void SetIntForPlayerPrefs(int setInt, ID_TYPE idType) {
+        switch (idType) {
+            case ID_TYPE.banIndex:
+                PlayerPrefs.SetInt(ID_TYPE.banIndex.ToString(), setInt);
+                break;
+        }
+        PlayerPrefs.Save();
+    }
+
+
+    /// <summary>
+    /// banListにプレイヤーを追加します。
+    /// </summary>
+    public void SetBanList() {
+        //Ban枠の限界を見る
+        if (banUniqueIDList.Count >= 3) {
+            Debug.Log("Ban枠がいっぱいです。");
+            return;
+        }
+        
+        //Ban登録
+        SetStringForPlayerPrefs("banUniqueID" + banIndex, ID_TYPE.banUniqueID);
+        SetStringForPlayerPrefs("playerName" + banIndex, ID_TYPE.banUserNickName);
+        banUniqueIDList.Add("banUniqueID" + banIndex);
+        banUserNickNameList.Add("playerName" + banIndex);
+        Debug.Log(PlayerPrefs.GetString(ID_TYPE.playerName.ToString(), ""));
+
+        //Banの通し番号加算
+        SetIntForPlayerPrefs(banIndex + 1, ID_TYPE.banIndex);
+        banIndex++;
     }
 
 }

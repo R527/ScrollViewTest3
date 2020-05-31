@@ -16,12 +16,13 @@ public class Title : MonoBehaviour
     public GameObject menuPopUp;
     public GameObject playerInfoPopUpObj;
     public GameObject begginerGuidePopUp;
+    public BanPlayer banPlayerPrefab;
+    public Transform banListtran;
     public Button playerInfoButton;
 
-    //test
-    public Button bantest1;
-    public Button bantest2;
-    public Button bantest3;
+    public Button testBtn;
+
+
 
     private void Start() {
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);
@@ -30,12 +31,8 @@ public class Title : MonoBehaviour
         menuButton.onClick.AddListener(MenuPopUp);
         playerInfoButton.onClick.AddListener(PlayerInfoPopUP);
 
-        //test
-        bantest1.onClick.AddListener(() => SetBanList(0));
-        bantest2.onClick.AddListener(() => SetBanList(1));
-        bantest3.onClick.AddListener(() => SetBanList(2));
-
-
+        testBtn.onClick.AddListener(PlayerManager.instance.SetBanList);
+        CreateBanList();
     }
     public void PlayerInfoPopUP() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
@@ -57,22 +54,22 @@ public class Title : MonoBehaviour
         Instantiate(begginerGuidePopUp);
     }
 
+
     /// <summary>
-    /// banListにプレイヤーを追加します。
+    /// 起動時にBanListを作成する
     /// </summary>
-    public void SetBanList(int banIndex) {
-        if(PlayerManager.instance.banList.Count >= 3) {
-            return;
+    public void CreateBanList() {
+
+        ////BanListがないなら実行しない
+        //if(PlayerManager.instance.banListMaxIndex <= 0) {
+        //    return;
+        //}
+
+        //BanList作成
+        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
+            BanPlayer banplayer = Instantiate(banPlayerPrefab, banListtran, false);
+            banplayer.SetUp(PlayerManager.instance.banUniqueIDList[i], PlayerManager.instance.banUserNickNameList[i]);
         }
-        PlayerManager.instance.banIndex = banIndex;
-        PlayerManager.instance.SetStringForPlayerPrefs("player" + banIndex, PlayerManager.ID_TYPE.banId);
-        PlayerManager.instance.banList.Add("player" + banIndex);
-        Debug.Log(PlayerPrefs.GetString(PlayerManager.ID_TYPE.playerName.ToString(), ""));
-    }
-
-    public void DeleteBanList(int banIndex) {
-        PlayerManager.instance.banList.RemoveAt(banIndex);
-
     }
 
     //ブロックしたプレイヤーを削除する処理

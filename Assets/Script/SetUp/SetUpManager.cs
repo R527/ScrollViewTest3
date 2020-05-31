@@ -36,42 +36,27 @@ public class SetUpManager : MonoBehaviour
             Debug.Log(PlayerManager.instance.myUniqueId);
         }
 
-        //test用にBanList追加
-        //for (int i = 0; i < PlayerManager.instance.banList.Count; i++) {
-        //    Debug.Log(PlayerManager.instance.banIndex);
-        //    PlayerManager.instance.SetStringForPlayerPrefs("player" + i, PlayerManager.ID_TYPE.banId);
-        //    Debug.Log("player" + i);
-        //    PlayerManager.instance.banIndex++;
-        //}
-
-
-
         //BanListのロード,BanListが0人の場合は回さない
         for (int i = 0; i < PlayerManager.instance.banListMaxIndex; i++) {
-            if (PlayerPrefs.HasKey(PlayerManager.ID_TYPE.banId.ToString() + i.ToString())) {
-
-
-                PlayerManager.instance.banList.Add(PlayerPrefs.GetString(PlayerManager.ID_TYPE.banId.ToString() + i.ToString(), ""));
-                Debug.Log(PlayerManager.instance.banList[i]);
-                Debug.Log(PlayerManager.ID_TYPE.banId.ToString() + i.ToString());
+            if (PlayerPrefs.HasKey(PlayerManager.ID_TYPE.banUniqueID.ToString() + i.ToString())) {
+                PlayerManager.instance.banUniqueIDList.Add(PlayerPrefs.GetString(PlayerManager.ID_TYPE.banUniqueID.ToString() + i.ToString(), ""));
+                PlayerManager.instance.banUserNickNameList.Add(PlayerPrefs.GetString(PlayerManager.ID_TYPE.banUserNickName.ToString() + i.ToString(), ""));
             }
         }
+
+        //ban専用の通し番号を取得する
+        PlayerManager.instance.banIndex = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.banIndex.ToString(), 0);
         
 
         //PlayerNameが登録されてない場合は準備シーンにて名前を登録する
         //自分の名前をロードする
         //PlayerPrefs.DeleteKey(PlayerManager.ID_TYPE.playerName.ToString());
         PlayerManager.instance.playerName = PlayerPrefs.GetString(PlayerManager.ID_TYPE.playerName.ToString(), "");
-        //if (PlayerPrefs.HasKey(PlayerManager.ID_TYPE.playerName.ToString())) {
-        //    Debug.Log("Keyあり");
-        //} else {
-        //    Debug.Log("Keyなし");
-        //}
+
         Debug.Log(PlayerManager.instance.playerName);
         //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
         if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {
             SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
-            return;
         } else {
             SceneStateManager.instance.NextScene(SCENE_TYPE.準備);
         }
