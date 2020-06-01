@@ -66,7 +66,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             //部屋が開いている状態にする
             IsOpen = true
         };
-
+        //BanListの登録用→後程解凍する
+        string banListStr = room.GetStringBanList();
+        Debug.Log(banListStr);
         //部屋の各役職の人数を一度一つのストリングにまとめたもの→後程解凍
         string numListStr = room.GetStringFromIntArray(room.rollNumList.ToArray());
         //部屋IDを決定する　名前とリアルタイムで
@@ -81,6 +83,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"fortuneType", room.fortuneType },
             {"openVoting", room.openVoting },
             {"numListStr", numListStr},
+            {"banListStr", banListStr }
+
         };
         //カスタムプロパティで設定したキーをロービーで参照できるようにする
         roomOptions.CustomRoomPropertiesForLobby = new string[] {
@@ -90,7 +94,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             "fortuneType",
             "openVoting",
             "roomId",
-            "numListStr"
+            "numListStr",
+            "banListStr"
         };
         roomOptions.CustomRoomProperties = customRoomProperties;
         //部屋のIdを取得
@@ -129,15 +134,42 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// 入室時に使われる
     /// </summary>
     public override void OnJoinedRoom() {
-        Debug.Log("OnJoinedRoom");
+        
         //InRoom＝そのプレイヤーが部屋にいるかどうか～tureなら
-        if (PhotonNetwork.InRoom) {
-            PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
-            Debug.Log("NickName;" + PhotonNetwork.LocalPlayer.NickName);
-            Debug.Log("RoomName:" + PhotonNetwork.CurrentRoom.Name);
-            Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);
-            Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);
+        if (!PhotonNetwork.InRoom) {
+            return;
         }
+
+        bool isBanCheck = false;
+        //自分のBanListを見る
+        Debug.Log(PhotonNetwork.PlayerList.Length);
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerListOthers) {
+            foreach (string banUniqueID in PlayerManager.instance.banUniqueIDList) {
+                if ((string)player.CustomProperties["myUniqueID"] == banUniqueID) {
+                    Debug.Log("banPlayerがいます。");
+
+                    //退出説明のPopUp表示してから退出処理をする
+                    isBanCheck = true;
+                    //Instantiate();
+
+                    PhotonNetwork.LeaveRoom();
+                    break;
+                }
+            }
+        }
+
+        if (isBanCheck) {
+            return;
+        }
+
+        Debug.Log("OnJoinedRoom");
+        PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
+        Debug.Log("NickName;" + PhotonNetwork.LocalPlayer.NickName);
+        Debug.Log("RoomName:" + PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);
+        Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);
+
+
         //シーン遷移
         PhotonNetwork.IsMessageQueueRunning = false;
         SceneStateManager.instance.NextScene(SCENE_TYPE.GAME);
@@ -145,6 +177,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //プレイヤー作成
         StartCoroutine(FirstCreatePlayerObj());
+
     }
 
     /// <summary>
@@ -209,7 +242,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
+        Debug.Log("OnPlayerEnteredRoom");
         if (PhotonNetwork.IsMasterClient) {
+            
             StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
         }
     }

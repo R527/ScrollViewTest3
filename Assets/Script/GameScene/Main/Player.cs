@@ -69,9 +69,18 @@ public class Player : MonoBehaviourPunCallbacks {
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         buttontran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         chatTran = GameObject.FindGameObjectWithTag("ChatContent").transform;
-        
-        //playerButton.onClick.AddListener(() => OnClickPlayerButton());
 
+        //BanListをカスタムプロパティにセットする
+        var propertiers = new ExitGames.Client.Photon.Hashtable();
+        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count ; i++) {
+            propertiers.Add("banUniqueID" + i.ToString(), PlayerManager.instance.banUniqueIDList[i]);
+        }
+        propertiers.Add("myUniqueID",PlayerManager.instance.myUniqueId);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+        for(int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
+            Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
+        }
+        
         //生存者にする
         live = true;
 
@@ -273,8 +282,8 @@ public class Player : MonoBehaviourPunCallbacks {
                         votingCompleted = (bool)votingCompletedObj;
                     }
                     var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                    {"votingCompleted",votingCompleted }
-                                };
+                        {"votingCompleted",votingCompleted }
+                    };
                     player.SetCustomProperties(propertiers);
                 }
 

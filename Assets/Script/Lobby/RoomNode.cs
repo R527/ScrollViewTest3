@@ -32,7 +32,9 @@ public class RoomNode : MonoBehaviour
     public ROOMSELECTION roomSelection;
     public string roomId;
     public List<int> rollNumList = new List<int>();
+    public List<string> banList = new List<string>();
     public Photon.Realtime.RoomInfo roomInfo;
+
     
     /// <summary>
     /// 部屋を作った人（マスターだけが利用する
@@ -81,10 +83,19 @@ public class RoomNode : MonoBehaviour
         titleText.text = title;
         enterButtonText.text = info.PlayerCount + "/" + settingNum + "入室";
         enterButton.interactable = (info.PlayerCount < info.MaxPlayers);
-        if(gameObject != null) {
+
+        //banListStrを解凍する
+        string banPlayer = (string)info.CustomProperties["banListStr"];
+        Debug.Log(banPlayer);
+        banList = banPlayer.Split(',').ToList<string>();
+
+        //GameObjectがNullでなければ、
+        //かつ自分がBanListに登録されていなければtrueにする
+        gameObject.SetActive(false);
+        if (gameObject != null && !CheckBanListToRoomOwner()) {
+            Debug.Log("RoomTrue");
             gameObject.SetActive(true);
         }
-        
 
         //ルール設定を表示する
         mainTime = (int)info.CustomProperties["mainTime"];
@@ -100,12 +111,29 @@ public class RoomNode : MonoBehaviour
         //役職情報取得
         string roll = (string)info.CustomProperties["numListStr"];
         Debug.Log(roll);
-        //NumListを解凍する
+        //RollListを解凍する
         int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
         rollNumList = intArray.ToList();
 
+        
+
         //役職テキスト表示
         DisplayRollList(rollNumList);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckBanListToRoomOwner() {
+        bool isRoomActivate = false;
+        foreach (string banUniqueID in banList) {
+            if(banUniqueID.Contains(PlayerManager.instance.myUniqueId)) {
+                isRoomActivate = true;
+                break;
+            } 
+        }
+        return isRoomActivate;
     }
 
     /// <summary>
@@ -176,6 +204,23 @@ public class RoomNode : MonoBehaviour
         if(retStr != "") {
             //最後のカンマを取り除く
             return retStr.Substring(0, retStr.Length - 1);
+        } else {
+            return "";
+        }
+    }
+
+    /// <summary>
+    /// 文字列をBanListに解凍する
+    /// </summary>
+    /// <returns></returns>
+    public string GetStringBanList() {
+        string banListStr = "";
+        foreach(string str in PlayerManager.instance.banUniqueIDList) {
+            banListStr += str + ",";
+        }
+        if (banListStr != "") {
+            //最後のカンマを取り除く
+            return banListStr.Substring(0, banListStr.Length - 1);
         } else {
             return "";
         }
