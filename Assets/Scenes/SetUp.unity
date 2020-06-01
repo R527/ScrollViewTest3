@@ -317,10 +317,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  banList: []
-  myUniqueId: 
+  banUniqueIDList: []
+  banUserNickNameList: []
   banIndex: 0
-  banListMaxIndex: 3
+  myUniqueId: 
+  banListMaxIndex: 0
 --- !u!1 &2820532273166376551
 GameObject:
   m_ObjectHideFlags: 0

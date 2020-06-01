@@ -17,6 +17,7 @@ public class SetUpManager : MonoBehaviour
 
         //DeBug用　trueならPlayerPrefsのKeyを削除する
         if (resetSwich) {
+            Debug.Log("Key削除");
             PlayerPrefs.DeleteAll();
         }
         
@@ -36,7 +37,11 @@ public class SetUpManager : MonoBehaviour
             Debug.Log(PlayerManager.instance.myUniqueId);
         }
 
-        //BanListのロード,BanListが0人の場合は回さない
+
+
+        //BanListのロード
+        //,BanListが0人の場合は回さない
+        PlayerManager.instance.banListMaxIndex = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.banListMaxIndex.ToString(),0);
         for (int i = 0; i < PlayerManager.instance.banListMaxIndex; i++) {
             if (PlayerPrefs.HasKey(PlayerManager.ID_TYPE.banUniqueID.ToString() + i.ToString())) {
                 PlayerManager.instance.banUniqueIDList.Add(PlayerPrefs.GetString(PlayerManager.ID_TYPE.banUniqueID.ToString() + i.ToString(), ""));

@@ -21,6 +21,7 @@ TagManager:
   - ComingOut
   - PlayerButton
   - GameCanvas
+  - Title
   layers:
   - Default
   - TransparentFX

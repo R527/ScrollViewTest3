@@ -61,9 +61,9 @@ public class Title : MonoBehaviour
     public void CreateBanList() {
 
         ////BanListがないなら実行しない
-        //if(PlayerManager.instance.banListMaxIndex <= 0) {
-        //    return;
-        //}
+        if (PlayerManager.instance.banListMaxIndex <= 0) {
+            return;
+        }
 
         //BanList作成
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {

@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
-
 
 
     //main
@@ -23,6 +21,7 @@ public class PlayerManager : MonoBehaviour
         banUniqueID,
         banUserNickName,
         banIndex,
+        banListMaxIndex,
         playerName,
         friendId
     }
@@ -35,7 +34,6 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 
 
     /// <summary>
@@ -81,8 +79,13 @@ public class PlayerManager : MonoBehaviour
     /// <param name="idType"></param>
     public void SetIntForPlayerPrefs(int setInt, ID_TYPE idType) {
         switch (idType) {
+
+            //BanList関連
             case ID_TYPE.banIndex:
                 PlayerPrefs.SetInt(ID_TYPE.banIndex.ToString(), setInt);
+                break;
+            case ID_TYPE.banListMaxIndex:
+                PlayerPrefs.SetInt(ID_TYPE.banListMaxIndex.ToString(), setInt);
                 break;
         }
         PlayerPrefs.Save();
@@ -98,6 +101,19 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Ban枠がいっぱいです。");
             return;
         }
+
+        //空いている通し番号を探す
+        for(int i = 0; i < 3; i++) {
+            Debug.Log("test");
+            Debug.Log(PlayerPrefs.HasKey(ID_TYPE.banUniqueID.ToString() + i.ToString()));
+            if(!PlayerPrefs.HasKey (ID_TYPE.banUniqueID.ToString() + i.ToString())){
+                Debug.Log(i);
+                banIndex = i;
+                banListMaxIndex = i + 1;
+                SetIntForPlayerPrefs(banListMaxIndex, ID_TYPE.banListMaxIndex);
+                break;
+            } 
+        }
         
         //Ban登録
         SetStringForPlayerPrefs("banUniqueID" + banIndex, ID_TYPE.banUniqueID);
@@ -106,9 +122,8 @@ public class PlayerManager : MonoBehaviour
         banUserNickNameList.Add("playerName" + banIndex);
         Debug.Log(PlayerPrefs.GetString(ID_TYPE.playerName.ToString(), ""));
 
-        //Banの通し番号加算
-        SetIntForPlayerPrefs(banIndex + 1, ID_TYPE.banIndex);
-        banIndex++;
+        
+
     }
 
 }
