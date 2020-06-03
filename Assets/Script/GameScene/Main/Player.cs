@@ -80,7 +80,7 @@ public class Player : MonoBehaviourPunCallbacks {
         for(int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
             Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
         }
-        
+        Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["myUniqueID"]);
         //生存者にする
         live = true;
 

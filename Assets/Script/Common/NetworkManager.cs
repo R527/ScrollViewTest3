@@ -140,27 +140,27 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             return;
         }
 
-        bool isBanCheck = false;
-        //自分のBanListを見る
-        Debug.Log(PhotonNetwork.PlayerList.Length);
-        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerListOthers) {
-            foreach (string banUniqueID in PlayerManager.instance.banUniqueIDList) {
-                if ((string)player.CustomProperties["myUniqueID"] == banUniqueID) {
-                    Debug.Log("banPlayerがいます。");
+        //bool isBanCheck = false;
+        ////自分BANIDとすでに入室しているmyUniqueIDを比べて一致したら退出する
+        //Debug.Log(PhotonNetwork.PlayerList.Length);
+        //foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerListOthers) {
+        //    foreach (string banUniqueID in PlayerManager.instance.banUniqueIDList) {
+        //        if ((string)player.CustomProperties["myUniqueID"] == banUniqueID) {
+        //            Debug.Log("banPlayerがいます。");
 
-                    //退出説明のPopUp表示してから退出処理をする
-                    isBanCheck = true;
-                    //Instantiate();
+        //            //退出説明のPopUp表示してから退出処理をする
+        //            isBanCheck = true;
+        //            //Instantiate();
 
-                    PhotonNetwork.LeaveRoom();
-                    break;
-                }
-            }
-        }
+        //            PhotonNetwork.LeaveRoom();
+        //            break;
+        //        }
+        //    }
+        //}
 
-        if (isBanCheck) {
-            return;
-        }
+        //if (isBanCheck) {
+        //    return;
+        //}
 
         Debug.Log("OnJoinedRoom");
         PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
@@ -243,10 +243,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
         Debug.Log("OnPlayerEnteredRoom");
-        if (PhotonNetwork.IsMasterClient) {
-            
-            StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
-        }
+        StartCoroutine(BanPlayerKickOutOREnteredRoom(newPlayer));
     }
 
     /// <summary>
@@ -274,6 +271,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CloseConnection(player);
     }
 
+
+    //////////////////////////////
+    ///メソッド
+    //////////////////////////////
+
     /// <summary>
     /// ゲーム開始前にプレイヤーを作成する
     /// ロールなど詳細な情報は後程追加する
@@ -289,5 +291,47 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         Player player = playerObj.GetComponent<Player>();
         gameManager.chatSystem.myPlayer = player;
 
+    }
+
+
+    /// <summary>
+    /// 他プレイヤーが入室したときにBanListをみてプレイヤーをキックするか否かを決める
+    /// </summary>
+    /// <param name="newPlayer"></param>
+    /// <returns></returns>
+    private IEnumerator BanPlayerKickOutOREnteredRoom(Photon.Realtime.Player newPlayer) {
+        while (newPlayer.CustomProperties["myUniqueID"] == null) {
+            yield return null;
+        }
+
+        //すでに入室しているBanListと新しく入ってきたPlayerのIDを比べて一致したら退出させる
+        bool isBanCheck = false;
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+
+            //if (player == newPlayer) continue;
+
+            for (int i = 0; i < 3; i++) {
+                Debug.Log((string)player.CustomProperties["banUniqueID" + i.ToString()]);
+                Debug.Log((string)newPlayer.CustomProperties["myUniqueID"]);
+                if ((string)player.CustomProperties["banUniqueID" + i.ToString()] == (string)newPlayer.CustomProperties["myUniqueID"]) {
+
+                    Debug.Log("banPlayerがいます。");
+
+                    //退出説明のPopUp表示してから退出処理をする
+                    isBanCheck = true;
+                    //Instantiate();
+
+                    KickOutPlayer(newPlayer);
+                    break;
+                }
+            }
+        }
+
+
+        if (isBanCheck) {
+            yield break;
+        }
+
+        StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
     }
 }

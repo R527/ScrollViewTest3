@@ -91,11 +91,11 @@ public class RoomNode : MonoBehaviour
 
         //GameObjectがNullでなければ、
         //かつ自分がBanListに登録されていなければtrueにする
-        gameObject.SetActive(false);
-        if (gameObject != null && !CheckBanListToRoomOwner()) {
-            Debug.Log("RoomTrue");
-            gameObject.SetActive(true);
-        }
+        //gameObject.SetActive(false);
+        //if (gameObject != null && !CheckBanListToRoomOwner()) {
+        //    Debug.Log("RoomTrue");
+        //    gameObject.SetActive(true);
+        //}
 
         //ルール設定を表示する
         mainTime = (int)info.CustomProperties["mainTime"];
