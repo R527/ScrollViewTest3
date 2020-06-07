@@ -22,9 +22,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
     //main
     public int playerID;
-    //public Text playerText;
     public string playerName;
-    //public Button playerButton;
     public bool live;//生死 trueで生存している
     public bool fortune;//占い結果 true=黒
     public bool spiritual;//霊能結果　true = 黒
@@ -35,19 +33,15 @@ public class Player : MonoBehaviourPunCallbacks {
     public int iconNo;//アイコンの絵用
     public PlayerButton playerButton;
     private Transform chatTran;
-    private Transform buttontran;
+   
 
     //投票関連
     public bool isVoteFlag; //投票を下か否か　falseなら非投票
-    //public int voteNum;//そのPlayerの投票数
-    //public string voteName;//投票したプレイヤーの名前を記載
-    //public bool votingCompleted;//投票完了
-    //夜の行動
     public bool isRollAction;//夜の行動をとったか否か
 
     //PlayerButton
     public PlayerButton playerButtonPrefab;
-
+    private Transform buttontran;
 
     //masterのみCheckOnLine用
     private float checkTimer;
@@ -64,6 +58,14 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
 
     private void Start() {
+
+        //CheckBanListの待機中
+        if (PhotonNetwork.IsMasterClient) {
+            NetworkManager.instance.isBanCheck = true;
+        }
+        NetworkManager.instance.checkBanListCoroutine = CheckBanList();
+        StartCoroutine(NetworkManager.instance.checkBanListCoroutine);
+
         Debug.Log("FirstSetUp");
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
@@ -100,6 +102,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         ////プレイヤーボタン作成
         if (photonView.IsMine) {
+            
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
         }
         
@@ -111,8 +114,7 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     [PunRPC]
     private void CreatePlayerButton() {
-        Debug.Log(playerButtonPrefab);
-        Debug.Log(gameManager);
+        Debug.Log("CreatePlayerButton");
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
@@ -302,6 +304,29 @@ public class Player : MonoBehaviourPunCallbacks {
         }
     }
 
+    ///// <summary>
+    ///// BanListをチェックしている間は待つ
+    ///// チェックし終えてからPlayerを作成する
+    ///// </summary>
+    ///// <returns></returns>
+    //public IEnumerator CreatePlayerButton() {
+    //    while (!NetworkManager.instance.isBanCheck) {
+    //        yield return null;
+    //    }
+    //    Debug.Log(!NetworkManager.instance.isBanCheck);
+
+        
+
+        
+    //}
+
+    public IEnumerator CheckBanList() {
+        while (!NetworkManager.instance.isBanCheck) {
+            yield return null;
+        }
+        Debug.Log(!NetworkManager.instance.isBanCheck);
+        NetworkManager.instance.isBanCheck = false;
+    }
 
     /////////////////////
     ///カスタムプロパティ関連

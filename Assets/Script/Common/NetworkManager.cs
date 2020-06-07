@@ -24,7 +24,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public GameObject roomContent;
     private Dictionary<string, RoomNode> activeEntries = new Dictionary<string, RoomNode>();
     private Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
-
+    public bool isBanCheck;
+    public IEnumerator checkBanListCoroutine = null;
 
 
 
@@ -42,6 +43,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
         roomContent = GameObject.FindGameObjectWithTag("content");
+
         
     }
 
@@ -232,6 +234,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
+    /// 強制退出させます。
+    /// </summary>
+    public void ForcedExitRoom() {
+        gameManager.timeController.isGameOver = false;
+        if (PhotonNetwork.InRoom) {
+            PhotonNetwork.LeaveRoom();
+            Debug.Log("強制退出完了");
+        }
+    }
+
+    /// <summary>
     /// 部屋から退出したときに自動で呼ばれる
     /// </summary>
     public override void OnLeftRoom() {
@@ -300,15 +313,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="newPlayer"></param>
     /// <returns></returns>
     private IEnumerator BanPlayerKickOutOREnteredRoom(Photon.Realtime.Player newPlayer) {
+
         while (newPlayer.CustomProperties["myUniqueID"] == null) {
             yield return null;
         }
 
         //すでに入室しているBanListと新しく入ってきたPlayerのIDを比べて一致したら退出させる
-        bool isBanCheck = false;
+        //bool isBanCheck = false;
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-
-            //if (player == newPlayer) continue;
 
             for (int i = 0; i < 3; i++) {
                 Debug.Log((string)player.CustomProperties["banUniqueID" + i.ToString()]);
@@ -316,22 +328,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 if ((string)player.CustomProperties["banUniqueID" + i.ToString()] == (string)newPlayer.CustomProperties["myUniqueID"]) {
 
                     Debug.Log("banPlayerがいます。");
-
-                    //退出説明のPopUp表示してから退出処理をする
+                    var propertiers = new ExitGames.Client.Photon.Hashtable();
+                    propertiers.Add("isBanPlayer", true);
+                    newPlayer.SetCustomProperties(propertiers);
+                    
+                    StopCoroutine(checkBanListCoroutine);
                     isBanCheck = true;
-                    //Instantiate();
-
-                    KickOutPlayer(newPlayer);
+                    //KickOutPlayer(newPlayer);
                     break;
                 }
             }
         }
 
-
+        //BanPlayerがいる場合ここで処理を停止する
         if (isBanCheck) {
             yield break;
         }
 
+        
         StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
     }
+
+
 }
