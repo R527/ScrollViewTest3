@@ -13,7 +13,7 @@ public class ExitPopUp : MonoBehaviour
 {
     public Text exitText;
     public Button exitButton;
-
+    float chekTimer;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +23,6 @@ public class ExitPopUp : MonoBehaviour
     // Update is called once per frame
     void Update() {
         //時間経過でも退出させます（15秒
-        float chekTimer = 0;
         chekTimer += Time.deltaTime;
         if (chekTimer >= 15.0f) {
             NetworkManager.instance.ForcedExitRoom();

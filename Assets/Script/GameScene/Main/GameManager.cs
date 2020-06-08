@@ -55,22 +55,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Button enterButton;
 
     //その他
-    
-
     [Header("役職リスト")]
     public List<ROLLTYPE> rollTypeList = new List<ROLLTYPE>();//設定されている役職を追加
     public List<ROLLTYPE> ComingOutButtonList = new List<ROLLTYPE>();
 
+    public void GameManagerSetUp() {
 
-    //[Header("オフライン用(trueならOff)")]
-    //public bool isOffline;
-    //public List<ROLLTYPE> testRollTypeList = new List<ROLLTYPE>();
-
-    void Start() {
-        //Onlineなら以下の処理をする
-        //if (!isOffline) {
-        //    return;
-        //}
 
         //人数制限をセットする
         if (DebugManager.instance.isDebug) {

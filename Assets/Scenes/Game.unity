@@ -17135,6 +17135,7 @@ MonoBehaviour:
   exitPopUp: {fileID: 7388605932649085378, guid: 09cdaae80d914504086b8a11f9e95630,
     type: 3}
   tran: {fileID: 1221547292}
+  gameMnager: {fileID: 1130743578}
 --- !u!4 &1738310847
 Transform:
   m_ObjectHideFlags: 0

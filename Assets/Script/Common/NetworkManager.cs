@@ -318,23 +318,25 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             yield return null;
         }
 
+        var propertiers = new ExitGames.Client.Photon.Hashtable();
+
         //すでに入室しているBanListと新しく入ってきたPlayerのIDを比べて一致したら退出させる
         //bool isBanCheck = false;
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
 
             for (int i = 0; i < 3; i++) {
-                Debug.Log((string)player.CustomProperties["banUniqueID" + i.ToString()]);
-                Debug.Log((string)newPlayer.CustomProperties["myUniqueID"]);
+
                 if ((string)player.CustomProperties["banUniqueID" + i.ToString()] == (string)newPlayer.CustomProperties["myUniqueID"]) {
 
                     Debug.Log("banPlayerがいます。");
-                    var propertiers = new ExitGames.Client.Photon.Hashtable();
+
+                    //BanPlayerにbool型を送信します。
+                    
                     propertiers.Add("isBanPlayer", true);
                     newPlayer.SetCustomProperties(propertiers);
                     
                     StopCoroutine(checkBanListCoroutine);
                     isBanCheck = true;
-                    //KickOutPlayer(newPlayer);
                     break;
                 }
             }
@@ -345,7 +347,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             yield break;
         }
 
-        
+        propertiers.Add("isBanPlayer", false);
+        newPlayer.SetCustomProperties(propertiers);
         StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
     }
 
