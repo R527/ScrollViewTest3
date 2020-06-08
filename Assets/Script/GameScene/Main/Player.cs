@@ -22,9 +22,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
     //main
     public int playerID;
-    //public Text playerText;
     public string playerName;
-    //public Button playerButton;
     public bool live;//生死 trueで生存している
     public bool fortune;//占い結果 true=黒
     public bool spiritual;//霊能結果　true = 黒
@@ -35,19 +33,15 @@ public class Player : MonoBehaviourPunCallbacks {
     public int iconNo;//アイコンの絵用
     public PlayerButton playerButton;
     private Transform chatTran;
-    private Transform buttontran;
+   
 
     //投票関連
     public bool isVoteFlag; //投票を下か否か　falseなら非投票
-    //public int voteNum;//そのPlayerの投票数
-    //public string voteName;//投票したプレイヤーの名前を記載
-    //public bool votingCompleted;//投票完了
-    //夜の行動
     public bool isRollAction;//夜の行動をとったか否か
 
     //PlayerButton
     public PlayerButton playerButtonPrefab;
-
+    private Transform buttontran;
 
     //masterのみCheckOnLine用
     private float checkTimer;
@@ -62,20 +56,35 @@ public class Player : MonoBehaviourPunCallbacks {
     /// Playerが生成されたらそれぞれの設定を追加する
     /// 役職などの詳細は後程設定する
     /// </summary>
+    private IEnumerator Start() {
 
-    private void Start() {
+
+
         Debug.Log("FirstSetUp");
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         buttontran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         chatTran = GameObject.FindGameObjectWithTag("ChatContent").transform;
-        
-        //playerButton.onClick.AddListener(() => OnClickPlayerButton());
+
+        //BanListをカスタムプロパティにセットする
+        var propertiers = new ExitGames.Client.Photon.Hashtable();
+        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
+            propertiers.Add("banUniqueID" + i.ToString(), PlayerManager.instance.banUniqueIDList[i]);
+        }
+        propertiers.Add("myUniqueID", PlayerManager.instance.myUniqueId);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
+            Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
+        }
+        Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["myUniqueID"]);
 
         //生存者にする
         live = true;
 
         transform.SetParent(gameManager.playerListContent);
+
+        
+
         //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
         if (photonView.IsMine) {
             Debug.Log("IsMine");
@@ -83,17 +92,23 @@ public class Player : MonoBehaviourPunCallbacks {
             playerName = PhotonNetwork.LocalPlayer.NickName;
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
             playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-            
+
+        } 
+
+        //CheckBanListの待機中
+        if (!PhotonNetwork.IsMasterClient) {
+            NetworkManager.instance.checkBanListCoroutine = CheckBanList();
+            yield return StartCoroutine(NetworkManager.instance.checkBanListCoroutine);
+        }
+
+
+        //プレイヤーボタン作成
+        if (photonView.IsMine) {
+            photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
         } else {
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
             StartCoroutine(SetOtherPlayer());
         }
-
-        ////プレイヤーボタン作成
-        if (photonView.IsMine) {
-            photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
-        }
-        
     }
 
 
@@ -102,13 +117,17 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     [PunRPC]
     private void CreatePlayerButton() {
-        Debug.Log(playerButtonPrefab);
-        Debug.Log(gameManager);
+        Debug.Log("CreatePlayerButton");
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
-        //StartCoroutine(gameManager.SetPlayerButtonList());
+
+        var propertiers = new ExitGames.Client.Photon.Hashtable();
+        propertiers.Add("isCreatePlayerButton", false);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
     }
+
+
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
@@ -164,8 +183,6 @@ public class Player : MonoBehaviourPunCallbacks {
     /// オンラインチェック用
     /// </summary>
     private void Update() {
-
-      
 
         //masterのみ
         if (PhotonNetwork.IsMasterClient) {
@@ -236,11 +253,26 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <returns></returns>
 
     private IEnumerator SetOtherPlayer() {
+
+        //自分のボタンが作られるまで待つ
+        bool isCreatePlayerButton = true;
+        while (isCreatePlayerButton) {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCreatePlayerButton", out object isCreatePlayerButtonObj)) {
+                isCreatePlayerButton = (bool)isCreatePlayerButtonObj;
+                yield return null;
+            } else {
+                yield return null;
+            }
+            Debug.Log(isCreatePlayerButton);
+        }
+
         yield return new WaitForSeconds(2.0f);
 
         Debug.Log("othetrs");
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
+                Debug.Log(player.ActorNumber);
+                Debug.Log(player.NickName);
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
                 Debug.Log("palyerName" + playerName);
@@ -273,8 +305,8 @@ public class Player : MonoBehaviourPunCallbacks {
                         votingCompleted = (bool)votingCompletedObj;
                     }
                     var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                    {"votingCompleted",votingCompleted }
-                                };
+                        {"votingCompleted",votingCompleted }
+                    };
                     player.SetCustomProperties(propertiers);
                 }
 
@@ -293,6 +325,22 @@ public class Player : MonoBehaviourPunCallbacks {
         }
     }
 
+
+
+    public IEnumerator CheckBanList() {
+
+        bool isBanPlayer = true;
+        while (isBanPlayer) {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isBanPlayer", out object isBanPlayerObj)) {
+                isBanPlayer = (bool)isBanPlayerObj;
+                yield return null;
+            } else {
+                yield return null;
+            }
+            Debug.Log(isBanPlayer);
+        }
+        yield break;
+    }
 
     /////////////////////
     ///カスタムプロパティ関連

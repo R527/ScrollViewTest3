@@ -16,7 +16,13 @@ public class Title : MonoBehaviour
     public GameObject menuPopUp;
     public GameObject playerInfoPopUpObj;
     public GameObject begginerGuidePopUp;
+    public BanPlayer banPlayerPrefab;
+    public Transform banListtran;
     public Button playerInfoButton;
+
+    public Button testBtn;
+
+
 
     private void Start() {
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);
@@ -25,6 +31,8 @@ public class Title : MonoBehaviour
         menuButton.onClick.AddListener(MenuPopUp);
         playerInfoButton.onClick.AddListener(PlayerInfoPopUP);
 
+        testBtn.onClick.AddListener(PlayerManager.instance.SetBanList);
+        CreateBanList();
     }
     public void PlayerInfoPopUP() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
@@ -45,4 +53,26 @@ public class Title : MonoBehaviour
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         Instantiate(begginerGuidePopUp);
     }
+
+
+    /// <summary>
+    /// 起動時にBanListを作成する
+    /// </summary>
+    public void CreateBanList() {
+
+        ////BanListがないなら実行しない
+        if (PlayerManager.instance.banListMaxIndex <= 0) {
+            return;
+        }
+
+        //BanList作成
+        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
+            BanPlayer banplayer = Instantiate(banPlayerPrefab, banListtran, false);
+            banplayer.SetUp(PlayerManager.instance.banUniqueIDList[i], PlayerManager.instance.banUserNickNameList[i]);
+        }
+    }
+
+    //ブロックしたプレイヤーを削除する処理
+    //ブロックしたいプレイヤーをインスタンスする
+    //ブロックしたいプレイヤーのBanIndexをもとに削除する
 }

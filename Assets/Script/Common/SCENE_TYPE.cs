@@ -2,5 +2,6 @@
 {
     TITLE,
     LOBBY,
-    GAME
+    GAME,
+    準備
 }

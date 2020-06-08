@@ -1472,4 +1472,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9755b275ed87106478a67d0cce29a603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
+  playerName: 
+  banUniqueIDList: []
+  banUserNickNameList: []
+  banIndex: 0
+  myUniqueId: 
+  banListMaxIndex: 0
