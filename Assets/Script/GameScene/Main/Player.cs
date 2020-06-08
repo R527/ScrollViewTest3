@@ -56,15 +56,9 @@ public class Player : MonoBehaviourPunCallbacks {
     /// Playerが生成されたらそれぞれの設定を追加する
     /// 役職などの詳細は後程設定する
     /// </summary>
+    private IEnumerator Start() {
 
-    private void Start() {
 
-        //CheckBanListの待機中
-        if (PhotonNetwork.IsMasterClient) {
-            NetworkManager.instance.isBanCheck = true;
-        }
-        NetworkManager.instance.checkBanListCoroutine = CheckBanList();
-        StartCoroutine(NetworkManager.instance.checkBanListCoroutine);
 
         Debug.Log("FirstSetUp");
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
@@ -74,19 +68,23 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //BanListをカスタムプロパティにセットする
         var propertiers = new ExitGames.Client.Photon.Hashtable();
-        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count ; i++) {
+        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
             propertiers.Add("banUniqueID" + i.ToString(), PlayerManager.instance.banUniqueIDList[i]);
         }
-        propertiers.Add("myUniqueID",PlayerManager.instance.myUniqueId);
+        propertiers.Add("myUniqueID", PlayerManager.instance.myUniqueId);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
-        for(int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
+        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
             Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
         }
         Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["myUniqueID"]);
+
         //生存者にする
         live = true;
 
         transform.SetParent(gameManager.playerListContent);
+
+        
+
         //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
         if (photonView.IsMine) {
             Debug.Log("IsMine");
@@ -94,18 +92,23 @@ public class Player : MonoBehaviourPunCallbacks {
             playerName = PhotonNetwork.LocalPlayer.NickName;
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
             playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-            
+
+        } 
+
+        //CheckBanListの待機中
+        if (!PhotonNetwork.IsMasterClient) {
+            NetworkManager.instance.checkBanListCoroutine = CheckBanList();
+            yield return StartCoroutine(NetworkManager.instance.checkBanListCoroutine);
+        }
+
+
+        //プレイヤーボタン作成
+        if (photonView.IsMine) {
+            photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
         } else {
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
             StartCoroutine(SetOtherPlayer());
         }
-
-        ////プレイヤーボタン作成
-        if (photonView.IsMine) {
-            
-            photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
-        }
-        
     }
 
 
@@ -118,8 +121,13 @@ public class Player : MonoBehaviourPunCallbacks {
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
-        //StartCoroutine(gameManager.SetPlayerButtonList());
+
+        var propertiers = new ExitGames.Client.Photon.Hashtable();
+        propertiers.Add("isCreatePlayerButton", false);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
     }
+
+
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
     /// </summary>
@@ -175,8 +183,6 @@ public class Player : MonoBehaviourPunCallbacks {
     /// オンラインチェック用
     /// </summary>
     private void Update() {
-
-      
 
         //masterのみ
         if (PhotonNetwork.IsMasterClient) {
@@ -247,11 +253,26 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <returns></returns>
 
     private IEnumerator SetOtherPlayer() {
+
+        //自分のボタンが作られるまで待つ
+        bool isCreatePlayerButton = true;
+        while (isCreatePlayerButton) {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCreatePlayerButton", out object isCreatePlayerButtonObj)) {
+                isCreatePlayerButton = (bool)isCreatePlayerButtonObj;
+                yield return null;
+            } else {
+                yield return null;
+            }
+            Debug.Log(isCreatePlayerButton);
+        }
+
         yield return new WaitForSeconds(2.0f);
 
         Debug.Log("othetrs");
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
+                Debug.Log(player.ActorNumber);
+                Debug.Log(player.NickName);
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
                 Debug.Log("palyerName" + playerName);
@@ -304,28 +325,21 @@ public class Player : MonoBehaviourPunCallbacks {
         }
     }
 
-    ///// <summary>
-    ///// BanListをチェックしている間は待つ
-    ///// チェックし終えてからPlayerを作成する
-    ///// </summary>
-    ///// <returns></returns>
-    //public IEnumerator CreatePlayerButton() {
-    //    while (!NetworkManager.instance.isBanCheck) {
-    //        yield return null;
-    //    }
-    //    Debug.Log(!NetworkManager.instance.isBanCheck);
 
-        
-
-        
-    //}
 
     public IEnumerator CheckBanList() {
-        while (!NetworkManager.instance.isBanCheck) {
-            yield return null;
+
+        bool isBanPlayer = true;
+        while (isBanPlayer) {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isBanPlayer", out object isBanPlayerObj)) {
+                isBanPlayer = (bool)isBanPlayerObj;
+                yield return null;
+            } else {
+                yield return null;
+            }
+            Debug.Log(isBanPlayer);
         }
-        Debug.Log(!NetworkManager.instance.isBanCheck);
-        NetworkManager.instance.isBanCheck = false;
+        yield break;
     }
 
     /////////////////////

@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         //以下はマスターのみの処理
-        if(!PhotonNetwork.IsMasterClient) {
+        if (!PhotonNetwork.IsMasterClient) {
             return;
         }
 

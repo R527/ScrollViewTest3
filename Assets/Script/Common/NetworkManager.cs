@@ -314,9 +314,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     private IEnumerator BanPlayerKickOutOREnteredRoom(Photon.Realtime.Player newPlayer) {
 
+        Debug.Log(newPlayer.CustomProperties["myUniqueID"]);
         while (newPlayer.CustomProperties["myUniqueID"] == null) {
+            Debug.Log(newPlayer.CustomProperties["myUniqueID"]);
             yield return null;
         }
+        Debug.Log("BanPlayerKickOutOREnteredRoom");
 
         var propertiers = new ExitGames.Client.Photon.Hashtable();
 
@@ -344,9 +347,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //BanPlayerがいる場合ここで処理を停止する
         if (isBanCheck) {
+            Debug.Log("停止");
             yield break;
         }
 
+        Debug.Log("通過");
         propertiers.Add("isBanPlayer", false);
         newPlayer.SetCustomProperties(propertiers);
         StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));

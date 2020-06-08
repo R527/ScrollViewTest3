@@ -13,13 +13,13 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
     public Transform tran;
     public GameManager gameMnager;
 
-
     private void Start() {
-
+        
     }
-    // Update is called once per frame
-    void Update()
-    {
+
+
+    //Update is called once per frame
+    void Update() {
         //マスタークライアントなら除外
         if (PhotonNetwork.IsMasterClient) {
             gameMnager.GameManagerSetUp();
@@ -28,7 +28,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             return;
         }
 
-        if(PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"] == null) {
+        if (PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"] == null) {
             Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]);
             return;
         }
