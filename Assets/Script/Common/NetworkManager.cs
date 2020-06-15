@@ -26,6 +26,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     private Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
     public bool isBanCheck;
     public IEnumerator checkBanListCoroutine = null;
+    public IEnumerator banPlayerKickOutOREnteredRoomCoroutine = null;
+    public IEnumerator checkFullRoomCoroutine = null;
 
 
 
@@ -39,12 +41,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
     }
 
-    public  void SetUp() {
+    public void SetUp() {
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
         roomContent = GameObject.FindGameObjectWithTag("content");
 
-        
+
     }
 
     public override void OnConnectedToMaster() {
@@ -136,7 +138,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// 入室時に使われる
     /// </summary>
     public override void OnJoinedRoom() {
-        
+
         //InRoom＝そのプレイヤーが部屋にいるかどうか～tureなら
         if (!PhotonNetwork.InRoom) {
             return;
@@ -199,21 +201,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                     //部屋情報を読み取ってアクティブ化する
                     Debug.Log("Activate1");
                     roomNode.Activate(info);
-                   
+
                 } else {
                     //部屋がなくなった場合
                     activeEntries.Remove(info.Name);
-                   //部屋をfalse
+                    //部屋をfalse
                     //roomNode.Deactivate();
                     inactiveEntries.Push(roomNode);
                 }
                 //部屋が一つも作られていないとき
             } else if (!info.RemovedFromList) {
-                
+
                 roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
                 Debug.Log("Activate2");
                 roomNode.Activate(info);
-                
+
                 activeEntries.Add(info.Name, roomNode);
             }
         }
@@ -256,7 +258,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
         Debug.Log("OnPlayerEnteredRoom");
-        StartCoroutine(BanPlayerKickOutOREnteredRoom(newPlayer));
+        checkFullRoomCoroutine = SetCoroutine(newPlayer);
+        banPlayerKickOutOREnteredRoomCoroutine = BanPlayerKickOutOREnteredRoom(newPlayer);
+        StartCoroutine(checkFullRoomCoroutine);
+        StartCoroutine(banPlayerKickOutOREnteredRoomCoroutine);
     }
 
     /// <summary>
@@ -334,10 +339,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                     Debug.Log("banPlayerがいます。");
 
                     //BanPlayerにbool型を送信します。
-                    
+
                     propertiers.Add("isBanPlayer", true);
                     newPlayer.SetCustomProperties(propertiers);
-                    
+
                     StopCoroutine(checkBanListCoroutine);
                     isBanCheck = true;
                     break;
@@ -345,17 +350,51 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             }
         }
 
+
+
         //BanPlayerがいる場合ここで処理を停止する
+        //満室の場合もここで処理を止める
         if (isBanCheck) {
-            Debug.Log("停止");
+            Debug.Log("BanPlayerがいます");
             yield break;
         }
 
         Debug.Log("通過");
         propertiers.Add("isBanPlayer", false);
         newPlayer.SetCustomProperties(propertiers);
+
+        Debug.Log((bool)newPlayer.CustomProperties["isCheckFullRoom"]);
+        if ((bool)newPlayer.CustomProperties["isCheckFullRoom"]) {
+            Debug.Log("満室停止");
+            yield break;
+        }
+
         StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
     }
+
+    /// <summary>
+    /// 満室チェック
+    /// </summary>
+    /// <param name="newPlayer"></param>
+    /// <returns></returns>
+    public IEnumerator CheckFullRoom(Photon.Realtime.Player newPlayer) {
+        bool isCheck = false;
+        while (!isCheck) {
+            if (newPlayer.CustomProperties.TryGetValue("isCheckFullRoom", out object isCheckFullRoomObj)) {
+                isCheck = (bool)isCheckFullRoomObj;
+                StopCoroutine(checkFullRoomCoroutine);
+                yield return null;
+            } else {
+                yield return null;
+            }
+        }
+    }
+
+    private IEnumerator SetCoroutine(Photon.Realtime.Player newPlayer) {
+        yield return StartCoroutine(CheckFullRoom(newPlayer));
+        Debug.Log("チェック終了");
+    }
+
 
 
 }

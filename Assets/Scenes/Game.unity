@@ -10641,11 +10641,13 @@ MonoBehaviour:
   fillter: {fileID: 1018169728}
   comingOut: {fileID: 355552696}
   inputView: {fileID: 1018169722}
+  checkEnteredRoom: {fileID: 1738310846}
   NumText: {fileID: 2035613864}
   num: 0
   numLimit: 9
   liveNum: 0
   gameStart: 0
+  isCheckEnteredRoom: 0
   enterNum: 0
   enterNumTime: 25
   confirmationImage: {fileID: 797423580}
@@ -17105,7 +17107,7 @@ MonoBehaviour:
   exitPopUp: {fileID: 7388605932649085378, guid: 09cdaae80d914504086b8a11f9e95630,
     type: 3}
   tran: {fileID: 1221547292}
-  gameMnager: {fileID: 1130743578}
+  gameManager: {fileID: 1130743578}
 --- !u!4 &1738310847
 Transform:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Fillter fillter;
     public ComingOut comingOut;
     public InputView inputView;
+    public CheckEnteredRoom checkEnteredRoom;
 
     //入室関連
     public Text NumText;//入室してる人数
@@ -28,6 +29,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
     private float checkTimer;//人数チェック用タイム
 
     //入室確認
+    public bool isCheckEnteredRoom;//入室チェック
+
     public int enterNum;//参加希望人数
     public float enterNumTime;//30秒タイマーの残り時間（ゲーム参加再確認の時間
     public GameObject confirmationImage;//確認Image
@@ -61,14 +64,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     public void GameManagerSetUp() {
 
-
-        //人数制限をセットする
-        if (DebugManager.instance.isDebug) {
-            numLimit = DebugManager.instance.numLimit;
-        } else {
-            numLimit = RoomData.instance.numLimit;
-
-        }
         //部屋を作った人は初めての人なのでこの処理はない
         //二人目以降の人が値を取得する
 
@@ -116,6 +111,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //ボタンの追加
         exitButton.onClick.AddListener(ExitButton);
         enterButton.onClick.AddListener(EnterButton);
+
+        isCheckEnteredRoom = true;
     }
 
     
@@ -124,7 +121,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// 人数設定と入室者が同じ数になるとゲーム参加再確認を行う
     /// </summary>
     void Update() {
-        //ルームにいない場合、オフラインでない場合は処理しない
+
+        //入室チェック中は実行しない
+        if (!isCheckEnteredRoom) {
+            return;
+        }
+        Debug.Log("入室チェック完了");
+        //ルームにいない場合処理しない
         if (!PhotonNetwork.InRoom) {
             return;
         }

@@ -123,7 +123,7 @@ public class Player : MonoBehaviourPunCallbacks {
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
 
         var propertiers = new ExitGames.Client.Photon.Hashtable();
-        propertiers.Add("isCreatePlayerButton", false);
+        propertiers.Add("isCreatePlayerButton", true);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
     }
 
@@ -255,8 +255,8 @@ public class Player : MonoBehaviourPunCallbacks {
     private IEnumerator SetOtherPlayer() {
 
         //自分のボタンが作られるまで待つ
-        bool isCreatePlayerButton = true;
-        while (isCreatePlayerButton) {
+        bool isCreatePlayerButton = false;
+        while (!isCreatePlayerButton) {
             if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCreatePlayerButton", out object isCreatePlayerButtonObj)) {
                 isCreatePlayerButton = (bool)isCreatePlayerButtonObj;
                 yield return null;
@@ -284,6 +284,8 @@ public class Player : MonoBehaviourPunCallbacks {
         Debug.Log(playerID);
         //playerText.text = rollType.ToString() + playerName;
 
+        Debug.Log(playerButton);
+        Debug.Log(gameManager);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
     }
 
