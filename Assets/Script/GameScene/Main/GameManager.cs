@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     public void GameManagerSetUp() {
 
+        
+
         //部屋を作った人は初めての人なのでこの処理はない
         //二人目以降の人が値を取得する
 
@@ -91,10 +93,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //{"numLimit",numLimit }
     };
 
-        if (PhotonNetwork.CurrentRoom.IsOpen && PhotonNetwork.CurrentRoom.PlayerCount >= PhotonNetwork.CurrentRoom.MaxPlayers) {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
-        }
+
         //カスタムプロパティに更新した変数をセットする
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
@@ -113,6 +112,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
         enterButton.onClick.AddListener(EnterButton);
 
         isCheckEnteredRoom = true;
+
+        //部屋が満室なら部屋を閉じる、そうでなければ開放する
+        if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+            Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
+        } 
+        
     }
 
     
@@ -223,18 +229,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// 役職をセットします。
     /// </summary>
     public void SetRoll() {
-        //if (GetEnterNum() != numLimit) return;
-
-        //confirmationImage.SetActive(false);
-        //gameStart = true;
-        //PhotonNetwork.CurrentRoom.IsOpen = false;
-
-        //if (DebugManager.instance.isTestPlay) {
-        //    StartCoroutine(SetTestRoll());
-        //} else {
-        //    StartCoroutine(SetRandomRoll());
-        //}
-
         PhotonNetwork.CurrentRoom.IsOpen = false;
         StartCoroutine(SetRandomRoll());
     }
@@ -328,6 +322,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
             //マスターに管理(リセット
             if (PhotonNetwork.IsMasterClient) {
+                //部屋開放する
+                PhotonNetwork.CurrentRoom.IsOpen = true;
+                //リセット
                 enterNumTime = setEnterNumTime;
                 isTimeUp = false;
                 SetIsTimeUp();

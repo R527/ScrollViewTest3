@@ -39,15 +39,16 @@ public class RoomNode : MonoBehaviour
     /// <summary>
     /// 部屋を作った人（マスターだけが利用する
     /// </summary>
-    /// <param name="roomData"></param>
+    /// <param name="roomInfo"></param>
     /// <param name="numList"></param>
     /// <param name="rollSumNum"></param>
-    public void InitRoomNode(RoomInfo roomData, List<int> numList,int rollSumNum) {
-
+    public void InitRoomNode(RoomInfo roomInfo, List<int> numList,int rollSumNum) {
+        //入室処理
+        enterButton.onClick.AddListener(OnClickJoinRoom);
         //タイトル設定
-        titleText.text = roomData.title;
+        titleText.text = roomInfo.title;
         //ルール設定
-        ruleText.text = "時間:" + roomData.mainTime + "/" + roomData.nightTime + "\r\n占い:" + roomData.fortuneType + "\r\n投票:" + roomData.openVoting;
+        ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting;
 
         DisplayRollList(numList);
 
@@ -55,13 +56,13 @@ public class RoomNode : MonoBehaviour
         enterButtonText.text = 1 + "/" + rollSumNum + "入室";
 
         //Room情報保存
-        mainTime = roomData.mainTime;
-        nightTime = roomData.nightTime;
-        fortuneType = roomData.fortuneType;
-        openVoting = roomData.openVoting;
+        mainTime = roomInfo.mainTime;
+        nightTime = roomInfo.nightTime;
+        fortuneType = roomInfo.fortuneType;
+        openVoting = roomInfo.openVoting;
         settingNum = rollSumNum;
-        roomSelection = roomData.roomSelection;
-        title = roomData.title;
+        roomSelection = roomInfo.roomSelection;
+        title = roomInfo.title;
 
         rollNumList = numList;
     }
@@ -71,54 +72,56 @@ public class RoomNode : MonoBehaviour
     /// <summary>
     /// ルームを作成されたときに相手側の画面で情報を取得する
     /// </summary>
-    /// <param name="info"></param>
-    public void Activate(Photon.Realtime.RoomInfo info) {
+    /// <param name="roomInfo"></param>
+    public void Activate(Photon.Realtime.RoomInfo roomInfo) {
         Debug.Log("Activate通過");
-        roomInfo = info;
         //入室処理
         enterButton.onClick.AddListener(OnClickJoinRoom);
         //部屋の設定を表示する
-        title = (string)info.CustomProperties["roomName"];
-        settingNum = (int)info.MaxPlayers;
+        title = (string)roomInfo.CustomProperties["roomName"];
+        settingNum = (int)roomInfo.MaxPlayers;
         titleText.text = title;
-        enterButtonText.text = info.PlayerCount + "/" + settingNum + "入室";
-        enterButton.interactable = (info.PlayerCount < info.MaxPlayers);
+        enterButtonText.text = roomInfo.PlayerCount + "/" + settingNum + "入室";
+        //人数が満員だったら押せない
+        enterButton.interactable = (roomInfo.PlayerCount < roomInfo.MaxPlayers);
 
         //banListStrを解凍する
-        string banPlayer = (string)info.CustomProperties["banListStr"];
+        string banPlayer = (string)roomInfo.CustomProperties["banListStr"];
         Debug.Log(banPlayer);
         banList = banPlayer.Split(',').ToList<string>();
 
         //GameObjectがNullでなければ、
         //かつ自分がBanListに登録されていなければtrueにする
-        //gameObject.SetActive(false);
-        //if (gameObject != null && !CheckBanListToRoomOwner()) {
-        //    Debug.Log("RoomTrue");
-        //    gameObject.SetActive(true);
-        //}
+        gameObject.SetActive(false);
+        if (gameObject != null && !CheckBanListToRoomOwner()) {
+            Debug.Log("RoomTrue");
+            gameObject.SetActive(true);
+        }
 
         //ルール設定を表示する
-        mainTime = (int)info.CustomProperties["mainTime"];
-        nightTime = (int)info.CustomProperties["nightTime"];
-        fortuneType = (FORTUNETYPE)info.CustomProperties["fortuneType"];
-        openVoting = (VOTING)info.CustomProperties["openVoting"];
+        mainTime = (int)roomInfo.CustomProperties["mainTime"];
+        nightTime = (int)roomInfo.CustomProperties["nightTime"];
+        fortuneType = (FORTUNETYPE)roomInfo.CustomProperties["fortuneType"];
+        openVoting = (VOTING)roomInfo.CustomProperties["openVoting"];
         ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting;
 
         //ルームID取得
-        Debug.Log((string)info.CustomProperties["roomId"]);
-        roomId = (string)info.CustomProperties["roomId"];
+        Debug.Log((string)roomInfo.CustomProperties["roomId"]);
+        roomId = (string)roomInfo.CustomProperties["roomId"];
 
         //役職情報取得
-        string roll = (string)info.CustomProperties["numListStr"];
+        string roll = (string)roomInfo.CustomProperties["numListStr"];
         Debug.Log(roll);
         //RollListを解凍する
         int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
         rollNumList = intArray.ToList();
 
-        
+
 
         //役職テキスト表示
         DisplayRollList(rollNumList);
+
+
     }
 
     /// <summary>
@@ -141,6 +144,7 @@ public class RoomNode : MonoBehaviour
     /// </summary>
     /// <param name="numList"></param>
     private void DisplayRollList(List<int> numList) {
+        rollText.text = string.Empty;
         //役職テキスト
         int num = 0;
         for (int i = 0; i < rollList.Count; i++) {
@@ -182,7 +186,7 @@ public class RoomNode : MonoBehaviour
     /// <summary>
     /// roomIDをもとに部屋に参加する
     /// </summary>
-    public void OnClickJoinRoom() {
+    private void OnClickJoinRoom() {
 
         //banListのチェックを入れる、はじく場合はPopUpを出して
         NetworkManager.instance.JoinRoom(roomId);

@@ -23,15 +23,20 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             gameManager.numLimit = RoomData.instance.numLimit;
 
         }
-
         
+        //満室ならフラグを立てる
         if(gameManager.GetNum() >= gameManager.numLimit) {
             var propertiers = new ExitGames.Client.Photon.Hashtable();
-            propertiers.Add("isCheckFullRoom", false);
+            propertiers.Add("isCheckEmptyRoom", false);
             PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         }
 
         isSetUp = true;
+
+        //マスター以外が入室したら一旦部屋を閉じる
+        if (!PhotonNetwork.IsMasterClient) {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+        }
     }
 
 
@@ -61,7 +66,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             Destroy(gameObject);
         } else {
             var propertiers = new ExitGames.Client.Photon.Hashtable();
-            propertiers.Add("isCheckFullRoom", true);
+            propertiers.Add("isCheckEmptyRoom", true);
             PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         }
 
@@ -73,6 +78,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         //自分がキック対象なら自ら退出するPopUpを出す
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]) {
             Debug.Log("退出処理");
+            PhotonNetwork.CurrentRoom.IsOpen = true;
             StopCoroutine(NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine);
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
             obj.exitText.text = "接続に問題がありました。";
@@ -80,15 +86,13 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         }
 
 
-
         Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]);
         Debug.Log(gameManager.GetNum());
         Debug.Log(gameManager.numLimit);
-        //満室でもBanPlayerでもない場合
-        if (!(bool)PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"] && gameManager.GetNum() < gameManager.numLimit) {
+        //満室でもBanPlayerでもなく部屋が空いていたら
+        //if (gameManager.GetNum() < gameManager.numLimit ) {
             gameManager.GameManagerSetUp();
-            Debug.Log("通過");
             Destroy(gameObject);
-        }
+        //} 
     }
 }

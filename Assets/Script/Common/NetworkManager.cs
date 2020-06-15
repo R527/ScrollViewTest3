@@ -363,8 +363,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         propertiers.Add("isBanPlayer", false);
         newPlayer.SetCustomProperties(propertiers);
 
-        Debug.Log((bool)newPlayer.CustomProperties["isCheckFullRoom"]);
-        if (!(bool)newPlayer.CustomProperties["isCheckFullRoom"]) {
+        Debug.Log((bool)newPlayer.CustomProperties["isCheckEmptyRoom"]);
+        if (!(bool)newPlayer.CustomProperties["isCheckEmptyRoom"]) {
             Debug.Log("満室停止");
             yield break;
         }
@@ -377,11 +377,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="newPlayer"></param>
     /// <returns></returns>
-    public IEnumerator CheckFullRoom(Photon.Realtime.Player newPlayer) {
+    public IEnumerator CheckEmptyRoom(Photon.Realtime.Player newPlayer) {
         bool isCheck = false;
         while (!isCheck) {
-            if (newPlayer.CustomProperties.TryGetValue("isCheckFullRoom", out object isCheckFullRoomObj)) {
-                isCheck = (bool)isCheckFullRoomObj;
+            if (newPlayer.CustomProperties.TryGetValue("isCheckEmptyRoom", out object isCheckEmptyRoomObj)) {
+                isCheck = (bool)isCheckEmptyRoomObj;
                 StopCoroutine(checkFullRoomCoroutine);
                 yield return null;
             } else {
@@ -391,7 +391,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public IEnumerator SetCoroutine(Photon.Realtime.Player newPlayer) {
-        yield return StartCoroutine(CheckFullRoom(newPlayer));
+        yield return StartCoroutine(CheckEmptyRoom(newPlayer));
         Debug.Log("チェック終了");
     }
 
