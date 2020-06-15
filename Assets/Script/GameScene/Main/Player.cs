@@ -93,7 +93,22 @@ public class Player : MonoBehaviourPunCallbacks {
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
             playerID = PhotonNetwork.LocalPlayer.ActorNumber;
 
-        } 
+        }
+
+        //満室チェック
+        if (!PhotonNetwork.IsMasterClient) {
+            bool isCheck = false;
+            while (!isCheck) {
+                if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckFullRoom", out object isCheckFullRoomObj)) {
+                    isCheck = (bool)isCheckFullRoomObj;
+                    yield return null;
+                } else {
+                    yield return null;
+                }
+                Debug.Log(isCheck);
+            }
+        }
+        
 
         //CheckBanListの待機中
         if (!PhotonNetwork.IsMasterClient) {
@@ -101,6 +116,7 @@ public class Player : MonoBehaviourPunCallbacks {
             yield return StartCoroutine(NetworkManager.instance.checkBanListCoroutine);
         }
 
+        
 
         //プレイヤーボタン作成
         if (photonView.IsMine) {

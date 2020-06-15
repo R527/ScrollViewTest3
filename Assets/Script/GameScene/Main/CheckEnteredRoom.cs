@@ -14,7 +14,6 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
     public GameManager gameManager;
 
     private bool isSetUp;
-    private bool checkFullRoom;
 
     private void Start() {
         //人数制限をセットする
@@ -28,7 +27,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         
         if(gameManager.GetNum() >= gameManager.numLimit) {
             var propertiers = new ExitGames.Client.Photon.Hashtable();
-            propertiers.Add("isCheckFullRoom", true);
+            propertiers.Add("isCheckFullRoom", false);
             PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         }
 
@@ -62,7 +61,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             Destroy(gameObject);
         } else {
             var propertiers = new ExitGames.Client.Photon.Hashtable();
-            propertiers.Add("isCheckFullRoom", false);
+            propertiers.Add("isCheckFullRoom", true);
             PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         }
 

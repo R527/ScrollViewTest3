@@ -364,7 +364,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         newPlayer.SetCustomProperties(propertiers);
 
         Debug.Log((bool)newPlayer.CustomProperties["isCheckFullRoom"]);
-        if ((bool)newPlayer.CustomProperties["isCheckFullRoom"]) {
+        if (!(bool)newPlayer.CustomProperties["isCheckFullRoom"]) {
             Debug.Log("満室停止");
             yield break;
         }
@@ -390,7 +390,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
     }
 
-    private IEnumerator SetCoroutine(Photon.Realtime.Player newPlayer) {
+    public IEnumerator SetCoroutine(Photon.Realtime.Player newPlayer) {
         yield return StartCoroutine(CheckFullRoom(newPlayer));
         Debug.Log("チェック終了");
     }
