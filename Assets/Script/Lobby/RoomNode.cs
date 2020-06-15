@@ -160,10 +160,10 @@ public class RoomNode : MonoBehaviour
         }
     }
 
-    //部屋が閉じられた時の処理
-    //public void Deactivate() {
-    //    gameObject.SetActive(false);
-    //}
+    ///部屋が閉じられた時の処理
+    public void Deactivate() {
+        gameObject.SetActive(false);
+    }
 
 
     /// <summary>

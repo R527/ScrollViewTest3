@@ -60,7 +60,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
 
         //部屋が満室なら自ら退出するPopUpを出す
         if (gameManager.GetNum() >= gameManager.numLimit) {
-
+            PhotonNetwork.CurrentRoom.IsOpen = true;
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
             obj.exitText.text = "満室です。";
             Destroy(gameObject);

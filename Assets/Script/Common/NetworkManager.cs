@@ -202,13 +202,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                     Debug.Log("Activate1");
                     roomNode.Activate(info);
 
+                } else if (!info.RemovedFromList && !info.IsOpen) {
+                    //部屋をfalse
+                    Debug.Log("Deactive" + "オブジェクトを隠す");
+                    roomNode.Deactivate();
                 } else {
+                    Debug.Log("Deactive" + "オブジェクトを消す");
+
                     //部屋がなくなった場合
                     activeEntries.Remove(info.Name);
-                    //部屋をfalse
-                    //roomNode.Deactivate();
+
                     inactiveEntries.Push(roomNode);
                 }
+            
                 //部屋が一つも作られていないとき
             } else if (!info.RemovedFromList) {
 

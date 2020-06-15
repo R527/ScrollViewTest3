@@ -99,7 +99,7 @@ public class Player : MonoBehaviourPunCallbacks {
         if (!PhotonNetwork.IsMasterClient) {
             bool isCheck = false;
             while (!isCheck) {
-                if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckFullRoom", out object isCheckFullRoomObj)) {
+                if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEmptyRoom", out object isCheckFullRoomObj)) {
                     isCheck = (bool)isCheckFullRoomObj;
                     yield return null;
                 } else {
