@@ -25,9 +25,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     private Dictionary<string, RoomNode> activeEntries = new Dictionary<string, RoomNode>();
     private Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
     public bool isBanCheck;
+    public EMPTYROOM emtyRoom;
     public IEnumerator checkBanListCoroutine = null;
     public IEnumerator banPlayerKickOutOREnteredRoomCoroutine = null;
-    public IEnumerator checkFullRoomCoroutine = null;
+    public IEnumerator checkEmptyRoomCoroutine = null;
 
 
 
@@ -259,15 +260,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         base.OnLeftRoom();
 
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
-
     }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
         Debug.Log("OnPlayerEnteredRoom");
-        checkFullRoomCoroutine = SetCoroutine(newPlayer);
+        checkEmptyRoomCoroutine = SetCoroutine(newPlayer);
         banPlayerKickOutOREnteredRoomCoroutine = BanPlayerKickOutOREnteredRoom(newPlayer);
-        StartCoroutine(checkFullRoomCoroutine);
+        StartCoroutine(checkEmptyRoomCoroutine);
         StartCoroutine(banPlayerKickOutOREnteredRoomCoroutine);
+        Debug.Log(checkEmptyRoomCoroutine);
     }
 
     /// <summary>
@@ -369,8 +370,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         propertiers.Add("isBanPlayer", false);
         newPlayer.SetCustomProperties(propertiers);
 
-        Debug.Log((bool)newPlayer.CustomProperties["isCheckEmptyRoom"]);
-        if (!(bool)newPlayer.CustomProperties["isCheckEmptyRoom"]) {
+        if (emtyRoom == EMPTYROOM.満室) {
             Debug.Log("満室停止");
             yield break;
         }
@@ -387,12 +387,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         bool isCheck = false;
         while (!isCheck) {
             if (newPlayer.CustomProperties.TryGetValue("isCheckEmptyRoom", out object isCheckEmptyRoomObj)) {
-                isCheck = (bool)isCheckEmptyRoomObj;
-                StopCoroutine(checkFullRoomCoroutine);
-                yield return null;
-            } else {
-                yield return null;
+                emtyRoom = (EMPTYROOM)Enum.Parse(typeof(EMPTYROOM), isCheckEmptyRoomObj.ToString());
+                //満室処理
+                Debug.Log(checkEmptyRoomCoroutine);
+                if (emtyRoom == EMPTYROOM.満室 || emtyRoom == EMPTYROOM.入室許可) {
+                    isCheck = true;
+                }
             }
+            Debug.Log(isCheck);
+            yield return null;
+        }
+
+        if (emtyRoom == EMPTYROOM.満室) {
+            Debug.Log("満室です。" + emtyRoom);
+            yield break;
         }
     }
 

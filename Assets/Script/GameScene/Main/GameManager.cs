@@ -111,14 +111,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
         exitButton.onClick.AddListener(ExitButton);
         enterButton.onClick.AddListener(EnterButton);
 
-        isCheckEnteredRoom = true;
-
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
             PhotonNetwork.CurrentRoom.IsOpen = true;
             Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
-        } 
-        
+        }
+
+        isCheckEnteredRoom = true;
     }
 
     
@@ -216,8 +215,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
             int num = 0;
             enterNum = 0;
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                if ((bool)player.CustomProperties["isJoined"]) {
-                    num++;
+                if(player.CustomProperties.TryGetValue("isJoined", out object isJoinedObj)) {
+                    if ((bool)player.CustomProperties["isJoined"]) {
+                        num++;
+                    }
                 }
             }
             enterNum = num;

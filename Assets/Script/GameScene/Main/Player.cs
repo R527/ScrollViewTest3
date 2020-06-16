@@ -33,7 +33,9 @@ public class Player : MonoBehaviourPunCallbacks {
     public int iconNo;//アイコンの絵用
     public PlayerButton playerButton;
     private Transform chatTran;
-   
+    private IEnumerator setCoroutine = null;
+    private IEnumerator checkEmptyRoomCoroutine = null;
+    public EMPTYROOM emtyRoom;
 
     //投票関連
     public bool isVoteFlag; //投票を下か否か　falseなら非投票
@@ -95,33 +97,20 @@ public class Player : MonoBehaviourPunCallbacks {
 
         }
 
-        //満室チェック
         if (!PhotonNetwork.IsMasterClient) {
-            bool isCheck = false;
-            while (!isCheck) {
-                if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEmptyRoom", out object isCheckFullRoomObj)) {
-                    isCheck = (bool)isCheckFullRoomObj;
-                    yield return null;
-                } else {
-                    yield return null;
-                }
-                Debug.Log(isCheck);
-            }
-        }
-        
+            //満室チェック
+            checkEmptyRoomCoroutine = CheckEmptyRoom();
+            yield return StartCoroutine(checkEmptyRoomCoroutine);
 
-        //CheckBanListの待機中
-        if (!PhotonNetwork.IsMasterClient) {
+            //CheckBanListの待機中
             NetworkManager.instance.checkBanListCoroutine = CheckBanList();
             yield return StartCoroutine(NetworkManager.instance.checkBanListCoroutine);
         }
 
-        
-
         //プレイヤーボタン作成
         if (photonView.IsMine) {
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
-        } else {
+        } else if(!photonView.IsMine) {
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
             StartCoroutine(SetOtherPlayer());
         }
@@ -272,7 +261,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //自分のボタンが作られるまで待つ
         bool isCreatePlayerButton = false;
-        while (!isCreatePlayerButton) {
+        while (!isCreatePlayerButton || playerButton == null) {
             if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCreatePlayerButton", out object isCreatePlayerButtonObj)) {
                 isCreatePlayerButton = (bool)isCreatePlayerButtonObj;
                 yield return null;
@@ -358,6 +347,27 @@ public class Player : MonoBehaviourPunCallbacks {
             Debug.Log(isBanPlayer);
         }
         yield break;
+    }
+
+    private IEnumerator CheckEmptyRoom() {
+        //満室チェック
+        bool isCheck = false;
+        while (!isCheck) {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEmptyRoom", out object isCheckEmptyRoomObj)) {
+                emtyRoom = (EMPTYROOM)Enum.Parse(typeof(EMPTYROOM), isCheckEmptyRoomObj.ToString());
+                //満室処理
+                Debug.Log(checkEmptyRoomCoroutine);
+                if (emtyRoom == EMPTYROOM.満室 || emtyRoom == EMPTYROOM.入室許可) {
+                    isCheck = true;
+                } 
+            }
+            Debug.Log(isCheck);
+            yield return null;
+        }
+
+        if (emtyRoom == EMPTYROOM.満室) {
+            Destroy(this);
+        }
     }
 
     /////////////////////

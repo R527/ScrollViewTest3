@@ -16,6 +16,12 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
     private bool isSetUp;
 
     private void Start() {
+
+        //マスター以外が入室したら一旦部屋を閉じる
+        if (!PhotonNetwork.IsMasterClient) {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+        }
+
         //人数制限をセットする
         if (DebugManager.instance.isDebug) {
             gameManager.numLimit = DebugManager.instance.numLimit;
@@ -23,26 +29,31 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             gameManager.numLimit = RoomData.instance.numLimit;
 
         }
-        
+
+        var propertiers = new ExitGames.Client.Photon.Hashtable();
         //満室ならフラグを立てる
-        if(gameManager.GetNum() >= gameManager.numLimit) {
-            var propertiers = new ExitGames.Client.Photon.Hashtable();
-            propertiers.Add("isCheckEmptyRoom", false);
+        if (gameManager.GetNum() >= gameManager.numLimit && !PhotonNetwork.IsMasterClient) {
+            Debug.Log("満室");
+            propertiers.Add("isCheckEmptyRoom", EMPTYROOM.満室.ToString());
+            PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+        } else {
+            //満室ではない処理
+            Debug.Log("入室許可");
+            propertiers.Add("isCheckEmptyRoom", EMPTYROOM.入室許可.ToString());
             PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         }
 
         isSetUp = true;
-
-        //マスター以外が入室したら一旦部屋を閉じる
-        if (!PhotonNetwork.IsMasterClient) {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-        }
     }
 
 
     //Update is called once per frame
     void Update() {
 
+        //Startが終わるまでリターン
+        if (!isSetUp) {
+            return;
+        }
         //マスタークライアントなら除外
         if (PhotonNetwork.IsMasterClient) {
             gameManager.GameManagerSetUp();
@@ -50,11 +61,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             return;
         }
 
-        //Startが終わるまでリターン
-        if (!isSetUp) {
-            return;
-        }
-
+        
         Debug.Log(gameManager.GetNum());
         Debug.Log(gameManager.numLimit);
 
@@ -64,11 +71,8 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
             obj.exitText.text = "満室です。";
             Destroy(gameObject);
-        } else {
-            var propertiers = new ExitGames.Client.Photon.Hashtable();
-            propertiers.Add("isCheckEmptyRoom", true);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
-        }
+            return;
+        } 
 
         if (PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"] == null) {
             Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]);
@@ -83,6 +87,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
             obj.exitText.text = "接続に問題がありました。";
             Destroy(gameObject);
+            return;
         }
 
 
@@ -91,8 +96,9 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         Debug.Log(gameManager.numLimit);
         //満室でもBanPlayerでもなく部屋が空いていたら
         //if (gameManager.GetNum() < gameManager.numLimit ) {
-            gameManager.GameManagerSetUp();
-            Destroy(gameObject);
+        gameManager.GameManagerSetUp();
+        Destroy(gameObject);
+        return;
         //} 
     }
 }
