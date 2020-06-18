@@ -296,7 +296,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                     //生存者数を取得
                     gameManager.liveNum = gameManager.GetLiveNum();
-                    //gameOver.CheckGameOver();
+                    gameOver.CheckGameOver();
                     break;
 
                 //夜の行動
@@ -343,7 +343,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     timeType = TIME.結果発表後チェック;
                     totalTime = checkGameOverTime;
 
-                    //gameOver.CheckGameOver();
+                    gameOver.CheckGameOver();
                     DeathPlayer();
                     break;
             }

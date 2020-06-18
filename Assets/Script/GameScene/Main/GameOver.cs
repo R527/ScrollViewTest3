@@ -18,6 +18,9 @@ public class GameOver : MonoBehaviour {
     public GameObject timeSavingButton;
     public string winnerList;
 
+    public bool citizen;
+    public bool wolf;
+
     /// <summary>
     /// 人狼の人数を把握してゲーム終了かどうかをマスターだけが確認する
     /// </summary>
@@ -48,6 +51,14 @@ public class GameOver : MonoBehaviour {
             gameManager.gameMasterChatManager.gameMasterChat = "市民陣営の勝利\r\n" + winnerList;
             Debug.Log("市民陣営の勝利");
 
+            if (gameManager.chatSystem.myPlayer.wolfCamp == false) {
+                PlayerManager.instance.totalNumberOfWins += 1;
+                PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.勝利回数);
+            } else {
+                PlayerManager.instance.totalNumberOfLoses += 1;
+                PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.敗北回数);
+            }
+
             //狼の人数が生存者と同数かそれ以上の場合(人狼の勝利
         } else if (liverCount <= wolfCount) {
             //勝利したプレイヤーNameを取り出す
@@ -59,8 +70,17 @@ public class GameOver : MonoBehaviour {
             }
             gameManager.gameMasterChatManager.gameMasterChat = "人狼陣営の勝利\r\n" + winnerList;
             Debug.Log("人狼陣営の勝利");
+            wolf = true;
 
-        }else if (liverCount > wolfCount) {
+            if (gameManager.chatSystem.myPlayer.wolfCamp == true) {
+                PlayerManager.instance.totalNumberOfWins += 1;
+                PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.勝利回数);
+            } else {
+                PlayerManager.instance.totalNumberOfLoses += 1;
+                PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.敗北回数);
+            }
+
+        } else if (liverCount > wolfCount) {
             //勝利条件を満たしていない場合（ゲーム続行
             liverCount = 0;
             wolfCount = 0;
@@ -68,6 +88,9 @@ public class GameOver : MonoBehaviour {
         }
 
         //ゲーム終了
+        PlayerManager.instance.totalNumberOfMatches += 1;
+        PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.総対戦回数);
+
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         timeController.isGameOver = false;
