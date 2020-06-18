@@ -31,7 +31,7 @@ public class CreatePlayerName : MonoBehaviour
             //名前を登録する
             PlayerManager.instance.playerName = inputFieldName.text;
             
-            PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.playerName, PlayerManager.BAN_ID_TYPE.playerName);
+            PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.playerName, PlayerManager.ID_TYPE.playerName);
             SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
         } else {
             Debug.Log("文字数制限にかかっています。");

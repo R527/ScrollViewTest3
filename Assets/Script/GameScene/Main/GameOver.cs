@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// GameOverを見る　GameOver後の処理
@@ -18,8 +17,9 @@ public class GameOver : MonoBehaviour {
     public GameObject timeSavingButton;
     public string winnerList;
 
-    public bool citizen;
-    public bool wolf;
+    
+
+    
 
     /// <summary>
     /// 人狼の人数を把握してゲーム終了かどうかをマスターだけが確認する
@@ -30,14 +30,14 @@ public class GameOver : MonoBehaviour {
             if (Obj.wolf == true && Obj.live == true) {
                 wolfCount++;
             }
-            if (Obj.live == true && Obj.wolf == false) {
+            if (Obj.wolf == false && Obj.live == true) {
                 liverCount++;
             }
         }
         Debug.Log("生存者数：" + liverCount);
         Debug.Log("狼の人数:" + wolfCount);
 
-
+        bool isWin = false;
 
         //狼が0人の場合(市民の勝利
         if (wolfCount == 0) {
@@ -52,12 +52,8 @@ public class GameOver : MonoBehaviour {
             Debug.Log("市民陣営の勝利");
 
             if (gameManager.chatSystem.myPlayer.wolfCamp == false) {
-                PlayerManager.instance.totalNumberOfWins += 1;
-                PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.勝利回数);
-            } else {
-                PlayerManager.instance.totalNumberOfLoses += 1;
-                PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.敗北回数);
-            }
+                isWin = true;
+            } 
 
             //狼の人数が生存者と同数かそれ以上の場合(人狼の勝利
         } else if (liverCount <= wolfCount) {
@@ -70,14 +66,9 @@ public class GameOver : MonoBehaviour {
             }
             gameManager.gameMasterChatManager.gameMasterChat = "人狼陣営の勝利\r\n" + winnerList;
             Debug.Log("人狼陣営の勝利");
-            wolf = true;
 
             if (gameManager.chatSystem.myPlayer.wolfCamp == true) {
-                PlayerManager.instance.totalNumberOfWins += 1;
-                PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.勝利回数);
-            } else {
-                PlayerManager.instance.totalNumberOfLoses += 1;
-                PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.敗北回数);
+                isWin = true;
             }
 
         } else if (liverCount > wolfCount) {
@@ -88,8 +79,16 @@ public class GameOver : MonoBehaviour {
         }
 
         //ゲーム終了
-        PlayerManager.instance.totalNumberOfMatches += 1;
-        PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.総対戦回数);
+        ResultBattleRecord(isWin);
+
+        //ゲーム終了後の処理
+        //不参加状態でゲームを終了した場合突然死数を増やす
+        if(PlayerPrefs.GetString("突然死用のフラグ") == PlayerManager.SuddenDeath_TYPE.不参加.ToString()) {
+            PlayerManager.instance.totalNumberOfSuddenDeath++;
+            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath,PlayerManager.BATTLE_RECORD_TYPE.突然死数);
+        }
+        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
+
 
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
@@ -98,4 +97,21 @@ public class GameOver : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// 戦績の反映
+    /// </summary>
+    /// <param name="isWin">勝利陣営にいた場合true、敗北した場合はfalse</param>
+    private void ResultBattleRecord(bool isWin) {
+        //戦績反映
+        PlayerManager.instance.totalNumberOfMatches++;
+        PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.総対戦回数);
+
+        if (isWin) {
+            PlayerManager.instance.totalNumberOfWins++;
+            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.勝利回数);
+        } else {
+            PlayerManager.instance.totalNumberOfLoses++;
+            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.敗北回数);
+        }
+    }
 }

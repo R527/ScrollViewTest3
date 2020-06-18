@@ -35,7 +35,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public float intervalTime;
     public bool isPlaying;　　//gameが動いているかの判定
     public bool gameReady;//ゲーム待機状態か否か
-    private int seconds;
+    public bool isSpeaking;//喋ったか否かtrueならしゃべった
     public bool isGameOver;//falseならゲームオーバー
     private float chekTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
@@ -224,132 +224,140 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public void StartInterval() {
         Debug.Log("StartInterval:開始");
-        //!isPlaying &&
-        //if (gameManager.gameStart) {
+       
 
-            switch (timeType) {
-                //お昼
-                case TIME.結果発表後チェック:
-                    timeType = TIME.昼;
-                    totalTime = mainTime;
-                    mainPopup.SetActive(true);
+        switch (timeType) {
+            //お昼
+            case TIME.結果発表後チェック:
+                timeType = TIME.昼;
+                totalTime = mainTime;
+                mainPopup.SetActive(true);
                     
-                    //初期化
-                    chatSystem.coTimeLimit = 0;
-                    chatSystem.calloutTimeLimit = 0;
+                //初期化
+                chatSystem.coTimeLimit = 0;
+                chatSystem.calloutTimeLimit = 0;
+                    
 
-                    //GMチャットなど
-                    if (!firstDay) {
-                        StartCoroutine(NextDay());
+                //GMチャットなど
+                if (!firstDay) {
+                    StartCoroutine(NextDay());
+                }
+                StartCoroutine(GameMasterChat());
+                StartCoroutine(DownInputView());
+                break;
+
+            //投票時間
+            case TIME.昼:
+                timeType = TIME.投票時間;
+                votingPopup.SetActive(true);
+                totalTime = votingTime;
+
+                //突然死チェック
+                if (gameManager.chatSystem.myPlayer.live) {
+                    //突然死処理
+                    if (!isSpeaking) {
+                        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.不参加);
                     }
-                    StartCoroutine(GameMasterChat());
-                    StartCoroutine(DownInputView());
-                    break;
+                    isSpeaking = false;
+                }
 
-                //投票時間
-                case TIME.昼:
-                    timeType = TIME.投票時間;
-                    votingPopup.SetActive(true);
-                    totalTime = votingTime;
+                //GMチャットなど
+                TimesavingControllerFalse();
+                StartCoroutine(GameMasterChat());
+                StartCoroutine(UpInputView());
+                break;
 
-                    //GMチャットなど
-                    TimesavingControllerFalse();
-                    StartCoroutine(GameMasterChat());
+            //処刑
+            case TIME.投票時間:
+                timeType = TIME.処刑;
+                totalTime = executionTime;
+
+                //初期化
+                isVotingCompleted = false;
+
+                voteCount.Execution();
+                gameManager.gameMasterChatManager.ExecutionChat();
+                DeathPlayer();
+                break;
+
+            //処刑後チェック
+            case TIME.処刑:
+                timeType = TIME.処刑後チェック;
+                chatSystem.myPlayer.isVoteFlag = false;
+                totalTime = executionTime;
+
+                //初期化
+                if (PhotonNetwork.IsMasterClient) {
+                    //生き残ったプレイヤーのVoteCountを０にする
+                    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                        var properties = new ExitGames.Client.Photon.Hashtable {
+                        {"voteNum", 0 },
+                        {"voteName", ""},
+                        {"votingCompleted",false }
+                    };
+                        player.SetCustomProperties(properties);
+                        Debug.Log((int)player.CustomProperties["voteNum"]);
+                        Debug.Log((string)player.CustomProperties["voteName"]);
+                        Debug.Log((bool)player.CustomProperties["votingCompleted"]);
+                    }
+
+                }
+
+                //生存者数を取得
+                gameManager.liveNum = gameManager.GetLiveNum();
+                gameOver.CheckGameOver();
+                break;
+
+            //夜の行動
+            case TIME.処刑後チェック:
+                timeType = TIME.夜の行動;
+                totalTime = nightTime;
+                nightPopup.SetActive(true);
+
+                //初期化
+                voteCount.mostVotes = 0;
+                voteCount.ExecutionPlayerList.Clear();
+                    
+                //GMチャットなど
+                if (firstDay) {
+                    StartCoroutine(NextDay());
                     StartCoroutine(UpInputView());
-                    break;
+                    Debug.Log("firstDay");
+                }
+                StartCoroutine(GameMasterChat());
+                StartCoroutine(gameMasterChatManager.OpeningDayFortune());
+                if (!firstDay) {
+                    StartCoroutine(PsychicAction());
+                }
+                break;
 
-                //処刑
-                case TIME.投票時間:
-                    timeType = TIME.処刑;
-                    totalTime = executionTime;
+            //夜の行動の結果発表
+            case TIME.夜の行動:
+                timeType = TIME.夜の結果発表;
+                totalTime = resultTime;
 
-                    //初期化
-                    isVotingCompleted = false;
+                //初期化
+                chatSystem.myPlayer.isRollAction = false;
 
-                    voteCount.Execution();
-                    gameManager.gameMasterChatManager.ExecutionChat();
-                    DeathPlayer();
-                    break;
+                //GMチャットなど
+                if (!firstDay) {
+                    gameMasterChatManager.MorningResults();
+                } else {
+                    firstDay = false;
+                }
+                break;
 
-                //処刑後チェック
-                case TIME.処刑:
-                    timeType = TIME.処刑後チェック;
-                    chatSystem.myPlayer.isVoteFlag = false;
-                    totalTime = executionTime;
+            //結果発表チェック
+            case TIME.夜の結果発表:
+                timeType = TIME.結果発表後チェック;
+                totalTime = checkGameOverTime;
 
-                    //初期化
-                    if (PhotonNetwork.IsMasterClient) {
-                        //生き残ったプレイヤーのVoteCountを０にする
-                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                            var properties = new ExitGames.Client.Photon.Hashtable {
-                            {"voteNum", 0 },
-                            {"voteName", ""},
-                            {"votingCompleted",false }
-                        };
-                            player.SetCustomProperties(properties);
-                            Debug.Log((int)player.CustomProperties["voteNum"]);
-                            Debug.Log((string)player.CustomProperties["voteName"]);
-                            Debug.Log((bool)player.CustomProperties["votingCompleted"]);
-                        }
+                gameOver.CheckGameOver();
+                DeathPlayer();
+                break;
+        }
 
-                    }
-
-                    //生存者数を取得
-                    gameManager.liveNum = gameManager.GetLiveNum();
-                    gameOver.CheckGameOver();
-                    break;
-
-                //夜の行動
-                case TIME.処刑後チェック:
-                    timeType = TIME.夜の行動;
-                    totalTime = nightTime;
-                    nightPopup.SetActive(true);
-
-                    //初期化
-                    voteCount.mostVotes = 0;
-                    voteCount.ExecutionPlayerList.Clear();
-                    
-                    //GMチャットなど
-                    if (firstDay) {
-                        StartCoroutine(NextDay());
-                        StartCoroutine(UpInputView());
-                        Debug.Log("firstDay");
-                    }
-                    StartCoroutine(GameMasterChat());
-                    StartCoroutine(gameMasterChatManager.OpeningDayFortune());
-                    if (!firstDay) {
-                        StartCoroutine(PsychicAction());
-                    }
-                    break;
-
-                //夜の行動の結果発表
-                case TIME.夜の行動:
-                    timeType = TIME.夜の結果発表;
-                    totalTime = resultTime;
-
-                    //初期化
-                    chatSystem.myPlayer.isRollAction = false;
-
-                    //GMチャットなど
-                    if (!firstDay) {
-                        gameMasterChatManager.MorningResults();
-                    } else {
-                        firstDay = false;
-                    }
-                    break;
-
-                //結果発表チェック
-                case TIME.夜の結果発表:
-                    timeType = TIME.結果発表後チェック;
-                    totalTime = checkGameOverTime;
-
-                    gameOver.CheckGameOver();
-                    DeathPlayer();
-                    break;
-            }
-
-            StartCoroutine(EndInterval(timeType));
-        //}
+        StartCoroutine(EndInterval(timeType));
     }
 
     /// <summary>

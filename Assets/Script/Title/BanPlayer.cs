@@ -30,19 +30,19 @@ public class BanPlayer : MonoBehaviour
 
         //Keyの削除
         for (int i = 0; i < 3; i++) {
-            PlayerPrefs.DeleteKey(PlayerManager.BAN_ID_TYPE.banUniqueID.ToString() + i.ToString());
-            PlayerPrefs.DeleteKey(PlayerManager.BAN_ID_TYPE.banUserNickName.ToString() + i.ToString());
+            PlayerPrefs.DeleteKey(PlayerManager.ID_TYPE.banUniqueID.ToString() + i.ToString());
+            PlayerPrefs.DeleteKey(PlayerManager.ID_TYPE.banUserNickName.ToString() + i.ToString());
         }
         //PlayerPrefsの情報書き換え
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
             
             PlayerManager.instance.banIndex = i;
-            PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.banUniqueIDList[i], PlayerManager.BAN_ID_TYPE.banUniqueID);
-            PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.banUserNickNameList[i], PlayerManager.BAN_ID_TYPE.banUserNickName);
+            PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.banUniqueIDList[i], PlayerManager.ID_TYPE.banUniqueID);
+            PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.banUserNickNameList[i], PlayerManager.ID_TYPE.banUserNickName);
 
         }
 
-        PlayerManager.instance.SetIntBanListForPlayerPrefs(PlayerManager.instance.banUniqueIDList.Count, PlayerManager.BAN_ID_TYPE.banListMaxIndex);
+        PlayerManager.instance.SetIntBanListForPlayerPrefs(PlayerManager.instance.banUniqueIDList.Count, PlayerManager.ID_TYPE.banListMaxIndex);
         PlayerManager.instance.banListMaxIndex = PlayerManager.instance.banUniqueIDList.Count;
 
         //Object削除

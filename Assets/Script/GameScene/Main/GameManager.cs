@@ -549,6 +549,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
             inputView.wolfMode = true;
         }
         //Debug.Log("参加者全員がPlayerList　準備OK");
+
+        //突然死用のフラグを保存する
+        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム開始);
+        Debug.Log("gameStart");
     }
 
     /// <summary>

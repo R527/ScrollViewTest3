@@ -134,6 +134,11 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
             //発言を生成
             myPlayer.CreateNode(id, inputData, boardColor, comingOut);
+
+            //一言でも発言したら参加しているものとして扱う
+            if (!gameMasterChatManager.gameManager.timeController.isSpeaking) {
+                gameMasterChatManager.gameManager.timeController.isSpeaking = true;
+            }
         }
     }
 
