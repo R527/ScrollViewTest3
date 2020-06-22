@@ -29,6 +29,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public IEnumerator checkBanListCoroutine = null;
     public IEnumerator banPlayerKickOutOREnteredRoomCoroutine = null;
     public IEnumerator checkEmptyRoomCoroutine = null;
+    public string banListStr;
 
 
 
@@ -88,7 +89,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"fortuneType", room.fortuneType },
             {"openVoting", room.openVoting },
             {"numListStr", numListStr},
-            {"banListStr", banListStr }
+            {"banListStr", banListStr}
 
         };
         //カスタムプロパティで設定したキーをロービーで参照できるようにする
@@ -280,7 +281,27 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //ゲーム開始前のみPlayerButtonを削除する
         if (!gameManager.gameStart) {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            //Playerが抜けたときにBanListの更新をする
+            string banListStr = "";
+            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                if (player == otherPlayer) {
+                    continue;
+                }
+                banListStr += (string)player.CustomProperties["myBanListStr"];
+            }
+            Debug.Log(banListStr);
+            if(banListStr != "") {
+                banListStr.Substring(0, banListStr.Length - 1);
+            }
+            Debug.Log(banListStr);
+            var customRoomBanListProperties = new ExitGames.Client.Photon.Hashtable {
+            {"banListStr",banListStr }
+            };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomBanListProperties);
+
             gameManager.DestroyPlayerButton(otherPlayer);
+            PhotonNetwork.CurrentRoom.IsOpen = true;
         }
     }
 
@@ -376,6 +397,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
 
         StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
+
     }
 
     /// <summary>
@@ -410,5 +432,5 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
 
-
+    
 }

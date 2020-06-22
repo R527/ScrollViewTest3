@@ -83,7 +83,10 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]) {
             Debug.Log("退出処理");
             PhotonNetwork.CurrentRoom.IsOpen = true;
-            StopCoroutine(NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine);
+            Debug.Log(NetworkManager.instance);
+            if(NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine != null) {
+                StopCoroutine(NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine);
+            }
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
             obj.exitText.text = "接続に問題がありました。";
             Destroy(gameObject);

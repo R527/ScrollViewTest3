@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Photon.Pun;
 using System.Linq;
 
 
 /// <summary>
 /// ルームノードの設定
 /// </summary>
-public class RoomNode : MonoBehaviour
-{
+public class RoomNode : MonoBehaviourPunCallbacks {
 
 
     //main
@@ -82,13 +82,13 @@ public class RoomNode : MonoBehaviour
         settingNum = (int)roomInfo.MaxPlayers;
         titleText.text = title;
         enterButtonText.text = roomInfo.PlayerCount + "/" + settingNum + "入室";
-        //人数が満員だったら押せない
-        enterButton.interactable = (roomInfo.PlayerCount < roomInfo.MaxPlayers);
+        
 
         //banListStrを解凍する
-        string banPlayer = (string)roomInfo.CustomProperties["banListStr"];
-        Debug.Log(banPlayer);
-        banList = banPlayer.Split(',').ToList<string>();
+        string banListStr = (string)roomInfo.CustomProperties["banListStr"];
+        Debug.Log(banListStr);
+        //string banListStr = GetStringAllBanList();
+        banList = banListStr.Split(',').ToList<string>();
 
         //GameObjectがNullでなければ、
         //かつ自分がBanListに登録されていなければtrueにする
@@ -97,6 +97,9 @@ public class RoomNode : MonoBehaviour
             Debug.Log("RoomTrue");
             gameObject.SetActive(true);
         }
+
+        //人数が満員だったら押せない
+        enterButton.interactable = (roomInfo.PlayerCount < roomInfo.MaxPlayers);
 
         //ルール設定を表示する
         mainTime = (int)roomInfo.CustomProperties["mainTime"];
@@ -125,7 +128,7 @@ public class RoomNode : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 部屋のBanListと自分のIDが一致した場合部屋を非アクティブにする
     /// </summary>
     /// <returns></returns>
     private bool CheckBanListToRoomOwner() {
@@ -214,7 +217,8 @@ public class RoomNode : MonoBehaviour
     }
 
     /// <summary>
-    /// 文字列をBanListに解凍する
+    /// マスターが部屋を作った時に実行される
+    /// 自分のBanListを一つの文字列にする
     /// </summary>
     /// <returns></returns>
     public string GetStringBanList() {
@@ -228,5 +232,26 @@ public class RoomNode : MonoBehaviour
         } else {
             return "";
         }
+    }
+
+    /// <summary>
+    /// 二人目が入室するときにBanListをこちらで実行される
+    /// </summary>
+    /// <returns></returns>
+    public string GetStringAllBanList() {
+        string banListStr = "";
+        Debug.Log(PhotonNetwork.PlayerList.Length);
+        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            Debug.Log(player);
+            banListStr += (string)player.CustomProperties["myBanListStr"];
+        }
+        if (banListStr != "") {
+            //最後のカンマを取り除く
+            Debug.Log(banListStr);
+            return banListStr.Substring(0, banListStr.Length - 1);
+        } else {
+            return "";
+        }
+
     }
 }
