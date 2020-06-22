@@ -125,7 +125,7 @@ public class RoomNode : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 部屋のBanListと自分のIDが一致した場合部屋を非アクティブにする
     /// </summary>
     /// <returns></returns>
     private bool CheckBanListToRoomOwner() {
@@ -214,7 +214,8 @@ public class RoomNode : MonoBehaviour
     }
 
     /// <summary>
-    /// 文字列をBanListに解凍する
+    /// マスターが部屋を作った時に実行される
+    /// 自分のBanListを一つの文字列にする
     /// </summary>
     /// <returns></returns>
     public string GetStringBanList() {
@@ -229,4 +230,8 @@ public class RoomNode : MonoBehaviour
             return "";
         }
     }
+
+    //public string GetStringBanList() {
+
+    //}
 }

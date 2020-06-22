@@ -29,6 +29,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public IEnumerator checkBanListCoroutine = null;
     public IEnumerator banPlayerKickOutOREnteredRoomCoroutine = null;
     public IEnumerator checkEmptyRoomCoroutine = null;
+    public string banListStr;
 
 
 
@@ -71,7 +72,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             //部屋が開いている状態にする
             IsOpen = true
         };
-        //BanListの登録用→後程解凍する
+        ////BanListの登録用→後程解凍する
         string banListStr = room.GetStringBanList();
         Debug.Log(banListStr);
         //部屋の各役職の人数を一度一つのストリングにまとめたもの→後程解凍
