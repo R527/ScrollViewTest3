@@ -10,8 +10,7 @@ using System.Linq;
 /// <summary>
 /// ルームノードの設定
 /// </summary>
-public class RoomNode : MonoBehaviour
-{
+public class RoomNode : MonoBehaviourPunCallbacks {
 
 
     //main
@@ -83,13 +82,12 @@ public class RoomNode : MonoBehaviour
         settingNum = (int)roomInfo.MaxPlayers;
         titleText.text = title;
         enterButtonText.text = roomInfo.PlayerCount + "/" + settingNum + "入室";
-        //人数が満員だったら押せない
-        enterButton.interactable = (roomInfo.PlayerCount < roomInfo.MaxPlayers);
+        
 
         //banListStrを解凍する
-        //string banPlayer = (string)roomInfo.CustomProperties["banListStr"];
-        //Debug.Log(banPlayer);
-        string banListStr = GetStringAllBanList();
+        string banListStr = (string)roomInfo.CustomProperties["banListStr"];
+        Debug.Log(banListStr);
+        //string banListStr = GetStringAllBanList();
         banList = banListStr.Split(',').ToList<string>();
 
         //GameObjectがNullでなければ、
@@ -99,6 +97,9 @@ public class RoomNode : MonoBehaviour
             Debug.Log("RoomTrue");
             gameObject.SetActive(true);
         }
+
+        //人数が満員だったら押せない
+        enterButton.interactable = (roomInfo.PlayerCount < roomInfo.MaxPlayers);
 
         //ルール設定を表示する
         mainTime = (int)roomInfo.CustomProperties["mainTime"];
@@ -239,11 +240,14 @@ public class RoomNode : MonoBehaviour
     /// <returns></returns>
     public string GetStringAllBanList() {
         string banListStr = "";
+        Debug.Log(PhotonNetwork.PlayerList.Length);
         foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            Debug.Log(player);
             banListStr += (string)player.CustomProperties["myBanListStr"];
         }
         if (banListStr != "") {
             //最後のカンマを取り除く
+            Debug.Log(banListStr);
             return banListStr.Substring(0, banListStr.Length - 1);
         } else {
             return "";

@@ -110,14 +110,22 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //BanListの追加
         myBanListStr = GetStringBanList();
+
         //PhotonのPlayerクラスに新しい情報を追加
         PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
-
         ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
             {"isJoined", isJoined },
-            {"myBanListStr",myBanListStr}
+            {"myBanListStr", myBanListStr}
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
+
+        //BanList追加処理
+        string banListStr = GetStringMasterBanList();
+        Debug.Log(banListStr);
+        var customRoomBanListProperties = new ExitGames.Client.Photon.Hashtable {
+            {"banListStr",banListStr }
+        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomBanListProperties);
 
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
@@ -778,13 +786,35 @@ public class GameManager : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
+    /// マスタークライアント以外がする処理
     /// 自分のBanListを一つの文字列にする
     /// </summary>
     /// <returns></returns>
     public string GetStringBanList() {
         string banListStr = "";
         foreach (string str in PlayerManager.instance.banUniqueIDList) {
+            if(str == null) {
+                continue;
+            }
             banListStr += str + ",";
+        }
+        if (banListStr != "") {
+            Debug.Log(banListStr);
+            return banListStr;
+        } else {
+            return "";
+        }
+    }
+
+    /// <summary>
+    /// マスタークライアントが管理する処理
+    /// 参加プレイヤーのBanListを一つの文字列にする
+    /// </summary>
+    /// <returns></returns>
+    public string GetStringMasterBanList() {
+        string banListStr = "";
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            banListStr += (string)player.CustomProperties["myBanListStr"];
         }
         if (banListStr != "") {
             //最後のカンマを取り除く
