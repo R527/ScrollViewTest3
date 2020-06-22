@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Photon.Pun;
 using System.Linq;
 
 
@@ -86,9 +87,10 @@ public class RoomNode : MonoBehaviour
         enterButton.interactable = (roomInfo.PlayerCount < roomInfo.MaxPlayers);
 
         //banListStrを解凍する
-        string banPlayer = (string)roomInfo.CustomProperties["banListStr"];
-        Debug.Log(banPlayer);
-        banList = banPlayer.Split(',').ToList<string>();
+        //string banPlayer = (string)roomInfo.CustomProperties["banListStr"];
+        //Debug.Log(banPlayer);
+        string banListStr = GetStringAllBanList();
+        banList = banListStr.Split(',').ToList<string>();
 
         //GameObjectがNullでなければ、
         //かつ自分がBanListに登録されていなければtrueにする
@@ -231,7 +233,21 @@ public class RoomNode : MonoBehaviour
         }
     }
 
-    //public string GetStringBanList() {
+    /// <summary>
+    /// 二人目が入室するときにBanListをこちらで実行される
+    /// </summary>
+    /// <returns></returns>
+    public string GetStringAllBanList() {
+        string banListStr = "";
+        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            banListStr += (string)player.CustomProperties["myBanListStr"];
+        }
+        if (banListStr != "") {
+            //最後のカンマを取り除く
+            return banListStr.Substring(0, banListStr.Length - 1);
+        } else {
+            return "";
+        }
 
-    //}
+    }
 }
