@@ -197,11 +197,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public void LeaveRoomChat() {
-        if (photonView.IsMine) {
-            gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
-            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-            gameMasterChat = string.Empty;
-        }
+        gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
+        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        gameMasterChat = string.Empty;
     }
 
 
@@ -211,25 +209,21 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 強制退出 ゲーム開始前にマスタークライアントのみが参加プレイヤーを退出させることができる
     /// </summary>
     public void ForcedEvictionRoom(Photon.Realtime.Player player) {
-        if (photonView.IsMine) {
-            gameMasterChat = player.NickName + "さんを強制退出させました。";
-            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-            NetworkManager.instance.KickOutPlayer(player);
-            gameMasterChat = string.Empty;
-        }
+        gameMasterChat = player.NickName + "さんを強制退出させました。";
+        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        NetworkManager.instance.KickOutPlayer(player);
+        gameMasterChat = string.Empty;
     }
 
     /// <summary>
     /// 入室時のチャット
     /// </summary>
     public IEnumerator EnteredRoom(Photon.Realtime.Player player) {
-        if (photonView.IsMine) {
-            yield return new WaitForSeconds(2.0f);
-            gameMasterChat = player.NickName + "さんが参加しました。";
-            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-            Debug.Log("EnteredRoom");
-            gameMasterChat = string.Empty;
-        }
+        yield return new WaitForSeconds(2.0f);
+        gameMasterChat = player.NickName + "さんが参加しました。";
+        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        Debug.Log("EnteredRoom");
+        gameMasterChat = string.Empty;
     }
 
 

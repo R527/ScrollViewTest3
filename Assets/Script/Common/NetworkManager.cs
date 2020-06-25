@@ -22,7 +22,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //部屋入室処理関連
     public RoomNode roomNodePrefab;
     public GameObject roomContent;
-    private Dictionary<string, RoomNode> activeEntries = new Dictionary<string, RoomNode>();
+    public Dictionary<string, RoomNode> activeEntries = new Dictionary<string, RoomNode>();
     private Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
     public bool isBanCheck;
     public EMPTYROOM emtyRoom;
@@ -30,9 +30,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public IEnumerator banPlayerKickOutOREnteredRoomCoroutine = null;
     public IEnumerator checkEmptyRoomCoroutine = null;
     public string banListStr;
-    [SerializeField]
-    public List<Photon.Realtime.RoomInfo> roomNodeList;
-
+    List<Photon.Realtime.RoomInfo> roomInfoList;
 
     private void Awake() {
         if (instance == null) {
@@ -95,12 +93,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         };
         //カスタムプロパティで設定したキーをロービーで参照できるようにする
         roomOptions.CustomRoomPropertiesForLobby = new string[] {
+            "roomId",
             "roomName",
             "mainTime",
             "nightTime",
             "fortuneType",
             "openVoting",
-            "roomId",
             "numListStr",
             "banListStr"
         };
@@ -193,7 +191,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="roomList"></param>
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
         base.OnRoomListUpdate(roomList);
-
+        roomInfoList = roomList;
         foreach (Photon.Realtime.RoomInfo info in roomList) {
             RoomNode roomNode;
             //アクティブの部屋がありますか
@@ -433,6 +431,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         Debug.Log("チェック終了");
     }
 
+    public List<Photon.Realtime.RoomInfo> GetRoomInfoList() {
+        return roomInfoList;
+    }
 
-    
+    public Dictionary<string,RoomNode> GetActiveEntries() {
+        return activeEntries;
+    }
 }

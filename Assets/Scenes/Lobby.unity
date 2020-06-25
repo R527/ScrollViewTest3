@@ -7055,10 +7055,12 @@ MonoBehaviour:
   selectionButtonRightButton: {fileID: 1152217984}
   searchJoinPlusButton: {fileID: 1171436549}
   searchJoinMinusButton: {fileID: 1596512707}
+  submitSearch: {fileID: 1822545049}
   initSearchButton: {fileID: 712073784}
   upDateButton: {fileID: 620037191}
   searchJoinNum: 3
   isNumLimit: 1
+  isSearch: 0
 --- !u!4 &827804780
 Transform:
   m_ObjectHideFlags: 0
@@ -13694,7 +13696,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 156.2442}
+  m_AnchoredPosition: {x: 0, y: 157.19202}
   m_SizeDelta: {x: 205, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1417060680

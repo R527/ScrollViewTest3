@@ -35,6 +35,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     public List<int> rollNumList = new List<int>();
     public List<string> banList = new List<string>();
     public Photon.Realtime.RoomInfo roomInfo;
+    public bool isCheckBanList;//banListのチェックtrueならBanListに登録されている
 
     /// <summary>
     /// 部屋を作った人（マスターだけが利用する
@@ -168,14 +169,14 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private bool CheckBanListToRoomOwner() {
-        bool isRoomActivate = false;
+        isCheckBanList = false;
         foreach (string banUniqueID in banList) {
             if(banUniqueID.Contains(PlayerManager.instance.myUniqueId)) {
-                isRoomActivate = true;
+                isCheckBanList = true;
                 break;
             } 
         }
-        return isRoomActivate;
+        return isCheckBanList;
     }
 
     /// <summary>

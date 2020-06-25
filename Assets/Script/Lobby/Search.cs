@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Realtime;
-using Photon.Pun;
+
 
 
 /// <summary>
 /// 部屋検索、部屋を設定ごとに絞る
 /// </summary>
-public class Search : MonoBehaviourPunCallbacks {
+public class Search : MonoBehaviour {
     //class
     public RoomSetting roomSetting;
     public FORTUNETYPE searchFortuneType;
@@ -30,10 +30,14 @@ public class Search : MonoBehaviourPunCallbacks {
     public Button selectionButtonRightButton;
     public Button searchJoinPlusButton;
     public Button searchJoinMinusButton;
+    public Button submitSearch;//検索をかけるボタン
     public Button initSearchButton;//検索初期化
     public Button upDateButton;//更新ボタン
     public int searchJoinNum;
     public bool isNumLimit;//参加人数未設定か否かの判定
+    public Dictionary<string, RoomNode> activeEntriesList = new Dictionary<string, RoomNode>();
+    public bool isSearch;
+
 
     private void Start() {
         roomSelectionText.text = searchRoomSelection.ToString();
@@ -48,49 +52,58 @@ public class Search : MonoBehaviourPunCallbacks {
         searchPopUPButton.onClick.AddListener(SearchPopUP);
         selectionButtonLeftButton.onClick.AddListener(SelectionButtonLeft);
         selectionButtonRightButton.onClick.AddListener(SelectionButtonRight);
+        submitSearch.onClick.AddListener(SearchRoomNode);
     }
 
     /// <summary>
     /// 部屋検索
     /// </summary>
     public void SearchRoomNode() {
-
-        
-        bool isSearch = true;
-
-        if (!isSearch) {
+        //更新が終了するまで押せなくする
+        if (isSearch) {
             return;
         }
+        isSearch = true;
+
+        //Listを取得する
+        activeEntriesList = NetworkManager.instance.GetActiveEntries();
+        Debug.Log(activeEntriesList.Count);
+
+
         Debug.Log("SearchRoomNode");
         //一度falseに
-        foreach (RoomNode roomObj in roomSetting.roomNodeList) {
-            roomObj.gameObject.SetActive(false);
+        foreach (RoomNode Obj in activeEntriesList.Values) {
+            Obj.gameObject.SetActive(false);
         }
 
+        foreach (RoomNode Obj in activeEntriesList.Values) {
 
-        foreach (RoomNode roomObj in roomSetting.roomNodeList) {
+            //BanListをチェックする
+            if(Obj.isCheckBanList == true) {
+                continue;
+            }
 
             //未設定を処理する
             FORTUNETYPE lastSearchFortuneType = searchFortuneType;
             VOTING lastSearchOpenVoting = searchOpenVoting;
             int lastSearchJoinNum = searchJoinNum;
             if (searchFortuneType == FORTUNETYPE.未設定) {
-                searchFortuneType = roomObj.fortuneType;
+                searchFortuneType = Obj.fortuneType;
             }
             if (searchOpenVoting == VOTING.未設定) {
-                searchOpenVoting = roomObj.openVoting;
+                searchOpenVoting = Obj.openVoting;
             }
 
             //フィルターにかける
             //人数設定が未設定
             if(isNumLimit == true) {
-                if (roomObj.fortuneType == searchFortuneType && roomObj.openVoting == searchOpenVoting &&  roomObj.settingNum > searchJoinNum　&& searchRoomSelection == roomObj.roomSelection) {
-                    roomObj.gameObject.SetActive(true);
+                if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && Obj.settingNum > searchJoinNum　&& searchRoomSelection == Obj.roomSelection) {
+                    Obj.gameObject.SetActive(true);
                 }
             //人数設定が設定されている場合
             } else {
-                if (roomObj.fortuneType == searchFortuneType && roomObj.openVoting == searchOpenVoting && roomObj.settingNum == searchJoinNum && searchRoomSelection == roomObj.roomSelection) {
-                    roomObj.gameObject.SetActive(true);
+                if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && Obj.settingNum == searchJoinNum && searchRoomSelection == Obj.roomSelection) {
+                    Obj.gameObject.SetActive(true);
                 }
             }
 
@@ -176,7 +189,10 @@ public class Search : MonoBehaviourPunCallbacks {
         openVotingText.text = "未設定";
         firstDayFrotuneText.text = "未設定";
         isNumLimit = true;
+        SearchRoomNode();
     }
+
+    
     /// <summary>
     /// 募集条件
     /// </summary>
