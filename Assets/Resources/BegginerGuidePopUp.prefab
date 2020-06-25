@@ -466,8 +466,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closeButton: {fileID: 5866543904658638902}
-  destroyObject: {fileID: 0}
-  closeButtonSwich: 1
+  destroyObject: {fileID: 2645508698204678958}
+  closeButtonSwich: 0
   guideButtonList:
   - {fileID: 4143953717885224198}
   - {fileID: 8648761965618131884}

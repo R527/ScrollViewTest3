@@ -156,38 +156,41 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// banListにプレイヤーを追加します。
-    /// </summary>
-    public void SetBanList() {
-        //Ban枠の限界を見る
-        if (banUniqueIDList.Count >= 3) {
-            Debug.Log("Ban枠がいっぱいです。");
-            return;
-        }
 
-        //空いている通し番号を探す
-        for(int i = 0; i < 3; i++) {
-            Debug.Log("test");
-            Debug.Log(PlayerPrefs.HasKey(ID_TYPE.banUniqueID.ToString() + i.ToString()));
-            if(!PlayerPrefs.HasKey (ID_TYPE.banUniqueID.ToString() + i.ToString())){
-                Debug.Log(i);
-                banIndex = i;
-                banListMaxIndex = i + 1;
-                SetIntBanListForPlayerPrefs(banListMaxIndex, ID_TYPE.banListMaxIndex);
-                break;
-            } 
-        }
+    //テスト用
+
+    ///// <summary>
+    ///// banListにプレイヤーを追加します。
+    ///// </summary>
+    //public void SetBanList() {
+    //    //Ban枠の限界を見る
+    //    if (banUniqueIDList.Count >= 3) {
+    //        Debug.Log("Ban枠がいっぱいです。");
+    //        return;
+    //    }
+
+    //    //空いている通し番号を探す
+    //    for(int i = 0; i < 3; i++) {
+    //        Debug.Log("test");
+    //        Debug.Log(PlayerPrefs.HasKey(ID_TYPE.banUniqueID.ToString() + i.ToString()));
+    //        if(!PlayerPrefs.HasKey (ID_TYPE.banUniqueID.ToString() + i.ToString())){
+    //            Debug.Log(i);
+    //            banIndex = i;
+    //            banListMaxIndex = i + 1;
+    //            SetIntBanListForPlayerPrefs(banListMaxIndex, ID_TYPE.banListMaxIndex);
+    //            break;
+    //        } 
+    //    }
         
-        //Ban登録
-        SetStringForPlayerPrefs("banUniqueID" + banIndex, ID_TYPE.banUniqueID);
-        SetStringForPlayerPrefs("playerName" + banIndex, ID_TYPE.banUserNickName);
-        banUniqueIDList.Add("banUniqueID" + banIndex);
-        banUserNickNameList.Add("playerName" + banIndex);
-        Debug.Log(PlayerPrefs.GetString(ID_TYPE.playerName.ToString(), ""));
+    //    //Ban登録
+    //    SetStringForPlayerPrefs("banUniqueID" + banIndex, ID_TYPE.banUniqueID);
+    //    SetStringForPlayerPrefs("playerName" + banIndex, ID_TYPE.banUserNickName);
+    //    banUniqueIDList.Add("banUniqueID" + banIndex);
+    //    banUserNickNameList.Add("playerName" + banIndex);
+    //    Debug.Log(PlayerPrefs.GetString(ID_TYPE.playerName.ToString(), ""));
 
         
 
-    }
+    //}
 
 }

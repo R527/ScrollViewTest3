@@ -20,7 +20,6 @@ public class Title : MonoBehaviour
     public Transform banListtran;
     public Button playerInfoButton;
 
-    public Button testBtn;
 
 
 
@@ -31,7 +30,6 @@ public class Title : MonoBehaviour
         menuButton.onClick.AddListener(MenuPopUp);
         playerInfoButton.onClick.AddListener(PlayerInfoPopUP);
 
-        testBtn.onClick.AddListener(PlayerManager.instance.SetBanList);
         CreateBanList();
     }
     public void PlayerInfoPopUP() {
