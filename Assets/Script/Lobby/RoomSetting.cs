@@ -77,6 +77,10 @@ public class RoomSetting : MonoBehaviour
     /// 部屋作成ボタンの制御,部屋設定終了後次へのボタン
     /// </summary>
     public IEnumerator CreateRoomNode() {
+
+        //部屋作成時にエラーが発生するので待つ
+        yield return new WaitForSeconds(0.5f);
+
         //タイトルも字数制限を監視
         if (titleText.text.Length >= 13) {
             rollSetting.wrongPopUpObj.SetActive(true);
@@ -107,8 +111,6 @@ public class RoomSetting : MonoBehaviour
         room.gameObject.SetActive(false);
 
 
-        //部屋作成時にエラーが発生するので待つ
-        yield return new WaitForSeconds(0.5f);
         //サーバーに部屋情報を渡す。
         NetworkManager.instance.PreparateCreateRoom(room.settingNum, room);
 

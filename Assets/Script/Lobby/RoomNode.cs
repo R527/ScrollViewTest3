@@ -12,7 +12,8 @@ using System.Linq;
 /// </summary>
 public class RoomNode : MonoBehaviourPunCallbacks {
 
-
+    //calss
+    public Search search;
     //main
     public Text titleText;
     public Text rollText;
@@ -35,7 +36,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     public List<string> banList = new List<string>();
     public Photon.Realtime.RoomInfo roomInfo;
 
-    
     /// <summary>
     /// 部屋を作った人（マスターだけが利用する
     /// </summary>
@@ -82,20 +82,56 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         settingNum = (int)roomInfo.MaxPlayers;
         titleText.text = title;
         enterButtonText.text = roomInfo.PlayerCount + "/" + settingNum + "入室";
-        
+
 
         //banListStrを解凍する
         string banListStr = (string)roomInfo.CustomProperties["banListStr"];
         Debug.Log(banListStr);
-        //string banListStr = GetStringAllBanList();
         banList = banListStr.Split(',').ToList<string>();
 
         //GameObjectがNullでなければ、
         //かつ自分がBanListに登録されていなければtrueにする
         gameObject.SetActive(false);
+
         if (gameObject != null && !CheckBanListToRoomOwner()) {
-            Debug.Log("RoomTrue");
-            gameObject.SetActive(true);
+
+            if(search == null) {
+                search = GameObject.FindGameObjectWithTag("Search").GetComponent<Search>();
+            }
+
+            //未設定を処理する
+            Debug.Log(search);
+            Debug.Log(search.searchFortuneType);
+            FORTUNETYPE lastSearchFortuneType = search.searchFortuneType;
+            VOTING lastSearchOpenVoting = search.searchOpenVoting;
+            int lastSearchJoinNum = search.searchJoinNum;
+            if (search.searchFortuneType == FORTUNETYPE.未設定) {
+                search.searchFortuneType = fortuneType;
+            }
+            if (search.searchOpenVoting == VOTING.未設定) {
+                search.searchOpenVoting = openVoting;
+            }
+
+            //フィルターにかける
+            //人数設定が未設定
+
+            if (search.isNumLimit == true) {
+                if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && search.searchRoomSelection == roomSelection) {
+                    Debug.Log("GameObjtrue");
+                    gameObject.SetActive(true);
+                }
+                //人数設定が設定されている場合
+            } else {
+                if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && settingNum == search.searchJoinNum && search.searchRoomSelection == roomSelection) {
+                    Debug.Log("GameObjtrue");
+                    gameObject.SetActive(true);
+                }
+            }
+
+            //未設定処理初期化
+            search.searchFortuneType = lastSearchFortuneType;
+            search.searchOpenVoting = lastSearchOpenVoting;
+
         }
 
         //人数が満員だったら押せない
@@ -234,24 +270,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         }
     }
 
-    /// <summary>
-    /// 二人目が入室するときにBanListをこちらで実行される
-    /// </summary>
-    /// <returns></returns>
-    public string GetStringAllBanList() {
-        string banListStr = "";
-        Debug.Log(PhotonNetwork.PlayerList.Length);
-        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-            Debug.Log(player);
-            banListStr += (string)player.CustomProperties["myBanListStr"];
-        }
-        if (banListStr != "") {
-            //最後のカンマを取り除く
-            Debug.Log(banListStr);
-            return banListStr.Substring(0, banListStr.Length - 1);
-        } else {
-            return "";
-        }
 
-    }
+
 }

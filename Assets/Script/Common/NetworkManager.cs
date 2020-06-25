@@ -30,7 +30,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public IEnumerator banPlayerKickOutOREnteredRoomCoroutine = null;
     public IEnumerator checkEmptyRoomCoroutine = null;
     public string banListStr;
-
+    [SerializeField]
+    public List<Photon.Realtime.RoomInfo> roomNodeList;
 
 
     private void Awake() {
@@ -370,8 +371,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
                     propertiers.Add("isBanPlayer", true);
                     newPlayer.SetCustomProperties(propertiers);
-
-                    StopCoroutine(checkBanListCoroutine);
+                    if(checkBanListCoroutine != null) {
+                        StopCoroutine(checkBanListCoroutine);
+                    }
                     isBanCheck = true;
                     break;
                 }

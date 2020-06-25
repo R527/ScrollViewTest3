@@ -72,7 +72,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             obj.exitText.text = "満室です。";
             Destroy(gameObject);
             return;
-        } 
+        }
 
         if (PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"] == null) {
             Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]);
@@ -84,7 +84,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             Debug.Log("退出処理");
             PhotonNetwork.CurrentRoom.IsOpen = true;
             Debug.Log(NetworkManager.instance);
-            if(NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine != null) {
+            if (NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine != null) {
                 StopCoroutine(NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine);
             }
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);

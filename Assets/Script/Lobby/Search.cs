@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Realtime;
+using Photon.Pun;
 
 
 /// <summary>
 /// 部屋検索、部屋を設定ごとに絞る
 /// </summary>
-public class Search : MonoBehaviour
-{
+public class Search : MonoBehaviourPunCallbacks {
     //class
     public RoomSetting roomSetting;
     public FORTUNETYPE searchFortuneType;
@@ -32,8 +33,7 @@ public class Search : MonoBehaviour
     public Button initSearchButton;//検索初期化
     public Button upDateButton;//更新ボタン
     public int searchJoinNum;
-    public bool join;//参加人数未設定か否かの判定
-
+    public bool isNumLimit;//参加人数未設定か否かの判定
 
     private void Start() {
         roomSelectionText.text = searchRoomSelection.ToString();
@@ -54,6 +54,14 @@ public class Search : MonoBehaviour
     /// 部屋検索
     /// </summary>
     public void SearchRoomNode() {
+
+        
+        bool isSearch = true;
+
+        if (!isSearch) {
+            return;
+        }
+        Debug.Log("SearchRoomNode");
         //一度falseに
         foreach (RoomNode roomObj in roomSetting.roomNodeList) {
             roomObj.gameObject.SetActive(false);
@@ -75,7 +83,7 @@ public class Search : MonoBehaviour
 
             //フィルターにかける
             //人数設定が未設定
-            if(join == true) {
+            if(isNumLimit == true) {
                 if (roomObj.fortuneType == searchFortuneType && roomObj.openVoting == searchOpenVoting &&  roomObj.settingNum > searchJoinNum　&& searchRoomSelection == roomObj.roomSelection) {
                     roomObj.gameObject.SetActive(true);
                 }
@@ -90,6 +98,8 @@ public class Search : MonoBehaviour
             searchFortuneType = lastSearchFortuneType;
             searchOpenVoting = lastSearchOpenVoting;
         }
+
+        isSearch = false;
     }
 
     //Lobby上部の難易度変更
@@ -165,7 +175,7 @@ public class Search : MonoBehaviour
         joinNumText.text = "未設定";
         openVotingText.text = "未設定";
         firstDayFrotuneText.text = "未設定";
-        join = true;
+        isNumLimit = true;
     }
     /// <summary>
     /// 募集条件
@@ -288,10 +298,10 @@ public class Search : MonoBehaviour
         searchJoinNum++;
         if(searchJoinNum == 3) {
             joinNumText.text = "未設定";
-            join = true;
+            isNumLimit = true;
         } else {
             joinNumText.text = searchJoinNum.ToString();
-            join = false;
+            isNumLimit = false;
         }
 
         if (searchJoinNum == 15) {
@@ -308,10 +318,10 @@ public class Search : MonoBehaviour
         searchJoinNum--;
         if (searchJoinNum == 3) {
             joinNumText.text = "未設定";
-            join = true;
+            isNumLimit = true;
         } else {
             joinNumText.text = searchJoinNum.ToString();
-            join = false;
+            isNumLimit = false;
         }
 
         if (searchJoinNum == 14) {
