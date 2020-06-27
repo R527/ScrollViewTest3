@@ -18,6 +18,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Image iconImage;
 
     public int playerID;
+    public string myUniqueId;
     public string playerName;
     public int iconNo;//アイコンの絵用
     public ROLLTYPE rollType = ROLLTYPE.ETC;
@@ -51,6 +52,15 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         this.playerName = playerName;
         this.iconNo = iconNo;
         this.playerID = playerID;
+        //ボタンにゆにーくIDを登録する
+        //自分のボタンではない場合
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if (player.ActorNumber == playerID) {
+                myUniqueId = (string)player.CustomProperties["myUniqueID"];
+                Debug.Log("myUniqueId" + myUniqueId);
+            }
+        }
+
         live = true;
         
         gameObject.GetComponent<Outline>().enabled = false;

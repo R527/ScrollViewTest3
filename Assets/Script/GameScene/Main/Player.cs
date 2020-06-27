@@ -80,6 +80,7 @@ public class Player : MonoBehaviourPunCallbacks {
         }
         Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["myUniqueID"]);
 
+
         //生存者にする
         live = true;
 

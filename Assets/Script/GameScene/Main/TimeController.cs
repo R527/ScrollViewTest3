@@ -256,9 +256,17 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 if (gameManager.chatSystem.myPlayer.live) {
                     //突然死処理
                     if (!isSpeaking) {
-                        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.不参加);
+                        chatSystem.myPlayer.live = false;
+                        SetSuddenDeathID();
                     }
+                    //一日ごとに突然死チェックするのでリセット
                     isSpeaking = false;
+                }
+                //自分の世界で突然死したプレイヤーの生存情報をfalseにする
+                foreach(Player player in chatSystem.playersList) {
+                    if(GetSuddenDeathID() == player.playerID) {
+                        player.live = false;
+                    }
                 }
 
                 //GMチャットなど
@@ -606,28 +614,31 @@ public class TimeController : MonoBehaviourPunCallbacks {
         PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
     }
 
+    /// <summary>
+    /// 突然死したプレイヤーのPlayerIDをセットする
+    /// </summary>
+    private void SetSuddenDeathID() {
+        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.不参加);
+        var properties = new ExitGames.Client.Photon.Hashtable {
+            {"suddenDeathID",chatSystem.myPlayer.playerID},
+        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+    }
 
     /// <summary>
-    /// TimeTypeをもらう
+    /// 突然死したプレイヤーIDをもらう
     /// </summary>
     /// <returns></returns>
-    private TIME GetTimeType() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeType", out object timeTypeObj)) {
-            timeType = (TIME)Enum.Parse(typeof(TIME),timeTypeObj.ToString());
+    private int GetSuddenDeathID() {
+        int suddenDeathID = 0;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("suddenDeathID", out object suddenDeathIDObj)) {
+            suddenDeathID = (int)suddenDeathIDObj;
         }
-        return timeType;
+        Debug.Log(suddenDeathID);
+        return suddenDeathID;
     }
 
 
-    /// <summary>
-    /// TimeTypeをセットする
-    /// </summary>
-    private void SetTimeType(TIME nowTimeType) {
-        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"timeType", nowTimeType.ToString() }
-                        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
 }
 
 

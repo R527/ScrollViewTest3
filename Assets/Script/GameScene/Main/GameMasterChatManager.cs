@@ -23,7 +23,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public int timeSavingNum;//時短の人数確認
     public Text timeSavingButtonText;//時短or退出ボタン
     public GameObject LeavePopUp;//ゲーム終了後の退出用PopUP
-    public Button exitButton;
+    //public Button exitButton;
     public string gameMasterChat;
     //早朝用
     public int bitedID;//噛んだプレイヤーID
@@ -35,7 +35,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
     void Start() {
         timeSavingButton.onClick.AddListener(() => TimeSavingChat());
-        exitButton.onClick.AddListener(ExitButton);
+        //exitButton.onClick.AddListener(ExitButton);
         //カスタムプロパティ
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"timeSavingNum",timeSavingNum },//時短の人数確認
@@ -166,19 +166,11 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //退出処理
         } else if (timeSavingButtonText.text == "退出") {
 
-            //ゲーム開始前
-            if (!gameManager.gameStart) {
-                gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
-                gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-                gameMasterChat = string.Empty;
-                //LeaveRoom();処理をするときにTimeControllerのエラーが出るので消去する
-                NetworkManager.instance.LeaveRoom();
-
-                //ゲーム終了後or死亡後
-            } else {
-                //PoPUpを出したい
-                LeavePopUp.SetActive(true);
-            }
+            gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
+            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+            gameMasterChat = string.Empty;
+            //LeaveRoom();処理をするときにTimeControllerのエラーが出るので消去する
+            NetworkManager.instance.LeaveRoom();
         }
     }
 

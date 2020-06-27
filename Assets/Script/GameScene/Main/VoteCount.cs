@@ -77,7 +77,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                 if (player.ActorNumber == mostVotePlayer.ActorNumber) {
 
                     var properties = new ExitGames.Client.Photon.Hashtable {
-                            {"live", false}
+                        {"live", false}
                     };
                     player.SetCustomProperties(properties);
                     //プレイヤーの共有
