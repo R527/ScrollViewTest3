@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     //入室確認
     public string myBanListStr;//自分のBanList
+    public BanPlayer banPlayerPrefab;
+    public Transform banListTran;
 
     public bool isCheckEnteredRoom;//入室チェック
 
@@ -126,6 +128,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
             {"banListStr",banListStr }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomBanListProperties);
+
+        //BanListの作成
+        CreateBanList();
 
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
@@ -822,6 +827,23 @@ public class GameManager : MonoBehaviourPunCallbacks {
             return banListStr.Substring(0, banListStr.Length - 1);
         } else {
             return "";
+        }
+    }
+
+    /// <summary>
+    /// 起動時にBanListを作成する
+    /// </summary>
+    public void CreateBanList() {
+
+        ////BanListがないなら実行しない
+        if (PlayerManager.instance.banListMaxIndex <= 0) {
+            return;
+        }
+
+        //BanList作成
+        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
+            BanPlayer banPlayer = Instantiate(banPlayerPrefab, banListTran, false);
+            banPlayer.SetUp(PlayerManager.instance.banUniqueIDList[i], PlayerManager.instance.banUserNickNameList[i]);
         }
     }
 

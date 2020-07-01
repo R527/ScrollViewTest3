@@ -23,6 +23,7 @@ TagManager:
   - GameCanvas
   - Title
   - Search
+  - BanPlayerList
   layers:
   - Default
   - TransparentFX

@@ -97,9 +97,14 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
             //フィルター機能Off時
             //生存していて、自分以外のプレイヤーを指定
-        } else if (live && !gameManager.chatListManager.isfilter && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
+        } else if (!gameManager.chatListManager.isfilter && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
             //フィルター機能がOFFの時は各時間ごとの機能をする
             Debug.Log(gameManager.timeController.timeType);
+
+            //BanListの追加
+            if (!live) {
+                AddBanPlayer();
+            }
 
             switch (gameManager.timeController.timeType) {
 
@@ -188,7 +193,32 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                         }
                     }
                     break;
+                    //BanPlayerの追加
+                case TIME.終了:
+                    AddBanPlayer();
+                    break;
             }
+        }
+    }
+
+    private void AddBanPlayer() {
+        Debug.Log("BanList追加");
+        //枠がいっぱいの場合
+        if (PlayerManager.instance.banListMaxIndex == 3) {
+            GameObject list = GameObject.FindGameObjectWithTag("BanPlayerList");
+            list.GetComponent<CanvasGroup>().alpha = 1;
+        } else {
+            //枠が空いている場合
+            Debug.Log("追加されました");
+
+            PlayerManager.instance.banIndex = PlayerManager.instance.banListMaxIndex;
+            Debug.Log(PlayerManager.instance.banIndex);
+            Debug.Log(PlayerManager.instance.banListMaxIndex);
+            PlayerManager.instance.SetStringForPlayerPrefs(myUniqueId, PlayerManager.ID_TYPE.banUniqueID);
+            PlayerManager.instance.SetStringForPlayerPrefs(playerName, PlayerManager.ID_TYPE.banUserNickName);
+            PlayerManager.instance.banListMaxIndex++;
+            
+            PlayerManager.instance.SetIntBanListForPlayerPrefs(PlayerManager.instance.banListMaxIndex, PlayerManager.ID_TYPE.banListMaxIndex);
         }
     }
 
