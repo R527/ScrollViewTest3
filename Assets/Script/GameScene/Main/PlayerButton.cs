@@ -210,13 +210,14 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         } else {
             //枠が空いている場合
             Debug.Log("追加されました");
-            
-            PlayerManager.instance.banListMaxIndex++;
+
             PlayerManager.instance.banIndex = PlayerManager.instance.banListMaxIndex;
             Debug.Log(PlayerManager.instance.banIndex);
             Debug.Log(PlayerManager.instance.banListMaxIndex);
             PlayerManager.instance.SetStringForPlayerPrefs(myUniqueId, PlayerManager.ID_TYPE.banUniqueID);
             PlayerManager.instance.SetStringForPlayerPrefs(playerName, PlayerManager.ID_TYPE.banUserNickName);
+            PlayerManager.instance.banListMaxIndex++;
+            
             PlayerManager.instance.SetIntBanListForPlayerPrefs(PlayerManager.instance.banListMaxIndex, PlayerManager.ID_TYPE.banListMaxIndex);
         }
     }
