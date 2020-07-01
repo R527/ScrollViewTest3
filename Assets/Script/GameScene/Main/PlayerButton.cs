@@ -206,7 +206,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         //枠がいっぱいの場合
         if (PlayerManager.instance.banListMaxIndex == 3) {
             GameObject list = GameObject.FindGameObjectWithTag("BanPlayerList");
-            list.SetActive(true);
+            list.GetComponent<CanvasGroup>().alpha = 1;
         } else {
             //枠が空いている場合
             Debug.Log("追加されました");
