@@ -111,7 +111,7 @@ public class Player : MonoBehaviourPunCallbacks {
         //プレイヤーボタン作成
         if (photonView.IsMine) {
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
-        } else if(!photonView.IsMine) {
+        } else if (!photonView.IsMine) {
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
             StartCoroutine(SetOtherPlayer());
         }
@@ -122,8 +122,10 @@ public class Player : MonoBehaviourPunCallbacks {
     /// Player.csとは別にPlayerButtonを作成する
     /// </summary>
     [PunRPC]
-    private void CreatePlayerButton() {
+    private IEnumerator CreatePlayerButton() {
         Debug.Log("CreatePlayerButton");
+
+        yield return WaitCreatePlayerButton();
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
@@ -370,6 +372,16 @@ public class Player : MonoBehaviourPunCallbacks {
             Destroy(this);
         }
     }
+
+    private IEnumerator SetCoroutine() {
+        yield return WaitCreatePlayerButton();
+    }
+
+    private IEnumerator WaitCreatePlayerButton() {
+        yield return new WaitForSeconds(2.0f);
+        
+    }
+
 
     /////////////////////
     ///カスタムプロパティ関連

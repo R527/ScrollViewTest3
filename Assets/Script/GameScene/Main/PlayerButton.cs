@@ -16,6 +16,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Button playerButton;
     public Text playerText;
     public Image iconImage;
+    public RectTransform tran;
 
     public int playerID;
     public string myUniqueId;
@@ -36,7 +37,9 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
     private void Start() {
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
+        tran.localScale = new Vector3(1, 1, 1);
     }
+
 
     /// <summary>
     /// 

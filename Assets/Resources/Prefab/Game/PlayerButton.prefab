@@ -277,7 +277,9 @@ MonoBehaviour:
   playerButton: {fileID: 5652580297830070453}
   playerText: {fileID: 8967103504711759608}
   iconImage: {fileID: 4239163817544802128}
+  tran: {fileID: 6638726288695106858}
   playerID: 0
+  myUniqueId: 
   playerName: 
   iconNo: 0
   rollType: 7
