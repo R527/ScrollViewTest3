@@ -70,7 +70,10 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         playerText.text = playerName;
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         transform.SetParent(menbartran);
-        
+
+        if (PhotonNetwork.IsMasterClient) {
+            gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+        }
     }
 
     public void SetRollSetting(Player player) {

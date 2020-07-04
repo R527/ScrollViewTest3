@@ -185,15 +185,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
             }
                 
             //0秒になったら次のシーンへ移行する
-            if (totalTime < 0 && PhotonNetwork.IsMasterClient) {
-                //マスターだけがisPlayingをfalseに
-                //isPlaying = false;
-                //playState = PlayState.Stop;
+            //時短が成立しても実行される
+            if ((totalTime < 0  || gameManager.gameMasterChatManager.GetIsTimeSaving())&& PhotonNetwork.IsMasterClient) {
                 SetPlayState(PlayState.Stop);
-            } //else if(totalTime < 0 && !PhotonNetwork.IsMasterClient) {
+            } 
 
             GetPlayState();
-            //}
 
             //次のシーンへ移行する処理
         } else if (playState == PlayState.Stop){
@@ -550,7 +547,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <summary>
     /// ゲーム中の時間のオンライン化
     /// </summary>
-    private void SetGameTime() {
+    public void SetGameTime() {
         ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"totalTime", totalTime }
         };

@@ -191,14 +191,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="roomList"></param>
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
         base.OnRoomListUpdate(roomList);
+        Debug.Log("OnRoomListUpdate");
         roomInfoList = roomList;
         foreach (Photon.Realtime.RoomInfo info in roomList) {
+            Debug.Log("info.RemovedFromList"+info.RemovedFromList);
+            
             RoomNode roomNode;
             //アクティブの部屋がありますか
             if (activeEntries.TryGetValue(info.Name, out roomNode)) {
+                
                 //IsOpenがtureの場合表示する
                 //最後のプレイヤーがRoomに入った時にfalseにする
                 if (!info.RemovedFromList && info.IsOpen) {
+                    //RoomNode obj = null;
+                    ////if (roomNode.gameObject == null) {
+                    //    obj = Instantiate(roomNodePrefab, roomContent.transform, false);
+                    //    obj = roomNode;
+                    ////}
+
                     //部屋情報を読み取ってアクティブ化する
                     Debug.Log("Activate1");
                     roomNode.Activate(info);
@@ -206,6 +216,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 } else if (!info.RemovedFromList && !info.IsOpen) {
                     //部屋をfalse
                     Debug.Log("Deactive" + "オブジェクトを隠す");
+                    if(roomNode == null) {
+                        return;
+                    }
                     roomNode.Deactivate();
                 } else {
                     Debug.Log("Deactive" + "オブジェクトを消す");

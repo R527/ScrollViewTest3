@@ -209,6 +209,7 @@ namespace Photon.Realtime
             if (propertiesToCache.ContainsKey(GamePropertyKey.Removed))
             {
                 this.RemovedFromList = (bool)propertiesToCache[GamePropertyKey.Removed];
+                UnityEngine.Debug.Log("this.RemovedFromList" + this.RemovedFromList);
                 if (this.RemovedFromList)
                 {
                     return;

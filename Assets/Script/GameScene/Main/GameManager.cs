@@ -134,8 +134,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
+            Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
+            Debug.Log(PhotonNetwork.CurrentRoom.MaxPlayers);
             PhotonNetwork.CurrentRoom.IsOpen = true;
-            Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
+            Debug.Log("IsOpne空室" + PhotonNetwork.CurrentRoom.IsOpen);
         }
 
         isCheckEnteredRoom = true;
@@ -161,8 +163,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
         if(gameStart) {
             return;
         }
+        Debug.Log(PhotonNetwork.CurrentRoom.IsOpen);
 
-        if(!gameStart) {
+        if (!gameStart) {
             Debug.Log("参加確認中or人数募集中");
             gameStart = GetGameStart();
 
@@ -280,9 +283,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
             savingText.text = "時短";
             damyObj.SetActive(true);
             confirmationImage.SetActive(true);
-            timeController.savingButton.interactable = false;
+            
         }
-        
+        //if (gameMasterChatManager.timeSavingButton.interactable) {
+        //    gameMasterChatManager.timeSavingButton.interactable = false;
+        //}
 
         //マスターだけ時間を書き込む
         if (PhotonNetwork.IsMasterClient) {
@@ -776,6 +781,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         if (GetEnterNumTime() <= 0) {
             return;
         }
+
         num--;
         enterNum = 0;
 
@@ -785,7 +791,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //誰かが退出したことを知らせるためのbool型
         isExit = true;
         SetIsExit();
-
+        PhotonNetwork.CurrentRoom.IsOpen = true;
         NetworkManager.instance.LeaveRoom();
 
     }

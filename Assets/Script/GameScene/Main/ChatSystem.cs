@@ -85,13 +85,15 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             ChatNode chatNode = null;
             //オンラインオフラインで分ける(GMChat
             //Offline
+            Debug.Log("speaker_Type" + speaker_Type);
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
                 chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
                 //チャットデータをもとにちゃっとNodeに情報を持たせる
                 chatNode.InitChatNode(chatData, 0, false);
                 SetChatNode(chatNode, chatData, false);
                 //OnLine
-            } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE && photonView.IsMine) {
+            } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE ) {
+                
                 photonView.RPC(nameof(CreateGameMasterChatNode), RpcTarget.All, id, inputData, boardColor, comingOut);
             }
             
@@ -160,6 +162,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         chatData.chatType = CHAT_TYPE.GM;
         chatNode.InitChatNode(chatData, 0, comingOut);
         SetChatNode(chatNode, chatData, comingOut);
+        Debug.Log("CreateGameMasterChatNode");
     }
 
     /// <summary>

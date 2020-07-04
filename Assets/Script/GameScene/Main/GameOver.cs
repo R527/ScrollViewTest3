@@ -81,7 +81,7 @@ public class GameOver : MonoBehaviour {
         //ゲーム終了
         ResultBattleRecord(isWin);
 
-        //ゲーム終了後の処理
+        
         //不参加状態でゲームを終了した場合突然死数を増やす
         if(PlayerPrefs.GetString("突然死用のフラグ") == PlayerManager.SuddenDeath_TYPE.不参加.ToString()) {
             PlayerManager.instance.totalNumberOfSuddenDeath++;
@@ -89,11 +89,12 @@ public class GameOver : MonoBehaviour {
         }
         PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
 
-
+        //ゲーム終了後の処理
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         timeController.isGameOver = false;
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
+        gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
 
     }
 

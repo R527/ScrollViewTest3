@@ -125,7 +125,7 @@ public class Player : MonoBehaviourPunCallbacks {
     private IEnumerator CreatePlayerButton() {
         Debug.Log("CreatePlayerButton");
 
-        yield return WaitCreatePlayerButton();
+        yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
@@ -133,6 +133,7 @@ public class Player : MonoBehaviourPunCallbacks {
         var propertiers = new ExitGames.Client.Photon.Hashtable();
         propertiers.Add("isCreatePlayerButton", true);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+        
     }
 
 
@@ -295,6 +296,8 @@ public class Player : MonoBehaviourPunCallbacks {
         Debug.Log(playerButton);
         Debug.Log(gameManager);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
+        gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+        gameManager.exitButton.interactable = true;
     }
 
     /// <summary>

@@ -105,14 +105,21 @@ public class RoomSetting : MonoBehaviour
         //RoomDataにデータ保存
         RoomData.instance.roomInfo = roomInfo;
         RoomData.instance.rollList = rollSetting.NumList;
-        RoomData.instance.numLimit = rollSetting.numLimit;
+
+        if (DebugManager.instance.isDebug) {
+            RoomData.instance.numLimit = DebugManager.instance.numLimit;
+            Debug.Log("debug用");
+        } else {
+            RoomData.instance.numLimit = rollSetting.numLimit;
+        }
+        
 
         //一旦SetActive（false);にしておく→更新や、難易度変更で後程制御
         room.gameObject.SetActive(false);
 
 
         //サーバーに部屋情報を渡す。
-        NetworkManager.instance.PreparateCreateRoom(room.settingNum, room);
+        NetworkManager.instance.PreparateCreateRoom(RoomData.instance.numLimit, room);
 
     }
 

@@ -37,6 +37,10 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     public Photon.Realtime.RoomInfo roomInfo;
     public bool isCheckBanList;//banListのチェックtrueならBanListに登録されている
 
+
+    private void Awake() {
+        DontDestroyOnLoad(gameObject);
+    }
     /// <summary>
     /// 部屋を作った人（マスターだけが利用する
     /// </summary>
@@ -75,7 +79,9 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="roomInfo"></param>
     public void Activate(Photon.Realtime.RoomInfo roomInfo) {
+        
         Debug.Log("Activate通過");
+        Debug.Log("roomInfo.IsOpen" + roomInfo.IsOpen);
         //入室処理
         enterButton.onClick.AddListener(OnClickJoinRoom);
         //部屋の設定を表示する
