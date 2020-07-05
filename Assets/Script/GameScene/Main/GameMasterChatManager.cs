@@ -35,7 +35,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
 
     void Start() {
-        timeSavingButton.onClick.AddListener(() => TimeSavingChat());
+        timeSavingButton.onClick.AddListener(() => TimeSavingOrExitButton());
         //exitButton.onClick.AddListener(ExitButton);
         //カスタムプロパティ
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
@@ -125,8 +125,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 時短と退出処理のGMチャットを制御
     /// </summary>
     /// <returns></returns>
-    public void TimeSavingChat() {
-
+    public void TimeSavingOrExitButton() {
+        Debug.Log("TimeSavingChat");
         //時短処理
         if (timeSavingButtonText.text == "時短") {
             Debug.Log("時短処理");
@@ -167,8 +167,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
 
             //退出処理
-        } else if (timeSavingButtonText.text == "退出" && photonView.IsMine) {
-
+        } else if (timeSavingButtonText.text == "退出" ) {
+            //&& photonView.IsMine
+            Debug.Log("退出");
             gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
             gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
             gameMasterChat = string.Empty;

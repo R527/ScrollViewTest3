@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public List<ROLLTYPE> ComingOutButtonList = new List<ROLLTYPE>();
 
     public void GameManagerSetUp() {
-
+        Debug.Log("GameManagerSetUp");
         
 
         //部屋を作った人は初めての人なのでこの処理はない
@@ -89,7 +89,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
         //参加人数一人追加
         num++;
-
         //トータルの参加人数を更新して、カスタムプロパティに保存する
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"num", num },
@@ -100,9 +99,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //カスタムプロパティに更新した変数をセットする
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-
-
-
 
         SetRoomData();
 

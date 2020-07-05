@@ -249,7 +249,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void LeaveRoom() {
         gameManager.timeController.isGameOver = false;
         if (PhotonNetwork.InRoom) {
-            gameManager.gameMasterChatManager.LeaveRoomChat();
             PhotonNetwork.LeaveRoom();
             Debug.Log("退出完了");
         }
@@ -313,6 +312,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomBanListProperties);
 
             gameManager.DestroyPlayerButton(otherPlayer);
+
+            gameManager.num--;
+            var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+                {"num", gameManager.num },
+            };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+
             PhotonNetwork.CurrentRoom.IsOpen = true;
         }
     }
