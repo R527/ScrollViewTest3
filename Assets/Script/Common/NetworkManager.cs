@@ -116,6 +116,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="roomName"></param>
     public void JoinRoom(string roomName) {
+        Debug.Log("roomName"+roomName);
         Debug.Log("joinRoom");
         PhotonNetwork.JoinRoom(roomName);
     }
@@ -210,11 +211,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
                 activeEntries.Remove(info.Name);
                 Debug.Log(roomNode);
-                    //if (roomNode == null) {
+                    if (roomNode == null) {
                         Debug.Log("GameObjがない場合");
 
                         roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
-                    //}
+                    }
                     roomNode.Activate(info);
                     activeEntries.Add(info.Name,roomNode);
                     //} else {
@@ -282,7 +283,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public override void OnLeftRoom() {
         base.OnLeftRoom();
-
+        Debug.Log("OnLeftRoom");
+        PhotonNetwork.Disconnect();
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
     }
 

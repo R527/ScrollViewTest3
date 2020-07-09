@@ -32,8 +32,10 @@ public class LobbyButtonManager : MonoBehaviour
         if(network == null) {
             NetworkManager networkManager = Instantiate(networkManagerPrefab);
             networkManager.SetUp();
+            Debug.Log("LobbyButtonManagerSetUP1");
         } else {
             network.GetComponent<NetworkManager>().SetUp();
+            Debug.Log("LobbyButtonManagerSetUP2");
         }
     }
 
