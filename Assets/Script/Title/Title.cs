@@ -26,7 +26,7 @@ public class Title : MonoBehaviour
     private void Start() {
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);
         begginerButton.onClick.AddListener(BegginerGuideMenu);
-        gameStartButton.onClick.AddListener(() => SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY));
+        gameStartButton.onClick.AddListener(StartGameButton);
         menuButton.onClick.AddListener(MenuPopUp);
         playerInfoButton.onClick.AddListener(PlayerInfoPopUP);
 
@@ -68,6 +68,10 @@ public class Title : MonoBehaviour
             BanPlayer banplayer = Instantiate(banPlayerPrefab, banListtran, false);
             banplayer.SetUp(PlayerManager.instance.banUniqueIDList[i], PlayerManager.instance.banUserNickNameList[i]);
         }
+    }
+
+    public void StartGameButton() {
+        SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
     }
 
 }

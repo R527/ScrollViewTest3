@@ -39,6 +39,7 @@ public class LobbyButtonManager : MonoBehaviour
 
 
     private void Start() {
+        AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY);
         backButton.onClick.AddListener(() => SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE));
         menuButton.onClick.AddListener(MenuPopUp);
         createRoomButton.onClick.AddListener(CreateRoomButton);
@@ -55,4 +56,5 @@ public class LobbyButtonManager : MonoBehaviour
         roomSelectCanvasObj.SetActive(false);
         rollSettingCanvasObj.SetActive(true);
     }
+
 }

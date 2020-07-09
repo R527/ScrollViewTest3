@@ -3506,7 +3506,6 @@ MonoBehaviour:
   bgmSource:
   - {fileID: 743018857}
   - {fileID: 743018859}
-  - {fileID: 0}
   seSource:
   - {fileID: 743018856}
   bgmVolume: 0

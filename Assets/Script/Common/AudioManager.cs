@@ -64,16 +64,19 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     /// <param name="bgmType"></param>
     public void PlayBGM(BGM_TYPE bgmType) {
+        for(int i = 0; i < bgmSource.Length; i++) {
+            bgmSource[i].Stop();
+        }
         currentBgmNum = (int)bgmType;
         bgmSource[currentBgmNum].Play();
     }
-    /// <summary>
-    /// BGMの配列を数字に変換して止める
-    /// </summary>
-    /// <param name="bgmType"></param>
-    public void StopBGM() {
-        bgmSource[currentBgmNum].Stop();
-    }
+    ///// <summary>
+    ///// BGMの配列を数字に変換して止める
+    ///// </summary>
+    ///// <param name="bgmType"></param>
+    //public void StopBGM(BGM_TYPE bgmType) {
+    //    currentBgmNum = (int)bgmType;
+    //}
     /// <summary>
     /// SEの配列を数字に変換して、流す
     /// </summary>
