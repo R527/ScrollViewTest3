@@ -65,8 +65,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         }
 
         live = true;
-        
-        gameObject.GetComponent<Outline>().enabled = false;
+
         playerText.text = playerName;
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         transform.SetParent(menbartran);

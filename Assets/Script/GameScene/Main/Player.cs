@@ -128,6 +128,7 @@ public class Player : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
+        playerButton.GetComponent<Outline>().enabled = true;
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
 
         var propertiers = new ExitGames.Client.Photon.Hashtable();
