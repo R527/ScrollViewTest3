@@ -52,6 +52,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     public override void OnConnectedToMaster() {
         PhotonNetwork.JoinLobby();
+        Debug.Log("OnConnectedToMaster");
     }
 
     //部屋作成関連まとめ

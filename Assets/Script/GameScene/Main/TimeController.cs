@@ -229,7 +229,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.昼;
                 totalTime = mainTime;
                 mainPopup.SetActive(true);
-                    
+
+                //死亡している場合時短or退出ボタンを退出にする
+                if (chatSystem.myPlayer.live == false) {
+                    gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
+                    gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+                }
+
+
                 //初期化
                 chatSystem.coTimeLimit = 0;
                 chatSystem.calloutTimeLimit = 0;
@@ -310,7 +317,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 //生存者数を取得
                 gameManager.liveNum = gameManager.GetLiveNum();
-                gameOver.CheckGameOver();
+                //gameOver.CheckGameOver();
                 break;
 
             //夜の行動
@@ -341,6 +348,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.夜の結果発表;
                 totalTime = resultTime;
 
+                //死亡している場合時短or退出ボタンを退出にする
+                if (chatSystem.myPlayer.live == false) {
+                    gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
+                    gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+                }
+
                 //初期化
                 chatSystem.myPlayer.isRollAction = false;
 
@@ -357,7 +370,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.結果発表後チェック;
                 totalTime = checkGameOverTime;
 
-                gameOver.CheckGameOver();
+                //gameOver.CheckGameOver();
                 DeathPlayer();
                 break;
         }
