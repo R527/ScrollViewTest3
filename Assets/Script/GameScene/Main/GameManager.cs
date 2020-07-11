@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         exitButton.onClick.AddListener(ExitButton);
         enterButton.onClick.AddListener(EnterButton);
 
-        //BanListの追加
+        //自分のBanListを一つのstringにする
         myBanListStr = GetStringBanList();
 
         //PhotonのPlayerクラスに新しい情報を追加
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(customPlayerProperties);
 
-        //BanList追加処理
+        //各プレイヤーから受け取ったmyBanListStrをつなげて一つのstringにする
         string banListStr = GetStringMasterBanList();
         Debug.Log(banListStr);
         var customRoomBanListProperties = new ExitGames.Client.Photon.Hashtable {
@@ -362,18 +362,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
-    /// 参加意思表示のないプレイヤー分numをマイナスする
+    /// 参加人数をリセットする
     /// </summary>
     private void JoinReset() {
-        ////プレイヤーを一人ずつ確認して、参加意思表示ないプレイヤーをチェックする
-        //foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-        //    //参加意思がないプレイヤーぶんだけnumをマイナスにする
-        //    if (!(bool)player.CustomProperties["isJoined"]) {
-        //        num = GetNum();
-        //        num--;
-        //        SetNum();
-        //    }
-        //}
+
         num = PhotonNetwork.PlayerList.Length;
         SetNum();
 

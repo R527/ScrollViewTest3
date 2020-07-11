@@ -190,14 +190,15 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                     }
                     break;
 
-                //マスターのみプレイヤーを退出できる
+                //マスターのみ他プレイヤーを退出できる
+                //強制退出させたプレイヤーはBanListに追加される
                 case TIME.開始前:
                     Debug.Log("強制退出");
                     if (PhotonNetwork.IsMasterClient) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                             if (player.ActorNumber == playerID && gameManager.chatSystem.myID != playerID) {
-                                gameManager.num--;
-                                gameManager.SetNum();
+                                PlayerManager.instance.roomBanUniqueIdList.Add((string)player.CustomProperties["myUniqueID"]);
+                                PlayerManager.instance.roomBanUniqueIdStr += (string)player.CustomProperties["myUniqueID"] + ",";
                                 gameManager.gameMasterChatManager.ForcedEvictionRoom(player);
                                 break;
                             }
@@ -231,6 +232,16 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             
             PlayerManager.instance.SetIntBanListForPlayerPrefs(PlayerManager.instance.banListMaxIndex, PlayerManager.ID_TYPE.banListMaxIndex);
         }
+    }
+
+    private void SetRoomBanPlayerID(Photon.Realtime.Player player) {
+        
+        var propertis = new ExitGames.Client.Photon.Hashtable {
+            {"roomBanPlayerID",(string)player.CustomProperties["myUniqueID"] }
+        };
+        Debug.Log(PhotonNetwork.LocalPlayer.NickName);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
+        Debug.Log("playerName" + (string)PhotonNetwork.LocalPlayer.CustomProperties["playerName"]);
     }
 
 

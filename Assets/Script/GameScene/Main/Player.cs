@@ -343,7 +343,10 @@ public class Player : MonoBehaviourPunCallbacks {
     }
 
 
-
+    /// <summary>
+    /// BanListチェック中待機する
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator CheckBanList() {
 
         bool isBanPlayer = true;

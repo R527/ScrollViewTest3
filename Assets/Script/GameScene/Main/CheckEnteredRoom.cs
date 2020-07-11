@@ -102,6 +102,5 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         gameManager.GameManagerSetUp();
         Destroy(gameObject);
         return;
-        //} 
     }
 }

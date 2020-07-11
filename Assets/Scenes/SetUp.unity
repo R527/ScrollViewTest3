@@ -319,6 +319,7 @@ MonoBehaviour:
   playerName: 
   banUniqueIDList: []
   banUserNickNameList: []
+  roomBanUniqueIdList: []
   banIndex: 0
   myUniqueId: 
   banListMaxIndex: 0
@@ -378,7 +379,7 @@ MonoBehaviour:
   testResultTime: 5
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 3
   setEnterNumTime: 30
   openVoting: 1
   fortuneType: 1
