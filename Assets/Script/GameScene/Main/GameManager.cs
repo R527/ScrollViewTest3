@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Text confirmationEnterButtonText;//参加ボタン
     public Text savingText;
     public bool confirmation;//確認画面開始の判定　trueなら開始されている
-
+    public bool isConfirmation;//確認画面中ならtrue
     public GameObject damyObj;
     private bool isNumComplete;//ルームの規定人数が揃ったら
     public float setEnterNumTime;//規定人数が揃ったら使われる
@@ -184,9 +184,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
             SetIsJoin();
             SetIsExit();
         }
-
+        Debug.Log("GetNum()" + GetNum());
         //確認PopUP表示して参加確認を行う
         if (GetNum() == numLimit && GetEnterNum() != numLimit) {
+            isConfirmation = true;
             Debug.Log(gameStart);
             //参加意思表示の人数確認
             CountDownEnterNumTime();
@@ -321,11 +322,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
             SetIsTimeUp();
         }
 
+        Debug.Log("GetIsTimeUp()"+GetIsTimeUp());
         //時間切れになったらマスターから時間をもらう
         if (GetIsTimeUp()) {
             Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]);
             //参加意思表示ないプレイヤーのみ強制退出
             if (!(bool)PhotonNetwork.LocalPlayer.CustomProperties["isJoined"]) {
+
                 NetworkManager.instance.LeaveRoom();
                 Debug.Log("その他プレイヤー");
             } else {
@@ -342,7 +345,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             confirmationImage.SetActive(false);
             confirmation = false;
             timeController.savingButton.interactable = true;
-
+            isConfirmation = false;
             //マスターに管理(リセット
             if (PhotonNetwork.IsMasterClient) {
                 //部屋開放する
@@ -362,15 +365,17 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// 参加意思表示のないプレイヤー分numをマイナスする
     /// </summary>
     private void JoinReset() {
-        //プレイヤーを一人ずつ確認して、参加意思表示ないプレイヤーをチェックする
-        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-            //参加意思がないプレイヤーぶんだけnumをマイナスにする
-            if (!(bool)player.CustomProperties["isJoined"]) {
-                num = GetNum();
-                num--;
-                SetNum();
-            }
-        }
+        ////プレイヤーを一人ずつ確認して、参加意思表示ないプレイヤーをチェックする
+        //foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+        //    //参加意思がないプレイヤーぶんだけnumをマイナスにする
+        //    if (!(bool)player.CustomProperties["isJoined"]) {
+        //        num = GetNum();
+        //        num--;
+        //        SetNum();
+        //    }
+        //}
+        num = PhotonNetwork.PlayerList.Length;
+        SetNum();
 
         //enterNumもりセット
         enterNum = 0;
@@ -378,59 +383,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         SetEnterNum();
     }
 
-    ///// <summary>
-    ///// 任意に選択した役職をセッティングする
-    ///// </summary>
-    ///// <returns></returns>
-    //private IEnumerator SettingTestRollType() {
-    //    int i = 0;
-    //    //参加人数分だけランダムに
-    //    //PhotonNetwork.PlayerList　=　今部屋に参加しているプレイヤーのリスト9人ぶん
-    //    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-    //        ExitGames.Client.Photon.Hashtable customPlayerProperties = new ExitGames.Client.Photon.Hashtable {
-    //                {"roll", testRollTypeList[i] }
-    //            };
-    //        player.SetCustomProperties(customPlayerProperties);
-    //        i++;
-    //    }
-    //    var properties = new ExitGames.Client.Photon.Hashtable() {
-    //        {"isSetup", false },
-    //    };
-    //    PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
-    //    yield return new WaitForSeconds(0.5f);
-    //}
-
-
-    ///// <summary>
-    ///// 任意に選択した役職をセットする
-    ///// </summary>
-    ///// <returns></returns>
-    //private IEnumerator SetTestRoll() {
-    //    bool isSetup = true;
-
-    //    //マスターはゲームに使用する役職を用意する
-    //    if (PhotonNetwork.IsMasterClient) {
-    //        foreach (ROLLTYPE rollObj in DebugManager.instance.testRollTypeList) {
-    //            testRollTypeList.Add(rollObj);
-    //        }
-
-    //        yield return StartCoroutine(SettingTestRollType());
-    //    }
-    //    //上記の役職をランダムに選択している間は待つ
-    //    while (isSetup) {
-    //        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isSetup", out object setupObj)) {
-    //            isSetup = (bool)setupObj;
-    //            //Debug.Log(isSetup);
-    //        }
-    //        yield return null;
-    //    }
-
-    //    //時間などのRooｍDataにある情報を追加する
-    //    //SetRoomData();
-    //    //Playerの生成
-    //    StartCoroutine(StartGame());
-
-    //}
 
     /// <summary>
     /// ルームデータで決められた役職をセットし、それに合わせてボタンのセットとランダムに配布します。
@@ -495,26 +447,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //マスターはゲームに使用する役職を用意する
         //yield return StartCoroutineはそのメソッドの処理が終わるまで次の処理へと進まない
-        //if (PhotonNetwork.IsMasterClient) {
         yield return StartCoroutine(SettingRondomRollType());
-        //}
         gameStart = true;
         
-        //上記の役職をランダムに選択している間は待つ
-        //while (isSetup) {
-        //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isSetup", out object setupObj)) {
-        //        isSetup = (bool)setupObj;
-        //        //Debug.Log(isSetup);
-        //    }
-        //    yield return null;
-        //}
-
-        //時間などのRooｍDataにある情報を追加する
-        //SetRoomData();
-
-        //Playerの生成
-        //StartCoroutine(StartGame());
-
         var properties = new ExitGames.Client.Photon.Hashtable();
         properties.Add("gameStart", gameStart);
         PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
@@ -982,13 +917,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CurrentRoom.SetCustomProperties(customPlayerProperties);
         Debug.Log((bool)PhotonNetwork.CurrentRoom.CustomProperties["isExit"]);
     }
-    //public int GetNumLimit() {
-    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("numLimit", out object numLimitObj)) {
-    //        numLimit = (int)numLimitObj;
-    //    }
-    //    return numLimit;
-    //}
-
 
     /// <summary>
     /// 参加者の意思表示のbool型をセットする

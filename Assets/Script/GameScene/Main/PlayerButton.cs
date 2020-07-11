@@ -38,6 +38,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     private void Start() {
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
         tran.localScale = new Vector3(1, 1, 1);
+        
     }
 
 
@@ -49,7 +50,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     /// <param name="playerID"></param>
     /// <param name="gameManager"></param>
     /// <returns></returns>
-    public IEnumerator SetUp(string playerName,int iconNo, int playerID,GameManager gameManager) {
+    public IEnumerator SetUp(string playerName,int iconNo, int playerID,GameManager gameManager,bool isMine) {
         yield return null;
         this.gameManager = gameManager;
         this.playerName = playerName;
@@ -65,6 +66,11 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         }
 
         live = true;
+
+        //自分の世界のボタンだけ外枠を青くする
+        if (isMine) {
+            playerButton.GetComponent<Outline>().enabled = true;
+        }
 
         playerText.text = playerName;
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;

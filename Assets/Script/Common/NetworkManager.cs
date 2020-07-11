@@ -305,29 +305,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
         base.OnPlayerLeftRoom(otherPlayer);
 
-        //ゲーム開始前のみPlayerButtonを削除する
-        if (!gameManager.gameStart) {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            //Playerが抜けたときにBanListの更新をする
-            string banListStr = "";
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                if (player == otherPlayer) {
-                    continue;
-                }
-                banListStr += (string)player.CustomProperties["myBanListStr"];
-            }
-            Debug.Log(banListStr);
-            if(banListStr != "") {
-                banListStr.Substring(0, banListStr.Length - 1);
-            }
-            Debug.Log(banListStr);
-            var customRoomBanListProperties = new ExitGames.Client.Photon.Hashtable {
-            {"banListStr",banListStr }
-            };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomBanListProperties);
+        //ゲーム開始前Playerを削除する
+        if (!gameManager.gameStart && !gameManager.isConfirmation) {
+            DeleateOtherPlayer(otherPlayer);
 
-            gameManager.DestroyPlayerButton(otherPlayer);
-
+            //人数を減らす
             gameManager.num--;
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                 {"num", gameManager.num },
@@ -335,6 +317,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
 
             PhotonNetwork.CurrentRoom.IsOpen = true;
+        }
+
+        //確認画面中に強制退出させたプレイヤーの処理
+        if (gameManager.isConfirmation) {
+            DeleateOtherPlayer(otherPlayer);
         }
     }
 
@@ -471,5 +458,33 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     public Dictionary<string,RoomNode> GetActiveEntries() {
         return activeEntries;
+    }
+
+    /// <summary>
+    /// Playerが抜けたときの処理
+    /// BanListの更新とPlayerButtonの削除
+    /// </summary>
+    public void DeleateOtherPlayer(Photon.Realtime.Player otherPlayer) {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        //Playerが抜けたときにBanListの更新をする
+        string banListStr = "";
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if (player == otherPlayer) {
+                continue;
+            }
+            banListStr += (string)player.CustomProperties["myBanListStr"];
+        }
+        Debug.Log(banListStr);
+        if (banListStr != "") {
+            banListStr.Substring(0, banListStr.Length - 1);
+        }
+        Debug.Log(banListStr);
+        var customRoomBanListProperties = new ExitGames.Client.Photon.Hashtable {
+            {"banListStr",banListStr }
+            };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomBanListProperties);
+
+        //PlayerButton削除
+        gameManager.DestroyPlayerButton(otherPlayer);
     }
 }

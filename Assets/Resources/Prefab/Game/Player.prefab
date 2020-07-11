@@ -59,6 +59,7 @@ MonoBehaviour:
   timeController: {fileID: 0}
   playerID: 0
   playerName: 
+  isMine: 0
   live: 0
   fortune: 0
   spiritual: 0

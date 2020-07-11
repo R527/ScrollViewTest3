@@ -23,6 +23,7 @@ public class Player : MonoBehaviourPunCallbacks {
     //main
     public int playerID;
     public string playerName;
+    public bool isMine;
     public bool live;//生死 trueで生存している
     public bool fortune;//占い結果 true=黒
     public bool spiritual;//霊能結果　true = 黒
@@ -86,8 +87,10 @@ public class Player : MonoBehaviourPunCallbacks {
 
         transform.SetParent(gameManager.playerListContent);
 
-        
-
+        //自分の世界の外枠を青色にするためにboolを用意する
+        if (photonView.IsMine) {
+            isMine = true;
+        }
         //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
         if (photonView.IsMine) {
             Debug.Log("IsMine");
@@ -128,9 +131,9 @@ public class Player : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
-        playerButton.GetComponent<Outline>().enabled = true;
-        StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
+        StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
 
+        //Button作成完了を通知する
         var propertiers = new ExitGames.Client.Photon.Hashtable();
         propertiers.Add("isCreatePlayerButton", true);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
@@ -296,7 +299,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         Debug.Log(playerButton);
         Debug.Log(gameManager);
-        StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager));
+        StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         gameManager.exitButton.interactable = true;
     }

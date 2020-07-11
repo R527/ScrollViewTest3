@@ -29,7 +29,7 @@ public class LobbyButtonManager : MonoBehaviour
     private void Awake() {
 
         GameObject network = GameObject.FindGameObjectWithTag("networkManager");
-        if(network == null) {
+        if (network == null) {
             NetworkManager networkManager = Instantiate(networkManagerPrefab);
             networkManager.SetUp();
             Debug.Log("LobbyButtonManagerSetUP1");
@@ -37,6 +37,8 @@ public class LobbyButtonManager : MonoBehaviour
             network.GetComponent<NetworkManager>().SetUp();
             Debug.Log("LobbyButtonManagerSetUP2");
         }
+
+
     }
 
 
