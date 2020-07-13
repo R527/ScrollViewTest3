@@ -81,13 +81,9 @@ public class GameOver : MonoBehaviour {
         //ゲーム終了
         ResultBattleRecord(isWin);
 
-        
+
         //不参加状態でゲームを終了した場合突然死数を増やす
-        if(PlayerPrefs.GetString("突然死用のフラグ") == PlayerManager.SuddenDeath_TYPE.不参加.ToString()) {
-            PlayerManager.instance.totalNumberOfSuddenDeath++;
-            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath,PlayerManager.BATTLE_RECORD_TYPE.突然死数);
-        }
-        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
+        CheckEndGame();
 
         //ゲーム終了後の処理
         timeController.timeType = TIME.終了;
@@ -114,5 +110,17 @@ public class GameOver : MonoBehaviour {
             PlayerManager.instance.totalNumberOfLoses++;
             PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.敗北回数);
         }
+    }
+
+    /// <summary>
+    /// 正常にゲームを終了したかをチェックする
+    /// </summary>
+    public void CheckEndGame() {
+        if (PlayerPrefs.GetString("突然死用のフラグ") == PlayerManager.SuddenDeath_TYPE.不参加.ToString()) {
+            Debug.Log("不参加");
+            PlayerManager.instance.totalNumberOfSuddenDeath++;
+            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
+        }
+        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
     }
 }

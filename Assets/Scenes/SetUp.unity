@@ -319,6 +319,7 @@ MonoBehaviour:
   playerName: 
   banUniqueIDList: []
   banUserNickNameList: []
+  roomBanUniqueIdList: []
   banIndex: 0
   myUniqueId: 
   banListMaxIndex: 0
@@ -384,7 +385,7 @@ MonoBehaviour:
   fortuneType: 1
   timeType: 7
   isTestPlay: 1
-  testRollTypeList: 0000000000000000
+  testRollTypeList: 000000000000000004000000
 --- !u!1 &4274428794974511839
 GameObject:
   m_ObjectHideFlags: 0

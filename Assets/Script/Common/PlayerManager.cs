@@ -15,6 +15,8 @@ public class PlayerManager : MonoBehaviour
     [Header("Ban関連")]
     public List<string> banUniqueIDList = new List<string>();
     public List<string> banUserNickNameList = new List<string>();
+    public List<string> roomBanUniqueIdList = new List<string>();
+    public string roomBanUniqueIdStr;
     public int banIndex;//ban番号の通し番号
     public Dictionary<string, string> banTable = new Dictionary<string, string>();
     public string myUniqueId;//自分の端末番号

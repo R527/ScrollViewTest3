@@ -130,7 +130,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         //時短処理
         if (timeSavingButtonText.text == "時短") {
             Debug.Log("時短処理");
-            GetimeSavingNum();
+            timeSavingNum = GetimeSavingNum();
 
             //キャンセルorまだ希望していない状態なら
             //時短ボタンの色を変更する処理を後程追加したい
@@ -153,11 +153,12 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["timeSavingNum"]);
 
             //もう一度チェック
-            GetimeSavingNum();
+            timeSavingNum = GetimeSavingNum();
 
             //時短判定(過半数以上なら時短成立
             //Mathf.CeilToIntは切り上げ
-            if (Mathf.CeilToInt(gameManager.liveNum / 2) <= timeSavingNum) {
+            float value = (float)gameManager.liveNum;
+            if (Mathf.CeilToInt(value / 2) <= timeSavingNum) {
                 isTimeSaving = true;
                 SetIsTimeSaving();
                 Debug.Log("時短成立");
@@ -170,6 +171,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         } else if (timeSavingButtonText.text == "退出" ) {
             //&& photonView.IsMine
             Debug.Log("退出");
+            //game中なら正常終了しているかの確認を取る
+            if (timeController.isGameOver) {
+                timeController.gameOver.CheckEndGame();
+            }
             gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
             gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
             gameMasterChat = string.Empty;
@@ -456,18 +461,19 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// 時短希望人数をチェックする
     /// </summary>
-    private void GetimeSavingNum() {
+    private int GetimeSavingNum() {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeSavingNum", out object timeSavingNumObj)) {
             timeSavingNum = (int)timeSavingNumObj;
         }
+        return timeSavingNum;
     }
     /// <summary>
     /// 狩人が守った情報をセットします。
     /// </summary>
     private void SetProtectedPlayerID() {
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"protectedID", protectedID }
-                        };
+            {"protectedID", protectedID }
+        };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
         Debug.Log("SetProtected" + (int)PhotonNetwork.CurrentRoom.CustomProperties["protectedID"]);
     }
@@ -476,8 +482,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     private void SetBitedPlayerID() {
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                            {"bitedID", bitedID }
-                        };
+            {"bitedID", bitedID }
+        };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
         Debug.Log("SetBited" + (int)PhotonNetwork.CurrentRoom.CustomProperties["bitedID"]);
     }
