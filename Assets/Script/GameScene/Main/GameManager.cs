@@ -177,6 +177,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //一人以上のプレイヤーが退出した場合isJoinedisExitの値をリセットして確認PopUPを削除する
         if (GetIsExit()) {
             confirmationImage.SetActive(false);
+            ResetButton();
             isJoined = false;
             isExit = false;
             enterNumTime = 25.0f;
@@ -275,16 +276,20 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// 参加意思表示を確認する時間をカウントダウンします。
     /// </summary>
     public void CountDownEnterNumTime() {
+        //参加確認中の挙動を制御
         if (!confirmation) {
             confirmation = true;
             savingText.text = "時短";
             damyObj.SetActive(true);
             confirmationImage.SetActive(true);
-            
+            inputView.filterButton.interactable = false;
+            inputView.foldingButton.interactable = false;
+            chatSystem.chatInputField.interactable = false;
+            inputView.superChatButton.interactable = false;
         }
-        //if (gameMasterChatManager.timeSavingButton.interactable) {
-        //    gameMasterChatManager.timeSavingButton.interactable = false;
-        //}
+        if (gameMasterChatManager.timeSavingButton.interactable) {
+            gameMasterChatManager.timeSavingButton.interactable = false;
+        }
 
         //マスターだけ時間を書き込む
         if (PhotonNetwork.IsMasterClient) {
@@ -352,19 +357,32 @@ public class GameManager : MonoBehaviourPunCallbacks {
                 PhotonNetwork.CurrentRoom.IsOpen = true;
                 //リセット
                 enterNumTime = setEnterNumTime;
+                ResetButton();
                 isTimeUp = false;
                 SetIsTimeUp();
                 SetEnterNumTime();
-                JoinReset();
+                ResetJoin();
             }
         }
         
     }
 
     /// <summary>
+    /// 確認画面にてプレイヤーが退出したときにボタン情報をリセットする
+    /// </summary>
+    private void ResetButton() {
+        gameMasterChatManager.timeSavingButtonText.text = "退出";
+        gameMasterChatManager.timeSavingButton.interactable = true;
+        inputView.filterButton.interactable = true;
+        inputView.foldingButton.interactable = true;
+        chatSystem.chatInputField.interactable = true;
+        inputView.superChatButton.interactable = true;
+    }
+
+    /// <summary>
     /// 参加人数をリセットする
     /// </summary>
-    private void JoinReset() {
+    private void ResetJoin() {
 
         num = PhotonNetwork.PlayerList.Length;
         SetNum();
