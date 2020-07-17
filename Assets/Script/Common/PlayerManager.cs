@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public class PlayerManager : MonoBehaviour
 {
@@ -29,6 +31,13 @@ public class PlayerManager : MonoBehaviour
     public int totalNumberOfLoses;//総敗北数
     public int totalNumberOfSuddenDeath;//突然死数
 
+    [Header("対戦log")]
+    public List<string> saveChatLogList = new List<string>();
+    public int gameLogCount;
+    public string roomName;
+    public string saveChatLog;
+    public int saveChatCount;
+
     /// <summary>
     /// Ban関連
     /// </summary>
@@ -39,7 +48,9 @@ public class PlayerManager : MonoBehaviour
         banIndex,
         banListMaxIndex,
         playerName,
-        friendId
+        friendId,
+        saveChatLog,
+        roomName
     }
 
     /// <summary>
@@ -67,6 +78,21 @@ public class PlayerManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
+        }
+    }
+
+    private void Start() {
+
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.S)) {
+            Debug.Log("保存");
+            SetGameChatLog();
+        }
+        if (Input.GetKeyDown(KeyCode.C)) {
+            Debug.Log("復元");
+            GetGameChatLog();
         }
     }
 
@@ -99,6 +125,15 @@ public class PlayerManager : MonoBehaviour
                 break;
             case ID_TYPE.friendId:
                 break;
+            //チャットログ保存用
+            case ID_TYPE.saveChatLog:
+                PlayerPrefs.SetString(roomName, setString);
+                //saveChatCount++;
+                break;
+            case ID_TYPE.roomName:
+                PlayerPrefs.SetString("Game" + gameLogCount, roomName);
+                gameLogCount++;
+                break;
         }
 
         
@@ -112,7 +147,7 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     /// <param name="setInt"></param>
     /// <param name="idType"></param>
-    public void SetIntBanListForPlayerPrefs(int setInt, ID_TYPE idType) {
+    public void SetBanListForPlayerPrefs(int setInt, ID_TYPE idType) {
         switch (idType) {
 
             //BanList関連
@@ -127,7 +162,7 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    public void SetIntBattleRecordForPlayerPrefs(int setInt, BATTLE_RECORD_TYPE type) {
+    public void SetBattleRecordForPlayerPrefs(int setInt, BATTLE_RECORD_TYPE type) {
         //戦績関連
         switch (type) {
             case BATTLE_RECORD_TYPE.総対戦回数:
@@ -148,6 +183,34 @@ public class PlayerManager : MonoBehaviour
     }
 
     /// <summary>
+    /// チャットログ保存用
+    /// </summary>
+    public void SetGameChatLog() {
+        //PlayerPrefs.SetInt(roomName, saveChatCount);
+        PlayerPrefs.SetInt("gameLogCount", gameLogCount);
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>
+    /// チャットログ復元用
+    /// </summary>
+    public void GetGameChatLog() {
+        //gameLogCount = PlayerPrefs.GetInt("gameLogCount", 0);
+
+        //roomName = PlayerPrefs.GetString("Game" + gameLogCount);
+        //saveChatCount = PlayerPrefs.GetInt(roomName, 0);
+        //string[] str = new string[saveChatCount];
+        //for(int i = 0; i < saveChatCount; i++) {
+        //    str[i] = PlayerPrefs.GetString(roomName + saveChatCount);
+        //    Debug.Log(str[i]);
+        //}
+        saveChatLog = PlayerPrefs.GetString(roomName, "");
+        saveChatLog.Substring(0, saveChatLog.Length- 1);
+        Debug.Log(saveChatLog);
+
+        saveChatLogList = saveChatLog.Substring(0, saveChatLog.Length - 1).Split('%').ToList<string>();
+    }
+    /// <summary>
     /// 突然死用のStringをセットする
     /// </summary>
     /// <param name="setString"></param>
@@ -157,42 +220,18 @@ public class PlayerManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    /// <summary>
+    /// チャットデータを一つの文字列に変換する
+    /// ゲーム終了後にゲーム内容を復元するのに使う
+    /// </summary>
+    /// <param name="chatData"></param>
+    /// <returns></returns>
+    public string ConvertStringToChatData(ChatData chatData) {
+        string str = "";
+        str = chatData.inputData +  "," + chatData.boardColor.ToString() + "," + chatData.playerName;
+        return str;
+    }
 
-
-    //テスト用
-
-    ///// <summary>
-    ///// banListにプレイヤーを追加します。
-    ///// </summary>
-    //public void SetBanList() {
-    //    //Ban枠の限界を見る
-    //    if (banUniqueIDList.Count >= 3) {
-    //        Debug.Log("Ban枠がいっぱいです。");
-    //        return;
-    //    }
-
-    //    //空いている通し番号を探す
-    //    for(int i = 0; i < 3; i++) {
-    //        Debug.Log("test");
-    //        Debug.Log(PlayerPrefs.HasKey(ID_TYPE.banUniqueID.ToString() + i.ToString()));
-    //        if(!PlayerPrefs.HasKey (ID_TYPE.banUniqueID.ToString() + i.ToString())){
-    //            Debug.Log(i);
-    //            banIndex = i;
-    //            banListMaxIndex = i + 1;
-    //            SetIntBanListForPlayerPrefs(banListMaxIndex, ID_TYPE.banListMaxIndex);
-    //            break;
-    //        } 
-    //    }
-        
-    //    //Ban登録
-    //    SetStringForPlayerPrefs("banUniqueID" + banIndex, ID_TYPE.banUniqueID);
-    //    SetStringForPlayerPrefs("playerName" + banIndex, ID_TYPE.banUserNickName);
-    //    banUniqueIDList.Add("banUniqueID" + banIndex);
-    //    banUserNickNameList.Add("playerName" + banIndex);
-    //    Debug.Log(PlayerPrefs.GetString(ID_TYPE.playerName.ToString(), ""));
-
-        
-
-    //}
-
+    //チャットを一つの文字列にするそれをルームネームとともに保存する
+    //
 }

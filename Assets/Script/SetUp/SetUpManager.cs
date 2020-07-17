@@ -16,8 +16,8 @@ public class SetUpManager : MonoBehaviour
     {
 
         //DeBug用　trueならPlayerPrefsのKeyを削除する
-        if (resetSwich) {
-            Debug.Log("Key削除");
+        if (DebugManager.instance.isPlayerPrefsDeleteAll) {
+            Debug.Log("KeyALL削除");
             PlayerPrefs.DeleteAll();
         }
         
@@ -70,7 +70,7 @@ public class SetUpManager : MonoBehaviour
         if (PlayerPrefs.GetString("突然死用のフラグ","") != PlayerManager.SuddenDeath_TYPE.ゲーム正常終了.ToString()) {
             Debug.Log("突然死確認" + PlayerPrefs.GetString("突然死用のフラグ"));
             PlayerManager.instance.totalNumberOfSuddenDeath++;
-            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
+            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
         }
         Debug.Log("正常");
         PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);

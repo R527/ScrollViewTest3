@@ -30,6 +30,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public IEnumerator banPlayerKickOutOREnteredRoomCoroutine = null;
     public IEnumerator checkEmptyRoomCoroutine = null;
     public string banListStr;
+    public string roomName;
     List<Photon.Realtime.RoomInfo> roomInfoList;
 
     private void Awake() {
@@ -119,6 +120,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void JoinRoom(string roomName) {
         Debug.Log("roomName"+roomName);
         Debug.Log("joinRoom");
+        this.roomName = roomName;
         PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -211,7 +213,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 Debug.Log(roomNode);
                     if (roomNode == null) {
                         Debug.Log("GameObjがない場合");
-
+                        //部屋が一つ以上あったら部屋を一番下に配置する、部屋がないならインスタンスする
                         roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
                     }
                     roomNode.Activate(info);
@@ -281,6 +283,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public override void OnLeftRoom() {
         base.OnLeftRoom();
+        Destroy(gameManager.timeController);
         Debug.Log("OnLeftRoom");
         PhotonNetwork.Disconnect();
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
@@ -306,6 +309,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         if (!gameManager.gameStart && !gameManager.isConfirmation) {
             DeleateOtherPlayer(otherPlayer);
 
+
+
             //人数を減らす
             gameManager.num--;
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
@@ -317,7 +322,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
 
         //確認画面中に強制退出させたプレイヤーの処理
-        if (gameManager.isConfirmation) {
+        if (gameManager.gameStart && gameManager.isConfirmation) {
             DeleateOtherPlayer(otherPlayer);
         }
     }

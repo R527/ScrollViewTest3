@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class BanPlayerList : MonoBehaviour
 {
     public Button closeBtn;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,7 @@ public class BanPlayerList : MonoBehaviour
     }
     
     private void ClosePoPUp() {
-        GetComponent<CanvasGroup>().alpha = 0;
+        gameObject.SetActive(false);
+        //GetComponent<CanvasGroup>().alpha = 0;
     }
 }

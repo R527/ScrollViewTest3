@@ -185,13 +185,13 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
 
 
-    /// <summary>
-    /// ゲーム終了後の退出ボタンを押したときに出るPoPUP内にある退出ボタン
-    /// ネットワークのチェック完了
-    /// </summary>
-    private void ExitButton() {
-        NetworkManager.instance.LeaveRoom();
-    }
+    ///// <summary>
+    ///// ゲーム終了後の退出ボタンを押したときに出るPoPUP内にある退出ボタン
+    ///// ネットワークのチェック完了
+    ///// </summary>
+    //private void ExitButton() {
+    //    NetworkManager.instance.LeaveRoom();
+    //}
 
     /// <summary>
     /// 退出処理全般

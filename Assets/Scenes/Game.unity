@@ -9868,8 +9868,8 @@ MonoBehaviour:
   confirmationEnterButtonText: {fileID: 1790323956}
   savingText: {fileID: 256122106}
   confirmation: 0
+  isConfirmation: 0
   damyObj: {fileID: 546607570}
-  playerList: {fileID: 1857312061}
   setEnterNumTime: 25
   menbarContent: {fileID: 30259292}
   playerListContent: {fileID: 1857312062}
@@ -17537,7 +17537,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2067936472
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17588,7 +17588,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067936471}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

@@ -162,11 +162,11 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
         rollNumList = intArray.ToList();
 
-
-
         //役職テキスト表示
         DisplayRollList(rollNumList);
 
+        //新規のRoomNodeを一番下に置く
+        SetAsLastSibling();
 
     }
 

@@ -26,7 +26,11 @@ public class DebugManager : MonoBehaviour
     public FORTUNETYPE fortuneType;
     public TIME timeType;
 
+    [Header("PlayerPrefs削除 trueなら削除")]
+    public bool isPlayerPrefsDeleteAll;
 
+    [Header("isGameOver　trueならChecKGameOver走る")]
+    public bool isGameOver;
 
     [Header("役職管理用")]
     public bool isTestPlay;//プレイヤーの役職を任意に決める

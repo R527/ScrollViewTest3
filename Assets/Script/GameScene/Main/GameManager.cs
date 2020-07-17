@@ -177,7 +177,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //一人以上のプレイヤーが退出した場合isJoinedisExitの値をリセットして確認PopUPを削除する
         if (GetIsExit()) {
             confirmationImage.SetActive(false);
+            PhotonNetwork.CurrentRoom.IsOpen = true;
             ResetButton();
+            confirmation = false;
             isJoined = false;
             isExit = false;
             enterNumTime = 25.0f;
@@ -516,6 +518,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
             inputView.wolfMode = true;
         }
         //Debug.Log("参加者全員がPlayerList　準備OK");
+
+        PlayerManager.instance.roomName = NetworkManager.instance.roomName;
+        PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.roomName, PlayerManager.ID_TYPE.roomName);
 
         //突然死用のフラグを保存する
         PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム開始);

@@ -101,14 +101,14 @@ public class GameOver : MonoBehaviour {
     private void ResultBattleRecord(bool isWin) {
         //戦績反映
         PlayerManager.instance.totalNumberOfMatches++;
-        PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.総対戦回数);
+        PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.総対戦回数);
 
         if (isWin) {
             PlayerManager.instance.totalNumberOfWins++;
-            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.勝利回数);
+            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.勝利回数);
         } else {
             PlayerManager.instance.totalNumberOfLoses++;
-            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.敗北回数);
+            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.敗北回数);
         }
     }
 
@@ -119,7 +119,7 @@ public class GameOver : MonoBehaviour {
         if (PlayerPrefs.GetString("突然死用のフラグ") == PlayerManager.SuddenDeath_TYPE.不参加.ToString()) {
             Debug.Log("不参加");
             PlayerManager.instance.totalNumberOfSuddenDeath++;
-            PlayerManager.instance.SetIntBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
+            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
         }
         PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
     }

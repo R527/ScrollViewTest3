@@ -44,7 +44,7 @@ public class BanPlayer : MonoBehaviour
 
 
         PlayerManager.instance.banListMaxIndex = PlayerManager.instance.banUniqueIDList.Count;
-        PlayerManager.instance.SetIntBanListForPlayerPrefs(PlayerManager.instance.banUniqueIDList.Count, PlayerManager.ID_TYPE.banListMaxIndex);
+        PlayerManager.instance.SetBanListForPlayerPrefs(PlayerManager.instance.banUniqueIDList.Count, PlayerManager.ID_TYPE.banListMaxIndex);
         //Object削除
         Destroy(gameObject);
     }
