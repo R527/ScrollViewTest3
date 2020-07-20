@@ -37,6 +37,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public Color [] color;
     public int boardColor;
 
+    //test
+    public string testName;
+
 
     private void Update() {
         if (Input.GetKeyUp(KeyCode.Return)) {
@@ -66,8 +69,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// <param name="comingOut"></param>
     /// <param name="speaker_Type"></param>
     public void CreateChatNode(bool comingOut,SPEAKER_TYPE speaker_Type) {
-        //チャットを管理するためのID
-        id++;
+        Debug.Log("CreateChatNode");
 
         //発言者（ETC、GM、Player）の分岐
         //GMの発言
@@ -78,7 +80,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             Debug.Log(inputData);
 
             //データを格納
-            ChatData chatData = new ChatData(id, inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
+            ChatData chatData = new ChatData(inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
             chatData.chatType = CHAT_TYPE.GM;
 
             //チャットNodeの初期化
@@ -99,6 +101,11 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             
         } else {
 
+            //ログ作成部分
+            //if (logTest) {
+            //    CreateLogChat();
+            //    return;
+            //}
             //Playerの発言
             Debug.Log(chatInputField.text);
             //チャットが空かつ通常チャットは生成しない
@@ -137,15 +144,24 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             //発言を生成
             myPlayer.CreateNode(id, inputData, boardColor, comingOut);
 
+
             //一言でも発言したら参加しているものとして扱う
             if (!gameMasterChatManager.gameManager.timeController.isSpeaking) {
                 gameMasterChatManager.gameManager.timeController.isSpeaking = true;
             }
-
-            
         }
     }
 
+    /// <summary>
+    /// ログ保存したものを復元するよう
+    /// </summary>
+    public void CreateLogChat() {
+        ChatData chatData = new ChatData(inputData, 999, boardColor, testName, ROLLTYPE.ETC);
+        ChatNode chatNode = Instantiate(myPlayer.chatNodePrefab, myPlayer.chatTran, false);
+        chatNode.InitChatNode(chatData, 0, false);
+        SetChatNode(chatNode, chatData, false);
+        Debug.Log("復元完了");
+    }
     /// <summary>
     /// GMチャットを生成する
     /// </summary>
@@ -154,13 +170,13 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// <param name="boardColor"></param>
     /// <param name="comingOut"></param>
     [PunRPC]
-    private void CreateGameMasterChatNode(int id, string inputData, int boardColor, bool comingOut) {
+    private void CreateGameMasterChatNode(string inputData, int boardColor, bool comingOut) {
         ChatNode chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
         chatNode.transform.SetParent(chatContent.transform);
 
         //Debug.Log("CreatNode:GM_ONLINE");
 
-        ChatData chatData = new ChatData(id, inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
+        ChatData chatData = new ChatData(inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
         chatData.chatType = CHAT_TYPE.GM;
         chatNode.InitChatNode(chatData, 0, comingOut);
         SetChatNode(chatNode, chatData, comingOut);
@@ -177,7 +193,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public void SetChatNode(ChatNode chatNode, ChatData chatData, bool comingOut) {
 
         //ゲーム中に発言された内容を保存する
-        //PlayerManager.instance.saveChatLogList.Add(PlayerManager.instance.ConvertStringToChatData(chatData));
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
         Debug.Log(PlayerManager.instance.saveChatLog);
 

@@ -19,7 +19,7 @@ public class BanPlayerList : MonoBehaviour
     }
     
     private void ClosePoPUp() {
-        gameObject.SetActive(false);
-        //GetComponent<CanvasGroup>().alpha = 0;
+        GetComponent<CanvasGroup>().alpha = 0;
+        GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 }

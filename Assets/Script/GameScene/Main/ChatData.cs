@@ -5,7 +5,7 @@
 [System.Serializable]
 public class ChatData 
 {
-    public int chatID;
+    //public int chatID;
     public string inputData;
     public int playerID;
     public int boardColor;
@@ -26,8 +26,8 @@ public class ChatData
     /// <param name="boardColor"></param>
     /// <param name="playerName"></param>
     /// <param name="rollType"></param>
-    public ChatData(int chatID, string inputData, int playerID, int boardColor, string playerName, ROLLTYPE rollType) {
-        this.chatID = chatID;
+    public ChatData(string inputData, int playerID, int boardColor, string playerName, ROLLTYPE rollType) {
+        //this.chatID = chatID;
         this.inputData = inputData;
         this.playerID = playerID;
         this.boardColor = boardColor;

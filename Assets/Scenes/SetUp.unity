@@ -390,7 +390,7 @@ MonoBehaviour:
   openVoting: 1
   fortuneType: 1
   timeType: 7
-  isPlayerPrefsDeleteAll: 1
+  isPlayerPrefsDeleteAll: 0
   isGameOver: 0
   isTestPlay: 1
   testRollTypeList: 000000000000000004000000

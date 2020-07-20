@@ -70,6 +70,7 @@ MonoBehaviour:
     type: 3}
   iconNo: 0
   playerButton: {fileID: 0}
+  chatTran: {fileID: 0}
   emtyRoom: 0
   isVoteFlag: 0
   isRollAction: 0

@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using Photon.Pun;
+
 
 
 public class PlayerManager : MonoBehaviour
 {
 
     public static PlayerManager instance;
+    public GameManager gameManager;
 
     //main
     public string playerName;
@@ -32,11 +34,12 @@ public class PlayerManager : MonoBehaviour
     public int totalNumberOfSuddenDeath;//突然死数
 
     [Header("対戦log")]
-    public List<string> saveChatLogList = new List<string>();
+    
     public int gameLogCount;
     public string roomName;
     public string saveChatLog;
-    public int saveChatCount;
+    //public List<string> getChatLogList = new List<string>();
+    //public int saveChatCount;
 
     /// <summary>
     /// Ban関連
@@ -50,7 +53,8 @@ public class PlayerManager : MonoBehaviour
         playerName,
         friendId,
         saveChatLog,
-        roomName
+        roomName,
+
     }
 
     /// <summary>
@@ -78,21 +82,6 @@ public class PlayerManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
-        }
-    }
-
-    private void Start() {
-
-    }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.S)) {
-            Debug.Log("保存");
-            SetGameChatLog();
-        }
-        if (Input.GetKeyDown(KeyCode.C)) {
-            Debug.Log("復元");
-            GetGameChatLog();
         }
     }
 
@@ -127,16 +116,16 @@ public class PlayerManager : MonoBehaviour
                 break;
             //チャットログ保存用
             case ID_TYPE.saveChatLog:
-                PlayerPrefs.SetString(roomName, setString);
+                PlayerPrefs.SetString("test", setString);
                 //saveChatCount++;
                 break;
-            case ID_TYPE.roomName:
-                PlayerPrefs.SetString("Game" + gameLogCount, roomName);
-                gameLogCount++;
-                break;
+                //case ID_TYPE.roomName:
+                //    PlayerPrefs.SetString("Game" + gameLogCount, roomName);
+                //    gameLogCount++;
+                //    break;
         }
 
-        
+
         //端末の中に保存する
         PlayerPrefs.Save();
     }
@@ -182,34 +171,7 @@ public class PlayerManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    /// <summary>
-    /// チャットログ保存用
-    /// </summary>
-    public void SetGameChatLog() {
-        //PlayerPrefs.SetInt(roomName, saveChatCount);
-        PlayerPrefs.SetInt("gameLogCount", gameLogCount);
-        PlayerPrefs.Save();
-    }
-
-    /// <summary>
-    /// チャットログ復元用
-    /// </summary>
-    public void GetGameChatLog() {
-        //gameLogCount = PlayerPrefs.GetInt("gameLogCount", 0);
-
-        //roomName = PlayerPrefs.GetString("Game" + gameLogCount);
-        //saveChatCount = PlayerPrefs.GetInt(roomName, 0);
-        //string[] str = new string[saveChatCount];
-        //for(int i = 0; i < saveChatCount; i++) {
-        //    str[i] = PlayerPrefs.GetString(roomName + saveChatCount);
-        //    Debug.Log(str[i]);
-        //}
-        saveChatLog = PlayerPrefs.GetString(roomName, "");
-        saveChatLog.Substring(0, saveChatLog.Length- 1);
-        Debug.Log(saveChatLog);
-
-        saveChatLogList = saveChatLog.Substring(0, saveChatLog.Length - 1).Split('%').ToList<string>();
-    }
+    
     /// <summary>
     /// 突然死用のStringをセットする
     /// </summary>
@@ -228,10 +190,34 @@ public class PlayerManager : MonoBehaviour
     /// <returns></returns>
     public string ConvertStringToChatData(ChatData chatData) {
         string str = "";
-        str = chatData.inputData +  "," + chatData.boardColor.ToString() + "," + chatData.playerName;
+        str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID;
         return str;
     }
 
-    //チャットを一つの文字列にするそれをルームネームとともに保存する
-    //
+    /// <summary>
+    /// チャットログ保存用
+    /// </summary>
+    public void SetGameChatLog() {
+        SetStringForPlayerPrefs(SaveGameData(), ID_TYPE.saveChatLog);
+        PlayerPrefs.Save();
+    }
+
+
+    /// <summary>
+    /// ゲーム情報を復元用に保存します
+    /// </summary>
+    /// <returns></returns>
+    public string SaveGameData() {
+        GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        string str = "";
+        //自分がどのプレイヤーがにあたるかの情報
+        //プレイヤーID順にボタン用の名前を登録する
+        string nameList = "";
+        foreach (Player player in gameManager.chatSystem.playersList) {
+            nameList += player.playerID + "," + player.playerName + "&";
+        }
+        nameList = nameList.Substring(0, nameList.Length - 1) + "%";
+        str = gameManager.chatSystem.myID + "%" + nameList + instance.saveChatLog;
+        return str;
+    }
 }

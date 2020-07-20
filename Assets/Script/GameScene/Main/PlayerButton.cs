@@ -36,6 +36,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
 
     private void Start() {
+        Debug.Log("PlayerButtonStart");
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
         tran.localScale = new Vector3(1, 1, 1);
         
@@ -218,8 +219,8 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         //枠がいっぱいの場合
         if (PlayerManager.instance.banListMaxIndex == 3) {
             GameObject list = GameObject.FindGameObjectWithTag("BanPlayerList");
-            list.SetActive(true);
-            //list.GetComponent<CanvasGroup>().alpha = 1;
+            list.GetComponent<CanvasGroup>().alpha = 1;
+            list.GetComponent<CanvasGroup>().blocksRaycasts = true;
         } else {
             //枠が空いている場合
             Debug.Log("追加されました");

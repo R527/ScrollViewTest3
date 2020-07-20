@@ -33,7 +33,7 @@ public class Player : MonoBehaviourPunCallbacks {
     public ChatNode chatNodePrefab;//チャットノード用のプレふぁぶ
     public int iconNo;//アイコンの絵用
     public PlayerButton playerButton;
-    private Transform chatTran;
+    public Transform chatTran;
     private IEnumerator setCoroutine = null;
     private IEnumerator checkEmptyRoomCoroutine = null;
     public EMPTYROOM emtyRoom;
@@ -137,7 +137,6 @@ public class Player : MonoBehaviourPunCallbacks {
         var propertiers = new ExitGames.Client.Photon.Hashtable();
         propertiers.Add("isCreatePlayerButton", true);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
-        
     }
 
 
@@ -235,7 +234,7 @@ public class Player : MonoBehaviourPunCallbacks {
     public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut) {
         Debug.Log("RPC START");
 
-        ChatData chatData = new ChatData(id, inputData, playerID, boardColor, playerName, rollType);
+        ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, rollType);
         Debug.Log(chatData.inputData);
 
         //発言者の分岐
