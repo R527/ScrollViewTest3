@@ -15,6 +15,7 @@ public class ChatLog : MonoBehaviour
     public Transform buttonTran;
     List<string> saveChatLogList = new List<string>();
     List<string> buttonInfoList = new List<string>();
+    List<ChatNode> chatNodeList = new List<ChatNode>();
     int myID;
     string playerName;
     string inputData;
@@ -52,6 +53,7 @@ public class ChatLog : MonoBehaviour
         ChatNode chatNode = Instantiate(gameManager.chatSystem.myPlayer.chatNodePrefab, gameManager.chatSystem.myPlayer.chatTran, false);
         chatNode.InitChatNode(chatData, 0, false);
         chatNode.chatBoard.color = gameManager.chatSystem.color[chatData.boardColor];
+        chatNodeList.Add(chatNode);
         //gameManager.chatSystem.SetChatNode(chatNode, chatData, false);
         Debug.Log("復元完了");
     }
@@ -108,7 +110,7 @@ public class ChatLog : MonoBehaviour
             buttonData = str.Split(',').ToArray<string>();
             playerID = int.Parse(buttonData[0]);
             playerName = buttonData[1];
-            CreatePlayerButton(playerName, playerID);
+            CreatePlayerButton(playerName, playerID,gameManager);
         }
         
     }
@@ -142,14 +144,37 @@ public class ChatLog : MonoBehaviour
         return str;
     }
 
-    private void CreatePlayerButton(string playerName, int playerID) {
+    /// <summary>
+    /// Playerボタンを作成します
+    /// </summary>
+    /// <param name="playerName"></param>
+    /// <param name="playerID"></param>
+    /// <param name="gameManager"></param>
+    private void CreatePlayerButton(string playerName, int playerID, GameManager gameManager) {
         Debug.Log("CreatePlayerButton");
-
+        
         playerButton = Instantiate(playerButtonPrefab, buttonTran, false);
+        playerButton.gameManager = gameManager;
         playerButton.transform.SetParent(buttonTran);
         playerButton.playerText.text = playerName;
         playerButton.playerID = playerID;
+        //PlayerButtonにフィルタ機能を追加
+        playerButton.playerButton.onClick.AddListener(() => FillterButton(playerID));
+    }
 
+    /// <summary>
+    /// フィルター制御を追加します。
+    /// </summary>
+    private void FillterButton(int playerID) {
+        foreach(ChatNode chatObj in chatNodeList) {
+            chatObj.gameObject.SetActive(false);
+        }
+
+        foreach(ChatNode chatObj in chatNodeList) {
+            if(chatObj.playerID == playerID) {
+                chatObj.gameObject.SetActive(true);
+            }
+        }
     }
 
 }
