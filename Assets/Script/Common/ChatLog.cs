@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
+using DG.Tweening;
 
 /// <summary>
 /// チャットログ復元を管理する
 /// </summary>
 public class ChatLog : MonoBehaviour
 {
-
-    public GameManager gameManager;
+    //main
+    public ChatSystem chatSystem;
     PlayerButton playerButton;
     public PlayerButton playerButtonPrefab;
     public Transform buttonTran;
+    public ChatNode chatNodePrefab;
+    public Transform chatTran;
     List<string> saveChatLogList = new List<string>();
     List<string> buttonInfoList = new List<string>();
     List<ChatNode> chatNodeList = new List<ChatNode>();
@@ -22,10 +26,20 @@ public class ChatLog : MonoBehaviour
     int boardColor;
     int playerID;
 
+    //折畳ボタン
+    public Button foldingButton;
+    public Text foldingText;
+    public Transform mainRectTransform;
+    public Transform inputRectTransform;
+
+
+    private void Start() {
+        foldingButton.onClick.AddListener(FoldingPosition);
+    }
     private void Update() {
         if (Input.GetKeyDown(KeyCode.S)) {
             Debug.Log("保存");
-            SetGameChatLog();
+            PlayerManager.instance.SetGameChatLog();
         }
         if (Input.GetKeyDown(KeyCode.C)) {
             Debug.Log("復元");
@@ -50,9 +64,9 @@ public class ChatLog : MonoBehaviour
         if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
             chatData.chatType = CHAT_TYPE.GM;
         }
-        ChatNode chatNode = Instantiate(gameManager.chatSystem.myPlayer.chatNodePrefab, gameManager.chatSystem.myPlayer.chatTran, false);
-        chatNode.InitChatNode(chatData, 0, false);
-        chatNode.chatBoard.color = gameManager.chatSystem.color[chatData.boardColor];
+        ChatNode chatNode = Instantiate(chatNodePrefab, chatTran, false);
+        chatNode.InitChatNodeLog(chatData, 0, false);
+        chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
         chatNodeList.Add(chatNode);
         //gameManager.chatSystem.SetChatNode(chatNode, chatData, false);
         Debug.Log("復元完了");
@@ -62,9 +76,8 @@ public class ChatLog : MonoBehaviour
     /// チャットログ復元用
     /// </summary>
     public void GetGameChatLog() {
-        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
-        PlayerManager.instance.saveChatLog = PlayerPrefs.GetString(PlayerManager.instance.roomName, "");
+        PlayerManager.instance.saveChatLog = PlayerPrefs.GetString("test", "");
         PlayerManager.instance.saveChatLog.Substring(0, PlayerManager.instance.saveChatLog.Length - 1);
         Debug.Log(PlayerManager.instance.saveChatLog);
 
@@ -110,39 +123,12 @@ public class ChatLog : MonoBehaviour
             buttonData = str.Split(',').ToArray<string>();
             playerID = int.Parse(buttonData[0]);
             playerName = buttonData[1];
-            CreatePlayerButton(playerName, playerID,gameManager);
+            CreatePlayerButton(playerName, playerID);
         }
         
     }
 
-    /// <summary>
-    /// チャットログ保存用
-    /// </summary>
-    public void SetGameChatLog() {
-        //PlayerPrefs.SetInt(roomName, saveChatCount);
-        //PlayerPrefs.SetInt("gameLogCount", gameLogCount);
-        PlayerManager.instance.SetStringForPlayerPrefs(SaveGameData(), PlayerManager.ID_TYPE.saveChatLog);
-        PlayerPrefs.Save();
-    }
-
     
-    /// <summary>
-    /// ゲーム情報を復元用に保存します
-    /// </summary>
-    /// <returns></returns>
-    public string SaveGameData() {
-        GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        string str = "";
-        //自分がどのプレイヤーがにあたるかの情報
-        //プレイヤーID順にボタン用の名前を登録する
-        string nameList = "";
-        foreach (Player player in gameManager.chatSystem.playersList) {
-            nameList += player.playerID + "," + player.playerName + "&";
-        }
-        nameList = nameList.Substring(0, nameList.Length - 1) + "%";
-        str = gameManager.chatSystem.myID + "%" + nameList + PlayerManager.instance.saveChatLog;
-        return str;
-    }
 
     /// <summary>
     /// Playerボタンを作成します
@@ -150,15 +136,16 @@ public class ChatLog : MonoBehaviour
     /// <param name="playerName"></param>
     /// <param name="playerID"></param>
     /// <param name="gameManager"></param>
-    private void CreatePlayerButton(string playerName, int playerID, GameManager gameManager) {
+    private void CreatePlayerButton(string playerName, int playerID) {
         Debug.Log("CreatePlayerButton");
         
         playerButton = Instantiate(playerButtonPrefab, buttonTran, false);
-        playerButton.gameManager = gameManager;
+        //playerButton.gameManager = gameManager;
         playerButton.transform.SetParent(buttonTran);
         playerButton.playerText.text = playerName;
         playerButton.playerID = playerID;
         //PlayerButtonにフィルタ機能を追加
+        //playerButton.playerButton.onClick.RemoveAllListeners();
         playerButton.playerButton.onClick.AddListener(() => FillterButton(playerID));
     }
 
@@ -177,4 +164,18 @@ public class ChatLog : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 折畳ボタンの制御
+    /// </summary>
+    public void FoldingPosition() {
+        if (foldingText.text == "↓") {
+            inputRectTransform.DOLocalMoveY(-67, 0.5f);
+            mainRectTransform.DOLocalMoveY(0, 0.5f);
+            foldingText.text = "↑";
+        } else {
+            inputRectTransform.DOLocalMoveY(0, 0.5f);
+            mainRectTransform.DOLocalMoveY(72, 0.5f);
+            foldingText.text = "↓";
+        }
+    }
 }

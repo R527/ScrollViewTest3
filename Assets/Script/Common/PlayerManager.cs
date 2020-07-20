@@ -116,7 +116,7 @@ public class PlayerManager : MonoBehaviour
                 break;
             //チャットログ保存用
             case ID_TYPE.saveChatLog:
-                PlayerPrefs.SetString(roomName, setString);
+                PlayerPrefs.SetString("test", setString);
                 //saveChatCount++;
                 break;
                 //case ID_TYPE.roomName:
@@ -191,6 +191,33 @@ public class PlayerManager : MonoBehaviour
     public string ConvertStringToChatData(ChatData chatData) {
         string str = "";
         str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID;
+        return str;
+    }
+
+    /// <summary>
+    /// チャットログ保存用
+    /// </summary>
+    public void SetGameChatLog() {
+        SetStringForPlayerPrefs(SaveGameData(), ID_TYPE.saveChatLog);
+        PlayerPrefs.Save();
+    }
+
+
+    /// <summary>
+    /// ゲーム情報を復元用に保存します
+    /// </summary>
+    /// <returns></returns>
+    public string SaveGameData() {
+        GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        string str = "";
+        //自分がどのプレイヤーがにあたるかの情報
+        //プレイヤーID順にボタン用の名前を登録する
+        string nameList = "";
+        foreach (Player player in gameManager.chatSystem.playersList) {
+            nameList += player.playerID + "," + player.playerName + "&";
+        }
+        nameList = nameList.Substring(0, nameList.Length - 1) + "%";
+        str = gameManager.chatSystem.myID + "%" + nameList + instance.saveChatLog;
         return str;
     }
 }

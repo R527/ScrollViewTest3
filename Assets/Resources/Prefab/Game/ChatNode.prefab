@@ -643,15 +643,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'aaaaaaa
-
-    a
-
-    a
-
-    a
-
-'
+  m_Text: 
 --- !u!114 &4195308905769707859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -868,14 +860,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatSystem: {fileID: 0}
   comingOutClass: {fileID: 0}
-  COPopup: {fileID: 0}
   chatText: {fileID: 4466735831423285711}
   statusObj: {fileID: 1235808738732009459}
   statusText: {fileID: 7543894743011651805}
-  playerName: 
   layoutGroup: {fileID: 5080018548450252811}
   chatBoard: {fileID: 6995840903809688898}
-  chatIcon: {fileID: 6432085198602546823}
   iconObjLayoutElement: {fileID: 6187143868307752041}
   chatObjLayoutElement: {fileID: 4857243788529812121}
   chatLive: 0
