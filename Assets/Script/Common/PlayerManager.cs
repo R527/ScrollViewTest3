@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.Linq;
 
 
 
@@ -38,8 +39,9 @@ public class PlayerManager : MonoBehaviour
     public int gameLogCount;
     public string roomName;
     public string saveChatLog;
-    //public List<string> getChatLogList = new List<string>();
-    //public int saveChatCount;
+    public List<string> getChatLogList = new List<string>();
+    public int saveRoomCount;
+    List<string> buttonInfoList = new List<string>();
 
     /// <summary>
     /// Ban関連
@@ -54,7 +56,7 @@ public class PlayerManager : MonoBehaviour
         friendId,
         saveChatLog,
         roomName,
-
+        saveRoomCount
     }
 
     /// <summary>
@@ -116,15 +118,11 @@ public class PlayerManager : MonoBehaviour
                 break;
             //チャットログ保存用
             case ID_TYPE.saveChatLog:
-                PlayerPrefs.SetString("test", setString);
-                //saveChatCount++;
+                saveRoomCount = PlayerPrefs.GetInt(ID_TYPE.saveRoomCount.ToString(), 0);
+                PlayerPrefs.SetString("roomNum" + saveRoomCount, setString);
+                saveRoomCount++;
                 break;
-                //case ID_TYPE.roomName:
-                //    PlayerPrefs.SetString("Game" + gameLogCount, roomName);
-                //    gameLogCount++;
-                //    break;
         }
-
 
         //端末の中に保存する
         PlayerPrefs.Save();
@@ -136,7 +134,7 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     /// <param name="setInt"></param>
     /// <param name="idType"></param>
-    public void SetBanListForPlayerPrefs(int setInt, ID_TYPE idType) {
+    public void SetIntForPlayerPrefs(int setInt, ID_TYPE idType) {
         switch (idType) {
 
             //BanList関連
@@ -145,6 +143,9 @@ public class PlayerManager : MonoBehaviour
                 break;
             case ID_TYPE.banListMaxIndex:
                 PlayerPrefs.SetInt(ID_TYPE.banListMaxIndex.ToString(), setInt);
+                break;
+            case ID_TYPE.saveRoomCount:
+                PlayerPrefs.SetInt(ID_TYPE.saveRoomCount.ToString(), setInt);
                 break;
         }
         PlayerPrefs.Save();
@@ -172,6 +173,10 @@ public class PlayerManager : MonoBehaviour
     }
 
     
+    /////////////
+    ///突然死管理
+    /////////////
+
     /// <summary>
     /// 突然死用のStringをセットする
     /// </summary>
@@ -181,6 +186,11 @@ public class PlayerManager : MonoBehaviour
         PlayerPrefs.SetString("突然死用のフラグ", type.ToString());
         PlayerPrefs.Save();
     }
+
+
+    //////////////////
+    ///チャットログ復元
+    //////////////////
 
     /// <summary>
     /// チャットデータを一つの文字列に変換する
@@ -199,7 +209,7 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public void SetGameChatLog() {
         SetStringForPlayerPrefs(SaveGameData(), ID_TYPE.saveChatLog);
-        PlayerPrefs.Save();
+        SetIntForPlayerPrefs(saveRoomCount, ID_TYPE.saveRoomCount);
     }
 
 
@@ -220,4 +230,87 @@ public class PlayerManager : MonoBehaviour
         str = gameManager.chatSystem.myID + "%" + nameList + instance.saveChatLog;
         return str;
     }
+
+    /// <summary>
+    ///タイトル画面でRoomCount保存したログを配列に渡します。
+    /// </summary>
+    public void GetSaveRoomData() {
+        getChatLogList.Clear();
+        saveRoomCount = PlayerPrefs.GetInt(ID_TYPE.saveRoomCount.ToString(), 0);
+        if(saveRoomCount < 10) {
+            for (int i = saveRoomCount; 0 < i; i--) {
+                Debug.Log("GetSaveRoomData");
+                getChatLogList.Add(PlayerPrefs.GetString("roomNum" + i, ""));
+            }
+        } else {
+            for (int i = saveRoomCount; saveRoomCount - 10 < i; i--) {
+                Debug.Log("GetSaveRoomData");
+                getChatLogList.Add(PlayerPrefs.GetString("roomNum" + i, ""));
+            }
+        }
+        
+        //int x = saveRoomCount - 11;
+        //PlayerPrefs.DeleteKey("roomNum" + x);
+    }
+
+    /// <summary>
+    /// チャットログ復元用
+    /// </summary>
+    public void GetGameChatLog(int roomNum) {
+
+        //PlayerManager.instance.saveChatLog = PlayerPrefs.GetString("roomNum" + PlayerManager.instance.saveRoomCount, "");
+        //PlayerManager.instance.saveChatLog.Substring(0, PlayerManager.instance.saveChatLog.Length - 1);
+        //Debug.Log(PlayerManager.instance.saveChatLog);
+
+        ChatLog chatLog = GameObject.FindGameObjectWithTag("ChatLog").GetComponent<ChatLog>();
+        //復元処理
+        string[] saveChatLogList = getChatLogList[roomNum].Substring(0, saveChatLog.Length - 1).Split('%').ToArray<string>();
+        foreach (string str in saveChatLogList) {
+
+            //ボタンの復元
+        
+            if (buttonInfoList.Count < 2) {
+                buttonInfoList.Add(str);
+                continue;
+            }
+            Debug.Log(str);
+            //チャット内容、色、発言者に分けてそれぞれ配列に入れる
+
+            string[] getChatLogList = str.Split(',').ToArray<string>();
+            string inputData = getChatLogList[0];
+            Debug.Log(getChatLogList[1]);
+            int boardColor = int.Parse(getChatLogList[1]);
+            playerName = getChatLogList[2];
+            int playerID = int.Parse(getChatLogList[3]);
+
+            //SPEAKER_TYPEがON OFFどちらでもOFFLINE処理をする
+            SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL;
+            if (getChatLogList[2] == "GAMEMASTER_OFFLINE" || getChatLogList[2] == "GAMEMASTER_ONLINE") {
+                speaker_Type = SPEAKER_TYPE.GAMEMASTER_OFFLINE;
+            }
+            //チャット生成
+            chatLog.CreateLogChat(speaker_Type,inputData,playerID,boardColor);
+            Debug.Log("発言内容" + getChatLogList[0]);
+            //Debug.Log("色"+color);
+            Debug.Log("発言者" + getChatLogList[2]);
+        }
+
+        //自分のPlayerIDを登録する
+        int myID = int.Parse(buttonInfoList[0]);
+
+        //ボタンを生成する
+        string[] getButtonList = buttonInfoList[1].Split('&').ToArray<string>();
+        foreach (string str in getButtonList) {
+            string[] buttonData = null;
+            buttonData = str.Split(',').ToArray<string>();
+            int playerID = int.Parse(buttonData[0]);
+            playerName = buttonData[1];
+            chatLog.CreatePlayerButton(playerName, playerID);
+        }
+
+    }
+
+    
+
+    
 }

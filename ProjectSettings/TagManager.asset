@@ -24,6 +24,8 @@ TagManager:
   - Title
   - Search
   - BanPlayerList
+  - ChatLog
+  - PlayerInfoPopUp
   layers:
   - Default
   - TransparentFX

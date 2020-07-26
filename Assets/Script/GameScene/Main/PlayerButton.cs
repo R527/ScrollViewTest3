@@ -232,7 +232,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             PlayerManager.instance.SetStringForPlayerPrefs(playerName, PlayerManager.ID_TYPE.banUserNickName);
             PlayerManager.instance.banListMaxIndex++;
             
-            PlayerManager.instance.SetBanListForPlayerPrefs(PlayerManager.instance.banListMaxIndex, PlayerManager.ID_TYPE.banListMaxIndex);
+            PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.banListMaxIndex, PlayerManager.ID_TYPE.banListMaxIndex);
         }
     }
 

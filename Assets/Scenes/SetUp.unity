@@ -316,6 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9755b275ed87106478a67d0cce29a603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   playerName: 
   banUniqueIDList: []
   banUserNickNameList: []
@@ -328,11 +329,11 @@ MonoBehaviour:
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
   totalNumberOfSuddenDeath: 0
-  saveChatLogList: []
   gameLogCount: 0
   roomName: 
   saveChatLog: 
-  saveChatCount: 0
+  getChatLogList: []
+  saveRoomCount: 0
 --- !u!1 &2820532273166376551
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +386,7 @@ MonoBehaviour:
   testResultTime: 5
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 1
   setEnterNumTime: 30
   openVoting: 1
   fortuneType: 1
