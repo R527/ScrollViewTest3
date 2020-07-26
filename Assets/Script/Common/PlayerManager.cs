@@ -87,6 +87,13 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.S)) {
+            Debug.Log("保存");
+            SetGameChatLog();
+        }
+    }
+
 
     /// <summary>
     /// PlayerPrefsにstringをセットする
@@ -145,7 +152,7 @@ public class PlayerManager : MonoBehaviour
                 PlayerPrefs.SetInt(ID_TYPE.banListMaxIndex.ToString(), setInt);
                 break;
             case ID_TYPE.saveRoomCount:
-                PlayerPrefs.SetInt(ID_TYPE.saveRoomCount.ToString(), setInt);
+                PlayerPrefs.SetInt("saveRoomCount", setInt);
                 break;
         }
         PlayerPrefs.Save();
@@ -209,7 +216,10 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public void SetGameChatLog() {
         SetStringForPlayerPrefs(SaveGameData(), ID_TYPE.saveChatLog);
+        Debug.Log(saveRoomCount);
         SetIntForPlayerPrefs(saveRoomCount, ID_TYPE.saveRoomCount);
+        Debug.Log(PlayerPrefs.HasKey("saveRoomCount"));
+
     }
 
 
@@ -236,19 +246,23 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public void GetSaveRoomData() {
         getChatLogList.Clear();
-        saveRoomCount = PlayerPrefs.GetInt(ID_TYPE.saveRoomCount.ToString(), 0);
-        if(saveRoomCount < 10) {
-            for (int i = saveRoomCount; 0 < i; i--) {
+        Debug.Log(PlayerPrefs.HasKey("saveRoomCount"));
+        saveRoomCount = PlayerPrefs.GetInt("saveRoomCount", 0);
+        //getChatLogList.Add(PlayerPrefs.GetString("roomNum" + 0, ""));
+        if (saveRoomCount < 10) {
+            for (int i = saveRoomCount - 1; 0 <= i; i--) {
                 Debug.Log("GetSaveRoomData");
+                Debug.Log(PlayerPrefs.HasKey("roomNum" + i));
+                Debug.Log(i);
                 getChatLogList.Add(PlayerPrefs.GetString("roomNum" + i, ""));
             }
         } else {
-            for (int i = saveRoomCount; saveRoomCount - 10 < i; i--) {
+            for (int i = saveRoomCount - 1; saveRoomCount - 10 < i; i--) {
                 Debug.Log("GetSaveRoomData");
                 getChatLogList.Add(PlayerPrefs.GetString("roomNum" + i, ""));
             }
         }
-        
+
         //int x = saveRoomCount - 11;
         //PlayerPrefs.DeleteKey("roomNum" + x);
     }
@@ -258,13 +272,15 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public void GetGameChatLog(int roomNum) {
 
+        Debug.Log(roomNum);
         //PlayerManager.instance.saveChatLog = PlayerPrefs.GetString("roomNum" + PlayerManager.instance.saveRoomCount, "");
         //PlayerManager.instance.saveChatLog.Substring(0, PlayerManager.instance.saveChatLog.Length - 1);
         //Debug.Log(PlayerManager.instance.saveChatLog);
 
         ChatLog chatLog = GameObject.FindGameObjectWithTag("ChatLog").GetComponent<ChatLog>();
+        Debug.Log(getChatLogList[roomNum]);
         //復元処理
-        string[] saveChatLogList = getChatLogList[roomNum].Substring(0, saveChatLog.Length - 1).Split('%').ToArray<string>();
+        string[] saveChatLogList = getChatLogList[roomNum].Substring(0, getChatLogList[roomNum].Length - 1).Split('%').ToArray<string>();
         foreach (string str in saveChatLogList) {
 
             //ボタンの復元

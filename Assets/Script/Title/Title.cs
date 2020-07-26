@@ -20,6 +20,9 @@ public class Title : MonoBehaviour
     public Transform banListtran;
     public Button playerInfoButton;
 
+    public GameObject mainCanvas;
+    public GameObject underBarCanvas;
+
 
 
 

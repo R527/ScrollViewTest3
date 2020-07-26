@@ -196,7 +196,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
         Debug.Log(PlayerManager.instance.saveChatLog);
 
-        PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.saveChatLog, PlayerManager.ID_TYPE.saveChatLog);
 
         //ボードの色を変える
         chatNode.chatBoard.color = color[chatData.boardColor];

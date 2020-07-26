@@ -17,7 +17,6 @@ public class ChatLog : MonoBehaviour
     public Transform buttonTran;
     public ChatNode chatNodePrefab;
     public Transform chatTran;
-    List<string> saveChatLogList = new List<string>();
     
     List<ChatNode> chatNodeList = new List<ChatNode>();
     int myID;
@@ -29,20 +28,15 @@ public class ChatLog : MonoBehaviour
     public Text foldingText;
     public Transform mainRectTransform;
     public Transform inputRectTransform;
+    public GameObject mainCanvas;
+    public GameObject underBarCanvas;
+
+    public Button exitButtn;
 
 
     private void Start() {
         foldingButton.onClick.AddListener(FoldingPosition);
-    }
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.S)) {
-            Debug.Log("保存");
-            PlayerManager.instance.SetGameChatLog();
-        }
-        //if (Input.GetKeyDown(KeyCode.C)) {
-        //    Debug.Log("復元");
-        //    GetGameChatLog();
-        //}
+        exitButtn.onClick.AddListener(CloseChatLog);
     }
 
     /// <summary>
@@ -111,7 +105,13 @@ public class ChatLog : MonoBehaviour
         }
     }
 
+    public void CloseChatLog() {
+        Destroy(gameObject);
+        mainCanvas.SetActive(true);
+        underBarCanvas.SetActive(true);
+    }
+
     //save場所の管理
     //save元よりlog管理画面をインスタンスする
-    
+
 }
