@@ -41,7 +41,8 @@ public class PlayerManager : MonoBehaviour
     public string saveChatLog;
     public List<string> getChatLogList = new List<string>();
     public int saveRoomCount;
-    List<string> buttonInfoList = new List<string>();
+    public int myID;
+    //List<string> buttonInfoList = new List<string>();
 
     /// <summary>
     /// Ban関連
@@ -237,7 +238,7 @@ public class PlayerManager : MonoBehaviour
             nameList += player.playerID + "," + player.playerName + "&";
         }
         nameList = nameList.Substring(0, nameList.Length - 1) + "%";
-        str = gameManager.chatSystem.myID + "%" + nameList + instance.saveChatLog;
+        str = gameManager.chatSystem.myPlayer.playerID + "%" + nameList + instance.saveChatLog;
         return str;
     }
 
@@ -281,6 +282,7 @@ public class PlayerManager : MonoBehaviour
         Debug.Log(getChatLogList[roomNum]);
         //復元処理
         string[] saveChatLogList = getChatLogList[roomNum].Substring(0, getChatLogList[roomNum].Length - 1).Split('%').ToArray<string>();
+        List<string> buttonInfoList = new List<string>();
         foreach (string str in saveChatLogList) {
 
             //ボタンの復元
@@ -294,7 +296,7 @@ public class PlayerManager : MonoBehaviour
 
             string[] getChatLogList = str.Split(',').ToArray<string>();
             string inputData = getChatLogList[0];
-            Debug.Log(getChatLogList[1]);
+            //Debug.Log(getChatLogList[1]);
             int boardColor = int.Parse(getChatLogList[1]);
             playerName = getChatLogList[2];
             int playerID = int.Parse(getChatLogList[3]);
@@ -306,13 +308,13 @@ public class PlayerManager : MonoBehaviour
             }
             //チャット生成
             chatLog.CreateLogChat(speaker_Type,inputData,playerID,boardColor);
-            Debug.Log("発言内容" + getChatLogList[0]);
+            //Debug.Log("発言内容" + getChatLogList[0]);
             //Debug.Log("色"+color);
-            Debug.Log("発言者" + getChatLogList[2]);
+            //Debug.Log("発言者" + getChatLogList[2]);
         }
 
         //自分のPlayerIDを登録する
-        int myID = int.Parse(buttonInfoList[0]);
+        myID = int.Parse(buttonInfoList[0]);
 
         //ボタンを生成する
         string[] getButtonList = buttonInfoList[1].Split('&').ToArray<string>();

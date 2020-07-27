@@ -131,13 +131,13 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         //    }
         //}
 
-        ////発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
-        //if (chatData.chatType == CHAT_TYPE.MINE) {
-        //    Debug.Log("UpperRight");
-        //    layoutGroup.childAlignment = TextAnchor.UpperRight;
-        //} else {
-        //    layoutGroup.childAlignment = TextAnchor.UpperLeft;
-        //}
+        //発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
+        if (chatData.chatType == CHAT_TYPE.MINE) {
+            Debug.Log("UpperRight");
+            layoutGroup.childAlignment = TextAnchor.UpperRight;
+        } else {
+            layoutGroup.childAlignment = TextAnchor.UpperLeft;
+        }
 
         //Debug.Log("CO" + comingOut);
         ////COした場合幅等を変更する

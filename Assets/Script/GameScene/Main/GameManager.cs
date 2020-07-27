@@ -517,7 +517,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             inputView.wolfModeButton.interactable = false;
             inputView.wolfMode = true;
         }
-        //Debug.Log("参加者全員がPlayerList　準備OK");
+        
 
         PlayerManager.instance.roomName = NetworkManager.instance.roomName;
         PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.roomName, PlayerManager.ID_TYPE.roomName);

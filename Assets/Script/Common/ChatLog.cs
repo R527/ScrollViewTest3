@@ -12,14 +12,13 @@ public class ChatLog : MonoBehaviour
 {
     //main
     public ChatSystem chatSystem;
-    PlayerButton playerButton;
-    public PlayerButton playerButtonPrefab;
+    ChatLogPlayerButton playerButton;
+    public ChatLogPlayerButton playerButtonPrefab;
     public Transform buttonTran;
     public ChatNode chatNodePrefab;
     public Transform chatTran;
     
     List<ChatNode> chatNodeList = new List<ChatNode>();
-    int myID;
     string playerName;
 
 
@@ -69,8 +68,14 @@ public class ChatLog : MonoBehaviour
         playerButton = Instantiate(playerButtonPrefab, buttonTran, false);
         //playerButton.gameManager = gameManager;
         playerButton.transform.SetParent(buttonTran);
-        playerButton.playerText.text = playerName;
+        playerButton.playerNameText.text = playerName;
         playerButton.playerID = playerID;
+        Debug.Log(playerID);
+        Debug.Log(PlayerManager.instance.myID);
+        if (PlayerManager.instance.myID == playerID) {
+            
+            playerButton.GetComponent<Outline>().enabled = true;
+        }
         //PlayerButtonにフィルタ機能を追加
         //playerButton.playerButton.onClick.RemoveAllListeners();
         playerButton.playerButton.onClick.AddListener(() => FillterButton(playerID));
@@ -106,7 +111,12 @@ public class ChatLog : MonoBehaviour
     }
 
     public void CloseChatLog() {
-        Destroy(gameObject);
+        GameObject obj = GameObject.FindGameObjectWithTag("ChatContent");
+        foreach(Transform tran in obj.transform) {
+            Destroy(tran.gameObject);
+        }
+        gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
         mainCanvas.SetActive(true);
         underBarCanvas.SetActive(true);
     }

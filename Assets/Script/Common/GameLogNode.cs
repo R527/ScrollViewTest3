@@ -27,8 +27,10 @@ public class GameLogNode : MonoBehaviour
         playerInfoPopUp.underBarCanvas.SetActive(false);
         GameObject playerInfoPopUpObj = GameObject.FindGameObjectWithTag("PlayerInfoPopUp").gameObject;
         playerInfoPopUpObj.SetActive(false);
-        GameObject chatLogCanvas = GameObject.FindGameObjectWithTag("ChatLog");
-        chatLogCanvas.SetActive(true);
+        CanvasGroup chatLogCanvas = GameObject.FindGameObjectWithTag("ChatLog").GetComponent<CanvasGroup>();
+        chatLogCanvas.alpha = 1;
+        chatLogCanvas.blocksRaycasts = true;
+
         PlayerManager.instance.GetGameChatLog(roomNum);
         
     }

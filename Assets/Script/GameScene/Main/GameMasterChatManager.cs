@@ -349,7 +349,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public void RollAction(int playerID, bool live, bool fortune, bool wolf) {
         
         //死亡時もしくは自分のボタンは機能しない
-        if (gameManager.chatSystem.myID == playerID || !live) {
+        if (gameManager.chatSystem.myPlayer.playerID == playerID || !live) {
             Debug.Log("押せません。");
             return;
         }

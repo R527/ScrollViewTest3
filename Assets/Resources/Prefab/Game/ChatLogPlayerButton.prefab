@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 5089068447188300160}
   - component: {fileID: 5652580297830070453}
   - component: {fileID: 3737236380777701904}
+  - component: {fileID: 6657090609051660057}
   m_Layer: 5
   m_Name: ChatLogPlayerButton
   m_TagString: PlayerButton
@@ -237,3 +238,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0.0039215684, g: 0.42572284, b: 1, a: 1}
   m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 0
+--- !u!114 &6657090609051660057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3100529116811269354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495b09fcd28491849975395d16c6f516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNameText: {fileID: 8967103504711759608}
+  playerID: 0
+  playerButton: {fileID: 5652580297830070453}
