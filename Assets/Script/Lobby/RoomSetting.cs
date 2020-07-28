@@ -108,7 +108,6 @@ public class RoomSetting : MonoBehaviour
 
         if (DebugManager.instance.isDebug) {
             RoomData.instance.numLimit = DebugManager.instance.numLimit;
-            Debug.Log("debug用");
         } else {
             RoomData.instance.numLimit = rollSetting.numLimit;
         }

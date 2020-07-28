@@ -88,6 +88,9 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// テスト
+    /// </summary>
     private void Update() {
         if (Input.GetKeyDown(KeyCode.S)) {
             Debug.Log("保存");

@@ -38,7 +38,6 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         } else {
             //満室ではない処理
-            Debug.Log("入室許可");
             propertiers.Add("isCheckEmptyRoom", EMPTYROOM.入室許可.ToString());
             PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         }

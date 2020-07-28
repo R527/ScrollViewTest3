@@ -92,6 +92,8 @@ public class GameOver : MonoBehaviour {
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
 
+        //チャットログを保存する
+        PlayerManager.instance.SetGameChatLog();
     }
 
     /// <summary>

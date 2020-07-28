@@ -135,9 +135,12 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         if (chatData.chatType == CHAT_TYPE.MINE) {
             Debug.Log("UpperRight");
             layoutGroup.childAlignment = TextAnchor.UpperRight;
+
         } else {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
+
+        
 
         //Debug.Log("CO" + comingOut);
         ////COした場合幅等を変更する

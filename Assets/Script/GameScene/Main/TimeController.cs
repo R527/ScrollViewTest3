@@ -22,6 +22,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public InputView inputView;
     public Fillter fillter;
     public TIME timeType;
+    public DayOrderButton dayOrderButton;
 
     //main
     public Text timerText;//メインタイマーテキスト
@@ -58,7 +59,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public int day;
     public NextDay dayPrefab;
     public bool firstDay;
-    public List<NextDay> nextDayList = new List<NextDay>();
 
     public enum PlayState {
         Play,
@@ -405,7 +405,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
         NextDay dayObj = Instantiate(dayPrefab, chatContent.transform, false);
         dayObj.day = day;
         dayObj.nextDayText.text = day + "日目";
-        nextDayList.Add(dayObj);
+        dayOrderButton.nextDaysList.Add(dayObj.gameObject);
+        dayOrderButton.dayIndex++;
     }
 
 

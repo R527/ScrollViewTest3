@@ -20,6 +20,7 @@ public class ChatLog : MonoBehaviour
     
     List<ChatNode> chatNodeList = new List<ChatNode>();
     string playerName;
+    public ChatNode lastChatNode;
 
 
     //折畳ボタン
@@ -50,6 +51,7 @@ public class ChatLog : MonoBehaviour
         }
         ChatNode chatNode = Instantiate(chatNodePrefab, chatTran, false);
         chatNode.InitChatNodeLog(chatData, 0, false);
+        SetChatNode(chatNode,chatData);
         chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
         chatNodeList.Add(chatNode);
         //gameManager.chatSystem.SetChatNode(chatNode, chatData, false);
@@ -100,7 +102,7 @@ public class ChatLog : MonoBehaviour
     /// </summary>
     public void FoldingPosition() {
         if (foldingText.text == "↓") {
-            inputRectTransform.DOLocalMoveY(-67, 0.5f);
+            inputRectTransform.DOLocalMoveY(-65, 0.5f);
             mainRectTransform.DOLocalMoveY(0, 0.5f);
             foldingText.text = "↑";
         } else {
@@ -111,8 +113,12 @@ public class ChatLog : MonoBehaviour
     }
 
     public void CloseChatLog() {
-        GameObject obj = GameObject.FindGameObjectWithTag("ChatContent");
-        foreach(Transform tran in obj.transform) {
+        GameObject chatContentObj = GameObject.FindGameObjectWithTag("ChatContent");
+        foreach(Transform tran in chatContentObj.transform) {
+            Destroy(tran.gameObject);
+        }
+        GameObject menbarContentObj = GameObject.FindGameObjectWithTag("MenbarContent");
+        foreach (Transform tran in menbarContentObj.transform) {
             Destroy(tran.gameObject);
         }
         gameObject.GetComponent<CanvasGroup>().alpha = 0;
@@ -121,7 +127,23 @@ public class ChatLog : MonoBehaviour
         underBarCanvas.SetActive(true);
     }
 
-    //save場所の管理
-    //save元よりlog管理画面をインスタンスする
+
+    /// <summary>
+    /// チャットノードをセットするときに配置などを変更する
+    /// </summary>
+    public void SetChatNode(ChatNode chatNode, ChatData chatData) {
+        if (lastChatNode != null) {
+            if (lastChatNode.playerID == chatData.playerID) {
+                chatNode.iconObjLayoutElement.minHeight = 0f;
+                chatNode.iconObjLayoutElement.preferredHeight = 0f;
+                chatNode.statusObj.SetActive(false);
+            } else {
+                chatNode.iconObjLayoutElement.preferredHeight = 20f;
+                chatNode.iconObjLayoutElement.minHeight = 20f;
+                chatNode.statusObj.SetActive(true);
+            }
+        }
+        lastChatNode = chatNode;
+    }
 
 }
