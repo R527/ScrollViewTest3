@@ -75,7 +75,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         };
         //BanListの登録用→後程解凍する
         string banListStr = room.GetStringBanList();
-        Debug.Log(banListStr);
+        //Debug.Log(banListStr);
         //部屋の各役職の人数を一度一つのストリングにまとめたもの→後程解凍
         string numListStr = room.GetStringFromIntArray(room.rollNumList.ToArray());
         //部屋IDを決定する　名前とリアルタイムで
@@ -172,11 +172,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //}
 
         Debug.Log("OnJoinedRoom");
-        PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
-        Debug.Log("NickName;" + PhotonNetwork.LocalPlayer.NickName);
-        Debug.Log("RoomName:" + PhotonNetwork.CurrentRoom.Name);
-        Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);
-        Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);
+        //PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
+        //Debug.Log("NickName;" + PhotonNetwork.LocalPlayer.NickName);
+        //Debug.Log("RoomName:" + PhotonNetwork.CurrentRoom.Name);
+        //Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);
+        //Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);
 
 
         //シーン遷移
@@ -351,7 +351,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public IEnumerator FirstCreatePlayerObj() {
         yield return new WaitForSeconds(1.0f);
         PhotonNetwork.IsMessageQueueRunning = true;
-        Debug.Log("FirstCreatePlayerObj");
 
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 

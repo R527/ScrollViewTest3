@@ -21,6 +21,8 @@ public class DayOrderButton : MonoBehaviour
     public Button nextDayButton;//翌日指定
     public Button prevDayButton;//前日指定
 
+    public float contentPosY;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,9 +44,9 @@ public class DayOrderButton : MonoBehaviour
     /// 一番最後の日にち戻る
     /// </summary>
     public void LastDay() {
-        dayIndex = nextDaysList.Count - 1;
-        ScrollToCore(nextDaysList[dayIndex], 1.0f);
-
+        //dayIndex = nextDaysList.Count - 1;
+        //ScrollToCore(nextDaysList[dayIndex], 1.0f);
+        scrollRect.verticalNormalizedPosition = 0f;
     }
     /// <summary>
     /// 1日戻る
@@ -53,6 +55,7 @@ public class DayOrderButton : MonoBehaviour
         dayIndex--;
         dayIndex = Mathf.Clamp(dayIndex, 0, nextDaysList.Count - 1);
         ScrollToCore(nextDaysList[dayIndex], 1.0f);
+        Debug.Log("nextDaysList" + dayIndex);
 
     }
 
@@ -60,6 +63,8 @@ public class DayOrderButton : MonoBehaviour
         dayIndex++;
         dayIndex = Mathf.Clamp(dayIndex, 0, nextDaysList.Count - 1);
         ScrollToCore(nextDaysList[dayIndex], 1.0f);
+        Debug.Log("nextDaysList" + dayIndex);
+
     }
     /// <summary>
     /// 指定した日にちに移動
@@ -71,16 +76,21 @@ public class DayOrderButton : MonoBehaviour
         RectTransform targetRect = obj.GetComponent<RectTransform>();
         //Contentの高さ取得
         float contentHeight = scrollRect.content.rect.height;
+        //ContentのPosY
+        contentPosY = scrollRect.content.rect.position.y;
         //Viewportの高さを取得
         float viewportHeight = scrollRect.viewport.rect.height;
+        
+        
 
         //Contentの高さがViewportの高さより小さい場合にはそれ以上スクロールできないので、スクロール不要
         if(contentHeight < viewportHeight) {
             return 0f;
         }
-
+        Debug.Log("contetntPosY" + contentPosY);
+        Debug.Log("コンテント上辺の位置" + (viewportHeight - contentHeight));
         //ローカル座標がContentHeightの上辺を0として負の値で格納される
-        float targetPos = contentHeight + GetPosY(targetRect) + targetRect.rect.height * align;
+        float targetPos = contentHeight + GetPosY(targetRect,contentHeight) + targetRect.rect.height * align;
 
         //上端～下端合わせたのための調整量
         float gap = viewportHeight * align;
@@ -93,12 +103,12 @@ public class DayOrderButton : MonoBehaviour
 
         //上記の情報を使ってVerticalNormalizedPositionを実行
         scrollRect.verticalNormalizedPosition = normalizedPos;
-        Debug.Log("contentHeight" + contentHeight);
-        Debug.Log("viewportHeight" + viewportHeight);
+        Debug.Log("contentHeight" + contentHeight);//正しい
+        Debug.Log("viewportHeight" + viewportHeight);//正しい
         Debug.Log("targetPos" + targetPos);
-        Debug.Log("GetPosY(targetRect)" + GetPosY(targetRect));
-        Debug.Log("targetRect.rect.height" + targetRect.rect.height);
-        Debug.Log("gap" + gap);
+        Debug.Log("GetPosY(targetRect)" + GetPosY(targetRect, contentHeight));
+        Debug.Log("targetRect.rect.height" + targetRect.rect.height);//正しい
+        Debug.Log("gap" + gap);//正しい
         Debug.Log("normalizedPos" + normalizedPos);
         return normalizedPos;
     }
@@ -108,9 +118,15 @@ public class DayOrderButton : MonoBehaviour
     /// </summary>
     /// <param name="transform"></param>
     /// <returns></returns>
-    private float GetPosY(RectTransform transform) {
-        Debug.Log(transform.localPosition.y);
-        Debug.Log(transform.rect.y);
-        return - (transform.localPosition.y + transform.rect.y);
+    private float GetPosY(RectTransform transform,float contentHeight) {
+        
+        Debug.Log(transform.localPosition.y);//おかしい
+        Debug.Log(transform.rect.y);//正しい
+
+        float i = transform.localPosition.y - contentHeight;
+        Debug.Log(i);
+        return i + transform.rect.y;
     }
+
+
 }

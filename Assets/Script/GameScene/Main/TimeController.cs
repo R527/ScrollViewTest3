@@ -119,7 +119,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 {"timeType",timeType }
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-            Debug.Log((TIME)PhotonNetwork.CurrentRoom.CustomProperties["timeType"]);
+
         }
 
         // 本当の姿を表示する
@@ -220,9 +220,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// インターバルを決定する
     /// </summary>
     public void StartInterval() {
-        Debug.Log("StartInterval:開始");
-       
-
         switch (timeType) {
             //お昼
             case TIME.結果発表後チェック:
@@ -308,9 +305,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
                         {"votingCompleted",false }
                     };
                         player.SetCustomProperties(properties);
-                        Debug.Log((int)player.CustomProperties["voteNum"]);
-                        Debug.Log((string)player.CustomProperties["voteName"]);
-                        Debug.Log((bool)player.CustomProperties["votingCompleted"]);
+                        //Debug.Log((int)player.CustomProperties["voteNum"]);
+                        //Debug.Log((string)player.CustomProperties["voteName"]);
+                        //Debug.Log((bool)player.CustomProperties["votingCompleted"]);
                     }
 
                 }
@@ -337,7 +334,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 if (firstDay) {
                     StartCoroutine(NextDay());
                     StartCoroutine(UpInputView());
-                    Debug.Log("firstDay");
                 }
                 StartCoroutine(GameMasterChat());
                 StartCoroutine(gameMasterChatManager.OpeningDayFortune());
@@ -397,7 +393,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator NextDay() {
-        Debug.Log("NextDay" + day);
         yield return new WaitForSeconds(intervalTime + 0.1f);
         day++;
         chatSystem.id++;
@@ -559,7 +554,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
             gameReady = (bool)gameReadyObj;
         }
-        Debug.Log("gameReady" + gameReady);
         return gameReady;
     }
 
@@ -596,7 +590,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //playState = PlayerState.Stop;
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playState", out object isPlayingeObj)) {
             playState = (PlayState)Enum.Parse(typeof(PlayState),isPlayingeObj.ToString());
-            Debug.Log(playState);
+            //Debug.Log(playState);
         }
         return playState;
     }
@@ -610,7 +604,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             {"playState",nowPlayState.ToString() }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log("SetPlayState" + (PlayState)Enum.Parse(typeof(PlayState),PhotonNetwork.CurrentRoom.CustomProperties["playState"].ToString()));
+        //Debug.Log("SetPlayState" + (PlayState)Enum.Parse(typeof(PlayState),PhotonNetwork.CurrentRoom.CustomProperties["playState"].ToString()));
     }
 
     /// <summary>
@@ -650,7 +644,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("suddenDeathID", out object suddenDeathIDObj)) {
             suddenDeathID = (int)suddenDeathIDObj;
         }
-        Debug.Log(suddenDeathID);
+        //Debug.Log(suddenDeathID);
         return suddenDeathID;
     }
 

@@ -69,7 +69,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// <param name="comingOut"></param>
     /// <param name="speaker_Type"></param>
     public void CreateChatNode(bool comingOut,SPEAKER_TYPE speaker_Type) {
-        Debug.Log("CreateChatNode");
+        //Debug.Log("CreateChatNode");
 
         //発言者（ETC、GM、Player）の分岐
         //GMの発言
@@ -77,7 +77,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             //GMは自分の世界のみでChatNodeを生成
             boardColor = 4;
             inputData = gameMasterChatManager.gameMasterChat;
-            Debug.Log(inputData);
+            //Debug.Log(inputData);
 
             //データを格納
             ChatData chatData = new ChatData(inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
@@ -87,7 +87,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             ChatNode chatNode = null;
             //オンラインオフラインで分ける(GMChat
             //Offline
-            Debug.Log("speaker_Type" + speaker_Type);
+            //Debug.Log("speaker_Type" + speaker_Type);
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
                 chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
                 //チャットデータをもとにちゃっとNodeに情報を持たせる
@@ -194,7 +194,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         //ゲーム中に発言された内容を保存する
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
-        Debug.Log(PlayerManager.instance.saveChatLog);
+        //Debug.Log(PlayerManager.instance.saveChatLog);
 
 
         //ボードの色を変える
@@ -270,7 +270,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public bool SetActiveChatObj(ChatNode chatNode) {
-        Debug.Log("SetActiveChatObj");
+        //Debug.Log("SetActiveChatObj");
         bool isChatSet = false;
 
         //GameMasterChat

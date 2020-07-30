@@ -36,7 +36,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
 
     private void Start() {
-        Debug.Log("PlayerButtonStart");
+        //Debug.Log("PlayerButtonStart");
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
         tran.localScale = new Vector3(1, 1, 1);
         

@@ -76,7 +76,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
 
-        Debug.Log("CO" + comingOut);
+        //Debug.Log("CO" + comingOut);
         //COした場合幅等を変更する
         if (comingOut) {
             Debug.Log("ComingOut:" + chatData.playerName);

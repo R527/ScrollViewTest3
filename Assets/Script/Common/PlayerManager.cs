@@ -105,8 +105,8 @@ public class PlayerManager : MonoBehaviour
     /// <param name="setString"></param>
     /// <param name="idType"></param>
     public void SetStringForPlayerPrefs(string setString,ID_TYPE idType) {
-        Debug.Log(idType);
-        Debug.Log(setString);
+        //Debug.Log(idType);
+        //Debug.Log(setString);
 
         switch (idType) {
             //端末のIDをセットする
