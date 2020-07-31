@@ -97,7 +97,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 //OnLine
             } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE ) {
                 
-                photonView.RPC(nameof(CreateGameMasterChatNode), RpcTarget.All, id, inputData, boardColor, comingOut);
+                photonView.RPC(nameof(CreateGameMasterChatNode), RpcTarget.All, inputData, boardColor, comingOut);
             }
             
         } else {

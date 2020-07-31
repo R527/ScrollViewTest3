@@ -41,8 +41,10 @@ public class DayOrderButton : MonoBehaviour
     /// チャット画面が最新投稿に位置していないときに新たなチャットの生成を停止してチャットが流れないように監視する
     /// </summary>
     private void Update() {
+        contentPosY = scrollRect.content.localPosition.y;
+        Debug.Log(contentPosY);
         //チャット画面が一番下かつチャットをtrueにしているならreturn
-        if(!isCheckNormalizedPosition　&& scrollRect.verticalNormalizedPosition <= 0) {
+        if (!isCheckNormalizedPosition　&& scrollRect.verticalNormalizedPosition <= 0) {
             return;
         }
 
