@@ -15,7 +15,7 @@ public class DayOrderButton : MonoBehaviour
     public List<GameObject> nextDaysList = new List<GameObject>();
     public int dayIndex;
     public ScrollRect scrollRect;
-
+    public List<float> targetPosYList = new List<float>();
 
     //Button
     public Button topButton;
@@ -41,8 +41,7 @@ public class DayOrderButton : MonoBehaviour
     /// チャット画面が最新投稿に位置していないときに新たなチャットの生成を停止してチャットが流れないように監視する
     /// </summary>
     private void Update() {
-        contentPosY = scrollRect.content.localPosition.y;
-        Debug.Log(contentPosY);
+
         //チャット画面が一番下かつチャットをtrueにしているならreturn
         if (!isCheckNormalizedPosition　&& scrollRect.verticalNormalizedPosition <= 0) {
             return;
@@ -66,35 +65,24 @@ public class DayOrderButton : MonoBehaviour
     /// 一番最初の日にちに戻る
     /// </summary>
     public void FirstDay() {
-        dayIndex  = 0;
-        ScrollToCore(nextDaysList[dayIndex], 1.0f);
+        ScrollToCore(nextDaysList[0], 1.0f);
     }
 
     /// <summary>
     /// 一番最後の日にち戻る
     /// </summary>
     public void LastDay() {
-        //dayIndex = nextDaysList.Count - 1;
-        //ScrollToCore(nextDaysList[dayIndex], 1.0f);
         scrollRect.verticalNormalizedPosition = 0f;
     }
     /// <summary>
     /// 1日戻る
     /// </summary>
     public void PrevDay() {
-        dayIndex--;
-        dayIndex = Mathf.Clamp(dayIndex, 0, nextDaysList.Count - 1);
-        ScrollToCore(nextDaysList[dayIndex], 1.0f);
-        Debug.Log("nextDaysList" + dayIndex);
-
+        ScrollToCore(nextDaysList[GetContentPosY()], 1.0f);
     }
 
     public void NextDay() {
-        dayIndex++;
-        dayIndex = Mathf.Clamp(dayIndex, 0, nextDaysList.Count - 1);
-        ScrollToCore(nextDaysList[dayIndex], 1.0f);
-        Debug.Log("nextDaysList" + dayIndex);
-
+        ScrollToCore(nextDaysList[0], 1.0f);
     }
     /// <summary>
     /// 指定した日にちに移動
@@ -159,4 +147,28 @@ public class DayOrderButton : MonoBehaviour
     }
 
 
+    public int GetContentPosY() {
+
+        int i = 0;
+        Debug.Log("GetContentPosY");
+        Debug.Log(nextDaysList.Count);
+        for (i = nextDaysList.Count - 1; 0 < i; i--) {
+            Debug.Log("for");
+            Debug.Log(i);
+            RectTransform targetRect = nextDaysList[i].transform.GetComponent<RectTransform>();
+            float targetPosY = targetRect.localPosition.y + targetRect.rect.y;
+            Debug.Log(targetPosY);
+            //targetPosYList.Add(targetPosY);
+            float contentPosY = scrollRect.content.localPosition.y;
+            Debug.Log("contentPosY" + contentPosY);
+            Debug.Log("targetPosY" + targetPosY);
+            if (targetPosY > - contentPosY) {
+                Debug.Log(i);
+                Debug.Log("決定");
+                break;
+            }
+        }
+        //targetPosYList.Clear();
+        return i;
+    }
 }
