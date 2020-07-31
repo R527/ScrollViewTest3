@@ -22,6 +22,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public NGList taboolist;
     public ChatNode chatNodePrefab;
     public InputView inputView;
+    public DayOrderButton dayOrderButton;
     //共通項目
     public int id = 0;
     public int myID;//??
@@ -273,8 +274,13 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         //Debug.Log("SetActiveChatObj");
         bool isChatSet = false;
 
+        //チャット画面の位置が一番下でないとき全てのチャットをfalseにする
+        if (dayOrderButton.isCheckNormalizedPosition) {
+            return isChatSet = false;
+        }
+
         //GameMasterChat
-        if(chatNode.playerID == 999){
+        if (chatNode.playerID == 999){
             return isChatSet = true ;
         }
         if (!chatNode.chatWolf && chatNode.chatLive) {

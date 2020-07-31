@@ -11,9 +11,11 @@ using UnityEngine.UI;
 public class DayOrderButton : MonoBehaviour
 {
 
+    public ChatListManager chatListManager;
     public List<GameObject> nextDaysList = new List<GameObject>();
     public int dayIndex;
     public ScrollRect scrollRect;
+
 
     //Button
     public Button topButton;
@@ -21,7 +23,10 @@ public class DayOrderButton : MonoBehaviour
     public Button nextDayButton;//翌日指定
     public Button prevDayButton;//前日指定
 
+    public bool isCheckNormalizedPosition;
+
     public float contentPosY;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +35,29 @@ public class DayOrderButton : MonoBehaviour
         bottomButton.onClick.AddListener(LastDay);
         nextDayButton.onClick.AddListener(NextDay);
         prevDayButton.onClick.AddListener(PrevDay);
+    }
+
+    /// <summary>
+    /// チャット画面が最新投稿に位置していないときに新たなチャットの生成を停止してチャットが流れないように監視する
+    /// </summary>
+    private void Update() {
+        //チャット画面が一番下かつチャットをtrueにしているならreturn
+        if(!isCheckNormalizedPosition　&& scrollRect.verticalNormalizedPosition <= 0) {
+            return;
+        }
+
+        //フィルター中でないときに画面の一番下に来たらチャットをtrueにする
+        if(scrollRect.verticalNormalizedPosition <= 0 && !chatListManager.isfilter) {
+            chatListManager.OffFilter();
+            isCheckNormalizedPosition = false;
+            return;
+        }
+
+        //チャット画面が一番下ではないときはチャットをfalseにする
+        if (scrollRect.verticalNormalizedPosition > 0) {
+            isCheckNormalizedPosition = true;
+            return;
+        }
     }
 
     /// <summary>
@@ -77,7 +105,7 @@ public class DayOrderButton : MonoBehaviour
         //Contentの高さ取得
         float contentHeight = scrollRect.content.rect.height;
         //ContentのPosY
-        contentPosY = scrollRect.content.rect.position.y;
+        contentPosY = scrollRect.content.localPosition.y;
         //Viewportの高さを取得
         float viewportHeight = scrollRect.viewport.rect.height;
         
@@ -88,7 +116,7 @@ public class DayOrderButton : MonoBehaviour
             return 0f;
         }
         Debug.Log("contetntPosY" + contentPosY);
-        Debug.Log("コンテント上辺の位置" + (viewportHeight - contentHeight));
+        //Debug.Log("コンテント上辺の位置" + (viewportHeight - contentHeight));
         //ローカル座標がContentHeightの上辺を0として負の値で格納される
         float targetPos = contentHeight + GetPosY(targetRect,contentHeight) + targetRect.rect.height * align;
 
@@ -97,19 +125,19 @@ public class DayOrderButton : MonoBehaviour
 
         //差分を計算する
         float normalizedPos = (targetPos - gap) / (contentHeight - viewportHeight);
-        Debug.Log("normalizedPos" + normalizedPos);
+        //Debug.Log("normalizedPos" + normalizedPos);
         //Clamp01を使ってFloatを０～1にする
         normalizedPos = Mathf.Clamp01(normalizedPos);
 
         //上記の情報を使ってVerticalNormalizedPositionを実行
         scrollRect.verticalNormalizedPosition = normalizedPos;
-        Debug.Log("contentHeight" + contentHeight);//正しい
-        Debug.Log("viewportHeight" + viewportHeight);//正しい
+        //Debug.Log("contentHeight" + contentHeight);//正しい
+        //Debug.Log("viewportHeight" + viewportHeight);//正しい
         Debug.Log("targetPos" + targetPos);
         Debug.Log("GetPosY(targetRect)" + GetPosY(targetRect, contentHeight));
-        Debug.Log("targetRect.rect.height" + targetRect.rect.height);//正しい
-        Debug.Log("gap" + gap);//正しい
-        Debug.Log("normalizedPos" + normalizedPos);
+        //Debug.Log("targetRect.rect.height" + targetRect.rect.height);//正しい
+        //Debug.Log("gap" + gap);//正しい
+        //Debug.Log("normalizedPos" + normalizedPos);
         return normalizedPos;
     }
 
@@ -120,8 +148,8 @@ public class DayOrderButton : MonoBehaviour
     /// <returns></returns>
     private float GetPosY(RectTransform transform,float contentHeight) {
         
-        Debug.Log(transform.localPosition.y);//おかしい
-        Debug.Log(transform.rect.y);//正しい
+        //Debug.Log(transform.localPosition.y);//おかしい
+        //Debug.Log(transform.rect.y);//正しい
 
         float i = transform.localPosition.y - contentHeight;
         Debug.Log(i);
