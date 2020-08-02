@@ -453,7 +453,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
         inputView.foldingButton.interactable = false;
         yield return new WaitForSeconds(intervalTime + 0.3f);
         inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
-        inputView.mainRectTransform.DOLocalMoveY(72, 0.5f);
+        //inputView.viewport.DOLocalMoveY(72, 0.5f);
+        inputView.viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
         inputView.menberViewPopUpObj.SetActive(true);
         inputView.foldingText.text = "↓";
     }
@@ -467,7 +468,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
         inputView.foldingButton.interactable = true;
         yield return new WaitForSeconds(intervalTime + 0.3f);
         inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
-        inputView.mainRectTransform.DOLocalMoveY(0, 0.5f);
+        //inputView.viewport.DOLocalMoveY(0, 0.5f);
+        inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
         StartCoroutine(inputView.PopUpFalse());
         inputView.foldingText.text = "↑";
     }

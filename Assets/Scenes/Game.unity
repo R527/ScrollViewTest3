@@ -8529,7 +8529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatListManager: {fileID: 1130743579}
   foldingText: {fileID: 468840154}
-  viewport: {fileID: 0}
+  viewport: {fileID: 4395145947911845164}
   inputRectTransform: {fileID: 4395145949375906982}
   filterButton: {fileID: 474407752}
   stampButton: {fileID: 443620382}
@@ -8538,7 +8538,6 @@ MonoBehaviour:
   menberViewPopUpObj: {fileID: 1552074811}
   coPopUpObj: {fileID: 327988790}
   comingOutButton: {fileID: 1812546287}
-  scrollRect: {fileID: 4395145949457617573}
   wolfModeButton: {fileID: 972337835}
   wolfModeButtonText: {fileID: 1484097463}
   wolfMode: 0
@@ -21590,11 +21589,11 @@ RectTransform:
   m_Father: {fileID: 4395145949457617569}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 202, y: 342}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &4395145947911845165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22083,7 +22082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.00061035156}
+  m_AnchoredPosition: {x: 0, y: -0.000091552734}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &4395145949336749762
