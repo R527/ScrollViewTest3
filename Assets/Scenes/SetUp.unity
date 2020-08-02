@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  testMainTime: 10
+  testMainTime: 99999999
   testNightTime: 2
   testVotingTime: 2
   testExecutionTime: 2
@@ -387,7 +387,7 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 1
+  numLimit: 2
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
@@ -395,7 +395,7 @@ MonoBehaviour:
   isPlayerPrefsDeleteAll: 0
   isGameOver: 0
   isTestPlay: 1
-  testRollTypeList: 000000000000000004000000
+  testRollTypeList: 0000000004000000
 --- !u!1 &4274428794974511839
 GameObject:
   m_ObjectHideFlags: 0

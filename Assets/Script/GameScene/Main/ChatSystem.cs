@@ -93,6 +93,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
                 //チャットデータをもとにちゃっとNodeに情報を持たせる
                 chatNode.InitChatNode(chatData, 0, false);
+
                 SetChatNode(chatNode, chatData, false);
                 //OnLine
             } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE ) {
@@ -159,6 +160,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public void CreateLogChat() {
         ChatData chatData = new ChatData(inputData, 999, boardColor, testName, ROLLTYPE.ETC);
         ChatNode chatNode = Instantiate(myPlayer.chatNodePrefab, myPlayer.chatTran, false);
+
         chatNode.InitChatNode(chatData, 0, false);
         SetChatNode(chatNode, chatData, false);
         Debug.Log("復元完了");
@@ -180,6 +182,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         ChatData chatData = new ChatData(inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
         chatData.chatType = CHAT_TYPE.GM;
         chatNode.InitChatNode(chatData, 0, comingOut);
+
         SetChatNode(chatNode, chatData, comingOut);
         Debug.Log("CreateGameMasterChatNode");
     }
@@ -210,12 +213,10 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
             //Player
         } else {
-            if (myPlayer.live == false) {
+            if (!chatNode.chatLive) {
                 chatListManager.deathList.Add(chatNode);
-            } else if (inputView.wolfMode) {
+            } else if (chatNode.chatWolf) {
                 chatListManager.wlofList.Add(chatNode);
-            } else if (inputView.superChat) {
-                chatListManager.callOutList.Add(chatNode);
             } else {
                 chatListManager.normalList.Add(chatNode);
             }
@@ -223,17 +224,16 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         //PlayerごとにList管理
         if (chatData.rollType != ROLLTYPE.ETC && chatData.rollType != ROLLTYPE.GM) {
-            if (myPlayer.live == false) {
+            if (!chatNode.chatLive) {
                 chatListManager.alldeathList[chatData.playerID - 1].Add(chatNode);
-            } else if (inputView.wolfMode == true) {
+            } else if (chatNode.chatWolf) {
                 chatListManager.allwolfList[chatData.playerID - 1].Add(chatNode);
             } else {
                 chatListManager.allnormalList[chatData.playerID - 1].Add(chatNode);
             }
         }
 
-        //SetActiveを制御する
-        chatNode.gameObject.SetActive(SetActiveChatObj(chatNode));
+
 
 
         //playerが連続でチャットを投稿した場合、アイコンObj等を削除する
@@ -264,6 +264,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 fillter.comingOutButton.interactable = false;
             }
         }
+
+        //SetActiveを制御する
+        chatNode.gameObject.SetActive(SetActiveChatObj(chatNode));
     }
 
     /// <summary>
@@ -271,17 +274,21 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public bool SetActiveChatObj(ChatNode chatNode) {
-        //Debug.Log("SetActiveChatObj");
+        Debug.Log("SetActiveChatObj");
         bool isChatSet = false;
 
         //チャット画面の位置が一番下でないとき全てのチャットをfalseにする
         if (dayOrderButton.isCheckNormalizedPosition) {
-            return isChatSet = false;
+            Debug.Log("isCheckNormalizedPosition");
+            return isChatSet;
         }
+        Debug.Log("isCheckNormalizedPosition2");
 
         //GameMasterChat
         if (chatNode.playerID == 999){
-            return isChatSet = true ;
+            isChatSet = true;
+            Debug.Log("GMChat");
+            return isChatSet;
         }
         if (!chatNode.chatWolf && chatNode.chatLive) {
             //通常チャットは全員が見れる
@@ -298,6 +305,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             Debug.Log("狼チャット");
 
         }
+        Debug.Log(isChatSet);
         return isChatSet;
     }
 }

@@ -35,7 +35,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="chatData"></param>
     public void InitChatNode(ChatData chatData, int iconNo, bool comingOut) {
-
+        Debug.Log("InitChatNode");
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         comingOutClass = GameObject.FindGameObjectWithTag("ComingOut").GetComponent<ComingOut>();
         
@@ -92,7 +92,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
                 chatText.text = "カミングアウトを取り消します。";
             }
             
-        } 
+        }
         StartCoroutine(CheckTextSize());
     }
 
@@ -170,7 +170,10 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         /// <returns></returns>
         private IEnumerator CheckTextSize() {
         //スクリーン上のレンダリングが終わるまで待つ
-        yield return new WaitForEndOfFrame();
+        //yield return new WaitForEndOfFrame();
+        Debug.Log("CheckTextSize2");
+        yield return null;
+        Debug.Log("CheckTextSize");//OFFFilter時に取得できない　OFFFilter側に問題あり？
         if (chatBoard.rectTransform.sizeDelta.x > this.GetComponent<RectTransform>().sizeDelta.x * 0.64f) {
             //ChatBoardのLayout ElementのpreferredWidthを64％にする
             chatBoard.GetComponent<LayoutElement>().preferredWidth = this.GetComponent<RectTransform>().sizeDelta.x * 0.64f;

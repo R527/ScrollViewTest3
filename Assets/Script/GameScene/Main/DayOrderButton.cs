@@ -43,22 +43,28 @@ public class DayOrderButton : MonoBehaviour
     private void Update() {
 
         //チャット画面が一番下かつチャットをtrueにしているならreturn
-        if (!isCheckNormalizedPosition　&& scrollRect.verticalNormalizedPosition <= 0) {
+        //if (!isCheckNormalizedPosition && scrollRect.verticalNormalizedPosition <= GetContentPosY()) {
+        //    return;
+        //}
+
+        if(scrollRect.verticalNormalizedPosition > GetContentPosY() && isCheckNormalizedPosition) {
+            return;
+        }
+
+        //チャット画面が一番下ではないときはチャットをfalseにする
+        if (scrollRect.verticalNormalizedPosition > GetContentPosY()) {
+            isCheckNormalizedPosition = true;
             return;
         }
 
         //フィルター中でないときに画面の一番下に来たらチャットをtrueにする
-        if(scrollRect.verticalNormalizedPosition <= 0 && !chatListManager.isfilter) {
+        if (isCheckNormalizedPosition && scrollRect.verticalNormalizedPosition <= GetContentPosY() && !chatListManager.isfilter) {
             chatListManager.OffFilter();
             isCheckNormalizedPosition = false;
             return;
         }
 
-        //チャット画面が一番下ではないときはチャットをfalseにする
-        if (scrollRect.verticalNormalizedPosition > 0) {
-            isCheckNormalizedPosition = true;
-            return;
-        }
+ 
     }
 
     /// <summary>
@@ -134,7 +140,7 @@ public class DayOrderButton : MonoBehaviour
         Debug.Log("targetRect.rect.height" + targetRect.rect.height);//正しい日付変更Objの高さ
         //Debug.Log("gap" + gap);//正しい
         Debug.Log("normalizedPos" + normalizedPos);
-        //return normalizedPos;
+        
     }
 
     /// <summary>
@@ -152,7 +158,7 @@ public class DayOrderButton : MonoBehaviour
     }
 
     /// <summary>
-    /// 前日に戻るために使う
+    /// 前日に戻るために使う 今のチャット画面のポジションと日付の位置を比較してどのObjが前日かを決定する
     /// Intを返す
     /// </summary>
     /// <returns></returns>
@@ -218,5 +224,15 @@ public class DayOrderButton : MonoBehaviour
         return i;
     }
 
-
+    /// <summary>
+    /// コンテントの位置からverticalNormalizedPositionを取得する
+    /// </summary>
+    /// <returns></returns>
+    private float GetContentPosY() {
+        float contentHeight = scrollRect.content.rect.height;
+        float viewportHeight = scrollRect.viewport.rect.height;
+        float normalizedPos = viewportHeight / contentHeight;
+        normalizedPos = Mathf.Clamp01(normalizedPos);
+        return normalizedPos;
+    }
 }
