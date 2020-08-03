@@ -43,6 +43,7 @@ public class DayOrderButton : MonoBehaviour
     /// </summary>
     private void Update() {
 
+        //タイトル画面ならリターン
         if (isCheckChatLog) {
             return;
         }

@@ -20,7 +20,7 @@ public class SetUpManager : MonoBehaviour
             Debug.Log("KeyALL削除");
             PlayerPrefs.DeleteAll();
         }
-        
+
 
         //自分のIDのロードをする、ない場合は空白を入れる
         PlayerManager.instance.myUniqueId = PlayerPrefs.GetString(PlayerManager.ID_TYPE.myUniqueId.ToString(),"");

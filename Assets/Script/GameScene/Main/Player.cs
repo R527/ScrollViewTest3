@@ -240,10 +240,10 @@ public class Player : MonoBehaviourPunCallbacks {
         //チャットにデータを持たせる用
         chatData.chatLive = live;
         //狼チャットの場合
-        if(boardColor == 2) {
+        if (boardColor == 2) {
             chatData.chatWolf = wolfChat;
         }
-        
+
 
         ChatNode chatNode = Instantiate(chatNodePrefab, chatTran, false);
 
@@ -255,6 +255,7 @@ public class Player : MonoBehaviourPunCallbacks {
         chatSystem.SetChatNode(chatNode, chatData, comingOut);
         Debug.Log("Player RPC END");
     }
+
 
 
     /// <summary>

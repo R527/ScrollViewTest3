@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 
 
 /// <summary>
@@ -96,11 +97,11 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
                 SetChatNode(chatNode, chatData, false);
                 //OnLine
-            } else if(speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE ) {
-                
+            } else if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
+
                 photonView.RPC(nameof(CreateGameMasterChatNode), RpcTarget.All, inputData, boardColor, comingOut);
             }
-            
+
         } else {
 
             //ログ作成部分
@@ -154,7 +155,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         }
     }
 
-
     /// <summary>
     /// GMチャットを生成する
     /// </summary>
@@ -176,6 +176,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         SetChatNode(chatNode, chatData, comingOut);
         Debug.Log("CreateGameMasterChatNode");
     }
+
 
     /// <summary>
     /// 生成されたChatNodeの設定
@@ -298,6 +299,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         }
         Debug.Log(isChatSet);
+
+
         return isChatSet;
     }
 }
