@@ -14,11 +14,14 @@ public class Title : MonoBehaviour
     public Button menuButton;
     public Button begginerButton;
     public GameObject menuPopUp;
-    public GameObject playerInfoPopUpObj;
+    public GameObject playerInfoPopUp;
     public GameObject begginerGuidePopUp;
     public BanPlayer banPlayerPrefab;
     public Transform banListtran;
     public Button playerInfoButton;
+
+    public GameObject mainCanvas;
+    public GameObject underBarCanvas;
 
 
 
@@ -30,11 +33,12 @@ public class Title : MonoBehaviour
         menuButton.onClick.AddListener(MenuPopUp);
         playerInfoButton.onClick.AddListener(PlayerInfoPopUP);
 
+
         CreateBanList();
     }
     public void PlayerInfoPopUP() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
-        Instantiate(playerInfoPopUpObj);
+        playerInfoPopUp.SetActive(true);
 
     }
     /// <summary>
@@ -73,5 +77,7 @@ public class Title : MonoBehaviour
     public void StartGameButton() {
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
     }
+
+
 
 }

@@ -60,10 +60,6 @@ public class Player : MonoBehaviourPunCallbacks {
     /// 役職などの詳細は後程設定する
     /// </summary>
     private IEnumerator Start() {
-
-
-
-        Debug.Log("FirstSetUp");
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         buttontran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
@@ -79,7 +75,7 @@ public class Player : MonoBehaviourPunCallbacks {
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
             Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
         }
-        Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["myUniqueID"]);
+
 
 
         //生存者にする
@@ -93,7 +89,6 @@ public class Player : MonoBehaviourPunCallbacks {
         }
         //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
         if (photonView.IsMine) {
-            Debug.Log("IsMine");
             chatSystem.myPlayer = this;
             playerName = PhotonNetwork.LocalPlayer.NickName;
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -126,8 +121,6 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     [PunRPC]
     private IEnumerator CreatePlayerButton() {
-        Debug.Log("CreatePlayerButton");
-
         yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
@@ -246,17 +239,23 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //チャットにデータを持たせる用
         chatData.chatLive = live;
-        chatData.chatWolf = wolfChat;
+        //狼チャットの場合
+        if (boardColor == 2) {
+            chatData.chatWolf = wolfChat;
+        }
+
 
         ChatNode chatNode = Instantiate(chatNodePrefab, chatTran, false);
 
         //RPC内にあるメソッドもRPCと同じ挙動をする
         //そのメソッドの先で呼ばれるメソッドもRPCと同じ挙動をする
         chatNode.InitChatNode(chatData, iconNo, comingOut);
+
         Debug.Log(comingOut);
         chatSystem.SetChatNode(chatNode, chatData, comingOut);
         Debug.Log("Player RPC END");
     }
+
 
 
     /// <summary>
@@ -336,7 +335,7 @@ public class Player : MonoBehaviourPunCallbacks {
                 checkTimer = -2;
                 timeController.isVotingCompleted = true;
                 timeController.SetIsVotingCompleted();
-                Debug.Log("全員投票完了");
+                //Debug.Log("全員投票完了");
             }
         }
     }

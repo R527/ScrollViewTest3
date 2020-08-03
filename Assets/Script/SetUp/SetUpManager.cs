@@ -20,7 +20,7 @@ public class SetUpManager : MonoBehaviour
             Debug.Log("KeyALL削除");
             PlayerPrefs.DeleteAll();
         }
-        
+
 
         //自分のIDのロードをする、ない場合は空白を入れる
         PlayerManager.instance.myUniqueId = PlayerPrefs.GetString(PlayerManager.ID_TYPE.myUniqueId.ToString(),"");
@@ -66,17 +66,21 @@ public class SetUpManager : MonoBehaviour
         PlayerManager.instance.totalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.敗北回数.ToString(), 0);
         PlayerManager.instance.totalNumberOfSuddenDeath = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.突然死数.ToString(), 0);
 
-        //突然死用のフラグを見て戦績に反映する
-        if (PlayerPrefs.GetString("突然死用のフラグ","") != PlayerManager.SuddenDeath_TYPE.ゲーム正常終了.ToString()) {
-            Debug.Log("突然死確認" + PlayerPrefs.GetString("突然死用のフラグ"));
-            PlayerManager.instance.totalNumberOfSuddenDeath++;
-            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
-        }
-        Debug.Log("正常");
-        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
+
 
         //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
         if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {
+
+            //名前が登録されている状態のみ確認する
+            //突然死用のフラグを見て戦績に反映する
+            if (PlayerPrefs.GetString("突然死用のフラグ", "") != PlayerManager.SuddenDeath_TYPE.ゲーム正常終了.ToString()) {
+                Debug.Log("突然死確認" + PlayerPrefs.GetString("突然死用のフラグ"));
+                PlayerManager.instance.totalNumberOfSuddenDeath++;
+                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
+            }
+            Debug.Log("正常");
+            PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
+
             SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
         } else {
             SceneStateManager.instance.NextScene(SCENE_TYPE.準備);

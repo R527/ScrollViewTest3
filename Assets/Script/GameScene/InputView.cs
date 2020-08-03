@@ -15,7 +15,7 @@ public class InputView : MonoBehaviour {
 
     //main
     public Text foldingText; //折り畳みボタンのテキスト
-    public RectTransform mainRectTransform;
+    public RectTransform viewport;
     public RectTransform inputRectTransform;
     public Button filterButton;
     public Button stampButton;
@@ -63,7 +63,7 @@ public class InputView : MonoBehaviour {
             return;
         } else if (menberViewPopUpObj.activeSelf && foldingText.text == "↓" ) {
             inputRectTransform.DOLocalMoveY(-67, 0.5f);
-            mainRectTransform.DOLocalMoveY(0, 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
             filterButton.interactable = true;
 
             //ボタン有効にする
@@ -75,7 +75,7 @@ public class InputView : MonoBehaviour {
         } else if (foldingText.text == "↑") {
             menberViewPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
-            mainRectTransform.DOLocalMoveY(72, 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = false;
             foldingText.text = "↓";
@@ -99,7 +99,7 @@ public class InputView : MonoBehaviour {
             //COPopUpがアクティブ状態の時の処理
         } else if (coPopUpObj.activeSelf && foldingText.text == "↓") {
             inputRectTransform.DOLocalMoveY(-67, 0.5f);
-            mainRectTransform.DOLocalMoveY(0, 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = true;
             foldingText.text = "↑";
@@ -113,7 +113,7 @@ public class InputView : MonoBehaviour {
         } else if (foldingText.text == "↑") {
             coPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
-            mainRectTransform.DOLocalMoveY(72, 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
             filterButton.interactable = false;
 
             //ほかのボタン無効

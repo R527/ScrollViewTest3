@@ -91,7 +91,17 @@ public class GameOver : MonoBehaviour {
         timeController.isGameOver = false;
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+        gameManager.inputView.wolfMode = false;
+        gameManager.inputView.wolfModeButtonText.text = "市民";
+        gameManager.timeController.inputField.interactable = true;
+        gameManager.chatSystem.myPlayer.live = true;
 
+        //チャットログを全表示する
+        gameManager.chatListManager.ReleaseChatLog();
+
+        //チャットログを保存する
+        PlayerManager.instance.SetGameChatLog();
+        
     }
 
     /// <summary>

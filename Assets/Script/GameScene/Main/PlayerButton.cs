@@ -36,7 +36,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
 
     private void Start() {
-        Debug.Log("PlayerButtonStart");
+        //Debug.Log("PlayerButtonStart");
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
         tran.localScale = new Vector3(1, 1, 1);
         
@@ -197,7 +197,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                     Debug.Log("強制退出");
                     if (PhotonNetwork.IsMasterClient) {
                         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                            if (player.ActorNumber == playerID && gameManager.chatSystem.myID != playerID) {
+                            if (player.ActorNumber == playerID && gameManager.chatSystem.myPlayer.playerID != playerID) {
                                 PlayerManager.instance.roomBanUniqueIdList.Add((string)player.CustomProperties["myUniqueID"]);
                                 PlayerManager.instance.roomBanUniqueIdStr += (string)player.CustomProperties["myUniqueID"] + ",";
                                 gameManager.gameMasterChatManager.ForcedEvictionRoom(player);
@@ -232,7 +232,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             PlayerManager.instance.SetStringForPlayerPrefs(playerName, PlayerManager.ID_TYPE.banUserNickName);
             PlayerManager.instance.banListMaxIndex++;
             
-            PlayerManager.instance.SetBanListForPlayerPrefs(PlayerManager.instance.banListMaxIndex, PlayerManager.ID_TYPE.banListMaxIndex);
+            PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.banListMaxIndex, PlayerManager.ID_TYPE.banListMaxIndex);
         }
     }
 

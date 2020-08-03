@@ -24,6 +24,8 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     public  Image chatBoard;
     public LayoutElement iconObjLayoutElement;
     public LayoutElement chatObjLayoutElement;
+    public VerticalLayoutGroup chatVerticalLayoutGroup;
+    public Transform chatTran;//チャットとIconを入れ替えるよう
 
     public bool chatLive;
     public bool chatWolf;
@@ -35,7 +37,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="chatData"></param>
     public void InitChatNode(ChatData chatData, int iconNo, bool comingOut) {
-
+        Debug.Log("InitChatNode");
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         comingOutClass = GameObject.FindGameObjectWithTag("ComingOut").GetComponent<ComingOut>();
         
@@ -72,11 +74,15 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         if (chatData.chatType == CHAT_TYPE.MINE) {
             Debug.Log("UpperRight");
             layoutGroup.childAlignment = TextAnchor.UpperRight;
-        } else {
-            layoutGroup.childAlignment = TextAnchor.UpperLeft;
+            chatVerticalLayoutGroup.childAlignment = TextAnchor.LowerRight;
+            chatTran.SetSiblingIndex(0);
+            chatText.alignment = TextAnchor.MiddleRight;
         }
 
-        Debug.Log("CO" + comingOut);
+    //    //else {
+    //    layoutGroup.childAlignment = TextAnchor.UpperLeft;
+    //}
+        //Debug.Log("CO" + comingOut);
         //COした場合幅等を変更する
         if (comingOut) {
             Debug.Log("ComingOut:" + chatData.playerName);
@@ -92,8 +98,8 @@ public class ChatNode : MonoBehaviourPunCallbacks {
                 chatText.text = "カミングアウトを取り消します。";
             }
             
-        } 
-        StartCoroutine(CheckTextSize());
+        }
+        //yield return StartCoroutine(CheckTextSize());
     }
 
     /// <summary>
@@ -131,13 +137,16 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         //    }
         //}
 
-        ////発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
-        //if (chatData.chatType == CHAT_TYPE.MINE) {
-        //    Debug.Log("UpperRight");
-        //    layoutGroup.childAlignment = TextAnchor.UpperRight;
-        //} else {
-        //    layoutGroup.childAlignment = TextAnchor.UpperLeft;
-        //}
+        //発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
+        if (chatData.chatType == CHAT_TYPE.MINE) {
+            Debug.Log("UpperRight");
+            layoutGroup.childAlignment = TextAnchor.UpperRight;
+
+        } else {
+            layoutGroup.childAlignment = TextAnchor.UpperLeft;
+        }
+
+        
 
         //Debug.Log("CO" + comingOut);
         ////COした場合幅等を変更する
@@ -156,22 +165,27 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         //    }
 
         //}
-        StartCoroutine(CheckTextSize());
+        //StartCoroutine(CheckTextSize());
     }
 
 
 
-        /// <summary>
-        /// チャットの長さに応じて折り返すか否かを決める
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator CheckTextSize() {
-        //スクリーン上のレンダリングが終わるまで待つ
-        yield return new WaitForEndOfFrame();
-        if (chatBoard.rectTransform.sizeDelta.x > this.GetComponent<RectTransform>().sizeDelta.x * 0.64f) {
-            //ChatBoardのLayout ElementのpreferredWidthを64％にする
-            chatBoard.GetComponent<LayoutElement>().preferredWidth = this.GetComponent<RectTransform>().sizeDelta.x * 0.64f;
-        }
-    }
+    ///// <summary>
+    ///// チャットの長さに応じて折り返すか否かを決める
+    ///// </summary>
+    ///// <returns></returns>
+    //public IEnumerator CheckTextSize() {
+    //    //スクリーン上のレンダリングが終わるまで待つ
+    //    //yield return new WaitForEndOfFrame();
+    //    Debug.Log("CheckTextSize2");
+    //    yield return null;
+    //    Debug.Log("CheckTextSize");//OFFFilter時に取得できない　OFFFilter側に問題あり？
+
+    //    if (chatBoard.rectTransform.sizeDelta.x > this.GetComponent<RectTransform>().sizeDelta.x * 0.64f) {
+    //        //ChatBoardのLayout ElementのpreferredWidthを64％にする
+    //        chatBoard.GetComponent<LayoutElement>().preferredWidth = this.GetComponent<RectTransform>().sizeDelta.x * 0.64f;
+    //    }
+    //    Debug.Log("CheckTextSize3");
+    //}
 
 }

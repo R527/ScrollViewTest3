@@ -12,52 +12,41 @@ public class ChatLog : MonoBehaviour
 {
     //main
     public ChatSystem chatSystem;
-    PlayerButton playerButton;
-    public PlayerButton playerButtonPrefab;
+    public DayOrderButton dayOrderButton;
+
+    ChatLogPlayerButton playerButton;
+    public ChatLogPlayerButton playerButtonPrefab;
     public Transform buttonTran;
     public ChatNode chatNodePrefab;
+    public NextDay nextDayPrefab;
+    public int day;
     public Transform chatTran;
-    List<string> saveChatLogList = new List<string>();
-    List<string> buttonInfoList = new List<string>();
+    
     List<ChatNode> chatNodeList = new List<ChatNode>();
-    int myID;
     string playerName;
-    string inputData;
-    int boardColor;
-    int playerID;
+    public ChatNode lastChatNode;
+
 
     //折畳ボタン
     public Button foldingButton;
     public Text foldingText;
     public Transform mainRectTransform;
     public Transform inputRectTransform;
+    public GameObject mainCanvas;
+    public GameObject underBarCanvas;
+
+    public Button exitButtn;
 
 
     private void Start() {
         foldingButton.onClick.AddListener(FoldingPosition);
-    }
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.S)) {
-            Debug.Log("保存");
-            PlayerManager.instance.SetGameChatLog();
-        }
-        if (Input.GetKeyDown(KeyCode.C)) {
-            Debug.Log("復元");
-            GetGameChatLog();
-        }
+        exitButtn.onClick.AddListener(CloseChatLog);
     }
 
-    //一つのstringを復元する
-    //復元内容、人数とプレイヤー名とチャットログ
-
-    //復元方法、人数とプレイヤー名からボタンを作成して、チャットログと紐づける
-    //どのプレイヤーが自分かを紐づける
-    //チャットログも複製
-    //ボタンなどの処理を追加
     /// <summary>
-    /// ログ保存したものを復元するよう
+    /// ログ保存したものを復元する
     /// </summary>
-    public void CreateLogChat(SPEAKER_TYPE speaker_Type) {
+    public void CreateLogChat(SPEAKER_TYPE speaker_Type, string inputData, int playerID, int boardColor) {
 
 
         ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, ROLLTYPE.ETC);
@@ -66,6 +55,7 @@ public class ChatLog : MonoBehaviour
         }
         ChatNode chatNode = Instantiate(chatNodePrefab, chatTran, false);
         chatNode.InitChatNodeLog(chatData, 0, false);
+        SetChatNode(chatNode,chatData);
         chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
         chatNodeList.Add(chatNode);
         //gameManager.chatSystem.SetChatNode(chatNode, chatData, false);
@@ -73,62 +63,15 @@ public class ChatLog : MonoBehaviour
     }
 
     /// <summary>
-    /// チャットログ復元用
+    /// 日付を作成します
     /// </summary>
-    public void GetGameChatLog() {
+    public void CreateNextDay() {
+        day++;
+        NextDay nextDayObj = Instantiate(nextDayPrefab, chatTran, false);
+        nextDayObj.nextDayText.text = day + "日目";
+        dayOrderButton.nextDaysList.Add(nextDayObj.gameObject);
 
-        PlayerManager.instance.saveChatLog = PlayerPrefs.GetString("test", "");
-        PlayerManager.instance.saveChatLog.Substring(0, PlayerManager.instance.saveChatLog.Length - 1);
-        Debug.Log(PlayerManager.instance.saveChatLog);
-
-        //復元処理
-        saveChatLogList = PlayerManager.instance.saveChatLog.Substring(0, PlayerManager.instance.saveChatLog.Length - 1).Split('%').ToList<string>();
-        foreach (string str in saveChatLogList) {
-            
-            //ボタンの復元
-            
-            if(buttonInfoList.Count < 2) {
-                buttonInfoList.Add(str);
-                continue;
-            }
-            Debug.Log(str);
-            //チャット内容、色、発言者に分けてそれぞれ配列に入れる
-
-            string[] getChatLogList = str.Split(',').ToArray<string>();
-            inputData = getChatLogList[0];
-            Debug.Log(getChatLogList[1]);
-            boardColor = int.Parse(getChatLogList[1]);
-            playerName = getChatLogList[2];
-            playerID = int.Parse(getChatLogList[3]);
-
-            //SPEAKER_TYPEがON OFFどちらでもOFFLINE処理をする
-            SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL;
-            if (getChatLogList[2] == "GAMEMASTER_OFFLINE" || getChatLogList[2] == "GAMEMASTER_ONLINE") {
-                speaker_Type = SPEAKER_TYPE.GAMEMASTER_OFFLINE;
-            }
-            //チャット生成
-            CreateLogChat(speaker_Type);
-            Debug.Log("発言内容" + getChatLogList[0]);
-            //Debug.Log("色"+color);
-            Debug.Log("発言者" + getChatLogList[2]);
-        }
-
-        //自分のPlayerIDを登録する
-        myID = int.Parse(buttonInfoList[0]);
-
-        //ボタンを生成する
-        string[] getButtonList = buttonInfoList[1].Split('&').ToArray<string>();
-        foreach(string str in getButtonList) {
-            string[] buttonData = null;
-            buttonData = str.Split(',').ToArray<string>();
-            playerID = int.Parse(buttonData[0]);
-            playerName = buttonData[1];
-            CreatePlayerButton(playerName, playerID);
-        }
-        
     }
-
-    
 
     /// <summary>
     /// Playerボタンを作成します
@@ -136,19 +79,24 @@ public class ChatLog : MonoBehaviour
     /// <param name="playerName"></param>
     /// <param name="playerID"></param>
     /// <param name="gameManager"></param>
-    private void CreatePlayerButton(string playerName, int playerID) {
+    public void CreatePlayerButton(string playerName, int playerID) {
         Debug.Log("CreatePlayerButton");
-        
+
         playerButton = Instantiate(playerButtonPrefab, buttonTran, false);
         //playerButton.gameManager = gameManager;
         playerButton.transform.SetParent(buttonTran);
-        playerButton.playerText.text = playerName;
+        playerButton.playerNameText.text = playerName;
         playerButton.playerID = playerID;
+        Debug.Log(playerID);
+        Debug.Log(PlayerManager.instance.myID);
+        if (PlayerManager.instance.myID == playerID) {
+            
+            playerButton.GetComponent<Outline>().enabled = true;
+        }
         //PlayerButtonにフィルタ機能を追加
         //playerButton.playerButton.onClick.RemoveAllListeners();
         playerButton.playerButton.onClick.AddListener(() => FillterButton(playerID));
     }
-
     /// <summary>
     /// フィルター制御を追加します。
     /// </summary>
@@ -169,7 +117,7 @@ public class ChatLog : MonoBehaviour
     /// </summary>
     public void FoldingPosition() {
         if (foldingText.text == "↓") {
-            inputRectTransform.DOLocalMoveY(-67, 0.5f);
+            inputRectTransform.DOLocalMoveY(-65, 0.5f);
             mainRectTransform.DOLocalMoveY(0, 0.5f);
             foldingText.text = "↑";
         } else {
@@ -178,4 +126,39 @@ public class ChatLog : MonoBehaviour
             foldingText.text = "↓";
         }
     }
+
+    public void CloseChatLog() {
+        GameObject chatContentObj = GameObject.FindGameObjectWithTag("ChatContent");
+        foreach(Transform tran in chatContentObj.transform) {
+            Destroy(tran.gameObject);
+        }
+        GameObject menbarContentObj = GameObject.FindGameObjectWithTag("MenbarContent");
+        foreach (Transform tran in menbarContentObj.transform) {
+            Destroy(tran.gameObject);
+        }
+        gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        mainCanvas.SetActive(true);
+        underBarCanvas.SetActive(true);
+    }
+
+
+    /// <summary>
+    /// チャットノードをセットするときに配置などを変更する
+    /// </summary>
+    public void SetChatNode(ChatNode chatNode, ChatData chatData) {
+        if (lastChatNode != null) {
+            if (lastChatNode.playerID == chatData.playerID) {
+                chatNode.iconObjLayoutElement.minHeight = 0f;
+                chatNode.iconObjLayoutElement.preferredHeight = 0f;
+                chatNode.statusObj.SetActive(false);
+            } else {
+                chatNode.iconObjLayoutElement.preferredHeight = 20f;
+                chatNode.iconObjLayoutElement.minHeight = 20f;
+                chatNode.statusObj.SetActive(true);
+            }
+        }
+        lastChatNode = chatNode;
+    }
+
 }

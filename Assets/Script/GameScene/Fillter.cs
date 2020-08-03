@@ -59,7 +59,7 @@ public class Fillter : MonoBehaviour
         if (inputView.foldingText.text == "↑") {
             inputView.menberViewPopUpObj.SetActive(true);
             inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
-            inputView.mainRectTransform.DOLocalMoveY(72, 0.5f);
+            inputView.viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
             flodingButton.interactable = false;
             comingOutButton.interactable = false;
             inputView.foldingText.text = "↓";
@@ -67,7 +67,7 @@ public class Fillter : MonoBehaviour
             //夕方から夜にかけて上下を制限する
         } else if(!folding){
             inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
-            inputView.mainRectTransform.DOLocalMoveY(0, 0.5f);
+            inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
             flodingButton.interactable = true;
             comingOutButton.interactable = true;
             inputView.foldingText.text = "↑";

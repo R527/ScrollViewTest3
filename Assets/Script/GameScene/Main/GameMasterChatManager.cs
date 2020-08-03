@@ -67,8 +67,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public IEnumerator OpeningDayFortune() {
         yield return new WaitForSeconds(2.4f);
-        Debug.Log(gameManager.chatSystem.myPlayer.rollType);
-        Debug.Log(RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.ランダム白);
+        //Debug.Log(gameManager.chatSystem.myPlayer.rollType);
+        //Debug.Log(RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.ランダム白);
 
         //人狼ではないプレイヤーをランダムに選択
         if (RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.ランダム白 && gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.占い師) {
@@ -265,8 +265,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             string votedNameList = string.Empty;//投票された名前を表示するリスト
 
             //処刑されたプレイヤーの表示
-            Debug.Log("voteCount.executionID" + voteCount.executionID);
-            Debug.Log("処刑されたプレイヤー" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"]);
+            //Debug.Log("voteCount.executionID" + voteCount.executionID);
+            //Debug.Log("処刑されたプレイヤー" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"]);
 
             gameMasterChat = (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"] + "さんが処刑されました。";
             if (photonView.IsMine) {
@@ -291,9 +291,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     
                     if (player.ActorNumber == playerObj.playerID && (int)player.CustomProperties["voteNum"] != 0) {
 
-                        Debug.Log("投票時のPlayerList" + PhotonNetwork.PlayerList);
-                        Debug.Log("投票時のPlayerList" + player.NickName);
-                        Debug.Log("投票数" + player.CustomProperties["voteNum"]);
+                        //Debug.Log("投票時のPlayerList" + PhotonNetwork.PlayerList);
+                        //Debug.Log("投票時のPlayerList" + player.NickName);
+                        //Debug.Log("投票数" + player.CustomProperties["voteNum"]);
 
                         //投票開示する場合
                         if (RoomData.instance.roomInfo.openVoting == VOTING.開示する) {
@@ -349,7 +349,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public void RollAction(int playerID, bool live, bool fortune, bool wolf) {
         
         //死亡時もしくは自分のボタンは機能しない
-        if (gameManager.chatSystem.myID == playerID || !live) {
+        if (gameManager.chatSystem.myPlayer.playerID == playerID || !live) {
             Debug.Log("押せません。");
             return;
         }
@@ -417,7 +417,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 朝の結果発表
     /// </summary>
     public void MorningResults() {
-        Debug.Log("朝の結果発表");
+        //Debug.Log("朝の結果発表");
 
         if (PhotonNetwork.IsMasterClient) {
             protectedID = GetProtectedPlayerID();
@@ -432,12 +432,12 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //結果を実行する
             if (bitedID == protectedID) {
                 gameMasterChat = "【朝の結果発表】\r\n\r\n本日の犠牲者はいません。";
-                Debug.Log("犠牲者なし");
+                //Debug.Log("犠牲者なし");
 
             } else {
                 //bitedPlayer = 
                 gameMasterChat = "【朝の結果発表】\r\n\r\n" + bitedPlayer.playerName + "さんが襲撃されました。";
-                Debug.Log("襲撃成功");
+                //Debug.Log("襲撃成功");
             }
             if (photonView.IsMine) {
                 gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
@@ -475,7 +475,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             {"protectedID", protectedID }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log("SetProtected" + (int)PhotonNetwork.CurrentRoom.CustomProperties["protectedID"]);
+        //Debug.Log("SetProtected" + (int)PhotonNetwork.CurrentRoom.CustomProperties["protectedID"]);
     }
     /// <summary>
     /// 狼が噛んだプレイヤーをセットします。
@@ -485,7 +485,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             {"bitedID", bitedID }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log("SetBited" + (int)PhotonNetwork.CurrentRoom.CustomProperties["bitedID"]);
+        //Debug.Log("SetBited" + (int)PhotonNetwork.CurrentRoom.CustomProperties["bitedID"]);
     }
     /// <summary>
     /// 噛んだプレイヤーを受け取ります。

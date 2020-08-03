@@ -85,7 +85,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                     executionID = mostVotePlayer.ActorNumber;
                     executionPlayerName = mostVotePlayer.NickName;
                     SetExecutionPlayerID();
-                    Debug.Log("executionID" + executionID);
+                    //Debug.Log("executionID" + executionID);
                     break;
                     }
                 }
@@ -127,9 +127,9 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             {"mostVotes",mostVotes }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        Debug.Log("executionID" + (int)PhotonNetwork.CurrentRoom.CustomProperties["executionID"]);
-        Debug.Log("executionPlayerName" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"]);
-        Debug.Log("mostVotes" + (int)PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"]);
+        //Debug.Log("executionID" + (int)PhotonNetwork.CurrentRoom.CustomProperties["executionID"]);
+        //Debug.Log("executionPlayerName" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"]);
+        //Debug.Log("mostVotes" + (int)PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"]);
     }
     /// <summary>
     /// 処刑されたプレイヤーをもらう

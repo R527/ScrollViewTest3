@@ -29,7 +29,7 @@ public class DebugManager : MonoBehaviour
     [Header("PlayerPrefs削除 trueなら削除")]
     public bool isPlayerPrefsDeleteAll;
 
-    [Header("isGameOver　trueならChecKGameOver走る")]
+    [Header("isGameOver　trueならGameOver走らない")]
     public bool isGameOver;
 
     [Header("役職管理用")]
