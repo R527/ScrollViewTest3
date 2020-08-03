@@ -12,10 +12,14 @@ public class ChatLog : MonoBehaviour
 {
     //main
     public ChatSystem chatSystem;
+    public DayOrderButton dayOrderButton;
+
     ChatLogPlayerButton playerButton;
     public ChatLogPlayerButton playerButtonPrefab;
     public Transform buttonTran;
     public ChatNode chatNodePrefab;
+    public NextDay nextDayPrefab;
+    public int day;
     public Transform chatTran;
     
     List<ChatNode> chatNodeList = new List<ChatNode>();
@@ -40,7 +44,7 @@ public class ChatLog : MonoBehaviour
     }
 
     /// <summary>
-    /// ログ保存したものを復元するよう
+    /// ログ保存したものを復元する
     /// </summary>
     public void CreateLogChat(SPEAKER_TYPE speaker_Type, string inputData, int playerID, int boardColor) {
 
@@ -56,6 +60,17 @@ public class ChatLog : MonoBehaviour
         chatNodeList.Add(chatNode);
         //gameManager.chatSystem.SetChatNode(chatNode, chatData, false);
         Debug.Log("復元完了");
+    }
+
+    /// <summary>
+    /// 日付を作成します
+    /// </summary>
+    public void CreateNextDay() {
+        day++;
+        NextDay nextDayObj = Instantiate(nextDayPrefab, chatTran, false);
+        nextDayObj.nextDayText.text = day + "日目";
+        dayOrderButton.nextDaysList.Add(nextDayObj.gameObject);
+
     }
 
     /// <summary>

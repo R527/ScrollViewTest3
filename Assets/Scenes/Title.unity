@@ -10882,8 +10882,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140, y: -71.553}
-  m_SizeDelta: {x: 280, y: 70}
+  m_AnchoredPosition: {x: 102.99999, y: -71.553}
+  m_SizeDelta: {x: 206, y: 70}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &6011998787086178078
 CanvasRenderer:
@@ -11710,7 +11710,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.00011242737, y: 0}
   m_SizeDelta: {x: 0, y: 70}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6011998787702531967
@@ -12108,7 +12108,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.0000038146973, y: 0}
-  m_SizeDelta: {x: 280, y: 70}
+  m_SizeDelta: {x: 206, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6011998787862558610
 MonoBehaviour:
@@ -12774,7 +12774,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 116, y: 40}
+  m_AnchoredPosition: {x: 90.75, y: 40}
   m_SizeDelta: {x: 24.5, y: 216.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6012073205981698468
@@ -18182,11 +18182,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chatSystem: {fileID: 8039023188295136647}
+  dayOrderButton: {fileID: 7786638935289290257}
   playerButtonPrefab: {fileID: 6657090609051660057, guid: e3f1643dc6e50c947a5d6a05ace67062,
     type: 3}
   buttonTran: {fileID: 6011998787702531965}
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
     type: 3}
+  nextDayPrefab: {fileID: -8829115933934691925, guid: 7384babc9c2ecd245b217a6c263d54f9,
+    type: 3}
+  day: 0
   chatTran: {fileID: 8039023187984243168}
   lastChatNode: {fileID: 0}
   foldingButton: {fileID: 6011998787654873067}
@@ -18247,6 +18251,7 @@ GameObject:
   - component: {fileID: 7786638935289290252}
   - component: {fileID: 7786638935289290248}
   - component: {fileID: 7786638935289290256}
+  - component: {fileID: 7786638935289290257}
   m_Layer: 5
   m_Name: ChatLogCanvas
   m_TagString: ChatLog
@@ -18309,6 +18314,27 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &7786638935289290257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786638935289290253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4b42495c1490f48b9439afc42abc14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chatListManager: {fileID: 0}
+  nextDaysList: []
+  scrollRect: {fileID: 8039023188164742532}
+  topButton: {fileID: 6011998787304861660}
+  bottomButton: {fileID: 6011998786416878783}
+  nextDayButton: {fileID: 6011998787612380925}
+  prevDayButton: {fileID: 6011998786456884811}
+  isCheckNormalizedPosition: 0
+  isCheckChatLog: 1
 --- !u!224 &8039023187984243168
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18325,7 +18351,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -457.92322}
+  m_AnchoredPosition: {x: 0, y: -355.45435}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &8039023187984243169
@@ -18551,7 +18577,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -84}
-  m_SizeDelta: {x: 280, y: 91}
+  m_SizeDelta: {x: 206, y: 91}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!224 &8039023188164742528
 RectTransform:
@@ -18831,6 +18857,7 @@ MonoBehaviour:
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
     type: 3}
   inputView: {fileID: 0}
+  dayOrderButton: {fileID: 0}
   id: 0
   myID: 0
   coTimeLimit: 0

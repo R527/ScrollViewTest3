@@ -182,6 +182,36 @@ public class ChatListManager : MonoBehaviour {
             }
         }
     }
+
+    /// <summary>
+    /// GameOver時に全てのチャットを開放する
+    /// </summary>
+
+    public void ReleaseChatLog() {
+        Debug.Log("チャット開放");
+        foreach (ChatNode chatObj in gameMasterList) {
+            chatObj.gameObject.SetActive(true);
+        }
+        //通常のチャット
+        foreach (List<ChatNode> chatList in allnormalList) {
+            foreach (ChatNode chatObj in chatList) {
+                Debug.Log("ノーマルチャット");
+                chatObj.gameObject.SetActive(true);
+            }
+        }
+        //狼チャット
+        foreach (List<ChatNode> chatList in allwolfList) {
+            foreach (ChatNode chatObj in chatList) {
+                chatObj.gameObject.SetActive(true);
+            }
+        }
+        //死亡チャット
+        foreach (List<ChatNode> chatList in alldeathList) {
+            foreach (ChatNode chatObj in chatList) {
+                chatObj.gameObject.SetActive(true);
+            }
+        }
+    }
 }
 
 

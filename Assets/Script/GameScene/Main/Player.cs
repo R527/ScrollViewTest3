@@ -239,6 +239,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //チャットにデータを持たせる用
         chatData.chatLive = live;
+        //狼チャットの場合
         if(boardColor == 2) {
             chatData.chatWolf = wolfChat;
         }

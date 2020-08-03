@@ -13,9 +13,8 @@ public class DayOrderButton : MonoBehaviour
 
     public ChatListManager chatListManager;
     public List<GameObject> nextDaysList = new List<GameObject>();
-    public int dayIndex;
     public ScrollRect scrollRect;
-    public List<float> targetPosYList = new List<float>();
+    //public List<float> targetPosYList = new List<float>();
 
     //Button
     public Button topButton;
@@ -25,7 +24,9 @@ public class DayOrderButton : MonoBehaviour
 
     public bool isCheckNormalizedPosition;
 
-    public float contentPosY;
+    //その他
+    public bool isCheckChatLog;//チャットログで利用しているかどうかtrueならチャットログ
+
 
 
     // Start is called before the first frame update
@@ -42,10 +43,9 @@ public class DayOrderButton : MonoBehaviour
     /// </summary>
     private void Update() {
 
-        //チャット画面が一番下かつチャットをtrueにしているならreturn
-        //if (!isCheckNormalizedPosition && scrollRect.verticalNormalizedPosition <= GetContentPosY()) {
-        //    return;
-        //}
+        if (isCheckChatLog) {
+            return;
+        }
 
         if(scrollRect.verticalNormalizedPosition > GetContentPosY() && isCheckNormalizedPosition) {
             return;
@@ -102,8 +102,7 @@ public class DayOrderButton : MonoBehaviour
         RectTransform targetRect = obj.GetComponent<RectTransform>();
         //Contentの高さ取得
         float contentHeight = scrollRect.content.rect.height;
-        //ContentのPosY
-        contentPosY = scrollRect.content.localPosition.y;
+
         //Viewportの高さを取得
         float viewportHeight = scrollRect.viewport.rect.height;
         
@@ -206,7 +205,6 @@ public class DayOrderButton : MonoBehaviour
             RectTransform targetRect = nextDaysList[i].transform.GetComponent<RectTransform>();
             float targetPosY = targetRect.localPosition.y + targetRect.rect.y;
             Debug.Log(targetPosY);
-            targetPosYList.Add(targetPosY);
             float contentPosY = - scrollRect.content.localPosition.y;
             float chatAreaHeight = scrollRect.GetComponent<RectTransform>().rect.height;
             //float gap = contentPosY + chatAreaHeight;

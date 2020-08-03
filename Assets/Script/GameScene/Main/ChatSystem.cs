@@ -154,17 +154,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         }
     }
 
-    /// <summary>
-    /// ログ保存したものを復元するよう
-    /// </summary>
-    public void CreateLogChat() {
-        ChatData chatData = new ChatData(inputData, 999, boardColor, testName, ROLLTYPE.ETC);
-        ChatNode chatNode = Instantiate(myPlayer.chatNodePrefab, myPlayer.chatTran, false);
 
-        chatNode.InitChatNode(chatData, 0, false);
-        SetChatNode(chatNode, chatData, false);
-        Debug.Log("復元完了");
-    }
     /// <summary>
     /// GMチャットを生成する
     /// </summary>
@@ -290,6 +280,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             Debug.Log("GMChat");
             return isChatSet;
         }
+
+
         if (!chatNode.chatWolf && chatNode.chatLive) {
             //通常チャットは全員が見れる
             isChatSet = true;

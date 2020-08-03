@@ -74,9 +74,9 @@ public class PlayerManager : MonoBehaviour
     /// 突然死用
     /// </summary>
     public enum SuddenDeath_TYPE {
+        ゲーム正常終了,
         ゲーム開始,
         不参加,
-        ゲーム正常終了,
     }
 
     private void Awake() {
@@ -219,11 +219,9 @@ public class PlayerManager : MonoBehaviour
     /// チャットログ保存用
     /// </summary>
     public void SetGameChatLog() {
+        Debug.Log("SetGameChatLog");
         SetStringForPlayerPrefs(SaveGameData(), ID_TYPE.saveChatLog);
-        Debug.Log(saveRoomCount);
         SetIntForPlayerPrefs(saveRoomCount, ID_TYPE.saveRoomCount);
-        Debug.Log(PlayerPrefs.HasKey("saveRoomCount"));
-
     }
 
 
@@ -299,7 +297,6 @@ public class PlayerManager : MonoBehaviour
 
             string[] getChatLogList = str.Split(',').ToArray<string>();
             string inputData = getChatLogList[0];
-            //Debug.Log(getChatLogList[1]);
             int boardColor = int.Parse(getChatLogList[1]);
             playerName = getChatLogList[2];
             int playerID = int.Parse(getChatLogList[3]);
@@ -309,11 +306,15 @@ public class PlayerManager : MonoBehaviour
             if (getChatLogList[2] == "GAMEMASTER_OFFLINE" || getChatLogList[2] == "GAMEMASTER_ONLINE") {
                 speaker_Type = SPEAKER_TYPE.GAMEMASTER_OFFLINE;
             }
-            //チャット生成
-            chatLog.CreateLogChat(speaker_Type,inputData,playerID,boardColor);
-            //Debug.Log("発言内容" + getChatLogList[0]);
-            //Debug.Log("色"+color);
-            //Debug.Log("発言者" + getChatLogList[2]);
+            if(boardColor == 0000) {
+                //NextDay作成
+                chatLog.CreateNextDay();
+            } else {
+                //チャット生成
+                chatLog.CreateLogChat(speaker_Type, inputData, playerID, boardColor);
+            }
+            
+
         }
 
         //自分のPlayerIDを登録する

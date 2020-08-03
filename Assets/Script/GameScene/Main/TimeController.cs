@@ -314,7 +314,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 //生存者数を取得
                 gameManager.liveNum = gameManager.GetLiveNum();
-                if (DebugManager.instance.isGameOver) {
+                if (!DebugManager.instance.isGameOver) {
                     gameOver.CheckGameOver();
                 }
 
@@ -369,7 +369,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.結果発表後チェック;
                 totalTime = checkGameOverTime;
 
-                if (DebugManager.instance.isGameOver) {
+                if (!DebugManager.instance.isGameOver) {
                     gameOver.CheckGameOver();
                 }
                 DeathPlayer();
@@ -398,10 +398,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
         chatSystem.id++;
         
         NextDay dayObj = Instantiate(dayPrefab, chatContent.transform, false);
+
         dayObj.day = day;
         dayObj.nextDayText.text = day + "日目";
         dayOrderButton.nextDaysList.Add(dayObj.gameObject);
-        dayOrderButton.dayIndex++;
+        ChatData chatData = new ChatData("", 0000, 0000, SPEAKER_TYPE.NULL.ToString(), ROLLTYPE.ETC);
+        PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
     }
 
 
