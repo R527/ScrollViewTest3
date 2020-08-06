@@ -33,6 +33,7 @@ public class RoomSetting : MonoBehaviour
     public GameObject roomSettingCanvas;//ルーム設定Canvas
     public List<RoomNode> roomNodeList = new List<RoomNode>();//検索用に用意したRoomNodeList
     public Button createRoomButton;//部屋作成用ボタン
+ 
 
     [System.Serializable]
     public class RoomSettingButton {
@@ -47,6 +48,12 @@ public class RoomSetting : MonoBehaviour
     public RoomSettingButton openVotingButton;
 
     private void Start() {
+        //Lobby入室確認
+        if (NetworkManager.instance.isCheckJoinLobby) {
+            createRoomButton.interactable = true;
+        }
+
+
         firstDayFrotuneText.text = firstDayFortune;
         roomLevelText.text = roomSelection.ToString();
         mainTimeText.text = mainTime.ToString();
@@ -56,7 +63,7 @@ public class RoomSetting : MonoBehaviour
         //ボタン設定
         nightTimeButton.leftButton.interactable = false;//夜の時間が最低値なのでfalseで制御
 
-        createRoomButton.onClick.AddListener(() => StartCoroutine(CreateRoomNode()));
+        createRoomButton.onClick.AddListener(CreateRoomNode);
         
         roomLevelButton.rightButton.onClick.AddListener(DifficultySelectionRight);
         roomLevelButton.leftButton.onClick.AddListener(DifficultySelectionLeft);
@@ -76,16 +83,13 @@ public class RoomSetting : MonoBehaviour
     /// <summary>
     /// 部屋作成ボタンの制御,部屋設定終了後次へのボタン
     /// </summary>
-    public IEnumerator CreateRoomNode() {
-
-        //部屋作成時にエラーが発生するので待つ
-        yield return new WaitForSeconds(0.5f);
+    public void CreateRoomNode() {
 
         //タイトルも字数制限を監視
         if (titleText.text.Length >= 13) {
             rollSetting.wrongPopUpObj.SetActive(true);
             rollSetting.wrongPopUp.wrongText.text = "タイトルの文字数が多すぎます。";
-            yield break;
+            return;
         }
         titleText.text = "";
 

@@ -234,6 +234,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             {
                 chatNode.iconObjLayoutElement.minHeight = 0f;
                 chatNode.iconObjLayoutElement.preferredHeight = 0f;
+                chatNode.iconObj.SetActive(false);
                 chatNode.statusObj.SetActive(false);
             }
             else

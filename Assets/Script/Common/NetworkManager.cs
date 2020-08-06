@@ -33,6 +33,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public string roomName;
     List<Photon.Realtime.RoomInfo> roomInfoList;
 
+    //Lobby入室完了確認
+    public bool isCheckJoinLobby;//Lobbyに入室しているかどうかの確認 falseなら入室していない
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -54,6 +57,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public override void OnConnectedToMaster() {
         PhotonNetwork.JoinLobby();
         Debug.Log("OnConnectedToMaster");
+        isCheckJoinLobby = true;
+        roomSetting.GetComponent<RoomSetting>().createRoomButton.interactable = true;
     }
 
     //部屋作成関連まとめ

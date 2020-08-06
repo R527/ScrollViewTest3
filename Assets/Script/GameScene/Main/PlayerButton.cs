@@ -55,6 +55,8 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         yield return null;
         this.gameManager = gameManager;
         this.playerName = playerName;
+        playerText.text = playerName;
+
         this.iconNo = iconNo;
         this.playerID = playerID;
         //ボタンにゆにーくIDを登録する
@@ -73,7 +75,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             playerButton.GetComponent<Outline>().enabled = true;
         }
 
-        playerText.text = playerName;
+        
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         transform.SetParent(menbartran);
 

@@ -3,5 +3,5 @@
     TITLE,
     LOBBY,
     GAME,
-    準備
+    名前登録
 }

@@ -19,6 +19,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     //main
     public Text chatText;
     public GameObject statusObj;
+    public GameObject iconObj;
     public Text statusText;
     [SerializeField] LayoutGroup layoutGroup;
     public  Image chatBoard;
@@ -75,13 +76,12 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             Debug.Log("UpperRight");
             layoutGroup.childAlignment = TextAnchor.UpperRight;
             chatVerticalLayoutGroup.childAlignment = TextAnchor.LowerRight;
+            statusText.alignment = TextAnchor.MiddleRight;
             chatTran.SetSiblingIndex(0);
             chatText.alignment = TextAnchor.MiddleRight;
+        } else {
+            layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
-
-    //    //else {
-    //    layoutGroup.childAlignment = TextAnchor.UpperLeft;
-    //}
         //Debug.Log("CO" + comingOut);
         //COした場合幅等を変更する
         if (comingOut) {

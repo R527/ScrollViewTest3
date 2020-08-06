@@ -90,7 +90,7 @@ public class Player : MonoBehaviourPunCallbacks {
         //自分の世界に生成されたPlayerのオブジェクトなら→Aさんの世界のPlayerAが行う処理
         if (photonView.IsMine) {
             chatSystem.myPlayer = this;
-            playerName = PhotonNetwork.LocalPlayer.NickName;
+            playerName = PlayerManager.instance.playerName;
             iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
             playerID = PhotonNetwork.LocalPlayer.ActorNumber;
 
@@ -124,6 +124,7 @@ public class Player : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
+        Debug.Log("playerName" + playerName);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
 
         //Button作成完了を通知する
@@ -265,6 +266,25 @@ public class Player : MonoBehaviourPunCallbacks {
 
     private IEnumerator SetOtherPlayer() {
 
+        Debug.Log("othetrs");
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if (player.ActorNumber == photonView.OwnerActorNr) {
+                //Debug.Log(player.ActorNumber);
+                //Debug.Log(player.NickName);
+                playerID = player.ActorNumber;
+                playerName = player.NickName;
+                Debug.Log("palyerName" + playerName);
+                iconNo = player.ActorNumber;
+            }
+        }
+        Debug.Log(playerName);
+        Debug.Log(iconNo);
+        Debug.Log(playerID);
+        //playerText.text = rollType.ToString() + playerName;
+
+        Debug.Log(playerButton);
+        Debug.Log(gameManager);
+
         //自分のボタンが作られるまで待つ
         bool isCreatePlayerButton = false;
         while (!isCreatePlayerButton || playerButton == null) {
@@ -279,24 +299,6 @@ public class Player : MonoBehaviourPunCallbacks {
 
         yield return new WaitForSeconds(2.0f);
 
-        Debug.Log("othetrs");
-        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-            if (player.ActorNumber == photonView.OwnerActorNr) {
-                Debug.Log(player.ActorNumber);
-                Debug.Log(player.NickName);
-                playerID = player.ActorNumber;
-                playerName = player.NickName;
-                Debug.Log("palyerName" + playerName);
-                iconNo = player.ActorNumber;
-            }
-        }
-        Debug.Log(playerName);
-        Debug.Log(iconNo);
-        Debug.Log(playerID);
-        //playerText.text = rollType.ToString() + playerName;
-
-        Debug.Log(playerButton);
-        Debug.Log(gameManager);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         gameManager.exitButton.interactable = true;
