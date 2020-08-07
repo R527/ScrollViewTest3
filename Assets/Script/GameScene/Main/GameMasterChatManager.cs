@@ -325,19 +325,33 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 霊能者の行動を制御(役職増えると、ここに別の処理を加える
     /// </summary>
     public void PsychicAction() {
-        //if (gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.霊能者 && gameManager.chatSystem.myPlayer.live) {
-        //    if (voteCount.executionPlayer == null) {
-        //        return;
-        //    }
-        //    if (voteCount.executionPlayer.wolf == true) {
-        //        gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.NickName + "は人狼（黒）です。";
-        //        Debug.Log(voteCount.mostVotePlayer + "人狼");
-        //    } else {
-        //        gameManager.chatSystem.gameMasterChat = "【霊能結果】\r\n" + voteCount.mostVotePlayer.NickName + "は人狼ではない（白）です。";
-        //        Debug.Log(voteCount.mostVotePlayer + "人狼ではない");
-        //    }
-        //    gameManager.chatSystem.CreateChatNode(false, ChatSystem.SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        //}
+        //霊能者かつ自分が生存中なら
+        if (gameManager.chatSystem.myPlayer.rollType == ROLLTYPE.霊能者 && gameManager.chatSystem.myPlayer.live) {
+            //処刑プレイヤーがいないならリターン
+            if (voteCount.mostVotePlayer == null) {
+                return;
+            }
+
+            //処刑したプレイヤーを取得
+            Player playerObj = null;
+            foreach(Player player in gameManager.chatSystem.playersList) {
+                if(voteCount.mostVotePlayer.ActorNumber == player.playerID) {
+                    playerObj = player;
+                }
+            }
+            //処刑プレイヤーが人狼なら
+            if (playerObj.wolf) {
+                gameMasterChat = "【霊能結果】\r\n" + playerObj.playerName + "は人狼（黒）です。";
+                Debug.Log(voteCount.mostVotePlayer + "人狼");
+            } else {
+                //処刑プレイヤーが市民なら
+                gameMasterChat = "【霊能結果】\r\n" + playerObj.playerName + "は人狼ではない（白）です。";
+                Debug.Log(voteCount.mostVotePlayer + "人狼ではない");
+            }
+            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        }
+
+        gameMasterChat = string.Empty;
     }
 
 

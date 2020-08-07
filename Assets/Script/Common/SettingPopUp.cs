@@ -15,7 +15,6 @@ public class SettingPopUp : MonoBehaviour
     public Button maskButton;
     public Button backButton;
     public GameObject SettingPopUpObj;
-    public EventTrigger sliderButton;//スライドについているつまみ
 
 
     /// <summary>

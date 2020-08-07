@@ -493,19 +493,21 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //自分が参加者全員のプレイヤーをもらってリストにする
         yield return StartCoroutine(SetPlayerData());
+
+        //PhotonNetwork.PlayerListは配列だからLengthで対応する
         //参加者全員がPlayerのリストを作りおわるまで（上の処理が終わるまで）待機する
         //WatiUntilは条件を満たすまで待機（Trueになるまで）
         //CheckPlayerInGame()で取得できるReadyのフラグはネットワークで共有化されている情報
         //よって参加者全員からリストを作り終わるまで次の処理に行かない
-
-        //PhotonNetwork.PlayerListは配列だからLengthで対応する
         yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckPlayerInGame());
 
-
+        //PlayerButtonが生成されるのを待つ
         yield return StartCoroutine(CeackPlayerButton());
 
         //取得したPlayerButtonに役職をセットしてListに追加
         yield return StartCoroutine(SetPlayerButtonList());
+
+
 
         //ボタンの設定を変更する
         SetUpButton();

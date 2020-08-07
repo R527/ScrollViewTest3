@@ -154,6 +154,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             return;
         }
 
+
+
         //bool isBanCheck = false;
         ////自分BANIDとすでに入室しているmyUniqueIDを比べて一致したら退出する
         //Debug.Log(PhotonNetwork.PlayerList.Length);
@@ -177,7 +179,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //}
 
         Debug.Log("OnJoinedRoom");
-        //PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
+        PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
         //Debug.Log("NickName;" + PhotonNetwork.LocalPlayer.NickName);
         //Debug.Log("RoomName:" + PhotonNetwork.CurrentRoom.Name);
         //Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);

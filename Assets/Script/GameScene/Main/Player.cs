@@ -110,6 +110,7 @@ public class Player : MonoBehaviourPunCallbacks {
         if (photonView.IsMine) {
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
         } else if (!photonView.IsMine) {
+            Debug.Log("NOtIsMine");
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
             StartCoroutine(SetOtherPlayer());
         }
@@ -265,7 +266,7 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <returns></returns>
 
     private IEnumerator SetOtherPlayer() {
-
+        //yield return new WaitForSeconds(2.0f);
         Debug.Log("othetrs");
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
@@ -273,8 +274,10 @@ public class Player : MonoBehaviourPunCallbacks {
                 //Debug.Log(player.NickName);
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
-                Debug.Log("palyerName" + playerName);
+                Debug.Log("playerName" + playerName);
+                Debug.Log("player.NickName" + player.NickName);
                 iconNo = player.ActorNumber;
+                break;
             }
         }
         Debug.Log(playerName);
