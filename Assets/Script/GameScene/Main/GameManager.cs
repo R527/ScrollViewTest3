@@ -56,6 +56,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
     private bool isSetRoll;
     public List<PlayerButton> playerButtonList = new List<PlayerButton>();
 
+    public Button firstDayButton;
+    public Button prevDayButton;
+    public Button nextDayButton;
+    public Button lastDayButton;
+
 
     //ボタン
     public Button exitButton;
@@ -275,6 +280,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
             savingText.text = "時短";
             damyObj.SetActive(true);
             confirmationImage.SetActive(true);
+
+            firstDayButton.interactable = false;
+            prevDayButton.interactable = false;
+            nextDayButton.interactable = false;
+            lastDayButton.interactable = false;
             inputView.filterButton.interactable = false;
             inputView.foldingButton.interactable = false;
             chatSystem.chatInputField.interactable = false;
@@ -367,6 +377,17 @@ public class GameManager : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
+    /// ゲームがスタートするとそれに合わせて必要なボタンをONにする
+    /// </summary>
+    private void SetUpButton() {
+        firstDayButton.interactable = true;
+        prevDayButton.interactable = true;
+        nextDayButton.interactable = true;
+        lastDayButton.interactable = true;
+        inputView.filterButton.interactable = true;
+    }
+
+    /// <summary>
     /// 参加人数をリセットする
     /// </summary>
     private void ResetJoin() {
@@ -435,6 +456,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
 
 
+
+
     /// <summary>
     /// 役職をランダムに配布
     /// </summary>
@@ -444,6 +467,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //マスターはゲームに使用する役職を用意する
         //yield return StartCoroutineはそのメソッドの処理が終わるまで次の処理へと進まない
         yield return StartCoroutine(SettingRondomRollType());
+
         gameStart = true;
         
         var properties = new ExitGames.Client.Photon.Hashtable();
@@ -477,8 +501,14 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //PhotonNetwork.PlayerListは配列だからLengthで対応する
         yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckPlayerInGame());
 
+
+        yield return StartCoroutine(CeackPlayerButton());
+
         //取得したPlayerButtonに役職をセットしてListに追加
         yield return StartCoroutine(SetPlayerButtonList());
+
+        //ボタンの設定を変更する
+        SetUpButton();
 
         //Startで反応しない場合は処理中に書くとよい
         rollExplanation.RollExplanationSetUp(rollTypeList);
@@ -487,6 +517,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat);
         //voteCount.VoteCountListSetUp(numLimit);
         liveNum = PhotonNetwork.PlayerList.Length;
+
         if (PhotonNetwork.IsMasterClient) {
             SetLiveNum();
         }
@@ -616,20 +647,46 @@ public class GameManager : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
+    /// ボタンが作成されるまで待機する
+    /// ボタンが生成されてからでないと役職をButtonに登録できないから
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator CeackPlayerButton() {
+        bool isCheck = false;
+        while (!isCheck) {
+            GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerButton");
+            Debug.Log(objs.Length);
+            Debug.Log(PhotonNetwork.PlayerList.Length);
+
+            if (objs.Length == PhotonNetwork.PlayerList.Length) {
+                isCheck = true;
+            } else {
+                yield return null;
+            }
+            Debug.Log(isCheck);
+        }
+        
+    }
+    /// <summary>
     /// PlayerButtonのListに追加する
     /// PlayerButtonに情報を追加する
     /// </summary>
     public IEnumerator SetPlayerButtonList() {
+        Debug.Log("SetPlayerButtonList");
         yield return null;
         //ゲーム名にあるPlyaerButtonをすべて取得
         //プレイヤーが入室したらPlayerButtonを取得
         GameObject[] buttonObjs = GameObject.FindGameObjectsWithTag("PlayerButton");
+        Debug.Log("buttonObjs" + buttonObjs[0]);
 
         //取得したPlayerButtonに役職をセットしてListに追加
         //すでにListに追加されているButtonを除外して新たに追加されたButtonだけを追加する
         foreach (GameObject obj in buttonObjs) {
+            Debug.Log("foreachSetPlayerButtonList");
             PlayerButton buttonObj = obj.GetComponent<PlayerButton>();
             foreach (Player player in chatSystem.playersList) {
+                Debug.Log("foreachSetPlayerButtonList2");
+
                 if (buttonObj.playerID == player.playerID) {
                     buttonObj.SetRollSetting(player);
 

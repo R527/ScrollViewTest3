@@ -65,6 +65,7 @@ public class SetUpManager : MonoBehaviour
         PlayerManager.instance.totalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.勝利回数.ToString(), 0);
         PlayerManager.instance.totalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.敗北回数.ToString(), 0);
         PlayerManager.instance.totalNumberOfSuddenDeath = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.突然死数.ToString(), 0);
+        PlayerManager.instance.checkTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.突然死減少チェック.ToString(), 0);
 
 
 

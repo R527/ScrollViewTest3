@@ -329,6 +329,7 @@ MonoBehaviour:
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
   totalNumberOfSuddenDeath: 0
+  checkTotalNumberOfMatches: 0
   gameLogCount: 0
   roomName: 
   saveChatLog: 
@@ -379,7 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  testMainTime: 99999
+  testMainTime: 4
   testNightTime: 2
   testVotingTime: 2
   testExecutionTime: 2
@@ -392,9 +393,9 @@ MonoBehaviour:
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isPlayerPrefsDeleteAll: 1
+  isPlayerPrefsDeleteAll: 0
   isGameOver: 1
-  isTestPlay: 1
+  isTestPlay: 0
   testRollTypeList: 0000000004000000
 --- !u!1 &4274428794974511839
 GameObject:

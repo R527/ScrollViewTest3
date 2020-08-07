@@ -34,6 +34,8 @@ public class PlayerManager : MonoBehaviour
     public int totalNumberOfLoses;//総敗北数
     public int totalNumberOfSuddenDeath;//突然死数
 
+    public int checkTotalNumberOfMatches;//25線ごとにチェックして突然死数を減らす
+
     [Header("対戦log")]
     
     public int gameLogCount;
@@ -67,7 +69,8 @@ public class PlayerManager : MonoBehaviour
         総対戦回数,
         勝利回数,
         敗北回数,
-        突然死数
+        突然死数,
+        突然死減少チェック,
     }
 
     /// <summary>
@@ -177,6 +180,9 @@ public class PlayerManager : MonoBehaviour
                 break;
             case BATTLE_RECORD_TYPE.突然死数:
                 PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.突然死数.ToString(), setInt);
+                break;
+            case BATTLE_RECORD_TYPE.突然死減少チェック:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.突然死減少チェック.ToString(), setInt);
                 break;
             
         }

@@ -24,6 +24,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public int iconNo;//アイコンの絵用
     public ROLLTYPE rollType = ROLLTYPE.ETC;
     public bool live;//生死 trueで生存している
+    public Text rollText;
     
     //後からもらう
     public bool fortune;//占い結果 true=黒
@@ -85,7 +86,9 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     }
 
     public void SetRollSetting(Player player) {
+
         rollType = player.rollType;
+        rollText.text = rollType.ToString();
 
         if (rollType == ROLLTYPE.人狼) {
             fortune = true;

@@ -85,6 +85,9 @@ public class GameOver : MonoBehaviour {
         //不参加状態でゲームを終了した場合突然死数を増やす
         CheckEndGame();
 
+        //役職公開
+        OpenRoll();
+
         //ゲーム終了後の処理
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
@@ -93,6 +96,7 @@ public class GameOver : MonoBehaviour {
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         gameManager.inputView.wolfMode = false;
         gameManager.inputView.wolfModeButtonText.text = "市民";
+        gameManager.inputView.foldingButton.interactable = true;
         gameManager.timeController.inputField.interactable = true;
         gameManager.chatSystem.myPlayer.live = true;
 
@@ -113,6 +117,19 @@ public class GameOver : MonoBehaviour {
         PlayerManager.instance.totalNumberOfMatches++;
         PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.総対戦回数);
 
+        //突然死数減少処理
+        //突然死が0なら関係なし　1以上なら突然死チェックの数値を一つ増加
+        //突然死チェックの数が25を超えたら凸死数を一つ減らす
+        if(PlayerManager.instance.totalNumberOfSuddenDeath > 0) {
+            PlayerManager.instance.checkTotalNumberOfMatches++;
+            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.checkTotalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.突然死減少チェック);
+            if(PlayerManager.instance.checkTotalNumberOfMatches == 25) {
+                PlayerManager.instance.checkTotalNumberOfMatches = 0;
+                PlayerManager.instance.totalNumberOfSuddenDeath--;
+            }
+        }
+
+        //勝敗
         if (isWin) {
             PlayerManager.instance.totalNumberOfWins++;
             PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.勝利回数);
@@ -132,5 +149,12 @@ public class GameOver : MonoBehaviour {
             PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
         }
         PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
+    }
+
+    private void OpenRoll() {
+        GameObject[] btnObjs = GameObject.FindGameObjectsWithTag("PlayerButton"); 
+        foreach(GameObject btnObj in btnObjs) {
+            btnObj.GetComponent<PlayerButton>().rollText.enabled = true;
+        }
     }
 }

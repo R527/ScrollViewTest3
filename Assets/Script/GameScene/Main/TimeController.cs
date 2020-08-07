@@ -50,9 +50,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public InputField inputField;//文字入力部分
 
     //PoPUp
-    public GameObject mainPopup;
-    public GameObject votingPopup;
-    public GameObject nightPopup;
+    public TimeContollerPopUp timeControllerPopUpPrefab;//一定の時間を迎えたときに案内として出す
+    public TimeContollerPopUp timeContollerPopUpObj;
+    public Transform mainCanvasTran;
+
 
     //x日　GMのチャット追加
     public GameObject chatContent;
@@ -225,7 +226,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             case TIME.結果発表後チェック:
                 timeType = TIME.昼;
                 totalTime = mainTime;
-                mainPopup.SetActive(true);
+                timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
+                timeContollerPopUpObj.text.text = "お昼の時間です。";
 
                 //死亡している場合時短or退出ボタンを退出にする
                 if (chatSystem.myPlayer.live == false) {
@@ -250,7 +252,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //投票時間
             case TIME.昼:
                 timeType = TIME.投票時間;
-                votingPopup.SetActive(true);
+                timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
+                timeContollerPopUpObj.text.text = "投票の時間です。";
                 totalTime = votingTime;
 
                 //突然死チェック
@@ -324,7 +327,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             case TIME.処刑後チェック:
                 timeType = TIME.夜の行動;
                 totalTime = nightTime;
-                nightPopup.SetActive(true);
+                timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
+                timeContollerPopUpObj.text.text = "夜の時間です。";
 
                 //初期化
                 voteCount.mostVotes = 0;
@@ -422,11 +426,17 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     private IEnumerator EndInterval(TIME nowTimeType) {
         yield return new WaitForSeconds(intervalTime);//コルーチンでインターバル時間を設ける
-        mainPopup.SetActive(false);
-        votingPopup.SetActive(false);
-        nightPopup.SetActive(false);
+
+        //一定時間ごとに出てくるPopUp削除
+        if(timeContollerPopUpObj != null) {
+            Destroy(timeContollerPopUpObj.gameObject);
+
+        }
+
+        //役職に合わせてボタンなどを変更する
         TimesavingControllerTrue();
 
+        //次の時間へ移行する
         if (PhotonNetwork.IsMasterClient) {
             //isPlaying = true;
             //playState = PlayState.Play;
