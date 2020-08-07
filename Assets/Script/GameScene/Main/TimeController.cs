@@ -34,6 +34,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public float checkGameOverTime;//ゲームオーバー確認時間
     public float resultTime;
     public float intervalTime;
+    public bool isDisplay;//時間を表示するか否か　trueなら表示
     public bool isPlaying;　　//gameが動いているかの判定
     public bool gameReady;//ゲーム待機状態か否か
     public bool isSpeaking;//喋ったか否かtrueならしゃべった
@@ -93,14 +94,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
             timeType = DebugManager.instance.timeType;
         }
 
-        //狼の場合
-        if (chatSystem.myPlayer.wolfChat) {
-            wolfButton.interactable = true;
-            inputField.interactable = true;
-        } else {
-            wolfButton.interactable = false;
-            inputField.interactable = false;
-        }
+        wolfButton.interactable = false;
+        inputField.interactable = false;
+        ////狼の場合
+        //if (chatSystem.myPlayer.wolfChat) {
+        //    wolfButton.interactable = true;
+        //    inputField.interactable = true;
+        //} else {
+            
+        //}
 
         superChatButton.interactable = false;
         COButton.interactable = false;
@@ -181,7 +183,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
             //トータルタイム表示
             //トータルタイムを受け取る側はー1秒から始まるのでその調整用
-            if(totalTime >= 0) {
+            if(totalTime >= 0 && isDisplay) {
                 timerText.text = totalTime.ToString("F0");
             }
                 
@@ -225,6 +227,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //お昼
             case TIME.結果発表後チェック:
                 timeType = TIME.昼;
+                isDisplay = true;
                 totalTime = mainTime;
                 timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
                 timeContollerPopUpObj.text.text = "お昼の時間です。";
@@ -254,6 +257,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.投票時間;
                 timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
                 timeContollerPopUpObj.text.text = "投票の時間です。";
+                isDisplay = true;
                 totalTime = votingTime;
 
                 //突然死チェック
@@ -282,6 +286,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //処刑
             case TIME.投票時間:
                 timeType = TIME.処刑;
+                isDisplay = false;
                 totalTime = executionTime;
 
                 //初期化
@@ -296,6 +301,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             case TIME.処刑:
                 timeType = TIME.処刑後チェック;
                 chatSystem.myPlayer.isVoteFlag = false;
+                isDisplay = false;
                 totalTime = executionTime;
 
                 //初期化
@@ -326,6 +332,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //夜の行動
             case TIME.処刑後チェック:
                 timeType = TIME.夜の行動;
+                //狼ならチャット開放する
+                if (chatSystem.myPlayer.wolfChat) {
+                    inputField.interactable = true;
+                }
+
+                isDisplay = true;
                 totalTime = nightTime;
                 timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
                 timeContollerPopUpObj.text.text = "夜の時間です。";
@@ -349,6 +361,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //夜の行動の結果発表
             case TIME.夜の行動:
                 timeType = TIME.夜の結果発表;
+
+                //狼チャットできる人だけチャットfalseにする
+                if (chatSystem.myPlayer.wolfChat) {
+                    inputField.interactable = false;
+                }
+
+                isDisplay = false;
                 totalTime = resultTime;
 
                 //死亡している場合時短or退出ボタンを退出にする
@@ -371,6 +390,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //結果発表チェック
             case TIME.夜の結果発表:
                 timeType = TIME.結果発表後チェック;
+                isDisplay = false;
                 totalTime = checkGameOverTime;
 
                 if (!DebugManager.instance.isGameOver) {
@@ -527,9 +547,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
         superChatButton.interactable = false;
         COButton.interactable = false;
 
-        //WolfChatが使えるプレイヤーの場合
         if (!chatSystem.myPlayer.wolfChat) {
-            //しゃべれないプレイヤーの処理
+            ////WolfChatしゃべれないプレイヤーの処理
             wolfButton.interactable = false;
             inputField.interactable = false;
         }

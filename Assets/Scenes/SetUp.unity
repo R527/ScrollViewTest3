@@ -380,9 +380,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  testMainTime: 4
-  testNightTime: 2
-  testVotingTime: 2
+  testMainTime: 10
+  testNightTime: 10
+  testVotingTime: 10
   testExecutionTime: 2
   testCheckGameOverTime: 2
   testResultTime: 2
