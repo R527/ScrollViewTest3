@@ -270,9 +270,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     //一日ごとに突然死チェックするのでリセット
                     isSpeaking = false;
                 }
+
                 //自分の世界で突然死したプレイヤーの生存情報をfalseにする
-                foreach(Player player in chatSystem.playersList) {
-                    if(GetSuddenDeathID() == player.playerID) {
+                foreach (Player player in chatSystem.playersList) {
+                    if (GetSuddenDeathID() == player.playerID) {
                         player.live = false;
                     }
                 }
@@ -288,6 +289,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.処刑;
                 isDisplay = false;
                 totalTime = executionTime;
+
+
 
                 //初期化
                 isVotingCompleted = false;

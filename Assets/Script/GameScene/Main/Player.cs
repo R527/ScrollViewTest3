@@ -266,7 +266,6 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <returns></returns>
 
     private IEnumerator SetOtherPlayer() {
-        //yield return new WaitForSeconds(2.0f);
         Debug.Log("othetrs");
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
@@ -303,7 +302,14 @@ public class Player : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(2.0f);
 
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
-        gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+
+        //参加人数が揃っていたらtrueにしない
+        Debug.Log(gameManager.GetNum());
+        Debug.Log(gameManager.numLimit);
+        if (gameManager.GetNum() != gameManager.numLimit) {
+            gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+
+        }
         gameManager.exitButton.interactable = true;
     }
 

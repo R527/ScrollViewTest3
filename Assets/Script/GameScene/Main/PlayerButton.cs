@@ -80,7 +80,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         transform.SetParent(menbartran);
 
-        if (PhotonNetwork.IsMasterClient) {
+        if (PhotonNetwork.IsMasterClient && gameManager.GetNum() != gameManager.numLimit) {
             gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         }
     }
