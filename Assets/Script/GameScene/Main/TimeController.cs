@@ -266,7 +266,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     //突然死処理
                     if (!isSpeaking) {
                         Debug.Log("突然死");
-                        chatSystem.myPlayer.live = false;
+                        //chatSystem.myPlayer.live = false;
                         SetSuddenDeathID();
                     }
                     //一日ごとに突然死チェックするのでリセット
@@ -290,18 +290,23 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //初期化
                 isVotingCompleted = false;
 
-                voteCount.Execution();
-                gameManager.gameMasterChatManager.ExecutionChat();
+                //処刑処理　DebugManagerでチェック入っていると走らない
+                if (!DebugManager.instance.isVoteCount) {
+                    voteCount.Execution();
+                    gameManager.gameMasterChatManager.ExecutionChat();
+                }
 
                 //自分の世界で突然死したプレイヤーの生存情報をfalseにする
                 if (!DebugManager.instance.isCheckSuddenDeath) {
                     foreach (Player player in chatSystem.playersList) {
-                        if (GetSuddenDeathID() == player.playerID && player.live) {
+                        if (GetSuddenDeathID(player.playerID) == player.playerID && player.live) {
                             gameManager.gameMasterChatManager.SuddenDeath(player);
                             player.live = false;
                         }
                     }
                 }
+
+                //死亡したプレイヤーの処理
                 DeathPlayer();
                 break;
 
@@ -671,7 +676,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     private void SetSuddenDeathID() {
         PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.不参加);
         var properties = new ExitGames.Client.Photon.Hashtable {
-            {"suddenDeathID",chatSystem.myPlayer.playerID},
+            {"suddenDeathID" + chatSystem.myPlayer.playerID,chatSystem.myPlayer.playerID},
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
     }
@@ -680,9 +685,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// 突然死したプレイヤーIDをもらう
     /// </summary>
     /// <returns></returns>
-    private int GetSuddenDeathID() {
-        int suddenDeathID = 0;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("suddenDeathID", out object suddenDeathIDObj)) {
+    private int GetSuddenDeathID(int suddenDeathID) {
+        //int suddenDeathID = 0;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("suddenDeathID" + suddenDeathID, out object suddenDeathIDObj)) {
             suddenDeathID = (int)suddenDeathIDObj;
         }
         //Debug.Log(suddenDeathID);

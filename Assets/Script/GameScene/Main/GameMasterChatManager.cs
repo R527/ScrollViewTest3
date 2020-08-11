@@ -324,9 +324,11 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 突然死用のチャット
     /// </summary>
     public void SuddenDeath(Player player) {
-        gameMasterChat = player.playerName + "さんが突然死しました。";
-        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        gameMasterChat = string.Empty;
+        if(PhotonNetwork.IsMasterClient) {
+            gameMasterChat = player.playerName + "さんが突然死しました。";
+            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+            gameMasterChat = string.Empty;
+        }
     }
 
     /// <summary>

@@ -35,6 +35,9 @@ public class DebugManager : MonoBehaviour
     [Header("trueなら突然死しない")]
     public bool isCheckSuddenDeath;
 
+    [Header("trueなら処刑しない")]
+    public bool isVoteCount;
+
     [Header("役職管理用")]
     public bool isTestPlay;//プレイヤーの役職を任意に決める
     public List<ROLLTYPE> testRollTypeList = new List<ROLLTYPE>();

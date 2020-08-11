@@ -381,8 +381,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 1
   testMainTime: 10
-  testNightTime: 30
-  testVotingTime: 10
+  testNightTime: 2
+  testVotingTime: 2
   testExecutionTime: 2
   testCheckGameOverTime: 2
   testResultTime: 2
@@ -396,6 +396,7 @@ MonoBehaviour:
   isPlayerPrefsDeleteAll: 0
   isGameOver: 1
   isCheckSuddenDeath: 0
+  isVoteCount: 1
   isTestPlay: 1
   testRollTypeList: 000000000200000004000000
 --- !u!1 &4274428794974511839
