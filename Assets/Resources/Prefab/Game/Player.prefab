@@ -57,6 +57,7 @@ MonoBehaviour:
   chatSystem: {fileID: 0}
   voteCount: {fileID: 0}
   timeController: {fileID: 0}
+  checkEnteredRoom: {fileID: 0}
   playerID: 0
   playerName: 
   isMine: 0

@@ -15,6 +15,8 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
 
     private bool isSetUp;
 
+    public bool isCheckEnteredRoom;//入室許可用　PlayerButton作成可能にする
+
     private void Start() {
 
         //マスター以外が入室したら一旦部屋を閉じる
@@ -61,11 +63,12 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         }
 
         
-        Debug.Log(gameManager.GetNum());
-        Debug.Log(gameManager.numLimit);
+        Debug.Log("gameManager.GetNum()" + gameManager.GetNum());
+        Debug.Log("gameManager.numLimit" + gameManager.numLimit);
 
         //部屋が満室なら自ら退出するPopUpを出す
         if (gameManager.GetNum() >= gameManager.numLimit) {
+            Debug.Log("満室");
             PhotonNetwork.CurrentRoom.IsOpen = true;
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
             obj.exitText.text = "満室です。";
@@ -98,8 +101,19 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         Debug.Log(gameManager.numLimit);
         //満室でもBanPlayerでもなく部屋が空いていたら
         //if (gameManager.GetNum() < gameManager.numLimit ) {
-        gameManager.GameManagerSetUp();
-        Destroy(gameObject);
-        return;
+
+        if (!isCheckEnteredRoom) {
+            Debug.Log("isCheckEnteredRoom");
+            gameManager.GameManagerSetUp();
+            isCheckEnteredRoom = true;
+            var propertiers = new ExitGames.Client.Photon.Hashtable();
+            propertiers.Add("isCheckEnteredRoom", isCheckEnteredRoom);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+
+            Debug.Log((bool)PhotonNetwork.LocalPlayer.CustomProperties["isCheckEnteredRoom"]);
+            Destroy(gameObject);
+
+        }
+
     }
 }

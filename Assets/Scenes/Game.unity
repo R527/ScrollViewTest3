@@ -7946,6 +7946,7 @@ MonoBehaviour:
   checkGameOverTime: 10
   resultTime: 10
   intervalTime: 2
+  isDisplay: 0
   isPlaying: 0
   gameReady: 0
   isSpeaking: 0
@@ -7958,10 +7959,8 @@ MonoBehaviour:
   inputField: {fileID: 943886673}
   timeControllerPopUpPrefab: {fileID: 1669610908998177438, guid: 9edfd0737665e9c4784d2149de8c5e9f,
     type: 3}
+  timeContollerPopUpObj: {fileID: 0}
   mainCanvasTran: {fileID: 1221547292}
-  mainPopup: {fileID: 0}
-  votingPopup: {fileID: 0}
-  nightPopup: {fileID: 0}
   chatContent: {fileID: 4395145949336749762}
   day: 0
   dayPrefab: {fileID: -8829115933934691925, guid: 7384babc9c2ecd245b217a6c263d54f9,
@@ -15299,6 +15298,7 @@ MonoBehaviour:
     type: 3}
   tran: {fileID: 1221547292}
   gameManager: {fileID: 1130743578}
+  isCheckEnteredRoom: 0
 --- !u!4 &1738310847
 Transform:
   m_ObjectHideFlags: 0

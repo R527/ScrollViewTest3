@@ -19,6 +19,7 @@ public class Player : MonoBehaviourPunCallbacks {
     public ChatSystem chatSystem;
     public VoteCount voteCount;
     public TimeController timeController;
+    public CheckEnteredRoom checkEnteredRoom;
 
     //main
     public int playerID;
@@ -65,6 +66,9 @@ public class Player : MonoBehaviourPunCallbacks {
         buttontran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         chatTran = GameObject.FindGameObjectWithTag("ChatContent").transform;
 
+
+
+
         //BanListをカスタムプロパティにセットする
         var propertiers = new ExitGames.Client.Photon.Hashtable();
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
@@ -104,6 +108,11 @@ public class Player : MonoBehaviourPunCallbacks {
             //CheckBanListの待機中
             NetworkManager.instance.checkBanListCoroutine = CheckBanList();
             yield return StartCoroutine(NetworkManager.instance.checkBanListCoroutine);
+        }
+
+        //CheckEnteredRoom入室許可
+        if (!PhotonNetwork.IsMasterClient) {
+            yield return new WaitUntil(() => WaitOtherCreatePlayerButton() == true);
         }
 
         //プレイヤーボタン作成
@@ -399,6 +408,20 @@ public class Player : MonoBehaviourPunCallbacks {
     private IEnumerator WaitCreatePlayerButton() {
         yield return new WaitForSeconds(2.0f);
         
+    }
+    /// <summary>
+    /// マスタークライアント以外のプレイヤーボタンの生成を入室許可するまで止める
+    /// </summary>
+    /// <returns></returns>
+    private bool WaitOtherCreatePlayerButton() {
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEnteredRoom", out object isCheckEnteredRoomObj)) {
+            Debug.Log("PhotonNetwork.LocalPlayer" + PhotonNetwork.LocalPlayer.ActorNumber);
+            Debug.Log("(bool)isCheckEnteredRoomObj" + (bool)isCheckEnteredRoomObj);
+            return (bool)isCheckEnteredRoomObj;
+        }else {
+            return false;
+        }
     }
 
 
