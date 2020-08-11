@@ -313,6 +313,7 @@ public class Player : MonoBehaviourPunCallbacks {
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
 
         //参加人数が揃っていたらtrueにしない
+        // TODO 修正
         Debug.Log(gameManager.GetNum());
         Debug.Log(gameManager.numLimit);
         if (gameManager.GetNum() != gameManager.numLimit) {

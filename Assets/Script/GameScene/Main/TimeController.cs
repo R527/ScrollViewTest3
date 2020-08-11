@@ -406,6 +406,15 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 isDisplay = false;
                 totalTime = checkGameOverTime;
 
+                //初期化噛みと守り先の初期化
+                if (PhotonNetwork.IsMasterClient) {
+                 
+                    gameManager.gameMasterChatManager.bitedID = 9999;
+                    gameManager.gameMasterChatManager.protectedID = 9999;
+                    gameManager.gameMasterChatManager.SetProtectedPlayerID();
+                    gameManager.gameMasterChatManager.SetBitedPlayerID();
+                }
+
                 if (!DebugManager.instance.isGameOver) {
                     gameOver.CheckGameOver();
                 }

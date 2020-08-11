@@ -95,7 +95,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"fortuneType", room.fortuneType },
             {"openVoting", room.openVoting },
             {"numListStr", numListStr},
-            {"banListStr", banListStr}
+            {"banListStr", banListStr},
+            {"numLimit", maxPlayer}
 
         };
         //カスタムプロパティで設定したキーをロービーで参照できるようにする
