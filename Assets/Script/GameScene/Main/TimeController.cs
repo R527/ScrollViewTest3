@@ -261,9 +261,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 totalTime = votingTime;
 
                 //突然死チェック
-                if (gameManager.chatSystem.myPlayer.live) {
+                if (gameManager.chatSystem.myPlayer.live && !DebugManager.instance.isCheckSuddenDeath) {
+
                     //突然死処理
                     if (!isSpeaking) {
+                        Debug.Log("突然死");
                         chatSystem.myPlayer.live = false;
                         SetSuddenDeathID();
                     }
@@ -271,12 +273,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     isSpeaking = false;
                 }
 
-                //自分の世界で突然死したプレイヤーの生存情報をfalseにする
-                foreach (Player player in chatSystem.playersList) {
-                    if (GetSuddenDeathID() == player.playerID) {
-                        player.live = false;
-                    }
-                }
+
 
                 //GMチャットなど
                 TimesavingControllerFalse();
@@ -290,13 +287,21 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 isDisplay = false;
                 totalTime = executionTime;
 
-
-
                 //初期化
                 isVotingCompleted = false;
 
                 voteCount.Execution();
                 gameManager.gameMasterChatManager.ExecutionChat();
+
+                //自分の世界で突然死したプレイヤーの生存情報をfalseにする
+                if (!DebugManager.instance.isCheckSuddenDeath) {
+                    foreach (Player player in chatSystem.playersList) {
+                        if (GetSuddenDeathID() == player.playerID && player.live) {
+                            gameManager.gameMasterChatManager.SuddenDeath(player);
+                            player.live = false;
+                        }
+                    }
+                }
                 DeathPlayer();
                 break;
 

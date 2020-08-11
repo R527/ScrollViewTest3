@@ -29,8 +29,11 @@ public class DebugManager : MonoBehaviour
     [Header("PlayerPrefs削除 trueなら削除")]
     public bool isPlayerPrefsDeleteAll;
 
-    [Header("isGameOver　trueならGameOver走らない")]
+    [Header("trueならGameOver走らない")]
     public bool isGameOver;
+
+    [Header("trueなら突然死しない")]
+    public bool isCheckSuddenDeath;
 
     [Header("役職管理用")]
     public bool isTestPlay;//プレイヤーの役職を任意に決める

@@ -320,6 +320,14 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         gameMasterChat = string.Empty;
     }
 
+    /// <summary>
+    /// 突然死用のチャット
+    /// </summary>
+    public void SuddenDeath(Player player) {
+        gameMasterChat = player.playerName + "さんが突然死しました。";
+        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        gameMasterChat = string.Empty;
+    }
 
     /// <summary>
     /// 霊能者の行動を制御(役職増えると、ここに別の処理を加える
@@ -360,10 +368,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="rollType"></param>
     /// <param name="playerID"></param>
-    public void RollAction(int playerID, bool live, bool fortune, bool wolf) {
+    public void RollAction(int playerID, bool fortune, bool wolf) {
         
         //死亡時もしくは自分のボタンは機能しない
-        if (gameManager.chatSystem.myPlayer.playerID == playerID || !live) {
+        if (gameManager.chatSystem.myPlayer.playerID == playerID || !gameManager.chatSystem.myPlayer.live) {
             Debug.Log("押せません。");
             return;
         }
@@ -392,7 +400,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     gameMasterChat = thePlayer.playerName + "さんを襲撃します。";
                     Debug.Log(thePlayer.playerName + "襲撃します。");
                 }
-                gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
                 break;
 
             case ROLLTYPE.占い師:
@@ -406,7 +413,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                         Debug.Log("黒");
                     }
                 }
-                gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
                 break;
             case ROLLTYPE.騎士:
                 gameMasterChat = thePlayer.playerName + "さんを護衛します。";
@@ -415,7 +421,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 protectedID = thePlayer.playerID;
                 SetProtectedPlayerID();
                 Debug.Log("守ったID" + protectedID);
-                gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
                 break;
             default:
                 Debug.Log("押せません。");
