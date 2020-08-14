@@ -12,6 +12,8 @@ public class GameLogNode : MonoBehaviour
 
     public int roomNum;
     public Button gameLogBtn;
+    public Text resultText;//勝敗
+    public Text rollListText;//役職一覧
     public GameObject chatLogCanvasPrefab;
     public PlayerInfoPopUp playerInfoPopUp;
 

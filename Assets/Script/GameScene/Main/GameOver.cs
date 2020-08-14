@@ -81,7 +81,6 @@ public class GameOver : MonoBehaviour {
         //ゲーム終了
         ResultBattleRecord(isWin);
 
-
         //不参加状態でゲームを終了した場合突然死数を増やす
         CheckEndGame();
 
@@ -104,7 +103,7 @@ public class GameOver : MonoBehaviour {
         gameManager.chatListManager.ReleaseChatLog();
 
         //チャットログを保存する
-        PlayerManager.instance.SetGameChatLog();
+        PlayerManager.instance.SetGameChatLog(isWin);
         
     }
 

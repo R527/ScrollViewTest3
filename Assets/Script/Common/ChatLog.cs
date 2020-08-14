@@ -79,7 +79,7 @@ public class ChatLog : MonoBehaviour
     /// <param name="playerName"></param>
     /// <param name="playerID"></param>
     /// <param name="gameManager"></param>
-    public void CreatePlayerButton(string playerName, int playerID) {
+    public void CreatePlayerButton(string playerName, int playerID, string roll) {
         Debug.Log("CreatePlayerButton");
 
         playerButton = Instantiate(playerButtonPrefab, buttonTran, false);
@@ -87,6 +87,7 @@ public class ChatLog : MonoBehaviour
         playerButton.transform.SetParent(buttonTran);
         playerButton.playerNameText.text = playerName;
         playerButton.playerID = playerID;
+        playerButton.rollText.text = roll;
         Debug.Log(playerID);
         Debug.Log(PlayerManager.instance.myID);
         if (PlayerManager.instance.myID == playerID) {

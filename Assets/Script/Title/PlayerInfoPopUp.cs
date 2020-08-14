@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 
 /// <summary>
@@ -25,7 +26,7 @@ public class PlayerInfoPopUp : MonoBehaviour
     public GameObject mainCanvas;
     public GameObject underBarCanvas;
 
-
+    public List<int> rollNumList = new List<int>();
 
     private void Start() {
         backButton.onClick.AddListener(ClosePopUp);
@@ -49,14 +50,59 @@ public class PlayerInfoPopUp : MonoBehaviour
     /// ゲームデータの数だけインスタンスします。
     /// </summary>
     public void CreateGameLog() {
+
+        //チャットログがない場合
+        //生成しない
         if(PlayerManager.instance.getChatLogList.Count <= 0) {
             Debug.Log("CreateGameLog Return");
             return;
         }
+
+        
+        
+
+        //ちゃっとログがある分部屋を生成する
         for(int i = 0; i < PlayerManager.instance.getChatLogList.Count; i++) {
+
+            //チャットログの部屋情報だけを抜き取り
+            string[] result = PlayerManager.instance.getChatLogList[i].Substring(0, PlayerManager.instance.getChatLogList[i].Length - 1).Split('%').ToArray<string>();
+
+            //部屋生成
             GameLogNode gameLogNode = Instantiate(gameLogPrefab, logTran, false);
             gameLogNode.roomNum = i;
             gameLogNode.playerInfoPopUp = this;
+
+            //勝敗の表示
+            if(result[0] == "False") {
+                gameLogNode.resultText.text = "敗北";
+            } else {
+                gameLogNode.resultText.text = "勝利";
+            }
+
+            //役職一覧
+            rollNumList = result[1].Split(',').Select(int.Parse).ToList();
+            DisplayRollList(rollNumList, gameLogNode);
+        }
+    }
+
+    /// <summary>
+    /// 役職のテキスト表示
+    /// </summary>
+    /// <param name="numList"></param>
+    private void DisplayRollList(List<int> rollNumList,GameLogNode gameLogNode) {
+        gameLogNode.rollListText.text = string.Empty;
+        //役職テキスト
+        int num = 0;
+        for (int i = 0; i < rollNumList.Count; i++) {
+            if (rollNumList[i] != 0) {
+                string emptyStr = "";
+                num++;
+                if (num != 0 && num % 3 == 1) {
+                    emptyStr = "\r\n";
+                }
+                string str = ((ROLLTYPE)i) + ": " + rollNumList[i];
+                gameLogNode.rollListText.text += emptyStr + str;
+            }
         }
     }
 }

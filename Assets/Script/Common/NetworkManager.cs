@@ -108,7 +108,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             "fortuneType",
             "openVoting",
             "numListStr",
-            "banListStr"
+            "banListStr",
+            "numLimit"
         };
         roomOptions.CustomRoomProperties = customRoomProperties;
         //部屋のIdを取得

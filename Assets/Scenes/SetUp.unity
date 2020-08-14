@@ -388,16 +388,16 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 1
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isPlayerPrefsDeleteAll: 1
-  isGameOver: 1
+  isPlayerPrefsDeleteAll: 0
+  isGameOver: 0
   isCheckSuddenDeath: 1
   isVoteCount: 1
-  isTestPlay: 1
+  isTestPlay: 0
   testRollTypeList: 00000000020000000400000000000000
 --- !u!1 &4274428794974511839
 GameObject:

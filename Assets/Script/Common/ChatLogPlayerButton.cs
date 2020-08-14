@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ChatLogPlayerButton : MonoBehaviour
 {
     public Text playerNameText;
+    public Text rollText;
     public int playerID;
     public Button playerButton;
 }

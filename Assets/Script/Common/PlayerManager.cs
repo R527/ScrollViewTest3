@@ -1,13 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using System.Linq;
 
 
 
-public class PlayerManager : MonoBehaviour
-{
+public class PlayerManager : MonoBehaviour {
 
     public static PlayerManager instance;
     public GameManager gameManager;
@@ -91,15 +89,15 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// テスト
-    /// </summary>
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.S)) {
-            Debug.Log("保存");
-            SetGameChatLog();
-        }
-    }
+    ///// <summary>
+    ///// テスト
+    ///// </summary>
+    //private void Update() {
+    //    if (Input.GetKeyDown(KeyCode.S)) {
+    //        Debug.Log("保存");
+    //        SetGameChatLog();
+    //    }
+    //}
 
 
     /// <summary>
@@ -224,9 +222,9 @@ public class PlayerManager : MonoBehaviour
     /// <summary>
     /// チャットログ保存用
     /// </summary>
-    public void SetGameChatLog() {
+    public void SetGameChatLog(bool isWin) {
         Debug.Log("SetGameChatLog");
-        SetStringForPlayerPrefs(SaveGameData(), ID_TYPE.saveChatLog);
+        SetStringForPlayerPrefs(SaveGameData(isWin), ID_TYPE.saveChatLog);
         SetIntForPlayerPrefs(saveRoomCount, ID_TYPE.saveRoomCount);
     }
 
@@ -235,22 +233,31 @@ public class PlayerManager : MonoBehaviour
     /// ゲーム情報を復元用に保存します
     /// </summary>
     /// <returns></returns>
-    public string SaveGameData() {
+    public string SaveGameData(bool isWin) {
         GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         string str = "";
         //自分がどのプレイヤーがにあたるかの情報
         //プレイヤーID順にボタン用の名前を登録する
         string nameList = "";
         foreach (Player player in gameManager.chatSystem.playersList) {
-            nameList += player.playerID + "," + player.playerName + "&";
+            nameList += player.playerID + "," + player.playerName + "," +  player.rollType +"&";
         }
-        nameList = nameList.Substring(0, nameList.Length - 1) + "%";
-        str = gameManager.chatSystem.myPlayer.playerID + "%" + nameList + instance.saveChatLog;
+        nameList = nameList.Substring(0, nameList.Length - 1);
+
+        //役職一覧作成
+        string rollList = "";
+        foreach(int rollNum in RoomData.instance.rollList) {
+            rollList += rollNum + ",";
+        }
+        rollList = rollList.Substring(0, rollList.Length - 1);
+        //役職一覧を取得する
+        //勝敗　役職一覧 playerNum nameList　　チャットログ
+        str = isWin + "%" + rollList +　"%" +  gameManager.chatSystem.myPlayer.playerID + "%" + nameList + "%" + saveChatLog;
         return str;
     }
 
     /// <summary>
-    ///タイトル画面でRoomCount保存したログを配列に渡します。
+    ///タイトル画面でRoomCount保存したログを配列に保存する
     /// </summary>
     public void GetSaveRoomData() {
         getChatLogList.Clear();
@@ -281,26 +288,23 @@ public class PlayerManager : MonoBehaviour
     public void GetGameChatLog(int roomNum) {
 
         Debug.Log(roomNum);
-        //PlayerManager.instance.saveChatLog = PlayerPrefs.GetString("roomNum" + PlayerManager.instance.saveRoomCount, "");
-        //PlayerManager.instance.saveChatLog.Substring(0, PlayerManager.instance.saveChatLog.Length - 1);
-        //Debug.Log(PlayerManager.instance.saveChatLog);
 
         ChatLog chatLog = GameObject.FindGameObjectWithTag("ChatLog").GetComponent<ChatLog>();
         Debug.Log(getChatLogList[roomNum]);
         //復元処理
         string[] saveChatLogList = getChatLogList[roomNum].Substring(0, getChatLogList[roomNum].Length - 1).Split('%').ToArray<string>();
+
         List<string> buttonInfoList = new List<string>();
+
         foreach (string str in saveChatLogList) {
 
             //ボタンの復元
-        
-            if (buttonInfoList.Count < 2) {
+            if (buttonInfoList.Count < 4) {
                 buttonInfoList.Add(str);
                 continue;
             }
             Debug.Log(str);
             //チャット内容、色、発言者に分けてそれぞれ配列に入れる
-
             string[] getChatLogList = str.Split(',').ToArray<string>();
             string inputData = getChatLogList[0];
             int boardColor = int.Parse(getChatLogList[1]);
@@ -324,16 +328,18 @@ public class PlayerManager : MonoBehaviour
         }
 
         //自分のPlayerIDを登録する
-        myID = int.Parse(buttonInfoList[0]);
+        myID = int.Parse(buttonInfoList[2]);
 
         //ボタンを生成する
-        string[] getButtonList = buttonInfoList[1].Split('&').ToArray<string>();
+        string[] getButtonList = buttonInfoList[3].Split('&').ToArray<string>();
+        Debug.Log(getButtonList[0]);
         foreach (string str in getButtonList) {
             string[] buttonData = null;
             buttonData = str.Split(',').ToArray<string>();
             int playerID = int.Parse(buttonData[0]);
             playerName = buttonData[1];
-            chatLog.CreatePlayerButton(playerName, playerID);
+            string roll = buttonData[2];
+            chatLog.CreatePlayerButton(playerName, playerID, roll);
         }
 
     }
