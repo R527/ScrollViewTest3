@@ -72,7 +72,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public List<ROLLTYPE> ComingOutButtonList = new List<ROLLTYPE>();
 
     public void GameManagerSetUp() {
-        
+        //BGM開始
+        AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.GAME);
 
         //部屋を作った人は初めての人なのでこの処理はない
         //二人目以降の人が値を取得する
@@ -130,6 +131,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //BanListの作成
         CreateBanList();
+
 
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {

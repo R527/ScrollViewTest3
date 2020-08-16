@@ -33,10 +33,7 @@ public class SettingPopUp : MonoBehaviour
     public void OnDestroy() {
         Destroy(SettingPopUpObj);
     }
-    /// <summary>
-    /// スライドにあるボタンを離すとSE音がする
-    /// </summary>
-    public void CheckSE() {
 
-    }
+
+
 }

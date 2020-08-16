@@ -68,6 +68,12 @@ public class SetUpManager : MonoBehaviour
         PlayerManager.instance.checkTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.突然死減少チェック.ToString(), 0);
 
 
+        //音量取得
+        AudioManager.instance.bgmVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.bgmVolume.ToString(), -25);
+        AudioManager.instance.seVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.seVolume.ToString(), -25);
+
+
+
 
         //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
         if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {

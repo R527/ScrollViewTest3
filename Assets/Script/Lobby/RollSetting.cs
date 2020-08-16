@@ -69,8 +69,9 @@ public class RollSetting : MonoBehaviour
     /// RoomSettingCanvasへ移行する 人数が合わないならポップアップが出る
     /// </summary>
     public void NextButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
-        if(numLimit > citizenCampNum + wolfCampNum) {
+        if (numLimit > citizenCampNum + wolfCampNum) {
             wrongPopUpObj.SetActive(true);
             wrongPopUp.wrongText.text = "役職が少ないです。";
 
@@ -97,6 +98,8 @@ public class RollSetting : MonoBehaviour
     /// RoomSelectCanvasへ
     /// </summary>
     public void BackButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
+
         rollSettingObj.SetActive(false);
         roomSelectCanvas.SetActive(true);
     }

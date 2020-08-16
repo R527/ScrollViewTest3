@@ -17,8 +17,8 @@ public class AudioManager : MonoBehaviour
     private int currentBgmNum;
     
     //音量調節
-    public float bgmVolume;
-    public float seVolume;
+    public int bgmVolume;
+    public int seVolume;
 
     //シングルトン
     public static AudioManager instance;
@@ -48,7 +48,8 @@ public class AudioManager : MonoBehaviour
     /// <param name="volume"></param>
     public void SetBGM(float volume) {
         audioMixer.SetFloat("BGMvol", volume);
-        bgmVolume = volume;
+        bgmVolume = (int)volume;
+        PlayerManager.instance.SetIntForPlayerPrefs(bgmVolume, PlayerManager.ID_TYPE.bgmVolume);
     }
     /// <summary>
     /// 音量調節SE
@@ -56,7 +57,9 @@ public class AudioManager : MonoBehaviour
     /// <param name="volume"></param>
     public void SetSE(float volume) {
         audioMixer.SetFloat("SEvol", volume);
-        seVolume = volume;
+        seVolume = (int)volume;
+        PlayerManager.instance.SetIntForPlayerPrefs(seVolume, PlayerManager.ID_TYPE.seVolume);
+
     }
 
     /// <summary>

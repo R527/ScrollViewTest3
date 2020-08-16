@@ -48,16 +48,25 @@ public class PlayerManager : MonoBehaviour {
     /// Ban関連
     /// </summary>
     public enum ID_TYPE {
+        //BanList
         myUniqueId,
         banUniqueID,
         banUserNickName,
         banIndex,
         banListMaxIndex,
+
+        //main
         playerName,
         friendId,
+
+        //チャットログ
         saveChatLog,
         roomName,
-        saveRoomCount
+        saveRoomCount,
+
+        //音量
+        bgmVolume,
+        seVolume
     }
 
     /// <summary>
@@ -158,6 +167,12 @@ public class PlayerManager : MonoBehaviour {
                 break;
             case ID_TYPE.saveRoomCount:
                 PlayerPrefs.SetInt("saveRoomCount", setInt);
+                break;
+            case ID_TYPE.bgmVolume:
+                PlayerPrefs.SetInt(ID_TYPE.bgmVolume.ToString(), setInt);
+                break;
+            case ID_TYPE.seVolume:
+                PlayerPrefs.SetInt(ID_TYPE.seVolume.ToString(), setInt);
                 break;
         }
         PlayerPrefs.Save();

@@ -63,6 +63,9 @@ public class Search : MonoBehaviour {
         if (isSearch) {
             return;
         }
+
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+
         isSearch = true;
 
         //Listを取得する
@@ -120,6 +123,8 @@ public class Search : MonoBehaviour {
     /// 難易度選択ボタン 右
     /// </summary>
     public void SelectionButtonRight() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+
         switch (searchRoomSelection) {
             case ROOMSELECTION.初心者:
                 searchRoomSelection = ROOMSELECTION.一般;
@@ -144,6 +149,8 @@ public class Search : MonoBehaviour {
     /// 難易度選択ボタン 右
     /// </summary>
     public void SelectionButtonLeft() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+
         switch (searchRoomSelection) {
             case ROOMSELECTION.初心者:
                 searchRoomSelection = ROOMSELECTION.観戦;
@@ -168,6 +175,8 @@ public class Search : MonoBehaviour {
     /// 更新ボタン　部屋情報を更新する
     /// </summary>
     public void UpDateButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+
         SearchRoomNode();
     }
 
@@ -175,6 +184,8 @@ public class Search : MonoBehaviour {
     /// 検索PopUpアクティブ化
     /// </summary>
     public void SearchPopUP() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+
         searchPopUpObj.SetActive(true);
     }
 
@@ -182,7 +193,8 @@ public class Search : MonoBehaviour {
     /// 検索初期化
     /// </summary>
     public void InitSearch() {
-        searchFortuneType　= FORTUNETYPE.未設定;
+
+        searchFortuneType = FORTUNETYPE.未設定;
         searchOpenVoting = VOTING.未設定;
         searchJoinNum = 3;
         joinNumText.text = "未設定";
@@ -197,6 +209,7 @@ public class Search : MonoBehaviour {
     /// 募集条件
     /// </summary>
     public void DifficultySelectionRight() {
+
         switch (searchRoomSelection) {
             case ROOMSELECTION.観戦:
                 searchRoomSelection = ROOMSELECTION.初心者;
@@ -217,6 +230,7 @@ public class Search : MonoBehaviour {
     /// 募集条件
     /// </summary>
     public void DifficultySelectionLeft() {
+
         switch (searchRoomSelection) {
             case ROOMSELECTION.初心者:
                 searchRoomSelection = ROOMSELECTION.観戦;
@@ -236,6 +250,7 @@ public class Search : MonoBehaviour {
     /// 初日占い右
     /// </summary>
     public void FirstDayFortuneRight() {
+
         switch (searchFortuneType) {
             case FORTUNETYPE.ランダム白:
                 searchFortuneType = FORTUNETYPE.あり;
@@ -256,6 +271,7 @@ public class Search : MonoBehaviour {
     /// 初日占い　左
     /// </summary>
     public void FirstDayFortuneLeft() {
+
         switch (searchFortuneType) {
             case FORTUNETYPE.ランダム白:
                 searchFortuneType = FORTUNETYPE.未設定;
@@ -277,6 +293,7 @@ public class Search : MonoBehaviour {
     /// 投票開示右
     /// </summary>
     public void OpenVotingRight() {
+
         switch (searchOpenVoting) {
             case VOTING.開示しない:
                 searchOpenVoting = VOTING.開示する;
@@ -294,6 +311,7 @@ public class Search : MonoBehaviour {
     /// 投票開示設定　左
     /// </summary>
     public void OpenVotingLeft() {
+
         switch (searchOpenVoting) {
             case VOTING.開示する:
                 searchOpenVoting = VOTING.開示しない;
@@ -311,6 +329,7 @@ public class Search : MonoBehaviour {
     /// 人数設定　プラスボタン
     /// </summary>
     public void SumNumberPlusButton() {
+
         searchJoinNum++;
         if(searchJoinNum == 3) {
             joinNumText.text = "未設定";
@@ -331,6 +350,7 @@ public class Search : MonoBehaviour {
     /// 人数設定　マイナスボタン
     /// </summary>
     public void SumNumberMinusButton() {
+
         searchJoinNum--;
         if (searchJoinNum == 3) {
             joinNumText.text = "未設定";

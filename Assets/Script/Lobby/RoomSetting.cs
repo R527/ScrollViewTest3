@@ -33,6 +33,7 @@ public class RoomSetting : MonoBehaviour
     public GameObject roomSettingCanvas;//ルーム設定Canvas
     public List<RoomNode> roomNodeList = new List<RoomNode>();//検索用に用意したRoomNodeList
     public Button createRoomButton;//部屋作成用ボタン
+    public Button backButton;
  
 
     [System.Serializable]
@@ -75,6 +76,7 @@ public class RoomSetting : MonoBehaviour
         nightTimeButton.leftButton.onClick.AddListener(NightTimeLeft);
         openVotingButton.rightButton.onClick.AddListener(OpenVoting);
         openVotingButton.leftButton.onClick.AddListener(OpenVoting);
+        backButton.onClick.AddListener(BackButton);
     }
 
 
@@ -84,6 +86,8 @@ public class RoomSetting : MonoBehaviour
     /// 部屋作成ボタンの制御,部屋設定終了後次へのボタン
     /// </summary>
     public void CreateRoomNode() {
+
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
         //タイトルも字数制限を監視
         if (titleText.text.Length >= 13) {
@@ -282,7 +286,13 @@ public class RoomSetting : MonoBehaviour
         openVotingText.text = openVoting.ToString();
     }
 
+    public void BackButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
 
+        roomSettingCanvas.SetActive(false);
+        roomSelectCanvas.SetActive(true);
+
+    }
 
 }
 

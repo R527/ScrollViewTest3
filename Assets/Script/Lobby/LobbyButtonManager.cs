@@ -42,7 +42,7 @@ public class LobbyButtonManager : MonoBehaviour
 
     private void Start() {
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY);
-        backButton.onClick.AddListener(() => SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE));
+        backButton.onClick.AddListener(BackButton);
         menuButton.onClick.AddListener(MenuPopUp);
         createRoomButton.onClick.AddListener(CreateRoomButton);
     }
@@ -51,12 +51,24 @@ public class LobbyButtonManager : MonoBehaviour
     /// メニューPopUpをインスタンスする
     /// </summary>
     public void MenuPopUp() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         Instantiate(menuPopUp);
     }
 
+    /// <summary>
+    /// 部屋作成
+    /// </summary>
     public void CreateRoomButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+
         roomSelectCanvasObj.SetActive(false);
         rollSettingCanvasObj.SetActive(true);
     }
-
+    /// <summary>
+    /// タイトルへ戻る
+    /// </summary>
+    public void BackButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
+        SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
+    }
 }
