@@ -98,15 +98,17 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    ///// <summary>
-    ///// テスト
-    ///// </summary>
-    //private void Update() {
-    //    if (Input.GetKeyDown(KeyCode.S)) {
-    //        Debug.Log("保存");
-    //        SetGameChatLog();
-    //    }
-    //}
+    /// <summary>
+    /// テスト
+    /// </summary>
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.S)) {
+            Debug.Log("保存");
+
+            //テスト用にここで保存されたらすべて敗北扱いする
+            SetGameChatLog(false);
+        }
+    }
 
 
     /// <summary>
@@ -230,7 +232,7 @@ public class PlayerManager : MonoBehaviour {
     /// <returns></returns>
     public string ConvertStringToChatData(ChatData chatData) {
         string str = "";
-        str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID;
+        str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID + "," + chatData.comingOutText;
         return str;
     }
 
@@ -323,7 +325,7 @@ public class PlayerManager : MonoBehaviour {
             string[] getChatLogList = str.Split(',').ToArray<string>();
             string inputData = getChatLogList[0];
             int boardColor = int.Parse(getChatLogList[1]);
-            playerName = getChatLogList[2];
+            playerName = getChatLogList[2] + getChatLogList[4];
             int playerID = int.Parse(getChatLogList[3]);
 
             //SPEAKER_TYPEがON OFFどちらでもOFFLINE処理をする
@@ -336,7 +338,7 @@ public class PlayerManager : MonoBehaviour {
                 chatLog.CreateNextDay();
             } else {
                 //チャット生成
-                chatLog.CreateLogChat(speaker_Type, inputData, playerID, boardColor);
+                chatLog.CreateLogChat(speaker_Type, inputData, playerID, boardColor, playerName);
             }
             
 

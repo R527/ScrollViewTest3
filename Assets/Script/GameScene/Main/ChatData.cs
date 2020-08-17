@@ -15,6 +15,7 @@ public class ChatData
     public CHAT_TYPE chatType;//コンストラクタでは代入しない
     public bool chatLive;
     public bool chatWolf;
+    public string comingOutText;
 
     /// <summary>
     /// Class名と同名で戻り値（voidなど）を持たないメソッドはコストラクタになる

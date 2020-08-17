@@ -42,21 +42,23 @@ public class ChatLog : MonoBehaviour
         foldingButton.onClick.AddListener(FoldingPosition);
         exitButtn.onClick.AddListener(CloseChatLog);
     }
-
+     
     /// <summary>
     /// ログ保存したものを復元する
     /// </summary>
-    public void CreateLogChat(SPEAKER_TYPE speaker_Type, string inputData, int playerID, int boardColor) {
+    public void CreateLogChat(SPEAKER_TYPE speaker_Type, string inputData, int playerID, int boardColor,string playerName) {
 
 
         ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, ROLLTYPE.ETC);
         if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
+            playerName = "GM";
             chatData.chatType = CHAT_TYPE.GM;
         }
         ChatNode chatNode = Instantiate(chatNodePrefab, chatTran, false);
         chatNode.InitChatNodeLog(chatData, 0, false);
         SetChatNode(chatNode,chatData);
         chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
+        chatNode.statusText.text = playerName + chatData.comingOutText;
         chatNodeList.Add(chatNode);
         //gameManager.chatSystem.SetChatNode(chatNode, chatData, false);
         Debug.Log("復元完了");
@@ -128,11 +130,17 @@ public class ChatLog : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// チャットログを閉じるときに使われる
+    /// </summary>
     public void CloseChatLog() {
         GameObject chatContentObj = GameObject.FindGameObjectWithTag("ChatContent");
+        //すでに生成しているチャットを消去する
         foreach(Transform tran in chatContentObj.transform) {
             Destroy(tran.gameObject);
         }
+        //すでに生成しているPlayerButtonを消去する
         GameObject menbarContentObj = GameObject.FindGameObjectWithTag("MenbarContent");
         foreach (Transform tran in menbarContentObj.transform) {
             Destroy(tran.gameObject);
@@ -146,12 +154,15 @@ public class ChatLog : MonoBehaviour
 
     /// <summary>
     /// チャットノードをセットするときに配置などを変更する
+    /// 
     /// </summary>
     public void SetChatNode(ChatNode chatNode, ChatData chatData) {
+        //連続で同じプレイヤーがチャットした場合アイコンなどを消去する
         if (lastChatNode != null) {
             if (lastChatNode.playerID == chatData.playerID) {
                 chatNode.iconObjLayoutElement.minHeight = 0f;
                 chatNode.iconObjLayoutElement.preferredHeight = 0f;
+                chatNode.iconObj.SetActive(false);
                 chatNode.statusObj.SetActive(false);
             } else {
                 chatNode.iconObjLayoutElement.preferredHeight = 20f;

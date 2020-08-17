@@ -68,6 +68,9 @@ public class ChatNode : MonoBehaviourPunCallbacks {
                 Debug.Log("Coming:済");
                 statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) +
                     "CO】";
+                //チャットデータ。PlayerNameにCo状況も載せてチャットログを複製するときに使用する
+                chatData.comingOutText = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) +
+                    "CO】";
             }
         }
 
@@ -141,12 +144,15 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         if (chatData.chatType == CHAT_TYPE.MINE) {
             Debug.Log("UpperRight");
             layoutGroup.childAlignment = TextAnchor.UpperRight;
-
+            chatVerticalLayoutGroup.childAlignment = TextAnchor.LowerRight;
+            statusText.alignment = TextAnchor.MiddleRight;
+            chatTran.SetSiblingIndex(0);
+            chatText.alignment = TextAnchor.MiddleLeft;
         } else {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
 
-        
+
 
         //Debug.Log("CO" + comingOut);
         ////COした場合幅等を変更する

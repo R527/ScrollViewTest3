@@ -152,7 +152,10 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             if (!gameMasterChatManager.gameManager.timeController.isSpeaking) {
                 gameMasterChatManager.gameManager.timeController.isSpeaking = true;
             }
+
         }
+
+
     }
 
     /// <summary>
@@ -187,10 +190,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// <param name="comingOut"></param>
     public void SetChatNode(ChatNode chatNode, ChatData chatData, bool comingOut) {
 
+
         //ゲーム中に発言された内容を保存する
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
-        //Debug.Log(PlayerManager.instance.saveChatLog);
-
 
         //ボードの色を変える
         chatNode.chatBoard.color = color[chatData.boardColor];
