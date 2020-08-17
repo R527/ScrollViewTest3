@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using DG.Tweening;
 
 
 /// <summary>
@@ -28,7 +29,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public int id = 0;
     public int myID;//??
     public int coTimeLimit;
-    public int calloutTimeLimit;
     public string inputData;
     public List<string>playerNameList = new List<string>();
     public List<Player> playersList = new List<Player>();
@@ -44,7 +44,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
 
     private void Update() {
-        if (Input.GetKeyUp(KeyCode.Return)) {
+        if (Input.GetKeyUp(KeyCode.E)) {
             OnClickMineButton();
         }
     }
@@ -228,9 +228,10 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
 
         //playerが連続でチャットを投稿した場合、アイコンObj等を削除する
+        //カミングアウト時は適応されない
         if (lastChatNode != null)
         {
-            if (lastChatNode.playerID == chatData.playerID)
+            if (lastChatNode.playerID == chatData.playerID && !comingOut)
             {
                 chatNode.iconObjLayoutElement.minHeight = 0f;
                 chatNode.iconObjLayoutElement.preferredHeight = 0f;
@@ -250,10 +251,13 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         //ComingOutと吹き出しの制御
         if (comingOut) {
             coTimeLimit++;
-            if (coTimeLimit == 4) {
+            if (coTimeLimit >= 4) {
                 //Buttoncomponentにアクセスしないとinteractableが取れない
                 //GameObject.FindGameObjectWithTag("COButton").GetComponent<Button>().interactable = false;
+
+                //4回以上Coしたら押せないように制御する
                 fillter.comingOutButton.interactable = false;
+                DownCOPopUP();
             }
         }
 
@@ -303,6 +307,14 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
 
         return isChatSet;
+    }
+    /// <summary>
+    /// 強制的にCOPopUPを下におろす
+    /// </summary>
+    public void DownCOPopUP() {
+        inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
+        inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
+        StartCoroutine(gameMasterChatManager.gameManager.inputView.PopUpFalse());
     }
 }
 

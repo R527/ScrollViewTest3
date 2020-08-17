@@ -85,7 +85,7 @@ public class BegginerGuide : MonoBehaviour
     /// 前の説明文へ
     /// </summary>
     public void BackButton() {
-        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
         num--;
         if (num == numLimit - 1) {
             nextButton.interactable = true;
@@ -99,7 +99,7 @@ public class BegginerGuide : MonoBehaviour
     /// ガイドメニューへ戻る
     /// </summary>
     public void ReturnButton() {
-        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
         Destroy(gameObject);
         Instantiate(begginerGuidePopUp);
     }

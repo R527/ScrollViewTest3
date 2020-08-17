@@ -78,7 +78,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             chatVerticalLayoutGroup.childAlignment = TextAnchor.LowerRight;
             statusText.alignment = TextAnchor.MiddleRight;
             chatTran.SetSiblingIndex(0);
-            chatText.alignment = TextAnchor.MiddleRight;
+            chatText.alignment = TextAnchor.MiddleLeft;
         } else {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }

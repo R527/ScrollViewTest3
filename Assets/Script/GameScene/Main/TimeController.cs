@@ -241,7 +241,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 //初期化
                 chatSystem.coTimeLimit = 0;
-                chatSystem.calloutTimeLimit = 0;
                     
 
                 //GMチャットなど
