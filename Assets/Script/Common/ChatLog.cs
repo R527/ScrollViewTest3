@@ -48,7 +48,7 @@ public class ChatLog : MonoBehaviour
     /// </summary>
     public void CreateLogChat(SPEAKER_TYPE speaker_Type, string inputData, int playerID, int boardColor,string playerName) {
 
-
+        Debug.Log("CreateLogChat");
         ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, ROLLTYPE.ETC);
         if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
             playerName = "GM";
@@ -58,7 +58,15 @@ public class ChatLog : MonoBehaviour
         chatNode.InitChatNodeLog(chatData, 0, false);
         SetChatNode(chatNode,chatData);
         chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
-        chatNode.statusText.text = playerName + chatData.comingOutText;
+        chatNode.statusText.text = playerName;
+
+        //ComingOutなら横幅を調節する
+        Debug.Log("boardColor" + boardColor);
+        if(inputData == "") {
+            chatNode.chatObjLayoutElement.preferredWidth = 60;
+            chatNode.chatObjLayoutElement.preferredHeight = 60;
+        }
+
         chatNodeList.Add(chatNode);
         //gameManager.chatSystem.SetChatNode(chatNode, chatData, false);
         Debug.Log("復元完了");

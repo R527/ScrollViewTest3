@@ -193,7 +193,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         //ゲーム中に発言された内容を保存する
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
-
+        Debug.Log(PlayerManager.instance.saveChatLog);
+        Debug.Log(PlayerManager.instance.ConvertStringToChatData(chatData));
         //ボードの色を変える
         chatNode.chatBoard.color = color[chatData.boardColor];
 

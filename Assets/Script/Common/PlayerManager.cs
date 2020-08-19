@@ -23,7 +23,8 @@ public class PlayerManager : MonoBehaviour {
     public int banIndex;//ban番号の通し番号
     public Dictionary<string, string> banTable = new Dictionary<string, string>();
     public string myUniqueId;//自分の端末番号
-    public int banListMaxIndex;
+    public int banListIndex;//BanListの今の登録数
+    public int banListMaxIndex = 1;//BanListの最大の登録数
 
     //戦績関連
     [Header("戦績関連")]
@@ -232,7 +233,12 @@ public class PlayerManager : MonoBehaviour {
     /// <returns></returns>
     public string ConvertStringToChatData(ChatData chatData) {
         string str = "";
-        str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID + "," + chatData.comingOutText;
+        string comingOut = "";
+
+        if(chatData.comingOutText != "") {
+            comingOut = "," + chatData.comingOutText;
+        }
+        str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID + comingOut;
         return str;
     }
 
@@ -307,7 +313,7 @@ public class PlayerManager : MonoBehaviour {
         Debug.Log(roomNum);
 
         ChatLog chatLog = GameObject.FindGameObjectWithTag("ChatLog").GetComponent<ChatLog>();
-        Debug.Log(getChatLogList[roomNum]);
+        Debug.Log("getChatLogList[roomNum]" + getChatLogList[roomNum]);
         //復元処理
         string[] saveChatLogList = getChatLogList[roomNum].Substring(0, getChatLogList[roomNum].Length - 1).Split('%').ToArray<string>();
 
@@ -315,6 +321,7 @@ public class PlayerManager : MonoBehaviour {
 
         foreach (string str in saveChatLogList) {
 
+            Debug.Log("saveChatLogList");
             //ボタンの復元
             if (buttonInfoList.Count < 4) {
                 buttonInfoList.Add(str);
@@ -324,8 +331,10 @@ public class PlayerManager : MonoBehaviour {
             //チャット内容、色、発言者に分けてそれぞれ配列に入れる
             string[] getChatLogList = str.Split(',').ToArray<string>();
             string inputData = getChatLogList[0];
+            Debug.Log("inputData" + inputData);
             int boardColor = int.Parse(getChatLogList[1]);
             playerName = getChatLogList[2] + getChatLogList[4];
+            Debug.Log("playerName" + playerName);
             int playerID = int.Parse(getChatLogList[3]);
 
             //SPEAKER_TYPEがON OFFどちらでもOFFLINE処理をする
@@ -333,11 +342,15 @@ public class PlayerManager : MonoBehaviour {
             if (getChatLogList[2] == "GAMEMASTER_OFFLINE" || getChatLogList[2] == "GAMEMASTER_ONLINE") {
                 speaker_Type = SPEAKER_TYPE.GAMEMASTER_OFFLINE;
             }
-            if(boardColor == 0000) {
+
+            if(boardColor == 7777) {
+                Debug.Log("NextDay");
                 //NextDay作成
                 chatLog.CreateNextDay();
             } else {
                 //チャット生成
+                Debug.Log("CreateLogChat");
+
                 chatLog.CreateLogChat(speaker_Type, inputData, playerID, boardColor, playerName);
             }
             

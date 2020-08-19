@@ -23,7 +23,9 @@ public class BasePopUP : MonoBehaviour {
         if (closeButtonSwich) {
             closeButton.onClick.AddListener(ClosePopUp);
         } else {
-            closeButton.onClick.AddListener(DestroyPopUP);
+            if(closeButton != null) {
+                closeButton.onClick.AddListener(DestroyPopUP);
+            }
         }
     }
 

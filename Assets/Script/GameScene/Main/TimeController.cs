@@ -307,6 +307,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 //死亡したプレイヤーの処理
                 DeathPlayer();
+
+                FalseInputViewButton();
                 break;
 
             //処刑後チェック
@@ -344,15 +346,20 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //夜の行動
             case TIME.処刑後チェック:
                 timeType = TIME.夜の行動;
+
                 //狼ならチャット開放する
                 if (chatSystem.myPlayer.wolfChat) {
                     inputField.interactable = true;
+                    inputView.wolfMode = true;
+                    inputView.wolfModeButtonText.text = "狼";
+                    inputView.wolfModeButton.interactable = false;
                 }
 
                 isDisplay = true;
                 totalTime = nightTime;
                 timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
                 timeContollerPopUpObj.text.text = "夜の時間です。";
+
 
                 //初期化
                 voteCount.mostVotes = 0;
@@ -447,7 +454,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         dayObj.day = day;
         dayObj.nextDayText.text = day + "日目";
         dayOrderButton.nextDaysList.Add(dayObj.gameObject);
-        ChatData chatData = new ChatData("", 0000, 0000, SPEAKER_TYPE.NULL.ToString(), ROLLTYPE.ETC);
+        ChatData chatData = new ChatData("", 7777, 7777, SPEAKER_TYPE.NULL.ToString(), ROLLTYPE.ETC);
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
     }
 
@@ -564,14 +571,29 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public void TimesavingControllerFalse() {
         savingButton.interactable = false;
-        superChatButton.interactable = false;
+        //superChatButton.interactable = false;
         COButton.interactable = false;
 
-        if (!chatSystem.myPlayer.wolfChat) {
+        //if (!chatSystem.myPlayer.wolfChat) {
+        //    ////WolfChatしゃべれないプレイヤーの処理
+        //    wolfButton.interactable = false;
+        //    //inputField.interactable = false;
+        //}
+    }
+
+    /// <summary>
+    /// 狼チャットを打つことができないプレイヤーは
+    /// </summary>
+    public void FalseInputViewButton() {
+        //if (!chatSystem.myPlayer.wolfChat) {
             ////WolfChatしゃべれないプレイヤーの処理
             wolfButton.interactable = false;
             inputField.interactable = false;
-        }
+        //}
+
+        //狼出ないプレイヤーはsuperチャットだけfalseにする
+        superChatButton.interactable = false;
+
     }
 
     /// <summary>

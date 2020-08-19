@@ -222,7 +222,8 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     private void AddBanPlayer() {
         Debug.Log("BanList追加");
         //枠がいっぱいの場合
-        if (PlayerManager.instance.banListMaxIndex == 3) {
+        //枠は1つまで
+        if (PlayerManager.instance.banListIndex == PlayerManager.instance.banListMaxIndex) {
             GameObject list = GameObject.FindGameObjectWithTag("BanPlayerList");
             list.GetComponent<CanvasGroup>().alpha = 1;
             list.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -230,14 +231,14 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             //枠が空いている場合
             Debug.Log("追加されました");
 
-            PlayerManager.instance.banIndex = PlayerManager.instance.banListMaxIndex;
+            PlayerManager.instance.banIndex = PlayerManager.instance.banListIndex;
             Debug.Log(PlayerManager.instance.banIndex);
-            Debug.Log(PlayerManager.instance.banListMaxIndex);
+            Debug.Log(PlayerManager.instance.banListIndex);
             PlayerManager.instance.SetStringForPlayerPrefs(myUniqueId, PlayerManager.ID_TYPE.banUniqueID);
             PlayerManager.instance.SetStringForPlayerPrefs(playerName, PlayerManager.ID_TYPE.banUserNickName);
-            PlayerManager.instance.banListMaxIndex++;
+            PlayerManager.instance.banListIndex++;
             
-            PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.banListMaxIndex, PlayerManager.ID_TYPE.banListMaxIndex);
+            PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.banListIndex, PlayerManager.ID_TYPE.banListMaxIndex);
         }
     }
 

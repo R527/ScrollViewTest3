@@ -42,8 +42,8 @@ public class SetUpManager : MonoBehaviour
 
         //BanListのロード
         //,BanListが0人の場合は回さない
-        PlayerManager.instance.banListMaxIndex = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.banListMaxIndex.ToString(),0);
-        for (int i = 0; i < PlayerManager.instance.banListMaxIndex; i++) {
+        PlayerManager.instance.banListIndex = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.banListMaxIndex.ToString(),0);
+        for (int i = 0; i < PlayerManager.instance.banListIndex; i++) {
             if (PlayerPrefs.HasKey(PlayerManager.ID_TYPE.banUniqueID.ToString() + i.ToString())) {
                 PlayerManager.instance.banUniqueIDList.Add(PlayerPrefs.GetString(PlayerManager.ID_TYPE.banUniqueID.ToString() + i.ToString(), ""));
                 PlayerManager.instance.banUserNickNameList.Add(PlayerPrefs.GetString(PlayerManager.ID_TYPE.banUserNickName.ToString() + i.ToString(), ""));

@@ -324,6 +324,7 @@ MonoBehaviour:
   roomBanUniqueIdStr: 
   banIndex: 0
   myUniqueId: 
+  banListIndex: 0
   banListMaxIndex: 0
   totalNumberOfMatches: 0
   totalNumberOfWins: 0
@@ -379,7 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa02f1440382db4cac061645077d770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 1
+  isDebug: 0
   testMainTime: 10
   testNightTime: 10
   testVotingTime: 2
@@ -394,10 +395,10 @@ MonoBehaviour:
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 1
-  isCheckSuddenDeath: 1
-  isVoteCount: 1
-  isTestPlay: 1
+  isGameOver: 0
+  isCheckSuddenDeath: 0
+  isVoteCount: 0
+  isTestPlay: 0
   testRollTypeList: 04000000020000000400000000000000
 --- !u!1 &4274428794974511839
 GameObject:

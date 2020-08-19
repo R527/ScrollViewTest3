@@ -69,7 +69,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
                 statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) +
                     "CO】";
                 //チャットデータ。PlayerNameにCo状況も載せてチャットログを複製するときに使用する
-                chatData.comingOutText = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) +
+                chatData.comingOutText = "【" + comingOutClass.GetComingOutText(playerID) +
                     "CO】";
             }
         }
