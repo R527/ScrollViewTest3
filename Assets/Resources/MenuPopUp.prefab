@@ -714,10 +714,10 @@ RectTransform:
   m_Father: {fileID: 8617235851855277339}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 44.4, y: 144.2}
-  m_SizeDelta: {x: -108.7, y: -320.9}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 148.9, y: -64.3}
+  m_SizeDelta: {x: 100.3, y: 96.100006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8617235851058870612
 CanvasRenderer:
@@ -1019,8 +1019,6 @@ MonoBehaviour:
   settingPopUpObj: {fileID: 8189307270004751238, guid: c25cf77a6390a87429932aa8a1a49fe5,
     type: 3}
   begginerGuidePopUpObj: {fileID: 2645508698204678958, guid: 8df5b0f5c5e2d1d48bd483ec6d04b22f,
-    type: 3}
-  playerInfoPopUpObj: {fileID: 1870465117421621177, guid: 079e7c95657c31d4397acc4e6f0e8e16,
     type: 3}
 --- !u!1 &8617235851870024064
 GameObject:

@@ -43,23 +43,30 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public string testName;
 
 
-    private void Update() {
-        if (Input.GetKeyUp(KeyCode.E)) {
-            OnClickMineButton();
+    private void Start() {
+        if(chatInputField != null) {
+            chatInputField.onEndEdit.AddListener(delegate { CreateChatNode(false, SPEAKER_TYPE.UNNKOWN); });
         }
     }
-    
+    //private void Update() {
+    //    if (Input.GetKeyUp(KeyCode.Return)) {
+
+
+    //        OnClickMineButton();
+    //    }
+    //}
+
     ////////////////////////////
     ///メソッド関連
     ///////////////////////////
 
-    /// <summary>
-    /// 自分のチャットを生成するときに呼ばれる
-    /// </summary>
-    public void OnClickMineButton() {
-        Debug.Log("OnClickMineButton");
-         CreateChatNode(false,SPEAKER_TYPE.UNNKOWN);
-    }
+    ///// <summary>
+    ///// 自分のチャットを生成するときに呼ばれる
+    ///// </summary>
+    //public void OnClickMineButton() {
+    //    Debug.Log("OnClickMineButton");
+
+    //}
 
     //第2引数がない場合は自動でNullを入れます。
     //指定がある場合はNullの代わりに別の引数が入る

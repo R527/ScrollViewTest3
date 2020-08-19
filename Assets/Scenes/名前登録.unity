@@ -284,6 +284,10 @@ MonoBehaviour:
   openVoting: 1
   fortuneType: 1
   timeType: 4
+  isPlayerPrefsDeleteAll: 0
+  isGameOver: 0
+  isCheckSuddenDeath: 0
+  isVoteCount: 0
   isTestPlay: 0
   testRollTypeList: 0100000005000000
 --- !u!4 &317373128
@@ -1259,8 +1263,8 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 209, y: 411}
-  m_ScreenMatchMode: 0
+  m_ReferenceResolution: {x: 209, y: 410}
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -1472,13 +1476,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9755b275ed87106478a67d0cce29a603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   playerName: 
   banUniqueIDList: []
   banUserNickNameList: []
+  roomBanUniqueIdList: []
+  roomBanUniqueIdStr: 
   banIndex: 0
   myUniqueId: 
+  banListIndex: 0
   banListMaxIndex: 0
   totalNumberOfMatches: 0
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
   totalNumberOfSuddenDeath: 0
+  checkTotalNumberOfMatches: 0
+  gameLogCount: 0
+  roomName: 
+  saveChatLog: 
+  getChatLogList: []
+  saveRoomCount: 0
+  myID: 0
