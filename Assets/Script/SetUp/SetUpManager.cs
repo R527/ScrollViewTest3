@@ -62,16 +62,22 @@ public class SetUpManager : MonoBehaviour
 
         //戦績を取得する
         PlayerManager.instance.totalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.総対戦回数.ToString(), 0);
-        PlayerManager.instance.totalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.勝利回数.ToString(), 0);
-        PlayerManager.instance.totalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.敗北回数.ToString(), 0);
+        PlayerManager.instance.totalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.総勝利回数.ToString(), 0);
+        PlayerManager.instance.totalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.総敗北回数.ToString(), 0);
         PlayerManager.instance.totalNumberOfSuddenDeath = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.突然死数.ToString(), 0);
         PlayerManager.instance.checkTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.突然死減少チェック.ToString(), 0);
 
+        PlayerManager.instance.beginnerTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者対戦回数.ToString(), 0);
+        PlayerManager.instance.beginnerTotalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者勝利回数.ToString(), 0);
+        PlayerManager.instance.beginnerTotalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者敗北回数.ToString(), 0);
+
+        PlayerManager.instance.generalTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般対戦回数.ToString(), 0);
+        PlayerManager.instance.generalTotalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般勝利回数.ToString(), 0);
+        PlayerManager.instance.generalTotalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般敗北回数.ToString(), 0);
 
         //音量取得
         AudioManager.instance.bgmVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.bgmVolume.ToString(), -25);
         AudioManager.instance.seVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.seVolume.ToString(), -25);
-
 
 
 

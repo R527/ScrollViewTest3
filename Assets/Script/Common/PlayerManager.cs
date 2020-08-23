@@ -28,10 +28,19 @@ public class PlayerManager : MonoBehaviour {
 
     //戦績関連
     [Header("戦績関連")]
+    //総合
     public int totalNumberOfMatches;//総対戦回数
     public int totalNumberOfWins;//総勝利数
     public int totalNumberOfLoses;//総敗北数
     public int totalNumberOfSuddenDeath;//突然死数
+    //初心者
+    public int beginnerTotalNumberOfMatches;
+    public int beginnerTotalNumberOfWins;
+    public int beginnerTotalNumberOfLoses;
+    //一般
+    public int generalTotalNumberOfMatches;
+    public int generalTotalNumberOfWins;
+    public int generalTotalNumberOfLoses;
 
     public int checkTotalNumberOfMatches;//25線ごとにチェックして突然死数を減らす
 
@@ -74,9 +83,21 @@ public class PlayerManager : MonoBehaviour {
     /// 戦績関連
     /// </summary>
     public enum BATTLE_RECORD_TYPE {
+        //総合
         総対戦回数,
-        勝利回数,
-        敗北回数,
+        総勝利回数,
+        総敗北回数,
+
+        //初心者
+        初心者対戦回数,
+        初心者勝利回数,
+        初心者敗北回数,
+
+        //一般
+        一般対戦回数,
+        一般勝利回数,
+        一般敗北回数,
+
         突然死数,
         突然死減少チェック,
     }
@@ -185,15 +206,40 @@ public class PlayerManager : MonoBehaviour {
     public void SetBattleRecordForPlayerPrefs(int setInt, BATTLE_RECORD_TYPE type) {
         //戦績関連
         switch (type) {
+
+            //総合
             case BATTLE_RECORD_TYPE.総対戦回数:
                 PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.総対戦回数.ToString(), setInt);
                 break;
-            case BATTLE_RECORD_TYPE.勝利回数:
-                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.勝利回数.ToString(), setInt);
+            case BATTLE_RECORD_TYPE.総勝利回数:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.総勝利回数.ToString(), setInt);
                 break;
-            case BATTLE_RECORD_TYPE.敗北回数:
-                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.敗北回数.ToString(), setInt);
+            case BATTLE_RECORD_TYPE.総敗北回数:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.総敗北回数.ToString(), setInt);
                 break;
+
+            //初心者
+            case BATTLE_RECORD_TYPE.初心者対戦回数:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.初心者対戦回数.ToString(), setInt);
+                break;
+            case BATTLE_RECORD_TYPE.初心者勝利回数:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.初心者勝利回数.ToString(), setInt);
+                break;
+            case BATTLE_RECORD_TYPE.初心者敗北回数:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.初心者敗北回数.ToString(), setInt);
+                break;
+
+            //一般
+            case BATTLE_RECORD_TYPE.一般対戦回数:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.一般対戦回数.ToString(), setInt);
+                break;
+            case BATTLE_RECORD_TYPE.一般勝利回数:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.一般勝利回数.ToString(), setInt);
+                break;
+            case BATTLE_RECORD_TYPE.一般敗北回数:
+                PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.一般敗北回数.ToString(), setInt);
+                break;
+
             case BATTLE_RECORD_TYPE.突然死数:
                 PlayerPrefs.SetInt(BATTLE_RECORD_TYPE.突然死数.ToString(), setInt);
                 break;

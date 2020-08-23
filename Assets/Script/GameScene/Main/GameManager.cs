@@ -631,6 +631,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             RoomData.instance.roomInfo.openVoting = (VOTING)PhotonNetwork.CurrentRoom.CustomProperties["openVoting"];
             RoomData.instance.roomInfo.title = (string)PhotonNetwork.CurrentRoom.CustomProperties["roomName"];
             RoomData.instance.numLimit = PhotonNetwork.CurrentRoom.MaxPlayers;
+            RoomData.instance.roomInfo.roomSelection = (ROOMSELECTION)PhotonNetwork.CurrentRoom.CustomProperties["roomSelect"];
             string roll = (string)PhotonNetwork.CurrentRoom.CustomProperties["numListStr"];
             int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
             RoomData.instance.rollList = intArray.ToList();

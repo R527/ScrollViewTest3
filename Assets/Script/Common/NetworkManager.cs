@@ -96,6 +96,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"openVoting", room.openVoting },
             {"numListStr", numListStr},
             {"banListStr", banListStr},
+            {"roomSelect", room.roomSelection },
             {"numLimit", maxPlayer}
 
         };
@@ -109,6 +110,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             "openVoting",
             "numListStr",
             "banListStr",
+            "roomSelect",
             "numLimit"
         };
         roomOptions.CustomRoomProperties = customRoomProperties;
