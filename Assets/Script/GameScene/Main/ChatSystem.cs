@@ -48,25 +48,15 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             chatInputField.onEndEdit.AddListener(delegate { CreateChatNode(false, SPEAKER_TYPE.UNNKOWN); });
         }
     }
-    //private void Update() {
-    //    if (Input.GetKeyUp(KeyCode.Return)) {
-
-
-    //        OnClickMineButton();
-    //    }
-    //}
+    private void Update() {
+        if (Input.GetKeyUp(KeyCode.Return)) {
+            CreateChatNode(false, SPEAKER_TYPE.UNNKOWN);
+        }
+    }
 
     ////////////////////////////
     ///メソッド関連
     ///////////////////////////
-
-    ///// <summary>
-    ///// 自分のチャットを生成するときに呼ばれる
-    ///// </summary>
-    //public void OnClickMineButton() {
-    //    Debug.Log("OnClickMineButton");
-
-    //}
 
     //第2引数がない場合は自動でNullを入れます。
     //指定がある場合はNullの代わりに別の引数が入る
@@ -111,18 +101,13 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         } else {
 
-            //ログ作成部分
-            //if (logTest) {
-            //    CreateLogChat();
-            //    return;
-            //}
-            //Playerの発言
-            Debug.Log(chatInputField.text);
             //チャットが空かつ通常チャットは生成しない
-            if (!comingOut && chatInputField.text == string.Empty) {
+            if (!comingOut &&  String.IsNullOrWhiteSpace(chatInputField.text)) {
                 return;
             }
-
+            //Playerの発言
+            Debug.Log(chatInputField.text);
+            //chatInputField.text == string.Empty 
             //死亡しているプレイヤー
             if (!myPlayer.live) {
                 Debug.Log("死亡");

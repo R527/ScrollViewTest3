@@ -19,16 +19,16 @@ public class RollExplanation : MonoBehaviour
     public Text statusText;//ステータス
     public GameObject rollExplanationPopUp;
     public GameObject rollButtonContent;//その他のボタンを置く場所
-    public RollExplanationButtonPrefab RollExplanationButtonPrefab;//その他の
+    public RollExplanationButtonPrefab rollExplanationButtonPrefab;//その他の
     public Button rollExplanationButton;//自分の役職詳細ボタン
 
 
-    /// <summary>
-    /// 役職説明ボタンの無効化と部屋設定ごとに役職説明用のボタンを用意する
-    /// </summary>
-    private void Start() {
-        rollExplanationButton.onClick.AddListener(RollExplanationButton);
-    }
+    ///// <summary>
+    ///// 役職説明ボタンの無効化と部屋設定ごとに役職説明用のボタンを用意する
+    ///// </summary>
+    //private void Start() {
+    //    rollExplanationButton.onClick.AddListener(RollExplanationButton);
+    //}
 
     /// <summary>
     /// GameManagerより役職リストをもらって役職説明ボタンを作る準備をする
@@ -36,13 +36,13 @@ public class RollExplanation : MonoBehaviour
     /// <param name="rollTypeList"></param>
     public void RollExplanationSetUp(List<ROLLTYPE> rollTypeList) {
         for (int i = 0; i < rollTypeList.Count; i++) {
-            RollExplanationButtonPrefab Obj = Instantiate(RollExplanationButtonPrefab, rollButtonContent.transform, false);
+            RollExplanationButtonPrefab Obj = Instantiate(rollExplanationButtonPrefab, rollButtonContent.transform, false);
             Obj.rollText.text = rollTypeList[i].ToString();
         }
     }
 
     /// <summary>
-    /// 役職説明ボタン
+    /// 自分の役職説明ボタン
     /// </summary>
     public void RollExplanationButton() {
         rollExplanationPopUp.SetActive(true);

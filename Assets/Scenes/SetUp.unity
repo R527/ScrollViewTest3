@@ -215,7 +215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f725455f805c746843577cfe5cdc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetSwich: 0
 --- !u!1 &1414915281379757486
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +329,12 @@ MonoBehaviour:
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
   totalNumberOfSuddenDeath: 0
+  beginnerTotalNumberOfMatches: 0
+  beginnerTotalNumberOfWins: 0
+  beginnerTotalNumberOfLoses: 0
+  generalTotalNumberOfMatches: 0
+  generalTotalNumberOfWins: 0
+  generalTotalNumberOfLoses: 0
   checkTotalNumberOfMatches: 0
   gameLogCount: 0
   roomName: 
@@ -380,7 +385,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa02f1440382db4cac061645077d770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 0
+  isDebug: 1
+  isTimeController: 1
   testMainTime: 10
   testNightTime: 10
   testVotingTime: 2
@@ -394,9 +400,9 @@ MonoBehaviour:
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isPlayerPrefsDeleteAll: 0
-  isGameOver: 0
-  isCheckSuddenDeath: 0
+  isPlayerPrefsDeleteAll: 1
+  isGameOver: 1
+  isCheckSuddenDeath: 1
   isVoteCount: 0
   isTestPlay: 0
   testRollTypeList: 04000000020000000400000000000000

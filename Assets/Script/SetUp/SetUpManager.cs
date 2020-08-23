@@ -10,10 +10,19 @@ using System;
 public class SetUpManager : MonoBehaviour
 {
 
-    public bool resetSwich;
-    
     void Start()
     {
+
+        //trueならすべてのDebug処理をしない
+        if (DebugManager.instance.isDebug) {
+            Debug.Log("debug");
+            DebugManager.instance.isTimeController = false;
+            DebugManager.instance.isPlayerPrefsDeleteAll = false;
+            DebugManager.instance.isGameOver = false;
+            DebugManager.instance.isCheckSuddenDeath = false;
+            DebugManager.instance.isVoteCount = false;
+            DebugManager.instance.isTestPlay = false;
+        }
 
         //DeBug用　trueならPlayerPrefsのKeyを削除する
         if (DebugManager.instance.isPlayerPrefsDeleteAll) {

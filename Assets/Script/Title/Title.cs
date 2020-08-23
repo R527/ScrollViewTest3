@@ -23,10 +23,15 @@ public class Title : MonoBehaviour
     public GameObject mainCanvas;
     public GameObject underBarCanvas;
 
+    public Text debugText;
 
 
 
     private void Start() {
+
+        if(DebugManager.instance.isDebug) {
+            Destroy(debugText.gameObject);
+        }
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);
         begginerButton.onClick.AddListener(BegginerGuideMenu);
         gameStartButton.onClick.AddListener(StartGameButton);

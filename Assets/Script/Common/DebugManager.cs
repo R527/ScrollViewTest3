@@ -10,8 +10,12 @@ public class DebugManager : MonoBehaviour
 {
     public static DebugManager instance;
 
+
+    public bool isDebug;//Debugのboolを管理する
+
+
     [Header("TimeControllerの時間管理用")]
-    public bool isDebug;//TimeControllerの時間管理用のDebug
+    public bool isTimeController;//TimeControllerの時間管理用のDebug
     public int testMainTime;
     public int testNightTime;
     public int testVotingTime;
@@ -25,7 +29,7 @@ public class DebugManager : MonoBehaviour
     public VOTING openVoting;
     public FORTUNETYPE fortuneType;
     public TIME timeType;
-
+    
     [Header("PlayerPrefs削除 trueなら削除")]
     public bool isPlayerPrefsDeleteAll;
 

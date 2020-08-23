@@ -515,7 +515,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         SetUpButton();
 
         //Startで反応しない場合は処理中に書くとよい
-        rollExplanation.RollExplanationSetUp(rollTypeList);
         comingOut.ComingOutSetUp(ComingOutButtonList);
         StartCoroutine(timeController.Init());
         chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat);
@@ -643,6 +642,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //役職説明のボタンを追加している
             rollTypeList.Add((ROLLTYPE)i);
         }
+
+        rollExplanation.RollExplanationSetUp(rollTypeList);
 
         if (DebugManager.instance.isDebug) {
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];

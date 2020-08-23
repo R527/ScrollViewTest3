@@ -198,18 +198,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2779470201878900961}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -5366768887920439300}
-        m_MethodName: RollExplanationButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &-5366768887920439300
@@ -224,5 +213,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f662a9ee7848c4585c27b77767288b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rollExplanation: {fileID: 0}
+  rollPopUP: {fileID: 5336381405413986538, guid: f535e387376178e438e967098a6ec3a5,
+    type: 3}
+  rollPopUPPrefab: {fileID: 5336381405413986538, guid: f535e387376178e438e967098a6ec3a5,
+    type: 3}
+  gameCanvas: {fileID: 0}
+  rollBtn: {fileID: 5796597464643197448}
   rollText: {fileID: 30088483104188167}
