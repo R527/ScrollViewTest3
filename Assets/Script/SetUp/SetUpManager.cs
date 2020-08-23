@@ -70,7 +70,7 @@ public class SetUpManager : MonoBehaviour
         PlayerManager.instance.beginnerTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者対戦回数.ToString(), 0);
         PlayerManager.instance.beginnerTotalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者勝利回数.ToString(), 0);
         PlayerManager.instance.beginnerTotalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者敗北回数.ToString(), 0);
-
+        
         PlayerManager.instance.generalTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般対戦回数.ToString(), 0);
         PlayerManager.instance.generalTotalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般勝利回数.ToString(), 0);
         PlayerManager.instance.generalTotalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般敗北回数.ToString(), 0);
