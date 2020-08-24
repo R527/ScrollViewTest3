@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 1331251797}
   - component: {fileID: 1331251796}
   - component: {fileID: 1331251795}
-  - component: {fileID: 1331251798}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -166,15 +165,15 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.21103895
+    x: 0.001404494
     y: 0
-    width: 0.5779221
+    width: 0.997191
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.4
+  orthographic size: 1.015
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -204,18 +203,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1331251798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1331251794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3be1cc5215a5c14081106bc43993dc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1414915281379757480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa02f1440382db4cac061645077d770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 1
+  isDebug: 0
   isTimeController: 1
   testMainTime: 10
   testNightTime: 10
@@ -413,7 +400,7 @@ MonoBehaviour:
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isPlayerPrefsDeleteAll: 1
+  isPlayerPrefsDeleteAll: 0
   isGameOver: 1
   isCheckSuddenDeath: 1
   isVoteCount: 0

@@ -10,6 +10,10 @@ using System;
 public class SetUpManager : MonoBehaviour
 {
 
+    void Awake() {
+        Screen.fullScreen = false;
+    }
+
     void Start()
     {
 
