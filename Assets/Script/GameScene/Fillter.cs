@@ -19,6 +19,8 @@ public class Fillter : MonoBehaviour
     public Button flodingButton;
     public Button comingOutButton;
 
+    public bool ischeackCloseInputView = true;
+
 
 
     public bool folding;//夕方～夜にかけて折り畳みを制限する
@@ -28,7 +30,7 @@ public class Fillter : MonoBehaviour
     void Start()
     {
         //フィルターボタンの追加
-        filterButton.onClick.AddListener(FilterButton);
+        filterButton.onClick.AddListener(() => FilterButton());
        
     }
 
@@ -39,16 +41,23 @@ public class Fillter : MonoBehaviour
     /// <summary>
     /// フィルター機能のONOFFを制御
     /// </summary>
-    public void FilterButton() {
+    public IEnumerator FilterButton() {
         Debug.Log("filter");
+
+        //PopUpを消す処理が終わるまで押せない
+        if (!ischeackCloseInputView) {
+            yield break;
+        }
 
         //フィルターボタン
         if (filterButtanText.text == "フィルター") {
             filterButtanText.text = "解除";
             chatListManager.isfilter = true;
+            //既にInputViewが上にあるなら下の処理をしない
             if (inputView.foldingText.text == "↓") {
-                return;
+                yield break;
             }
+            //テキストが解除ならフィルターを解除する
         } else {
             filterButtanText.text = "フィルター";
             chatListManager.isfilter = false;
@@ -56,7 +65,10 @@ public class Fillter : MonoBehaviour
         }
 
         //MenbarViewの上下ボタン
+        Debug.Log(folding);
+        //ボタンのテキストが上向きならInputViewを上にあげる
         if (inputView.foldingText.text == "↑") {
+            Debug.Log("上に");
             inputView.menberViewPopUpObj.SetActive(true);
             inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
             inputView.viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
@@ -64,8 +76,11 @@ public class Fillter : MonoBehaviour
             comingOutButton.interactable = false;
             inputView.foldingText.text = "↓";
 
-            //夕方から夜にかけて上下を制限する
+            //フィルター中に押したらInputViewを閉じる
         } else if(!folding){
+            Debug.Log("下に");
+            ischeackCloseInputView = false;
+            StartCoroutine(CloseInputView());
             inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
             inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
             flodingButton.interactable = true;
@@ -75,5 +90,10 @@ public class Fillter : MonoBehaviour
         }
     }
 
+
+    public IEnumerator CloseInputView() {
+        yield return new WaitForSeconds(0.5f);
+        ischeackCloseInputView = true;
+    }
 
 }

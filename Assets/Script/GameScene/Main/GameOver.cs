@@ -90,7 +90,8 @@ public class GameOver : MonoBehaviour {
         //ゲーム終了後の処理
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        timeController.isGameOver = false;
+        timeController.isPlay = false;
+        gameManager.fillter.folding = false;
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         gameManager.inputView.wolfMode = false;

@@ -38,7 +38,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool isPlaying;　　//gameが動いているかの判定
     public bool gameReady;//ゲーム待機状態か否か
     public bool isSpeaking;//喋ったか否かtrueならしゃべった
-    public bool isGameOver;//falseならゲームオーバー
+    public bool isPlay;//falseならゲームオーバー
     private float chekTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
 
@@ -79,7 +79,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public IEnumerator Init() {
         firstDay = true;
-        isGameOver = true;
+        isPlay = true;
         timeType = TIME.処刑後チェック;
         playState = PlayState.Interval;
         //savingButton.interactable = true;
@@ -143,7 +143,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     void Update() {
 
         //ゲーム終了したら実行しない
-        if (!isGameOver) {
+        if (!isPlay) {
             return;
         }
 
