@@ -2616,7 +2616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &313929564
 AudioListener:
   m_ObjectHideFlags: 0
@@ -7703,7 +7703,7 @@ MonoBehaviour:
   isPlaying: 0
   gameReady: 0
   isSpeaking: 0
-  isGameOver: 0
+  isPlay: 0
   isVotingCompleted: 0
   savingButton: {fileID: 163000424}
   COButton: {fileID: 1812546287}
@@ -8271,6 +8271,7 @@ MonoBehaviour:
   filterButton: {fileID: 474407752}
   flodingButton: {fileID: 48525514}
   comingOutButton: {fileID: 1812546287}
+  ischeackCloseInputView: 1
   folding: 0
 --- !u!1 &1018278468
 GameObject:

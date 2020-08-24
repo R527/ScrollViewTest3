@@ -15,7 +15,6 @@ public class SetUpManager : MonoBehaviour
 
         //trueならすべてのDebug処理をしない
         if (DebugManager.instance.isDebug) {
-            Debug.Log("debug");
             DebugManager.instance.isTimeController = false;
             DebugManager.instance.isPlayerPrefsDeleteAll = false;
             DebugManager.instance.isGameOver = false;

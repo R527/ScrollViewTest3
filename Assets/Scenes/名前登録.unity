@@ -271,6 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
+  isTimeController: 0
   testMainTime: 10
   testNightTime: 10
   testVotingTime: 10
@@ -398,7 +399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &498141100
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1490,6 +1491,12 @@ MonoBehaviour:
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
   totalNumberOfSuddenDeath: 0
+  beginnerTotalNumberOfMatches: 0
+  beginnerTotalNumberOfWins: 0
+  beginnerTotalNumberOfLoses: 0
+  generalTotalNumberOfMatches: 0
+  generalTotalNumberOfWins: 0
+  generalTotalNumberOfLoses: 0
   checkTotalNumberOfMatches: 0
   gameLogCount: 0
   roomName: 
