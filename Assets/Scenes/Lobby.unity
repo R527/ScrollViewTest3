@@ -2806,7 +2806,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 203, y: 410}
+  m_ReferenceResolution: {x: 203, y: 406}
   m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
@@ -2822,7 +2822,7 @@ Canvas:
   m_GameObject: {fileID: 371853315}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 762847578}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -5482,7 +5482,7 @@ Canvas:
   m_GameObject: {fileID: 727840329}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 762847578}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -5962,7 +5962,6 @@ GameObject:
   - component: {fileID: 762847579}
   - component: {fileID: 762847578}
   - component: {fileID: 762847577}
-  - component: {fileID: 762847580}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5997,9 +5996,9 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.15582192
+    x: 0
     y: 0
-    width: 0.68835616
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -6035,19 +6034,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &762847580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762847576}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3be1cc5215a5c14081106bc43993dc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugText: {fileID: 0}
 --- !u!1 &769253569
 GameObject:
   m_ObjectHideFlags: 0
@@ -13688,7 +13674,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 157.12288}
+  m_AnchoredPosition: {x: 0, y: 156.72742}
   m_SizeDelta: {x: 205, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1417060680
@@ -13941,7 +13927,7 @@ Canvas:
   m_GameObject: {fileID: 1433998610}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 762847578}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -14657,7 +14643,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 203, y: 410}
+  m_ReferenceResolution: {x: 203, y: 406}
   m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
@@ -14673,7 +14659,7 @@ Canvas:
   m_GameObject: {fileID: 1536450138}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 762847578}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -17491,7 +17477,7 @@ Canvas:
   m_GameObject: {fileID: 1792950986}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 762847578}
   m_PlaneDistance: 100
   m_PixelPerfect: 0

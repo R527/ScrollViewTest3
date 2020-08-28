@@ -56,7 +56,7 @@ public class StableAspect : MonoBehaviour {
             Debug.Log("camWidth" + camWidth);
             Debug.Log("cam.rect" + cam.rect);
 
-            debugText.text = "画面が横に広い　height" + height + "Screen.height" + Screen.height + "bgScale" + bgScale + "camWidth" + camWidth + "cam.rect" + cam.rect;
+            //debugText.text = "画面が横に広い　height" + height + "Screen.height" + Screen.height + "bgScale" + bgScale + "camWidth" + camWidth + "cam.rect" + cam.rect;
 
         } else {
             //画面が縦に長い
@@ -69,7 +69,7 @@ public class StableAspect : MonoBehaviour {
             // viewportRectを設定
             cam.rect = new Rect(0f, 0f, 1f, 1f);
 
-            debugText.text = "画面が縦に長い　bgScale" + bgScale + "cam.orthographicSize" + cam.orthographicSize + "cam.rect" + cam.rect;
+            //debugText.text = "画面が縦に長い　bgScale" + bgScale + "cam.orthographicSize" + cam.orthographicSize + "cam.rect" + cam.rect;
         }
     }
 

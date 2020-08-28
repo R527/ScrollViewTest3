@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class MainCamera : MonoBehaviour {
     Camera cam;
@@ -10,6 +12,8 @@ public class MainCamera : MonoBehaviour {
     public float pexelPerUnit = 100f;
     public Text debugText;
 
+    
+
     void Awake() {
         float screenW = (float)Screen.width;
         float screenH = (float)Screen.height;
@@ -17,13 +21,20 @@ public class MainCamera : MonoBehaviour {
 
         Debug.Log("screenW" + screenW + " screenH" + screenH);
         if (screenW / screenH < width / height) {
-            cam.orthographicSize = 10.0f;
-            //cam.orthographicSize = screenH / (screenW / (width / pexelPerUnit)) / 2;
+            //cam.orthographicSize = 10.0f;
+            cam.orthographicSize = screenH / (screenW / (width / pexelPerUnit)) / 2;
         } else {
-            cam.orthographicSize = 10.0f;
-            //cam.orthographicSize = height / 2 / pexelPerUnit;
+            //cam.orthographicSize = 10.0f;
+            cam.orthographicSize = height / 2 / pexelPerUnit;
         }
         Debug.Log("cam.orthographicSize" + cam.orthographicSize);
-        debugText.text = "screenW" + screenW + " screenH" + screenH + " cam.orthographicSize" + cam.orthographicSize;
+
+        float camScalerX = gameObject.GetComponent<CanvasScaler>().referenceResolution.x;
+        float camScalerY = gameObject.GetComponent<CanvasScaler>().referenceResolution.y;
+        debugText.text = "screenW" + screenW + " screenH" + screenH + " cam.orthographicSize" + cam.orthographicSize + "camScalerX" + camScalerX + "camScalerY" + camScalerY;
+
+        
     }
+
 }
+

@@ -2610,7 +2610,6 @@ GameObject:
   - component: {fileID: 313929566}
   - component: {fileID: 313929565}
   - component: {fileID: 313929564}
-  - component: {fileID: 313929567}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2653,7 +2652,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2683,18 +2682,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &313929567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 313929563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3be1cc5215a5c14081106bc43993dc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &316776598
 GameObject:
   m_ObjectHideFlags: 0
@@ -5017,7 +5004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 47.372746, y: -20.300018}
+  m_AnchoredPosition: {x: 47.37274, y: -20.300018}
   m_SizeDelta: {x: 9.750412, y: 36.600037}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &527031520
@@ -10434,7 +10421,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 203, y: 410}
+  m_ReferenceResolution: {x: 203, y: 406}
   m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
@@ -10450,7 +10437,7 @@ Canvas:
   m_GameObject: {fileID: 1221547288}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 313929565}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -14414,7 +14401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 21.248772, y: -20.300018}
+  m_AnchoredPosition: {x: 21.24878, y: -20.300018}
   m_SizeDelta: {x: 38.49754, y: 36.600037}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628576554

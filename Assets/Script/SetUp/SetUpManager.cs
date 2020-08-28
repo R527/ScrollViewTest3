@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 
@@ -9,6 +10,8 @@ using System;
 /// </summary>
 public class SetUpManager : MonoBehaviour
 {
+
+
 
     void Awake() {
         Screen.fullScreen = false;
@@ -93,24 +96,11 @@ public class SetUpManager : MonoBehaviour
 
 
 
-        //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
-        if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {
 
-            //名前が登録されている状態のみ確認する
-            //突然死用のフラグを見て戦績に反映する
-            if (PlayerPrefs.GetString("突然死用のフラグ", "") != PlayerManager.SuddenDeath_TYPE.ゲーム正常終了.ToString()) {
-                Debug.Log("突然死確認" + PlayerPrefs.GetString("突然死用のフラグ"));
-                PlayerManager.instance.totalNumberOfSuddenDeath++;
-                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
-            }
-            Debug.Log("正常");
-            PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
-
-            SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
-        } else {
-            SceneStateManager.instance.NextScene(SCENE_TYPE.名前登録);
-        }
     }
+
+
+
 
 
 }
