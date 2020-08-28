@@ -86,7 +86,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
 
         //Debug用
-        if (DebugManager.instance.isDebug) {
+        if (DebugManager.instance.isTimeController) {
             votingTime = DebugManager.instance.testVotingTime;
             executionTime = DebugManager.instance.testExecutionTime;
             checkGameOverTime = DebugManager.instance.testCheckGameOverTime;

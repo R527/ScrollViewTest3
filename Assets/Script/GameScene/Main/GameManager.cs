@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         num = GetNum();
         enterNum = GetEnterNum();
 
-        if (DebugManager.instance.isDebug && PhotonNetwork.IsMasterClient) {
+        if (DebugManager.instance.isTimeController && PhotonNetwork.IsMasterClient) {
             num = DebugManager.instance.num;
             enterNum = DebugManager.instance.enterNum;
             var customProperties = new ExitGames.Client.Photon.Hashtable {
@@ -645,7 +645,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         rollExplanation.RollExplanationSetUp(rollTypeList);
 
-        if (DebugManager.instance.isDebug) {
+        if (DebugManager.instance.isTimeController) {
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];
             RoomData.instance.roomInfo.nightTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testNightTime"];
 

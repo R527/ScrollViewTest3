@@ -100,7 +100,7 @@ public class RoomSetting : MonoBehaviour
         //部屋をインスタンスと同時に部屋情報を渡す。
         RoomNode room = Instantiate(RoomNodePrefab, content.transform, false);
         //と同時に部屋情報を渡す。
-        if (DebugManager.instance.isDebug) {
+        if (DebugManager.instance.isTimeController) {
             openVoting = DebugManager.instance.openVoting;
             fortuneType = DebugManager.instance.fortuneType;
         }
@@ -114,7 +114,7 @@ public class RoomSetting : MonoBehaviour
         RoomData.instance.roomInfo = roomInfo;
         RoomData.instance.rollList = rollSetting.NumList;
 
-        if (DebugManager.instance.isDebug) {
+        if (DebugManager.instance.isTimeController) {
             RoomData.instance.numLimit = DebugManager.instance.numLimit;
         } else {
             RoomData.instance.numLimit = rollSetting.numLimit;

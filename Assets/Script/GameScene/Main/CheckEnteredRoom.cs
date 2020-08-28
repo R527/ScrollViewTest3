@@ -26,7 +26,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
 
         //人数制限をセットする
 
-        if (DebugManager.instance.isDebug) {
+        if (DebugManager.instance.isTimeController) {
             gameManager.numLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties["numLimit"];
         } else {
             gameManager.numLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties["numLimit"];

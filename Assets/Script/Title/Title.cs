@@ -40,7 +40,7 @@ public class Title : MonoBehaviour
             Debug.Log("nav");
         }
 
-        if (DebugManager.instance.isDebug) {
+        if (DebugManager.instance.isTimeController) {
             Destroy(debugText.gameObject);
         }
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);

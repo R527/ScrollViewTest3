@@ -12,11 +12,12 @@ public class DebugManager : MonoBehaviour
     public static DebugManager instance;
 
 
+    
     public bool isDebug;//Debugのboolを管理する
 
-
     [Header("TimeControllerの時間管理用")]
-    public bool isTimeController;//TimeControllerの時間管理用のDebug
+    //public bool isTimeController;//TimeControllerの時間管理用のDebug
+    public bool isTimeController;
     public int testMainTime;
     public int testNightTime;
     public int testVotingTime;
