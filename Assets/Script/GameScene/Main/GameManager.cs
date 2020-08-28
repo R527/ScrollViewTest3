@@ -515,7 +515,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         SetUpButton();
 
         //Startで反応しない場合は処理中に書くとよい
-        rollExplanation.RollExplanationSetUp(rollTypeList);
         comingOut.ComingOutSetUp(ComingOutButtonList);
         StartCoroutine(timeController.Init());
         chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat);
@@ -631,6 +630,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             RoomData.instance.roomInfo.openVoting = (VOTING)PhotonNetwork.CurrentRoom.CustomProperties["openVoting"];
             RoomData.instance.roomInfo.title = (string)PhotonNetwork.CurrentRoom.CustomProperties["roomName"];
             RoomData.instance.numLimit = PhotonNetwork.CurrentRoom.MaxPlayers;
+            RoomData.instance.roomInfo.roomSelection = (ROOMSELECTION)PhotonNetwork.CurrentRoom.CustomProperties["roomSelect"];
             string roll = (string)PhotonNetwork.CurrentRoom.CustomProperties["numListStr"];
             int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
             RoomData.instance.rollList = intArray.ToList();
@@ -642,6 +642,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //役職説明のボタンを追加している
             rollTypeList.Add((ROLLTYPE)i);
         }
+
+        rollExplanation.RollExplanationSetUp(rollTypeList);
 
         if (DebugManager.instance.isDebug) {
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];

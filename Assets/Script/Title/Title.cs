@@ -23,10 +23,26 @@ public class Title : MonoBehaviour
     public GameObject mainCanvas;
     public GameObject underBarCanvas;
 
+    public Text debugText;
 
 
+    private void Awake() {
+
+    }
 
     private void Start() {
+
+        if (DebugManager.instance.isNavCheack) {
+            Screen.fullScreen = true;
+            Debug.Log("full");
+        } else {
+            Screen.fullScreen = false;
+            Debug.Log("nav");
+        }
+
+        if (DebugManager.instance.isDebug) {
+            Destroy(debugText.gameObject);
+        }
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);
         begginerButton.onClick.AddListener(BegginerGuideMenu);
         gameStartButton.onClick.AddListener(StartGameButton);

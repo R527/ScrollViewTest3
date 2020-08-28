@@ -66,6 +66,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         fortuneType = roomInfo.fortuneType;
         openVoting = roomInfo.openVoting;
         settingNum = rollSumNum;
+        Debug.Log(roomInfo.roomSelection);
         roomSelection = roomInfo.roomSelection;
         title = roomInfo.title;
 
@@ -95,6 +96,15 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         string banListStr = (string)roomInfo.CustomProperties["banListStr"];
         Debug.Log(banListStr);
         banList = banListStr.Split(',').ToList<string>();
+
+        //ルール設定を表示する
+        mainTime = (int)roomInfo.CustomProperties["mainTime"];
+        nightTime = (int)roomInfo.CustomProperties["nightTime"];
+        fortuneType = (FORTUNETYPE)roomInfo.CustomProperties["fortuneType"];
+        openVoting = (VOTING)roomInfo.CustomProperties["openVoting"];
+        roomSelection = (ROOMSELECTION)roomInfo.CustomProperties["roomSelect"];
+        ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting;
+
 
         //GameObjectがNullでなければ、
         //かつ自分がBanListに登録されていなければtrueにする
@@ -144,12 +154,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         //人数が満員だったら押せない
         enterButton.interactable = (roomInfo.PlayerCount < roomInfo.MaxPlayers);
 
-        //ルール設定を表示する
-        mainTime = (int)roomInfo.CustomProperties["mainTime"];
-        nightTime = (int)roomInfo.CustomProperties["nightTime"];
-        fortuneType = (FORTUNETYPE)roomInfo.CustomProperties["fortuneType"];
-        openVoting = (VOTING)roomInfo.CustomProperties["openVoting"];
-        ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting;
 
         //ルームID取得
         Debug.Log((string)roomInfo.CustomProperties["roomId"]);

@@ -96,6 +96,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"openVoting", room.openVoting },
             {"numListStr", numListStr},
             {"banListStr", banListStr},
+            {"roomSelect", room.roomSelection },
             {"numLimit", maxPlayer}
 
         };
@@ -109,6 +110,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             "openVoting",
             "numListStr",
             "banListStr",
+            "roomSelect",
             "numLimit"
         };
         roomOptions.CustomRoomProperties = customRoomProperties;
@@ -269,7 +271,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// 部屋から退出させる。
     /// </summary>
     public void LeaveRoom() {
-        gameManager.timeController.isGameOver = false;
+        gameManager.timeController.isPlay = false;
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
             Debug.Log("退出完了");
@@ -280,7 +282,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// 強制退出させます。
     /// </summary>
     public void ForcedExitRoom() {
-        gameManager.timeController.isGameOver = false;
+        gameManager.timeController.isPlay = false;
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
             Debug.Log("強制退出完了");

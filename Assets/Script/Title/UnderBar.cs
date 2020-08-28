@@ -16,14 +16,20 @@ public class UnderBar : MonoBehaviour
     public RectTransform contentRectTransform;
 
     public void MovingShopContent() {
-        contentRectTransform.DOLocalMoveX(-104.5f, 0.4f);
+        //contentRectTransform.DOLocalMoveX(-104.5f, 0.4f);
+        contentRectTransform.DOLocalMoveX(-101.5f, 0.4f);
+
     }
 
     public void MovingHomeContent() {
-        contentRectTransform.DOLocalMoveX(-313.5f, 0.4f);
+        //contentRectTransform.DOLocalMoveX(-313.5f, 0.4f);
+        contentRectTransform.DOLocalMoveX(-305f, 0.4f);
+
     }
 
     public void MovingFriendContent() {
-        contentRectTransform.DOLocalMoveX(-522.5f, 0.4f);
+        //contentRectTransform.DOLocalMoveX(-522.5f, 0.4f);
+        contentRectTransform.DOLocalMoveX(-507.5f, 0.4f);
+
     }
 }

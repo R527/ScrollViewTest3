@@ -14,11 +14,23 @@ public class PlayerInfoPopUp : MonoBehaviour
     public Button maskButton;
     public Button backButton;
 
-    //Test
+    //Text
     public Text totalNumberOfMatchesText;
     public Text totalNumberOfWinsText;
     public Text totalNumberOfLosesText;
+    public Text totalNumberOfwinRateText;
     public Text totalNumberOfSuddenDeathText;
+
+    public Text begginerOfMatchesText;
+    public Text begginerOfWinsText;
+    public Text begginerOfwinRateText;
+    public Text begginerOfLosesText;
+
+    public Text generalOfMatchesText;
+    public Text generalOfWinsText;
+    public Text generalOfwinRateText;
+    public Text generalOfLosesText;
+
 
     //GameLog
     public GameLogNode gameLogPrefab;
@@ -34,9 +46,32 @@ public class PlayerInfoPopUp : MonoBehaviour
         totalNumberOfMatchesText.text = PlayerManager.instance.totalNumberOfMatches + "回";
         totalNumberOfWinsText.text = PlayerManager.instance.totalNumberOfWins + "回";
         totalNumberOfLosesText.text = PlayerManager.instance.totalNumberOfLoses + "回";
+
+        if (PlayerManager.instance.totalNumberOfWins == 0) {
+            totalNumberOfwinRateText.text = "0%";
+        } else {
+            totalNumberOfwinRateText.text = 100 * (PlayerManager.instance.totalNumberOfWins / PlayerManager.instance.totalNumberOfWins) + "%";
+        }
+
         totalNumberOfSuddenDeathText.text = PlayerManager.instance.totalNumberOfSuddenDeath + "回";
 
-        
+        begginerOfMatchesText.text = PlayerManager.instance.beginnerTotalNumberOfMatches + "回";
+        begginerOfWinsText.text = PlayerManager.instance.beginnerTotalNumberOfWins + "回";
+        begginerOfLosesText.text = PlayerManager.instance.beginnerTotalNumberOfLoses + "回";
+        if(PlayerManager.instance.beginnerTotalNumberOfMatches == 0) {
+            begginerOfwinRateText.text = "0%";
+        } else {
+            begginerOfwinRateText.text = 100 * (PlayerManager.instance.beginnerTotalNumberOfWins / PlayerManager.instance.beginnerTotalNumberOfMatches) + "%";
+        }
+
+        generalOfMatchesText.text = PlayerManager.instance.generalTotalNumberOfMatches + "回";
+        generalOfWinsText.text = PlayerManager.instance.generalTotalNumberOfWins + "回";
+        generalOfLosesText.text = PlayerManager.instance.generalTotalNumberOfLoses + "回";
+        if (PlayerManager.instance.generalTotalNumberOfMatches == 0) {
+            generalOfwinRateText.text = "0%";
+        } else {
+            generalOfwinRateText.text = 100 * (PlayerManager.instance.generalTotalNumberOfWins / PlayerManager.instance.generalTotalNumberOfMatches) + "%";
+        }
         PlayerManager.instance.GetSaveRoomData();
         CreateGameLog();
     }

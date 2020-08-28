@@ -17,6 +17,9 @@ public class RulePopUp : BasePopUP {
     public Text timeText;
     public Text votedText;
 
+    public GameObject rollButtonContent;
+    public RollExplanationButtonPrefab rollExplanationButtonPrefab;
+
     public Text confirmationRollListText;
 
 
@@ -59,4 +62,14 @@ public class RulePopUp : BasePopUP {
         }
     }
 
+    /// <summary>
+    /// GameManagerより役職リストをもらって役職説明ボタンを作る準備をする
+    /// </summary>
+    /// <param name="rollTypeList"></param>
+    public void RollExplanationSetUp(List<ROLLTYPE> rollTypeList) {
+        for (int i = 0; i < rollTypeList.Count; i++) {
+            RollExplanationButtonPrefab Obj = Instantiate(rollExplanationButtonPrefab, rollButtonContent.transform, false);
+            Obj.rollText.text = rollTypeList[i].ToString();
+        }
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 
@@ -10,10 +11,24 @@ using System;
 public class SetUpManager : MonoBehaviour
 {
 
-    public bool resetSwich;
-    
+
+
+    void Awake() {
+        Screen.fullScreen = false;
+    }
+
     void Start()
     {
+
+        //trueならすべてのDebug処理をしない
+        if (DebugManager.instance.isDebug) {
+            DebugManager.instance.isTimeController = false;
+            DebugManager.instance.isPlayerPrefsDeleteAll = false;
+            DebugManager.instance.isGameOver = false;
+            DebugManager.instance.isCheckSuddenDeath = false;
+            DebugManager.instance.isVoteCount = false;
+            DebugManager.instance.isTestPlay = false;
+        }
 
         //DeBug用　trueならPlayerPrefsのKeyを削除する
         if (DebugManager.instance.isPlayerPrefsDeleteAll) {
@@ -62,11 +77,18 @@ public class SetUpManager : MonoBehaviour
 
         //戦績を取得する
         PlayerManager.instance.totalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.総対戦回数.ToString(), 0);
-        PlayerManager.instance.totalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.勝利回数.ToString(), 0);
-        PlayerManager.instance.totalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.敗北回数.ToString(), 0);
+        PlayerManager.instance.totalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.総勝利回数.ToString(), 0);
+        PlayerManager.instance.totalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.総敗北回数.ToString(), 0);
         PlayerManager.instance.totalNumberOfSuddenDeath = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.突然死数.ToString(), 0);
         PlayerManager.instance.checkTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.突然死減少チェック.ToString(), 0);
 
+        PlayerManager.instance.beginnerTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者対戦回数.ToString(), 0);
+        PlayerManager.instance.beginnerTotalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者勝利回数.ToString(), 0);
+        PlayerManager.instance.beginnerTotalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.初心者敗北回数.ToString(), 0);
+        
+        PlayerManager.instance.generalTotalNumberOfMatches = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般対戦回数.ToString(), 0);
+        PlayerManager.instance.generalTotalNumberOfWins = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般勝利回数.ToString(), 0);
+        PlayerManager.instance.generalTotalNumberOfLoses = PlayerPrefs.GetInt(PlayerManager.BATTLE_RECORD_TYPE.一般敗北回数.ToString(), 0);
 
         //音量取得
         AudioManager.instance.bgmVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.bgmVolume.ToString(), -25);
@@ -75,24 +97,10 @@ public class SetUpManager : MonoBehaviour
 
 
 
-        //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
-        if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {
-
-            //名前が登録されている状態のみ確認する
-            //突然死用のフラグを見て戦績に反映する
-            if (PlayerPrefs.GetString("突然死用のフラグ", "") != PlayerManager.SuddenDeath_TYPE.ゲーム正常終了.ToString()) {
-                Debug.Log("突然死確認" + PlayerPrefs.GetString("突然死用のフラグ"));
-                PlayerManager.instance.totalNumberOfSuddenDeath++;
-                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
-            }
-            Debug.Log("正常");
-            PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
-
-            SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
-        } else {
-            SceneStateManager.instance.NextScene(SCENE_TYPE.名前登録);
-        }
     }
+
+
+
 
 
 }

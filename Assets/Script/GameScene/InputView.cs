@@ -182,7 +182,12 @@ public class InputView : MonoBehaviour {
 
     private void availabilityButton() {
         //ボタン有効にする
-        wolfModeButton.interactable = true;
+
+        //プレイ中かつ狼ならtrueにする
+        if(chatListManager.gameManager.timeController.isPlay && chatListManager.gameManager.chatSystem.myPlayer.wolfChat) {
+            wolfModeButton.interactable = true;
+
+        }
         superChatButton.interactable = true;
     }
 }

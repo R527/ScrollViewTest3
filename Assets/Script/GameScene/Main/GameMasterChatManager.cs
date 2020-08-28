@@ -172,7 +172,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //&& photonView.IsMine
             Debug.Log("退出");
             //game中なら正常終了しているかの確認を取る
-            if (timeController.isGameOver) {
+            if (timeController.isPlay) {
                 timeController.gameOver.CheckEndGame();
             }
             gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";

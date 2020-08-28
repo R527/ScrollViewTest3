@@ -26,6 +26,7 @@ TagManager:
   - BanPlayerList
   - ChatLog
   - PlayerInfoPopUp
+  - Vocabulary
   layers:
   - Default
   - TransparentFX
