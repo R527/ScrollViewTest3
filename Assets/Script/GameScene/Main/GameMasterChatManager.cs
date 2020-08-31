@@ -26,6 +26,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     //public Button exitButton;
     public string gameMasterChat;
     public bool isTimeSaving;//時短用のbool
+    public ActionPopUp actionPopUpPrefab;
+    public Transform gameCancasTran;
+
     //早朝用
     public int bitedID;//噛んだプレイヤーID
     public int protectedID;//守ったプレイヤーID
@@ -35,6 +38,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
 
     void Start() {
+
+        gameCancasTran = GameObject.FindGameObjectWithTag("GameCanvas").transform;
+
         timeSavingButton.onClick.AddListener(() => TimeSavingOrExitButton());
         //exitButton.onClick.AddListener(ExitButton);
         //カスタムプロパティ
@@ -240,11 +246,11 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// 投票を完了させる
     /// </summary>
-    public void Voted(Photon.Realtime.Player player, bool live) {
-        if(!live) {
-            Debug.Log("押せません");
-            return;
-        }
+    public void Voted(Photon.Realtime.Player player) {
+        //if(!live) {
+        //    Debug.Log("押せません");
+        //    return;
+        //}
         gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんは" + player.NickName + "に投票しました。";
         gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         gameMasterChat = string.Empty;
@@ -378,6 +384,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             return;
         }
 
+        //buttonを押したプレイヤーを指定
         foreach(Player playerObj in gameManager.chatSystem.playersList) {
             if(playerObj.playerID == playerID) {
                 thePlayer = playerObj;
@@ -395,42 +402,45 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 } else {
                     //噛んだプレイヤーを記録
                     //biteID = playerID;
-                    bitedID = thePlayer.playerID;
-                    Debug.Log("噛んだID" + thePlayer.playerID);
-                    SetBitedPlayerID();
-                    Debug.Log("噛んだID" + bitedID);
-                    gameMasterChat = thePlayer.playerName + "さんを襲撃します。";
-                    Debug.Log(thePlayer.playerName + "襲撃します。");
+
+                    ActionPopUp biteObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                    biteObj.actionText.text = thePlayer.playerName + "さんを襲撃しますか？";
+                    biteObj.buttonText.text = "襲撃";
+                    biteObj.gameManager = this.gameManager;
+                    biteObj.playerName = thePlayer.playerName;
+                    biteObj.playerID = thePlayer.playerID;
+                    biteObj.action_Type = ActionPopUp.Action_Type.襲撃;
                 }
                 break;
 
             case ROLLTYPE.占い師:
                 //初日ではなく もしくは初日占いなし
-                if(!timeController.firstDay || RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.あり) {
-                    if (!fortune) {
-                        gameMasterChat = "【占い結果】\r\n" + thePlayer.playerName + "は人狼ではない（白）です。";
-                        Debug.Log("白");
-                    } else {
-                        gameMasterChat = "【占い結果】\r\n" + thePlayer.playerName + "は人狼（黒）です。";
-                        Debug.Log("黒");
-                    }
+                if (!timeController.firstDay || RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.あり) {
+                    ActionPopUp fortuneObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                    fortuneObj.actionText.text = thePlayer.playerName + "さんを占いますか？";
+                    fortuneObj.buttonText.text = "占う";
+                    fortuneObj.gameManager = this.gameManager;
+                    fortuneObj.playerName = thePlayer.playerName;
+                    fortuneObj.fortune = fortune;
+                    fortuneObj.action_Type = ActionPopUp.Action_Type.占い;
                 }
                 break;
             case ROLLTYPE.騎士:
-                gameMasterChat = thePlayer.playerName + "さんを護衛します。";
-                Debug.Log("守ります");
-                //守ったプレイヤーを記録
-                protectedID = thePlayer.playerID;
-                SetProtectedPlayerID();
-                Debug.Log("守ったID" + protectedID);
+
+                ActionPopUp kightObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                kightObj.actionText.text = thePlayer.playerName + "さんを護衛しますか？";
+                kightObj.buttonText.text = "護衛";
+                kightObj.gameManager = this.gameManager;
+                kightObj.playerName = thePlayer.playerName;
+                kightObj.action_Type = ActionPopUp.Action_Type.護衛;
+
+
                 break;
             default:
                 Debug.Log("押せません。");
                 return;
         }
-        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        Debug.Log("RollAction");
-        gameMasterChat = string.Empty;
+
 
     }
 
@@ -464,7 +474,10 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     }
                 }
 
+
+
             }
+
             if (photonView.IsMine) {
                 gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
             }
@@ -472,11 +485,22 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
         }
 
+        //PlayerListの死亡処理
         foreach (Player playerObj in gameManager.chatSystem.playersList) {
             if (playerObj.playerID == bitedID) {
                 Debug.Log("かみ殺したID"　+ playerObj.playerID);
                 playerObj.live = false;
                 break;
+            }
+        }
+
+        //PlayerButtonの死亡処理
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerButton");
+        foreach (GameObject player in objs) {
+            PlayerButton playerObj = player.GetComponent<PlayerButton>();
+            if (bitedID == playerObj.playerID) {
+                playerObj.live = false;
+                playerObj.playerText.text += timeController.day + "日目襲撃";
             }
         }
 

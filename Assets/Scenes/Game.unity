@@ -9531,6 +9531,9 @@ MonoBehaviour:
   LeavePopUp: {fileID: 0}
   gameMasterChat: 
   isTimeSaving: 0
+  actionPopUpPrefab: {fileID: 356964420616384462, guid: 41fd3eb5dc8d15d4e97cc9cd433f3ab9,
+    type: 3}
+  gameCancasTran: {fileID: 1221547292}
   bitedID: 0
   protectedID: 0
   bitedPlayer: {fileID: 0}

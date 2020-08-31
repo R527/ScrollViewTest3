@@ -119,10 +119,12 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 //青チャット
             } else if (inputView.superChat) {
                 Debug.Log("青");
+                CheckSuddenDeath();
                 boardColor = 1;
                 //通常のチャット
             } else {
                 Debug.Log("通常");
+                CheckSuddenDeath();
                 boardColor = 0;
             }
             Debug.Log("色変更通過");
@@ -140,14 +142,23 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             myPlayer.CreateNode(id, inputData, boardColor, comingOut);
 
 
-            //一言でも発言したら参加しているものとして扱う
-            if (!gameMasterChatManager.gameManager.timeController.isSpeaking) {
-                gameMasterChatManager.gameManager.timeController.isSpeaking = true;
-            }
+
 
         }
 
 
+    }
+
+    /// <summary>
+    /// 一度でも話したら突然死回避
+    /// </summary>
+    private void CheckSuddenDeath() {
+        //一言でも発言したら参加しているものとして扱う
+        if (!gameMasterChatManager.gameManager.timeController.isSpeaking && photonView.IsMine) {
+            gameMasterChatManager.gameManager.timeController.isSpeaking = true;
+            gameMasterChatManager.gameManager.timeController.setPlayerID = myID;
+            gameMasterChatManager.gameManager.timeController.SetSuddenDeathID();
+        }
     }
 
     /// <summary>
@@ -311,5 +322,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
         StartCoroutine(gameMasterChatManager.gameManager.inputView.PopUpFalse());
     }
+
+
 }
 

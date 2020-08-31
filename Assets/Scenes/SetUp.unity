@@ -890,7 +890,7 @@ MonoBehaviour:
   banIndex: 0
   myUniqueId: 
   banListIndex: 0
-  banListMaxIndex: 0
+  banListMaxIndex: 1
   totalNumberOfMatches: 0
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
@@ -954,23 +954,23 @@ MonoBehaviour:
   isDebug: 0
   isTimeController: 1
   testMainTime: 10
-  testNightTime: 10
+  testNightTime: 2
   testVotingTime: 2
   testExecutionTime: 2
   testCheckGameOverTime: 2
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 1
+  numLimit: 2
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 0
-  isCheckSuddenDeath: 1
-  isVoteCount: 0
-  isTestPlay: 0
+  isGameOver: 1
+  isCheckSuddenDeath: 0
+  isVoteCount: 1
+  isTestPlay: 1
   testRollTypeList: 04000000020000000400000000000000
   navBtn: {fileID: 9790613}
   fullScrBtn: {fileID: 1195131201}

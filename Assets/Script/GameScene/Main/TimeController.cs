@@ -38,6 +38,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool isPlaying;　　//gameが動いているかの判定
     public bool gameReady;//ゲーム待機状態か否か
     public bool isSpeaking;//喋ったか否かtrueならしゃべった
+    public int setPlayerID;
     public bool isPlay;//falseならゲームオーバー
     private float chekTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
@@ -259,20 +260,23 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 isDisplay = true;
                 totalTime = votingTime;
 
-                //突然死チェック
-                if (gameManager.chatSystem.myPlayer.live && !DebugManager.instance.isCheckSuddenDeath) {
+                ////突然死チェック
+                //if (gameManager.chatSystem.myPlayer.live && !DebugManager.instance.isCheckSuddenDeath) {
 
-                    //突然死処理
-                    if (!isSpeaking) {
-                        Debug.Log("突然死");
-                        //chatSystem.myPlayer.live = false;
-                        SetSuddenDeathID();
-                    }
-                    //一日ごとに突然死チェックするのでリセット
-                    isSpeaking = false;
-                }
+                //    //突然死処理
+                //    foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
 
+                //    }
+                //    if (GetIsSpeaking()) {
+                //        Debug.Log("突然死");
+                //        SetSuddenDeathID();
+                //        isSuddenDeath = true;
+                //    }
 
+                //}
+
+                //一日ごとに突然死チェックするのでリセット
+                isSpeaking = false;
 
                 //GMチャットなど
                 TimesavingControllerFalse();
@@ -297,12 +301,27 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 //自分の世界で突然死したプレイヤーの生存情報をfalseにする
                 if (!DebugManager.instance.isCheckSuddenDeath) {
+                    //PlayerButtonの死亡処理
+                    GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerButton");
+                    foreach (GameObject player in objs) {
+                        PlayerButton playerObj = player.GetComponent<PlayerButton>();
+                        if (GetSuddenDeathID(playerObj.playerID) == playerObj.playerID) {
+                            playerObj.live = false;
+                            playerObj.playerText.text += day + "日目突然死";
+                        }
+                    }
+
                     foreach (Player player in chatSystem.playersList) {
-                        if (GetSuddenDeathID(player.playerID) == player.playerID && player.live) {
+                        if (GetSuddenDeathID(player.playerID) != player.playerID && player.live) {
                             gameManager.gameMasterChatManager.SuddenDeath(player);
                             player.live = false;
                         }
+
+                        setPlayerID = -9999;
+                        SetSuddenDeathID();
                     }
+
+
                 }
 
                 //死亡したプレイヤーの処理
@@ -328,9 +347,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                         {"votingCompleted",false }
                     };
                         player.SetCustomProperties(properties);
-                        //Debug.Log((int)player.CustomProperties["voteNum"]);
-                        //Debug.Log((string)player.CustomProperties["voteName"]);
-                        //Debug.Log((bool)player.CustomProperties["votingCompleted"]);
                     }
 
                 }
@@ -700,30 +716,39 @@ public class TimeController : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
-    /// 突然死したプレイヤーのPlayerIDをセットする
+    /// 突然死したらフラグを付ける
     /// </summary>
-    private void SetSuddenDeathID() {
-        PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.不参加);
+    public void SetSuddenDeathID() {
+        //PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.不参加);
+        
         var properties = new ExitGames.Client.Photon.Hashtable {
-            {"suddenDeathID" + chatSystem.myPlayer.playerID,chatSystem.myPlayer.playerID},
+            {"suddenDeathID" + chatSystem.myPlayer.playerID,setPlayerID},
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
     }
 
     /// <summary>
     /// 突然死したプレイヤーIDをもらう
+    /// 引数はKey保存するときにプレイヤーIDごと保存するので突然死してないならnullが入っている
     /// </summary>
     /// <returns></returns>
-    private int GetSuddenDeathID(int suddenDeathID) {
-        //int suddenDeathID = 0;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("suddenDeathID" + suddenDeathID, out object suddenDeathIDObj)) {
+    private int GetSuddenDeathID(int id) {
+        int suddenDeathID = 0;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("suddenDeathID" + id, out object suddenDeathIDObj)) {
             suddenDeathID = (int)suddenDeathIDObj;
         }
         //Debug.Log(suddenDeathID);
         return suddenDeathID;
     }
 
-
+    private bool GetIsSpeaking() {
+        //int suddenDeathID = 0;
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isSpeaking" , out object isSpeakingObj)) {
+            isSpeaking = (bool)isSpeakingObj;
+        }
+        //Debug.Log(suddenDeathID);
+        return isSpeaking;
+    }
 }
 
 

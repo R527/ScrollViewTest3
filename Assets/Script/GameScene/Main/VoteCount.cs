@@ -100,6 +100,17 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             }
         }
 
+        //PlayerButtonの死亡処理
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerButton");
+        foreach (GameObject player in objs) {
+            PlayerButton playerObj = player.GetComponent<PlayerButton>();
+            if (GetExecutionPlayerID() == playerObj.playerID) {
+                playerObj.live = false;
+                playerObj.playerText.text += gameManager.timeController.day + "日目処刑";
+                
+            }
+        }
+
         //生存数を更新
         gameManager.liveNum--;
         gameManager.SetLiveNum();
