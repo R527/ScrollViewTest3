@@ -38,7 +38,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="chatData"></param>
     public void InitChatNode(ChatData chatData, int iconNo, bool comingOut) {
-        Debug.Log("InitChatNode");
+
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         comingOutClass = GameObject.FindGameObjectWithTag("ComingOut").GetComponent<ComingOut>();
         
@@ -62,10 +62,8 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             //stringがnullかから文字かを判定し、その判定をbool型で返す。
             //(chatData.playerID - 1)はGM分をー１にする調整
             if (comingOutClass.GetComingOutText(playerID) == "") {
-                Debug.Log("ComingOut : 未");
                 statusText.text = chatData.playerName;
             } else {
-                Debug.Log("Coming:済");
                 statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) +
                     "CO】";
                 //チャットデータ。PlayerNameにCo状況も載せてチャットログを複製するときに使用する
@@ -76,7 +74,6 @@ public class ChatNode : MonoBehaviourPunCallbacks {
 
         //発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
         if (chatData.chatType == CHAT_TYPE.MINE) {
-            Debug.Log("UpperRight");
             layoutGroup.childAlignment = TextAnchor.UpperRight;
             chatVerticalLayoutGroup.childAlignment = TextAnchor.LowerRight;
             statusText.alignment = TextAnchor.MiddleRight;
@@ -85,10 +82,8 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         } else {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
-        //Debug.Log("CO" + comingOut);
         //COした場合幅等を変更する
         if (comingOut) {
-            Debug.Log("ComingOut:" + chatData.playerName);
             chatSystem.chatInputField.text = "";
 
             //COすると名前の横にCO状況を表示
@@ -142,7 +137,6 @@ public class ChatNode : MonoBehaviourPunCallbacks {
 
         //発言の生成位置の設定　最初だけContentのせいで必ず左寄りに制しえされる問題あり
         if (chatData.chatType == CHAT_TYPE.MINE) {
-            Debug.Log("UpperRight");
             layoutGroup.childAlignment = TextAnchor.UpperRight;
             chatVerticalLayoutGroup.childAlignment = TextAnchor.LowerRight;
             statusText.alignment = TextAnchor.MiddleRight;

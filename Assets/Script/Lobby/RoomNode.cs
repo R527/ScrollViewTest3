@@ -66,7 +66,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         fortuneType = roomInfo.fortuneType;
         openVoting = roomInfo.openVoting;
         settingNum = rollSumNum;
-        Debug.Log(roomInfo.roomSelection);
         roomSelection = roomInfo.roomSelection;
         title = roomInfo.title;
 

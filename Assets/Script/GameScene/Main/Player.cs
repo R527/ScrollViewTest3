@@ -77,7 +77,7 @@ public class Player : MonoBehaviourPunCallbacks {
         propertiers.Add("myUniqueID", PlayerManager.instance.myUniqueId);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
-            Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
+            //Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
         }
 
 
@@ -119,7 +119,6 @@ public class Player : MonoBehaviourPunCallbacks {
         if (photonView.IsMine) {
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
         } else if (!photonView.IsMine) {
-            Debug.Log("NOtIsMine");
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
             StartCoroutine(SetOtherPlayer());
         }
@@ -134,7 +133,7 @@ public class Player : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         playerButton.transform.SetParent(buttontran);
-        Debug.Log("playerName" + playerName);
+        //Debug.Log("playerName" + playerName);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
 
         //Button作成完了を通知する
@@ -222,7 +221,7 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <param name="boardColor"></param>
     /// <param name="comingOut"></param>
     public void CreateNode(int id, string inputData, int boardColor, bool comingOut) {
-        Debug.Log("CreateNode: Player");
+        //Debug.Log("CreateNode: Player");
         photonView.RPC(nameof(CreateChatNodeFromPlayer), RpcTarget.All, id, inputData, boardColor, comingOut);
     }
 
@@ -236,10 +235,9 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <param name="comingOut"></param>
     [PunRPC]
     public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut) {
-        Debug.Log("RPC START");
 
         ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, rollType);
-        Debug.Log(chatData.inputData);
+
 
         //発言者の分岐
         if (photonView.IsMine) {
@@ -262,9 +260,7 @@ public class Player : MonoBehaviourPunCallbacks {
         //そのメソッドの先で呼ばれるメソッドもRPCと同じ挙動をする
         chatNode.InitChatNode(chatData, iconNo, comingOut);
 
-        Debug.Log(comingOut);
         chatSystem.SetChatNode(chatNode, chatData, comingOut);
-        Debug.Log("Player RPC END");
     }
 
 
@@ -275,26 +271,20 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <returns></returns>
 
     private IEnumerator SetOtherPlayer() {
-        Debug.Log("othetrs");
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
                 //Debug.Log(player.ActorNumber);
                 //Debug.Log(player.NickName);
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
-                Debug.Log("playerName" + playerName);
-                Debug.Log("player.NickName" + player.NickName);
+
                 iconNo = player.ActorNumber;
                 break;
             }
         }
-        Debug.Log(playerName);
-        Debug.Log(iconNo);
-        Debug.Log(playerID);
+
         //playerText.text = rollType.ToString() + playerName;
 
-        Debug.Log(playerButton);
-        Debug.Log(gameManager);
 
         //自分のボタンが作られるまで待つ
         bool isCreatePlayerButton = false;
@@ -305,7 +295,6 @@ public class Player : MonoBehaviourPunCallbacks {
             } else {
                 yield return null;
             }
-            Debug.Log(isCreatePlayerButton);
         }
 
         yield return new WaitForSeconds(2.0f);
@@ -314,8 +303,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //参加人数が揃っていたらtrueにしない
         // TODO 修正
-        Debug.Log(gameManager.GetNum());
-        Debug.Log(gameManager.numLimit);
+
         if (gameManager.GetNum() != gameManager.numLimit) {
             gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
 
@@ -348,7 +336,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
                 if ((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
                     checkNum++;
-                    Debug.Log("投票完了したプレイヤー" + player.NickName);
+                    //Debug.Log("投票完了したプレイヤー" + player.NickName);
                 }
             }
             //投票完了人数が生存員数と一致したら時短する
@@ -376,7 +364,7 @@ public class Player : MonoBehaviourPunCallbacks {
             } else {
                 yield return null;
             }
-            Debug.Log(isBanPlayer);
+
         }
         yield break;
     }
@@ -388,12 +376,11 @@ public class Player : MonoBehaviourPunCallbacks {
             if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEmptyRoom", out object isCheckEmptyRoomObj)) {
                 emtyRoom = (EMPTYROOM)Enum.Parse(typeof(EMPTYROOM), isCheckEmptyRoomObj.ToString());
                 //満室処理
-                Debug.Log(checkEmptyRoomCoroutine);
+                //Debug.Log(checkEmptyRoomCoroutine);
                 if (emtyRoom == EMPTYROOM.満室 || emtyRoom == EMPTYROOM.入室許可) {
                     isCheck = true;
                 } 
             }
-            Debug.Log(isCheck);
             yield return null;
         }
 
@@ -417,8 +404,7 @@ public class Player : MonoBehaviourPunCallbacks {
     private bool WaitOtherCreatePlayerButton() {
 
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEnteredRoom", out object isCheckEnteredRoomObj)) {
-            Debug.Log("PhotonNetwork.LocalPlayer" + PhotonNetwork.LocalPlayer.ActorNumber);
-            Debug.Log("(bool)isCheckEnteredRoomObj" + (bool)isCheckEnteredRoomObj);
+
             return (bool)isCheckEnteredRoomObj;
         }else {
             return false;
@@ -426,27 +412,5 @@ public class Player : MonoBehaviourPunCallbacks {
     }
 
 
-    /////////////////////
-    ///カスタムプロパティ関連
-    /////////////////////
-
-
-    //private void SetPlayerName() {
-    //    Debug.Log(playerName);
-    //    var propertis = new ExitGames.Client.Photon.Hashtable {
-    //            {"playerName",playerName }
-    //        };
-    //    Debug.Log(PhotonNetwork.LocalPlayer.NickName);
-    //    PhotonNetwork.LocalPlayer.SetCustomProperties(propertis);
-    //    Debug.Log("playerName" + (string)PhotonNetwork.LocalPlayer.CustomProperties["playerName"]);
-    //}
-
-    //private string GetPlayerName(Photon.Realtime.Player player) {
-    //    if (player.CustomProperties.TryGetValue("playerName", out object playerNameObj)) {
-    //        playerName = (string)playerNameObj;
-    //    }
-    //    Debug.Log("playerName" + playerName);
-    //    return playerName;
-    //}
 }
 

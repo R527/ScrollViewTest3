@@ -67,7 +67,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == playerID) {
                 myUniqueId = (string)player.CustomProperties["myUniqueID"];
-                Debug.Log("myUniqueId" + myUniqueId);
+                //Debug.Log("myUniqueId" + myUniqueId);
             }
         }
 

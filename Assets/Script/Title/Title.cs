@@ -34,10 +34,8 @@ public class Title : MonoBehaviour
 
         if (DebugManager.instance.isNavCheack) {
             Screen.fullScreen = true;
-            Debug.Log("full");
         } else {
             Screen.fullScreen = false;
-            Debug.Log("nav");
         }
 
         if (DebugManager.instance.isTimeController) {
