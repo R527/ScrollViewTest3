@@ -24,7 +24,8 @@ public class PlayerManager : MonoBehaviour {
     public Dictionary<string, string> banTable = new Dictionary<string, string>();
     public string myUniqueId;//自分の端末番号
     public int banListIndex;//BanListの今の登録数
-    public int banListMaxIndex = 1;//BanListの最大の登録数
+    [Header("BanListの最大の登録数")]
+    public int banListMaxIndex;//BanListの最大の登録数
 
     //戦績関連
     [Header("戦績関連")]

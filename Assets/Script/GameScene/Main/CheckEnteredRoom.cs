@@ -34,8 +34,8 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         }
 
         var propertiers = new ExitGames.Client.Photon.Hashtable();
-        Debug.Log("gameManager.GetNum()" + gameManager.GetNum());
-        Debug.Log("gameManager.numLimit" + gameManager.numLimit);
+        //Debug.Log("gameManager.GetNum()" + gameManager.GetNum());
+        //Debug.Log("gameManager.numLimit" + gameManager.numLimit);
         //満室ならフラグを立てる
         if (gameManager.GetNum() >= gameManager.numLimit && !PhotonNetwork.IsMasterClient) {
             Debug.Log("満室");

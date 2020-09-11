@@ -306,7 +306,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         banPlayerKickOutOREnteredRoomCoroutine = BanPlayerKickOutOREnteredRoom(newPlayer);
         StartCoroutine(checkEmptyRoomCoroutine);
         StartCoroutine(banPlayerKickOutOREnteredRoomCoroutine);
-        Debug.Log(checkEmptyRoomCoroutine);
+
     }
 
     /// <summary>
@@ -379,12 +379,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     private IEnumerator BanPlayerKickOutOREnteredRoom(Photon.Realtime.Player newPlayer) {
 
-        Debug.Log(newPlayer.CustomProperties["myUniqueID"]);
         while (newPlayer.CustomProperties["myUniqueID"] == null) {
-            Debug.Log(newPlayer.CustomProperties["myUniqueID"]);
             yield return null;
         }
-        Debug.Log("BanPlayerKickOutOREnteredRoom");
 
         var propertiers = new ExitGames.Client.Photon.Hashtable();
 
@@ -410,16 +407,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //BanPlayerがいる場合ここで処理を停止する
         //満室の場合もここで処理を止める
         if (isBanCheck) {
-            Debug.Log("BanPlayerがいます");
             yield break;
         }
 
-        Debug.Log("通過");
         propertiers.Add("isBanPlayer", false);
         newPlayer.SetCustomProperties(propertiers);
 
         if (emtyRoom == EMPTYROOM.満室) {
-            Debug.Log("満室停止");
             yield break;
         }
 
@@ -438,24 +432,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             if (newPlayer.CustomProperties.TryGetValue("isCheckEmptyRoom", out object isCheckEmptyRoomObj)) {
                 emtyRoom = (EMPTYROOM)Enum.Parse(typeof(EMPTYROOM), isCheckEmptyRoomObj.ToString());
                 //満室処理
-                Debug.Log(checkEmptyRoomCoroutine);
                 if (emtyRoom == EMPTYROOM.満室 || emtyRoom == EMPTYROOM.入室許可) {
                     isCheck = true;
                 }
             }
-            Debug.Log(isCheck);
             yield return null;
         }
 
         if (emtyRoom == EMPTYROOM.満室) {
-            Debug.Log("満室です。" + emtyRoom);
             yield break;
         }
     }
 
     public IEnumerator SetCoroutine(Photon.Realtime.Player newPlayer) {
         yield return StartCoroutine(CheckEmptyRoom(newPlayer));
-        Debug.Log("チェック終了");
     }
 
     public Dictionary<string,RoomNode> GetActiveEntries() {
@@ -479,11 +469,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
         //RoomBanListも追加する
         banListStr += PlayerManager.instance.roomBanUniqueIdStr;
-        Debug.Log(banListStr);
         if (banListStr != "") {
             banListStr.Substring(0, banListStr.Length - 1);
         }
-        Debug.Log(banListStr);
         var customRoomBanListProperties = new ExitGames.Client.Photon.Hashtable {
             {"banListStr",banListStr }
         };

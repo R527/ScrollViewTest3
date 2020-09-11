@@ -25,6 +25,8 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public ROLLTYPE rollType = ROLLTYPE.ETC;
     public bool live;//生死 trueで生存している
     public Text rollText;
+    public ActionPopUp actionPopUpPrefab;
+    public Transform gameCancasTran;
     
     //後からもらう
     public bool fortune;//占い結果 true=黒
@@ -37,7 +39,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
 
     private void Start() {
-        //Debug.Log("PlayerButtonStart");
+        gameCancasTran = GameObject.FindGameObjectWithTag("GameCanvas").transform;
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
         tran.localScale = new Vector3(1, 1, 1);
         
@@ -65,7 +67,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == playerID) {
                 myUniqueId = (string)player.CustomProperties["myUniqueID"];
-                Debug.Log("myUniqueId" + myUniqueId);
+                //Debug.Log("myUniqueId" + myUniqueId);
             }
         }
 
@@ -118,6 +120,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             //フィルター機能がOFFの時は各時間ごとの機能をする
             Debug.Log(gameManager.timeController.timeType);
 
+            //TODO 必要？
             //BanListの追加
             if (!live) {
                 AddBanPlayer();
@@ -129,70 +132,21 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                 case TIME.投票時間:
                     //ここでは投票をするだけで他プレイヤーとの比較判定はしない
                     //比較はVoteCount.csで行われる
-                    if (!gameManager.chatSystem.myPlayer.isVoteFlag && live) {
-                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                            //Photonが用意しているActorNumberという数字とPLayerクラスが持っているPlayerIDが合致したら
-                            //playerIDはActorNumberからもらっているから合致したら同じ番号を持っているクラスだといえる
-                            if (player.ActorNumber == playerID) {
 
-                                //最新の投票数を取得する
-                                int voteNum = 0;
-                                string voteName = string.Empty;
-                                bool votingCompleted = false;
-                                //指定されたplayerのキーに登録する
-                                if (player.CustomProperties.TryGetValue("voteNum", out object voteCountObj)) {
-                                    voteNum = (int)voteCountObj;
-                                }
-                                voteNum++;
+                    ActionPopUp voteObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                    voteObj.actionText.text = playerName + "さんに投票しますか？";
+                    voteObj.buttonText.text = "投票する";
+                    voteObj.gameManager = this.gameManager;
+                    voteObj.playerID = this.playerID;
+                    voteObj.action_Type = ActionPopUp.Action_Type.投票;
 
-                                //投票したプレイヤーの名前を登録します
-                                if (player.CustomProperties.TryGetValue("voteName", out object voteNameObj)) {
-                                    voteName = (string)voteNameObj;
-                                }
-                                voteName += gameManager.chatSystem.myPlayer.playerName + ",";
-
-                                //一人のプレイヤーが投票を完了したらtrue
-                                if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
-                                    votingCompleted = (bool)votingCompletedObj;
-                                }
-                                votingCompleted = true;
-
-                                var propertiers = new ExitGames.Client.Photon.Hashtable {
-                                    {"voteName", voteName },
-                                    {"voteNum", voteNum },
-                                    {"votingCompleted",votingCompleted }
-                                };
-
-                                player.SetCustomProperties(propertiers);
-
-                                Debug.Log((int)player.CustomProperties["voteNum"]);
-                                Debug.Log((string)player.CustomProperties["voteName"]);
-                                Debug.Log((bool)player.CustomProperties["votingCompleted"]);
-
-                                //投票数の表示をディクショナリーで管理
-                                //voteCount.voteCountTable[playerID] = voteNum;
-
-
-                                //Debug.Log(voteCount.voteNameTable[playerID]);
-                                //投票のチャット表示
-                                gameManager.gameMasterChatManager.Voted(player, live);
-
-                                Debug.Log("投票完了");
-
-
-                            }
-                        }
-                        gameManager.chatSystem.myPlayer.isVoteFlag = true;
-                    }
                     break;
 
                 //夜の行動をとる処理
                 case TIME.夜の行動:
                     Debug.Log("夜の行動");
                     if (!gameManager.chatSystem.myPlayer.isRollAction) {
-
                         gameManager.gameMasterChatManager.RollAction(playerID, fortune, wolf);
-                        gameManager.chatSystem.myPlayer.isRollAction = true;
                     }
                     break;
 
@@ -200,16 +154,13 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                 //強制退出させたプレイヤーはBanListに追加される
                 case TIME.開始前:
                     Debug.Log("強制退出");
-                    if (PhotonNetwork.IsMasterClient) {
-                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                            if (player.ActorNumber == playerID && gameManager.chatSystem.myPlayer.playerID != playerID) {
-                                PlayerManager.instance.roomBanUniqueIdList.Add((string)player.CustomProperties["myUniqueID"]);
-                                PlayerManager.instance.roomBanUniqueIdStr += (string)player.CustomProperties["myUniqueID"] + ",";
-                                gameManager.gameMasterChatManager.ForcedEvictionRoom(player);
-                                break;
-                            }
-                        }
-                    }
+                    ActionPopUp obj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                    obj.actionText.text = playerName + "さんを強制退出させますか？";
+                    obj.buttonText.text = "強制退場";
+                    obj.gameManager = this.gameManager;
+                    obj.playerID = this.playerID;
+                    obj.action_Type = ActionPopUp.Action_Type.強制退場;
+
                     break;
                     //BanPlayerの追加
                 case TIME.終了:
@@ -231,14 +182,16 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             //枠が空いている場合
             Debug.Log("追加されました");
 
-            PlayerManager.instance.banIndex = PlayerManager.instance.banListIndex;
-            Debug.Log(PlayerManager.instance.banIndex);
-            Debug.Log(PlayerManager.instance.banListIndex);
-            PlayerManager.instance.SetStringForPlayerPrefs(myUniqueId, PlayerManager.ID_TYPE.banUniqueID);
-            PlayerManager.instance.SetStringForPlayerPrefs(playerName, PlayerManager.ID_TYPE.banUserNickName);
-            PlayerManager.instance.banListIndex++;
+            ActionPopUp obj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+            obj.actionText.text = playerName + "さんを回避しますか？";
+            obj.buttonText.text = "回避する";
+            obj.gameManager = this.gameManager;
+            obj.playerID = this.playerID;
+            obj.playerName = this.name;
+            obj.myUniqueId = this.myUniqueId;
+            obj.action_Type = ActionPopUp.Action_Type.Ban;
+
             
-            PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.banListIndex, PlayerManager.ID_TYPE.banListMaxIndex);
         }
     }
 

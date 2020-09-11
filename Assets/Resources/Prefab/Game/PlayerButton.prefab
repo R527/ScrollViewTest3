@@ -365,6 +365,9 @@ MonoBehaviour:
   rollType: 7
   live: 0
   rollText: {fileID: 842529130656084474}
+  actionPopUpPrefab: {fileID: 356964420616384462, guid: 41fd3eb5dc8d15d4e97cc9cd433f3ab9,
+    type: 3}
+  gameCancasTran: {fileID: 0}
   fortune: 0
   spiritual: 0
   wolf: 0

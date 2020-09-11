@@ -135,10 +135,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
-            Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
-            Debug.Log(PhotonNetwork.CurrentRoom.MaxPlayers);
+            //Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
+            //Debug.Log(PhotonNetwork.CurrentRoom.MaxPlayers);
             PhotonNetwork.CurrentRoom.IsOpen = true;
-            Debug.Log("IsOpne空室" + PhotonNetwork.CurrentRoom.IsOpen);
+            //Debug.Log("IsOpne空室" + PhotonNetwork.CurrentRoom.IsOpen);
         }
 
         isCheckEnteredRoom = true;

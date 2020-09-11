@@ -21,6 +21,7 @@ public class BasePopUP : MonoBehaviour {
     /// </summary>
     protected virtual void Start() {
         if (closeButtonSwich) {
+            
             closeButton.onClick.AddListener(ClosePopUp);
         } else {
             if(closeButton != null) {
