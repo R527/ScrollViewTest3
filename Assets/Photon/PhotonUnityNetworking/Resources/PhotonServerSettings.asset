@@ -16,9 +16,9 @@ MonoBehaviour:
     AppIdRealtime: a0111b1a-e01b-41cb-9aab-c2cecbc16d97
     AppIdChat: 
     AppIdVoice: 
-    AppVersion: 1.0
+    AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: jp
     Server: 
     Port: 0
     Protocol: 0
@@ -31,11 +31,11 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - CreateChatNodeFromPlayer
+  - CreateGameMasterChatNode
+  - CreatePlayerButton
   - DestroyRpc
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - CreateGameMasterChatNode
-  - CreatePlayerButton
   DisableAutoOpenWizard: 1
   ShowSettings: 1
