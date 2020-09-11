@@ -3,5 +3,5 @@
     TITLE,
     LOBBY,
     GAME,
-    名前登録
+    SetName
 }

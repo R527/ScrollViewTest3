@@ -94,7 +94,7 @@ public class DebugManager : MonoBehaviour
 
             SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
         } else {
-            SceneStateManager.instance.NextScene(SCENE_TYPE.名前登録);
+            SceneStateManager.instance.NextScene(SCENE_TYPE.SetName);
         }
     }
 }
