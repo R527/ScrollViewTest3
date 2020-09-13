@@ -509,6 +509,15 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
   
     }
 
+    /// <summary>
+    /// 強制退出残り時間わずかの時に発言する
+    /// </summary>
+    public void EndRoomChat() {
+        gameMasterChat = "部屋閉じるまで残り2分です。";
+        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        gameMasterChat = string.Empty;
+    }
+
 
     /////////////////////////////
     ///カスタムプロパティ関連

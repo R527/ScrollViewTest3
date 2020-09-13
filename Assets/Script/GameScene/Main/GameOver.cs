@@ -17,9 +17,36 @@ public class GameOver : MonoBehaviour {
     public GameObject timeSavingButton;
     public string winnerList;
 
-    
+    //gameOverになると時間を計測する
+    private float chekTimer;
+    public int time;
+    public bool isCheck;
+    public bool isCheckGMChat;
+    public GameObject endRoomPopUp;
 
-    
+
+    private void Update() {
+        //geme終了後時間を計測する
+        if (timeController.timeType == TIME.終了) {
+            chekTimer += Time.deltaTime;
+            if (chekTimer >= 1) {
+                chekTimer = 0;
+                time--;
+            }
+        }
+
+        if(time == 120 && !isCheckGMChat) {
+            isCheckGMChat = true;
+            gameManager.gameMasterChatManager.EndRoomChat();
+        }
+
+        //一定時間を過ぎると強制退出する処理
+        if(time <= 0 && !isCheck) {
+            isCheck = true;
+            GameObject obj = GameObject.FindGameObjectWithTag("GameCanvas");
+            Instantiate(endRoomPopUp, obj.transform, false);
+        }
+    }
 
     /// <summary>
     /// 人狼の人数を把握してゲーム終了かどうかをマスターだけが確認する
