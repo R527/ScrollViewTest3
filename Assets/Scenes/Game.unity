@@ -9669,8 +9669,9 @@ MonoBehaviour:
   liverCount: 0
   timeSavingButton: {fileID: 163000422}
   winnerList: 
-  time: 15
+  time: 900
   isCheck: 0
+  isCheckGMChat: 0
   endRoomPopUp: {fileID: 6357942932309481835, guid: 296bd69aaa947ab46aecb985bc50a1d3,
     type: 3}
 --- !u!114 &1130743584

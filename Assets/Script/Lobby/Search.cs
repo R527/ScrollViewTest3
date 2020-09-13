@@ -128,20 +128,20 @@ public class Search : MonoBehaviour {
         switch (searchRoomSelection) {
             case ROOMSELECTION.初心者:
                 searchRoomSelection = ROOMSELECTION.一般;
-                searchRoomSelectText.text = searchRoomSelection.ToString();
                 SearchRoomNode();
                 break;
             case ROOMSELECTION.一般:
-                searchRoomSelection = ROOMSELECTION.観戦; 
-                searchRoomSelectText.text = searchRoomSelection.ToString();
+                searchRoomSelection = ROOMSELECTION.初心者; 
                 SearchRoomNode();
                 break;
-            case ROOMSELECTION.観戦:
-                searchRoomSelection = ROOMSELECTION.初心者;
-                searchRoomSelectText.text = searchRoomSelection.ToString();
-                SearchRoomNode();
-                break;
+            //case ROOMSELECTION.観戦:
+            //    searchRoomSelection = ROOMSELECTION.初心者;
+            //    searchRoomSelectText.text = searchRoomSelection.ToString();
+            //    SearchRoomNode();
+            //    break;
         }
+        searchRoomSelectText.text = searchRoomSelection.ToString();
+
         roomSelectionText.text = searchRoomSelection.ToString();
     }
 
@@ -153,21 +153,20 @@ public class Search : MonoBehaviour {
 
         switch (searchRoomSelection) {
             case ROOMSELECTION.初心者:
-                searchRoomSelection = ROOMSELECTION.観戦;
-                searchRoomSelectText.text = searchRoomSelection.ToString();
-                SearchRoomNode();
-                break;
-            case ROOMSELECTION.観戦:
                 searchRoomSelection = ROOMSELECTION.一般;
-                searchRoomSelectText.text = searchRoomSelection.ToString();
                 SearchRoomNode();
                 break;
+            //case ROOMSELECTION.観戦:
+            //    searchRoomSelection = ROOMSELECTION.一般;
+            //    searchRoomSelectText.text = searchRoomSelection.ToString();
+            //    SearchRoomNode();
+            //    break;
             case ROOMSELECTION.一般:
                 searchRoomSelection = ROOMSELECTION.初心者;
-                searchRoomSelectText.text = searchRoomSelection.ToString();
                 SearchRoomNode();
                 break;
         }
+        searchRoomSelectText.text = searchRoomSelection.ToString();
         roomSelectionText.text = searchRoomSelection.ToString();
     }
 
