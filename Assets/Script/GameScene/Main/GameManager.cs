@@ -495,7 +495,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     private IEnumerator StartGame() {
         //各自が自分の分のプレイヤーを作る
-        SetUpMyRollType();
+        StartCoroutine(SetUpMyRollType());
 
         //自分が参加者全員のプレイヤーをもらってリストにする
         yield return StartCoroutine(SetPlayerData());
@@ -548,7 +548,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// PlayerObjの作成
     /// </summary>
-    private void SetUpMyRollType() {
+    private IEnumerator SetUpMyRollType() {
+
+        //Debug用　一人でDebugしたときに処理する
+        if(DebugManager.instance.numLimit == 1) {
+            yield return StartCoroutine(WaitCreatePlayer());
+        }
+
         //取得した自分の番号と同じ番号を探して役職を設定する
         foreach (Photon.Realtime.Player playerData in PhotonNetwork.PlayerList) {
             Debug.Log(chatSystem.myPlayer.playerID);
@@ -562,7 +568,15 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //自分のプレイヤークラスを使う時用。
             chatSystem.myPlayer.PlayerSetUp(this,voteCount,timeController);
     }
-
+    /// <summary>
+    /// Debug用　一人でdebugするときに処理する
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator WaitCreatePlayer() {
+        while (chatSystem.myPlayer == null) {
+            yield return null;
+        }
+    }
     /// <summary>
     /// 各プレイヤーのプレイヤークラスをもらってリストにする
     /// </summary>
