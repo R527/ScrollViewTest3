@@ -38,7 +38,7 @@ public class Title : MonoBehaviour
         //    Screen.fullScreen = false;
         //}
 
-        if (DebugManager.instance.isTimeController) {
+        if (DebugManager.instance.isDebug) {
             Destroy(debugText.gameObject);
         }
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);

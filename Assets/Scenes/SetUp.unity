@@ -613,7 +613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa02f1440382db4cac061645077d770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 0
+  isDebug: 1
   isTimeController: 1
   testMainTime: 2
   testNightTime: 2
