@@ -237,6 +237,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 if (chatSystem.myPlayer.live == false) {
                     gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
                     gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+                } else {
+                    gameManager.gameMasterChatManager.timeSavingButtonText.text = "時短";
                 }
 
 

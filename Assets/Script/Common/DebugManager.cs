@@ -48,10 +48,6 @@ public class DebugManager : MonoBehaviour
     public bool isTestPlay;//プレイヤーの役職を任意に決める
     public List<ROLLTYPE> testRollTypeList = new List<ROLLTYPE>();
 
-    //Nav切り替え
-    public Button navBtn;
-    public Button fullScrBtn;
-    public bool isNavCheack;
 
     private void Awake() {
         if (instance == null) {

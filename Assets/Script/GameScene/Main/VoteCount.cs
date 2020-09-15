@@ -53,8 +53,10 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
 
                 //投票数が他プレイヤーと同数ならリストに追加
-                if (player.CustomProperties["voteNum"] != null) {
+                if (player.CustomProperties["voteNum"] != null || (int)player.CustomProperties["voteNum"] != 0) {
                     if (mostVotes == (int)player.CustomProperties["voteNum"]) {
+                        Debug.Log("player.actNum" + player.ActorNumber);
+                        Debug.Log("player.actNum" + (int)player.CustomProperties["voteNum"]);
                         ExecutionPlayerList.Add(player);
                         //投票数が他プレイヤーより多いならListから削除して追加
                     } else if (mostVotes < (int)player.CustomProperties["voteNum"]) {

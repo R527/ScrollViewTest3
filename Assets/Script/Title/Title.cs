@@ -32,11 +32,11 @@ public class Title : MonoBehaviour
 
     private void Start() {
 
-        if (DebugManager.instance.isNavCheack) {
-            Screen.fullScreen = true;
-        } else {
-            Screen.fullScreen = false;
-        }
+        //if (DebugManager.instance.isNavCheack) {
+        //    Screen.fullScreen = true;
+        //} else {
+        //    Screen.fullScreen = false;
+        //}
 
         if (DebugManager.instance.isTimeController) {
             Destroy(debugText.gameObject);

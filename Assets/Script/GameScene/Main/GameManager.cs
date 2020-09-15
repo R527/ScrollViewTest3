@@ -169,6 +169,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
             if(gameStart) {
                 PraparateGameStart();
+                gameMasterChatManager.timeSavingButton.interactable = false;
+
             }
         }
 
@@ -184,6 +186,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         if (!isSetRoll && GetNum() == numLimit) {
             isSetRoll = true;
             SetRoll();
+            gameMasterChatManager.timeSavingButton.interactable = false;
         }
 
         ////一人以上のプレイヤーが退出した場合isJoinedisExitの値をリセットして確認PopUPを削除する

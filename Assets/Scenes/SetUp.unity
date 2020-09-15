@@ -623,14 +623,14 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 1
+  numLimit: 2
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 0
-  isCheckSuddenDeath: 0
+  isGameOver: 1
+  isCheckSuddenDeath: 1
   isVoteCount: 0
   isTestPlay: 1
   testRollTypeList: 00000000020000000400000000000000
