@@ -615,9 +615,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isTimeController: 1
-  testMainTime: 10
+  testMainTime: 2
   testNightTime: 2
-  testVotingTime: 2
+  testVotingTime: 10
   testExecutionTime: 2
   testCheckGameOverTime: 2
   testResultTime: 2
@@ -634,9 +634,6 @@ MonoBehaviour:
   isVoteCount: 0
   isTestPlay: 1
   testRollTypeList: 00000000020000000400000000000000
-  navBtn: {fileID: 0}
-  fullScrBtn: {fileID: 0}
-  isNavCheack: 0
 --- !u!1 &4274428794974511839
 GameObject:
   m_ObjectHideFlags: 0

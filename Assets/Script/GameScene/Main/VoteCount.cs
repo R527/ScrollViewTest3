@@ -53,7 +53,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
 
                 //投票数が他プレイヤーと同数ならリストに追加
-                if (player.CustomProperties["voteNum"] != null || (int)player.CustomProperties["voteNum"] != 0) {
+                if (player.CustomProperties["voteNum"] != null && (int)player.CustomProperties["voteNum"] != 0) {
                     if (mostVotes == (int)player.CustomProperties["voteNum"]) {
                         Debug.Log("player.actNum" + player.ActorNumber);
                         Debug.Log("player.actNum" + (int)player.CustomProperties["voteNum"]);
@@ -67,13 +67,29 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                 }
             }
 
-        //ランダム処刑処理
-            if(ExecutionPlayerList.Count >= 2) {
+
+            //ランダム処刑処理
+            if (ExecutionPlayerList.Count >= 2) {
                 mostVotePlayer = ExecutionPlayerList[Random.Range(0, ExecutionPlayerList.Count)];
+            } else if (ExecutionPlayerList.Count == 0) {
+                //全てのプレイヤーが投票が0票だった場合　生存しているプレイヤーからランダムに処刑する
+                foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                    if ((bool)player.CustomProperties["live"]) {
+                        ExecutionPlayerList.Add(player);
+                    }
+                }
+                Debug.Log("ExecutionPlayerList.Count" + ExecutionPlayerList.Count);
+                mostVotePlayer = ExecutionPlayerList[Random.Range(0, ExecutionPlayerList.Count)];
+
             } else {
                 //最多投票が一人の場合
                 mostVotePlayer = ExecutionPlayerList[0];
             }
+
+
+
+
+        
             //決定したプレイヤーを処刑処理する
             foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                 if (player.ActorNumber == mostVotePlayer.ActorNumber) {
