@@ -80,6 +80,9 @@ public class Search : MonoBehaviour {
         }
 
         foreach (RoomNode Obj in activeEntriesList.Values) {
+            Debug.Log("searchRoomSelection" + searchRoomSelection);
+            Debug.Log("Obj.roomSelection" + Obj.roomSelection);
+            
 
             //BanListをチェックする
             if(Obj.isCheckBanList == true) {
@@ -99,8 +102,17 @@ public class Search : MonoBehaviour {
 
             //フィルターにかける
             //人数設定が未設定
-            if(isNumLimit == true) {
-                if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && Obj.settingNum > searchJoinNum　&& searchRoomSelection == Obj.roomSelection) {
+
+            Debug.Log("Obj.fortuneType" + Obj.fortuneType);
+            Debug.Log("searchFortuneType" + searchFortuneType);
+            Debug.Log("Obj.openVoting" + Obj.openVoting);
+            Debug.Log("searchOpenVoting" + searchOpenVoting);
+            Debug.Log("Obj.settingNum" + Obj.settingNum);
+            Debug.Log("searchJoinNum" + searchJoinNum);
+            //&& Obj.settingNum > searchJoinNum
+            if (isNumLimit == true) {
+                Debug.Log("tess");
+                if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && searchRoomSelection == Obj.roomSelection) {
                     Obj.gameObject.SetActive(true);
                 }
             //人数設定が設定されている場合

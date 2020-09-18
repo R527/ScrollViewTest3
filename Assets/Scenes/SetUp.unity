@@ -613,7 +613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa02f1440382db4cac061645077d770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 1
+  isDebug: 0
   isTimeController: 1
   testMainTime: 2
   testNightTime: 2
@@ -629,8 +629,8 @@ MonoBehaviour:
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 1
-  isCheckSuddenDeath: 1
+  isGameOver: 0
+  isCheckSuddenDeath: 0
   isVoteCount: 0
   isTestPlay: 1
   testRollTypeList: 00000000020000000400000000000000

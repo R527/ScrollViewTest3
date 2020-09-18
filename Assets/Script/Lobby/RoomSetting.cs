@@ -95,7 +95,22 @@ public class RoomSetting : MonoBehaviour
             rollSetting.wrongPopUp.wrongText.text = "タイトルの文字数が多すぎます。";
             return;
         }
-        titleText.text = "";
+
+        if (titleText.text.Trim().Length < 1) {
+
+            if (roomSelection == ROOMSELECTION.初心者) {
+                Debug.Log("syosinsya");
+                titleText.text = "初心者歓迎！";
+
+            } else {
+                Debug.Log("一般");
+
+                titleText.text = "一般部屋";
+            }
+        }
+        title = titleText.text;
+
+        //titleText.text = "";
 
         //部屋をインスタンスと同時に部屋情報を渡す。
         RoomNode room = Instantiate(RoomNodePrefab, content.transform, false);
@@ -130,15 +145,12 @@ public class RoomSetting : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// タイトルが無いときは別のテキストを入れる
-    /// </summary>
-    public void SettingTitle() {
-        if(titleText.text.Trim().Length < 1) {
-            titleText.text = "初心者歓迎！";
-        }
-        title = titleText.text;
-    }
+    ///// <summary>
+    ///// タイトルが無いときは別のテキストを入れる
+    ///// </summary>
+    //public void SettingTitle() {
+
+    //}
 
     /// <summary>
     /// 初日占いの設定　右
