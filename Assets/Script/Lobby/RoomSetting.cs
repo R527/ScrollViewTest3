@@ -99,7 +99,6 @@ public class RoomSetting : MonoBehaviour
         if (titleText.text.Trim().Length < 1) {
 
             if (roomSelection == ROOMSELECTION.初心者) {
-                Debug.Log("syosinsya");
                 titleText.text = "初心者歓迎！";
 
             } else {

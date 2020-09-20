@@ -551,7 +551,7 @@ MonoBehaviour:
   roomBanUniqueIdStr: 
   banIndex: 0
   myUniqueId: 
-  banListIndex: 0
+  banListIndex: 1
   banListMaxIndex: 1
   totalNumberOfMatches: 0
   totalNumberOfWins: 0
@@ -633,7 +633,7 @@ MonoBehaviour:
   isCheckSuddenDeath: 0
   isVoteCount: 0
   isTestPlay: 1
-  testRollTypeList: 00000000020000000400000000000000
+  testRollTypeList: 04000000020000000400000000000000
 --- !u!1 &4274428794974511839
 GameObject:
   m_ObjectHideFlags: 0

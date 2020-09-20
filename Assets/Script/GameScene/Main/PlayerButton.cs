@@ -73,12 +73,12 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
         live = true;
 
-        //自分の世界のボタンだけ外枠を青くする
+        //自分の世界の自分のボタンだけ外枠を青くする、ロールテキストを有効にする
         if (isMine) {
             playerButton.GetComponent<Outline>().enabled = true;
+            rollText.enabled = true;
         }
 
-        
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         transform.SetParent(menbartran);
 
@@ -87,11 +87,16 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         }
     }
 
+    
+    /// <summary>
+    /// 役職ごとのセッティングをする
+    /// </summary>
+    /// <param name="player"></param>
     public void SetRollSetting(Player player) {
 
         rollType = player.rollType;
         rollText.text = rollType.ToString();
-
+        //役職ごとに判定を設ける
         if (rollType == ROLLTYPE.人狼) {
             fortune = true;
             spiritual = true;
@@ -100,6 +105,18 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             wolfCamp = true;
         } else if (rollType == ROLLTYPE.狂人) {
             wolfCamp = true;
+        }
+
+        //自分の役職が他プレイヤーを開示する場合
+        OpenRoll();
+    }
+
+    /// <summary>
+    /// ゲーム開始時に役職を開示するべきプレイヤーがいる場合開示する
+    /// </summary>
+    private void OpenRoll() {
+        if (gameManager.chatSystem.myPlayer.wolf && wolf) {
+            rollText.enabled = true;
         }
     }
 
@@ -187,7 +204,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             obj.buttonText.text = "回避する";
             obj.gameManager = this.gameManager;
             obj.playerID = this.playerID;
-            obj.playerName = this.name;
+            obj.playerName = playerName;
             obj.myUniqueId = this.myUniqueId;
             obj.action_Type = ActionPopUp.Action_Type.Ban;
 

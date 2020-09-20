@@ -301,15 +301,17 @@ public class Player : MonoBehaviourPunCallbacks {
 
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
 
-        //参加人数が揃っていたらtrueにしない
-        // TODO 修正
 
+
+        //参加人数が揃っていたらtrueにしない
         if (gameManager.GetNum() != gameManager.numLimit) {
             gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
-
         }
+
         gameManager.exitButton.interactable = true;
     }
+
+
 
     /// <summary>
     /// プレイヤーが投票したかをチェックする

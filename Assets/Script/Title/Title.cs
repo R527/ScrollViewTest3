@@ -17,7 +17,7 @@ public class Title : MonoBehaviour
     public GameObject playerInfoPopUp;
     public GameObject begginerGuidePopUp;
     public BanPlayer banPlayerPrefab;
-    public Transform banListtran;
+    public Transform banListTran;
     public Button playerInfoButton;
 
     public GameObject mainCanvas;
@@ -80,10 +80,10 @@ public class Title : MonoBehaviour
         if (PlayerManager.instance.banListIndex <= 0) {
             return;
         }
-
+        Debug.Log("tesst");
         //BanList作成
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
-            BanPlayer banplayer = Instantiate(banPlayerPrefab, banListtran, false);
+            BanPlayer banplayer = Instantiate(banPlayerPrefab, banListTran, false);
             banplayer.SetUp(PlayerManager.instance.banUniqueIDList[i], PlayerManager.instance.banUserNickNameList[i]);
         }
     }

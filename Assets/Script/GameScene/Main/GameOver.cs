@@ -209,6 +209,9 @@ public class GameOver : MonoBehaviour {
         PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
     }
 
+    /// <summary>
+    /// ゲーム終了後役職を開示
+    /// </summary>
     private void OpenRoll() {
         GameObject[] btnObjs = GameObject.FindGameObjectsWithTag("PlayerButton"); 
         foreach(GameObject btnObj in btnObjs) {
