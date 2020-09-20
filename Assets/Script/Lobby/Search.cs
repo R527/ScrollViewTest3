@@ -112,12 +112,12 @@ public class Search : MonoBehaviour {
             //&& Obj.settingNum > searchJoinNum
             if (isNumLimit == true) {
                 Debug.Log("tess");
-                if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && searchRoomSelection == Obj.roomSelection) {
+                if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && searchRoomSelection == Obj.roomSelection && CheckSuddenDeath(Obj)) {
                     Obj.gameObject.SetActive(true);
                 }
             //人数設定が設定されている場合
             } else {
-                if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && Obj.settingNum == searchJoinNum && searchRoomSelection == Obj.roomSelection) {
+                if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && Obj.settingNum == searchJoinNum && searchRoomSelection == Obj.roomSelection && CheckSuddenDeath(Obj)) {
                     Obj.gameObject.SetActive(true);
                 }
             }
@@ -128,6 +128,24 @@ public class Search : MonoBehaviour {
         }
 
         isSearch = false;
+    }
+
+    /// <summary>
+    /// 突然死数を見て部屋の表示を決定する
+    /// </summary>
+    public bool CheckSuddenDeath(RoomNode Obj) {
+        bool isCheck = false;
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (Obj.suddenDeath_Type == SUDDENDEATH_TYPE.凸数1回以下 || Obj.suddenDeath_Type == SUDDENDEATH_TYPE.制限なし)) {
+            Debug.Log("1");
+            isCheck = true;
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE.制限なし) {
+            Debug.Log("2");
+            isCheck = true;
+        } else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+            Debug.Log("0");
+            isCheck = true;
+        }
+        return isCheck;
     }
 
     //Lobby上部の難易度変更

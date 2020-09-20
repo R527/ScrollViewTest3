@@ -97,8 +97,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"numListStr", numListStr},
             {"banListStr", banListStr},
             {"roomSelect", room.roomSelection },
-            {"numLimit", maxPlayer}
-
+            {"numLimit", maxPlayer},
+            //{"suddenDeathLimit", room.suddenDeath_Type}
         };
         //カスタムプロパティで設定したキーをロービーで参照できるようにする
         roomOptions.CustomRoomPropertiesForLobby = new string[] {
@@ -111,7 +111,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             "numListStr",
             "banListStr",
             "roomSelect",
-            "numLimit"
+            "numLimit",
+            //"suddenDeathLimit"
         };
         roomOptions.CustomRoomProperties = customRoomProperties;
         //部屋のIdを取得
