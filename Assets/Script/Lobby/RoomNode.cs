@@ -55,7 +55,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         titleText.text = roomInfo.title;
         //ルール設定
         //TODO テキストの最後に突然死関連を入れると部屋が表示されない
-        ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting;
+        ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting + "\r\n" + suddenDeath_Type; ;
         Debug.Log("roomInfo.suddenDeath_Type" + roomInfo.suddenDeath_Type.ToString());
         //+ "\r\n凸数:" + roomInfo.suddenDeath_Type
         DisplayRollList(numList);
@@ -72,6 +72,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         roomSelection = roomInfo.roomSelection;
         title = roomInfo.title;
         suddenDeath_Type = roomInfo.suddenDeath_Type;
+        Debug.Log("suddenDeath_Type" + suddenDeath_Type);
         rollNumList = numList;
     }
 
@@ -105,7 +106,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         fortuneType = (FORTUNETYPE)roomInfo.CustomProperties["fortuneType"];
         openVoting = (VOTING)roomInfo.CustomProperties["openVoting"];
         roomSelection = (ROOMSELECTION)roomInfo.CustomProperties["roomSelect"];
-        ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting + "\r\n凸数:" + suddenDeath_Type;
+        suddenDeath_Type = (SUDDENDEATH_TYPE)roomInfo.CustomProperties["suddenDeath_Type"];
+        ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting + "\r\n" + suddenDeath_Type;
 
 
         //GameObjectがNullでなければ、
@@ -182,10 +184,10 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// </summary>
     public bool CheckSuddenDeath() {
         bool isCheck = false;
-        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (suddenDeath_Type == SUDDENDEATH_TYPE.凸数1回以下 || suddenDeath_Type == SUDDENDEATH_TYPE.制限なし)) {
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || suddenDeath_Type == SUDDENDEATH_TYPE._制限なし)) {
             Debug.Log("1");
             isCheck = true;
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && suddenDeath_Type == SUDDENDEATH_TYPE.制限なし) {
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
             Debug.Log("2");
             isCheck = true;
         } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {

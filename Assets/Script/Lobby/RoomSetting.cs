@@ -61,11 +61,14 @@ public class RoomSetting : MonoBehaviour
 
         //突然死数を見て設定を設ける
         if(PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
-            suddenDeathText.text = SUDDENDEATH_TYPE.凸数０回.ToString();
+            suddenDeath_Type = SUDDENDEATH_TYPE._０回;
+            suddenDeathText.text = SUDDENDEATH_TYPE._０回.ToString().Trim('_');
         }else if(PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
-            suddenDeathText.text = SUDDENDEATH_TYPE.凸数1回以下.ToString();
+            suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+            suddenDeathText.text = SUDDENDEATH_TYPE._1回以下.ToString().Trim('_');
         } else {
-            suddenDeathText.text = SUDDENDEATH_TYPE.制限なし.ToString();
+            suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
+            suddenDeathText.text = SUDDENDEATH_TYPE._制限なし.ToString().Trim('_');
         }
 
         firstDayFrotuneText.text = firstDayFortune;
@@ -162,62 +165,67 @@ public class RoomSetting : MonoBehaviour
     /// 突然死数制限する 右
     /// </summary>
     public void SuddenDeathLimitRight() {
+
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+            Debug.Log("0ban");
             switch (suddenDeath_Type) {
-                case SUDDENDEATH_TYPE.凸数０回:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.凸数1回以下;
+                case SUDDENDEATH_TYPE._０回:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
                     break;
-                case SUDDENDEATH_TYPE.凸数1回以下:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.制限なし;
+                case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
-                case SUDDENDEATH_TYPE.制限なし:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.凸数０回;
+                case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
                     break;
             }
         } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
             switch (suddenDeath_Type) {
-
-                case SUDDENDEATH_TYPE.凸数1回以下:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.制限なし;
+                
+                case SUDDENDEATH_TYPE._1回以下:
+                    Debug.Log("一回以下");
+                    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
-                case SUDDENDEATH_TYPE.制限なし:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.凸数1回以下;
+                case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
                     break;
             }
-            
+        } else {
+            return;
         }
-        suddenDeathText.text = suddenDeath_Type.ToString();
+        suddenDeathText.text = suddenDeath_Type.ToString().Trim('_');
     }
 
     /// <summary>
     /// 突然死数制限する 左
     /// </summary>
     public void SuddenDeathLimitLeft() {
-        Debug.Log("hidari");
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
             switch (suddenDeath_Type) {
-                case SUDDENDEATH_TYPE.凸数０回:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.制限なし;
+                case SUDDENDEATH_TYPE._０回:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
-                case SUDDENDEATH_TYPE.制限なし:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.凸数1回以下;
+                case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
                     break;
-                case SUDDENDEATH_TYPE.凸数1回以下:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.凸数０回;
+                case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
                     break;
             }
         } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
             switch (suddenDeath_Type) {
 
-                case SUDDENDEATH_TYPE.凸数1回以下:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.制限なし;
+                case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
-                case SUDDENDEATH_TYPE.制限なし:
-                    suddenDeath_Type = SUDDENDEATH_TYPE.凸数1回以下;
+                case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
                     break;
             }
+        } else {
+            return;
         }
-        suddenDeathText.text = suddenDeath_Type.ToString();
+        suddenDeathText.text = suddenDeath_Type.ToString().Trim('_');
     }
 
     /// <summary>

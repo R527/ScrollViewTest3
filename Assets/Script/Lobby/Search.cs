@@ -135,10 +135,10 @@ public class Search : MonoBehaviour {
     /// </summary>
     public bool CheckSuddenDeath(RoomNode Obj) {
         bool isCheck = false;
-        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (Obj.suddenDeath_Type == SUDDENDEATH_TYPE.凸数1回以下 || Obj.suddenDeath_Type == SUDDENDEATH_TYPE.制限なし)) {
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (Obj.suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || Obj.suddenDeath_Type == SUDDENDEATH_TYPE._制限なし)) {
             Debug.Log("1");
             isCheck = true;
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE.制限なし) {
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
             Debug.Log("2");
             isCheck = true;
         } else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
