@@ -55,7 +55,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         titleText.text = roomInfo.title;
         //ルール設定
         //TODO テキストの最後に突然死関連を入れると部屋が表示されない
-        ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting + "\r\n" + suddenDeath_Type; ;
+        ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting + "\r\n凸数：" + suddenDeath_Type.ToString().Trim('_');
         Debug.Log("roomInfo.suddenDeath_Type" + roomInfo.suddenDeath_Type.ToString());
         //+ "\r\n凸数:" + roomInfo.suddenDeath_Type
         DisplayRollList(numList);
@@ -107,7 +107,10 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         openVoting = (VOTING)roomInfo.CustomProperties["openVoting"];
         roomSelection = (ROOMSELECTION)roomInfo.CustomProperties["roomSelect"];
         suddenDeath_Type = (SUDDENDEATH_TYPE)roomInfo.CustomProperties["suddenDeath_Type"];
-        ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting + "\r\n" + suddenDeath_Type;
+        ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting + "\r\n凸数:" + suddenDeath_Type.ToString().Trim('_');
+
+        Debug.Log("suddenDeath_Type.ToString().Trim('_')" + suddenDeath_Type.ToString().Trim('_'));
+        Debug.Log("suddenDeath_Type" + suddenDeath_Type);
 
 
         //GameObjectがNullでなければ、
