@@ -31,6 +31,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     public VOTING openVoting;
     public int settingNum;
     public ROOMSELECTION roomSelection;
+    public SUDDENDEATH_TYPE suddenDeath_Type;
     public string roomId;
     public List<int> rollNumList = new List<int>();
     public List<string> banList = new List<string>();
@@ -53,8 +54,10 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         //タイトル設定
         titleText.text = roomInfo.title;
         //ルール設定
-        ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting;
-
+        //TODO テキストの最後に突然死関連を入れると部屋が表示されない
+        ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting + "\r\n凸数：" + suddenDeath_Type.ToString().Trim('_');
+        Debug.Log("roomInfo.suddenDeath_Type" + roomInfo.suddenDeath_Type.ToString());
+        //+ "\r\n凸数:" + roomInfo.suddenDeath_Type
         DisplayRollList(numList);
 
         //最大人数をButtonTextへ
@@ -68,7 +71,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         settingNum = rollSumNum;
         roomSelection = roomInfo.roomSelection;
         title = roomInfo.title;
-
+        suddenDeath_Type = roomInfo.suddenDeath_Type;
+        Debug.Log("suddenDeath_Type" + suddenDeath_Type);
         rollNumList = numList;
     }
 
@@ -102,7 +106,11 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         fortuneType = (FORTUNETYPE)roomInfo.CustomProperties["fortuneType"];
         openVoting = (VOTING)roomInfo.CustomProperties["openVoting"];
         roomSelection = (ROOMSELECTION)roomInfo.CustomProperties["roomSelect"];
-        ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting;
+        suddenDeath_Type = (SUDDENDEATH_TYPE)roomInfo.CustomProperties["suddenDeath_Type"];
+        ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting + "\r\n凸数:" + suddenDeath_Type.ToString().Trim('_');
+
+        Debug.Log("suddenDeath_Type.ToString().Trim('_')" + suddenDeath_Type.ToString().Trim('_'));
+        Debug.Log("suddenDeath_Type" + suddenDeath_Type);
 
 
         //GameObjectがNullでなければ、
@@ -132,13 +140,13 @@ public class RoomNode : MonoBehaviourPunCallbacks {
             //人数設定が未設定
 
             if (search.isNumLimit == true) {
-                if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && search.searchRoomSelection == roomSelection) {
+                if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && search.searchRoomSelection == roomSelection && CheckSuddenDeath()) {
                     Debug.Log("GameObjtrue");
                     gameObject.SetActive(true);
                 }
                 //人数設定が設定されている場合
             } else {
-                if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && settingNum == search.searchJoinNum && search.searchRoomSelection == roomSelection) {
+                if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && settingNum == search.searchJoinNum && search.searchRoomSelection == roomSelection && CheckSuddenDeath()) {
                     Debug.Log("GameObjtrue");
                     gameObject.SetActive(true);
                 }
@@ -173,6 +181,24 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
     }
 
+
+    /// <summary>
+    /// 突然死数を見て部屋の表示を決定する
+    /// </summary>
+    public bool CheckSuddenDeath() {
+        bool isCheck = false;
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || suddenDeath_Type == SUDDENDEATH_TYPE._制限なし)) {
+            Debug.Log("1");
+            isCheck = true;
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
+            Debug.Log("2");
+            isCheck = true;
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+            Debug.Log("0");
+            isCheck = true;
+        }
+        return isCheck;
+    }
     /// <summary>
     /// 部屋のBanListと自分のIDが一致した場合部屋を非アクティブにする
     /// </summary>

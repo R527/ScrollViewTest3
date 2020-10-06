@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Advertisements;
+
 using UnityEngine.UI;
 using System;
 
@@ -36,6 +38,8 @@ public class SetUpManager : MonoBehaviour
             PlayerPrefs.DeleteAll();
         }
 
+        //広告を用意する
+        AdsManager();
 
         //自分のIDのロードをする、ない場合は空白を入れる
         PlayerManager.instance.myUniqueId = PlayerPrefs.GetString(PlayerManager.ID_TYPE.myUniqueId.ToString(),"");
@@ -117,7 +121,12 @@ public class SetUpManager : MonoBehaviour
     }
 
 
-
-
+    /// <summary>
+    /// 広告に関する制御
+    /// </summary>
+    private void AdsManager() {
+        string gameID = "3851447";
+        Advertisement.Initialize(gameID);
+    }
 
 }

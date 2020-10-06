@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Advertisements;
 using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun;
@@ -35,7 +36,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public Player bitedPlayer;
     public Player thePlayer;
 
-
+    //広告用
+    string VIDEO_PLACEMENT_ID = "video";
 
     void Start() {
 
@@ -177,16 +179,25 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         } else if (timeSavingButtonText.text == "退出" ) {
             //&& photonView.IsMine
             Debug.Log("退出");
+
             //game中なら正常終了しているかの確認を取る
             if (timeController.isPlay) {
                 timeController.gameOver.CheckEndGame();
             }
+
+            //game終了後に退出する場合広告を表示する
+            if (timeController.gameOver.isGameOver) {
+                Advertisement.Show(VIDEO_PLACEMENT_ID);
+            }
+
             gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
             gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
             gameMasterChat = string.Empty;
             //LeaveRoom();処理をするときにTimeControllerのエラーが出るので消去する
             NetworkManager.instance.LeaveRoom();
         }
+
+
     }
 
 

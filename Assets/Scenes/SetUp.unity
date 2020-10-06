@@ -384,7 +384,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -556,7 +556,7 @@ MonoBehaviour:
   totalNumberOfMatches: 0
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
-  totalNumberOfSuddenDeath: 0
+  totalNumberOfSuddenDeath: 1
   beginnerTotalNumberOfMatches: 0
   beginnerTotalNumberOfWins: 0
   beginnerTotalNumberOfLoses: 0
@@ -623,12 +623,12 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 1
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isPlayerPrefsDeleteAll: 0
+  isPlayerPrefsDeleteAll: 1
   isGameOver: 0
   isCheckSuddenDeath: 0
   isVoteCount: 0

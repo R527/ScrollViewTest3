@@ -11,27 +11,31 @@ public class RoomSetting : MonoBehaviour
 {
 
     //class
-    public FORTUNETYPE fortuneType;
+
     public RoomNode roomNode;
     public RollSetting rollSetting;
-    public ROOMSELECTION roomSelection;//部屋の難易度
     //main
     public string firstDayFortune;
     public int mainTime;//お昼の時間
     public int nightTime;//夜の時間
+
     public VOTING openVoting;//投票開示するか否か
+    public FORTUNETYPE fortuneType;
+    public SUDDENDEATH_TYPE suddenDeath_Type;
+    public ROOMSELECTION roomSelection;//部屋の難易度
+
     public string title;//部屋のタイトル
     public Text firstDayFrotuneText;//各設定のテキスト
     public Text roomLevelText;
     public Text mainTimeText;
     public Text nightTimeText;
     public Text openVotingText;//各設定のテキスト
+    public Text suddenDeathText;
     public InputField titleText;//タイトル入力部分
     public RoomNode RoomNodePrefab;//RoomNodePrefab
     public GameObject content;//Lobby画面のScrollViewについているコンテント
     public GameObject roomSelectCanvas;//部屋選択画面Canvas
     public GameObject roomSettingCanvas;//ルーム設定Canvas
-    public List<RoomNode> roomNodeList = new List<RoomNode>();//検索用に用意したRoomNodeList
     public Button createRoomButton;//部屋作成用ボタン
     public Button backButton;
  
@@ -42,6 +46,7 @@ public class RoomSetting : MonoBehaviour
         public Button leftButton;
     }
 
+    public RoomSettingButton suddenDeathButton;
     public RoomSettingButton roomLevelButton;
     public RoomSettingButton firstFortuneButton;
     public RoomSettingButton mainTimeButton;
@@ -54,6 +59,17 @@ public class RoomSetting : MonoBehaviour
             createRoomButton.interactable = true;
         }
 
+        //突然死数を見て設定を設ける
+        if(PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+            suddenDeath_Type = SUDDENDEATH_TYPE._０回;
+            suddenDeathText.text = SUDDENDEATH_TYPE._０回.ToString().Trim('_');
+        }else if(PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+            suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+            suddenDeathText.text = SUDDENDEATH_TYPE._1回以下.ToString().Trim('_');
+        } else {
+            suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
+            suddenDeathText.text = SUDDENDEATH_TYPE._制限なし.ToString().Trim('_');
+        }
 
         firstDayFrotuneText.text = firstDayFortune;
         roomLevelText.text = roomSelection.ToString();
@@ -65,7 +81,9 @@ public class RoomSetting : MonoBehaviour
         nightTimeButton.leftButton.interactable = false;//夜の時間が最低値なのでfalseで制御
 
         createRoomButton.onClick.AddListener(CreateRoomNode);
-        
+
+        suddenDeathButton.rightButton.onClick.AddListener(SuddenDeathLimitRight);
+        suddenDeathButton.leftButton.onClick.AddListener(SuddenDeathLimitLeft);
         roomLevelButton.rightButton.onClick.AddListener(DifficultySelectionRight);
         roomLevelButton.leftButton.onClick.AddListener(DifficultySelectionLeft);
         firstFortuneButton.rightButton.onClick.AddListener(FirstDayFortuneRight);
@@ -118,11 +136,9 @@ public class RoomSetting : MonoBehaviour
             openVoting = DebugManager.instance.openVoting;
             fortuneType = DebugManager.instance.fortuneType;
         }
-        RoomInfo roomInfo = new RoomInfo(openVoting, title, fortuneType, mainTime, nightTime, roomSelection);
+        RoomInfo roomInfo = new RoomInfo(openVoting, title, fortuneType, mainTime, nightTime, roomSelection, suddenDeath_Type);
         room.InitRoomNode(roomInfo, rollSetting.NumList,rollSetting.numLimit);
 
-        //List管理
-        roomNodeList.Add(room);
 
         //RoomDataにデータ保存
         RoomData.instance.roomInfo = roomInfo;
@@ -144,12 +160,73 @@ public class RoomSetting : MonoBehaviour
 
     }
 
-    ///// <summary>
-    ///// タイトルが無いときは別のテキストを入れる
-    ///// </summary>
-    //public void SettingTitle() {
 
-    //}
+    /// <summary>
+    /// 突然死数制限する 右
+    /// </summary>
+    public void SuddenDeathLimitRight() {
+
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+            Debug.Log("0ban");
+            switch (suddenDeath_Type) {
+                case SUDDENDEATH_TYPE._０回:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+                    break;
+                case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
+                    break;
+                case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
+                    break;
+            }
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+            switch (suddenDeath_Type) {
+                
+                case SUDDENDEATH_TYPE._1回以下:
+                    Debug.Log("一回以下");
+                    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
+                    break;
+                case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+                    break;
+            }
+        } else {
+            return;
+        }
+        suddenDeathText.text = suddenDeath_Type.ToString().Trim('_');
+    }
+
+    /// <summary>
+    /// 突然死数制限する 左
+    /// </summary>
+    public void SuddenDeathLimitLeft() {
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+            switch (suddenDeath_Type) {
+                case SUDDENDEATH_TYPE._０回:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
+                    break;
+                case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+                    break;
+                case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
+                    break;
+            }
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+            switch (suddenDeath_Type) {
+
+                case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
+                    break;
+                case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+                    break;
+            }
+        } else {
+            return;
+        }
+        suddenDeathText.text = suddenDeath_Type.ToString().Trim('_');
+    }
 
     /// <summary>
     /// 初日占いの設定　右
@@ -315,13 +392,15 @@ public class RoomInfo {
     public int mainTime;
     public int nightTime;
     public ROOMSELECTION roomSelection;
+    public SUDDENDEATH_TYPE suddenDeath_Type;
 
-    public RoomInfo(VOTING openVoting, string title, FORTUNETYPE fortuneType,int mainTime,int nightTime, ROOMSELECTION roomSelection) {
+    public RoomInfo(VOTING openVoting, string title, FORTUNETYPE fortuneType,int mainTime,int nightTime, ROOMSELECTION roomSelection, SUDDENDEATH_TYPE suddenDeath_Type) {
         this.openVoting = openVoting;
         this.title = title;
         this.fortuneType = fortuneType;
         this.mainTime = mainTime;
         this.nightTime = nightTime;
         this.roomSelection = roomSelection;
+        this.suddenDeath_Type = suddenDeath_Type;
     }
 }
