@@ -16,6 +16,7 @@ public class GameOver : MonoBehaviour {
     public int liverCount;
     public GameObject timeSavingButton;
     public string winnerList;
+    public bool isGameOver;
 
     //gameOverになると時間を計測する
     private float chekTimer;
@@ -118,6 +119,7 @@ public class GameOver : MonoBehaviour {
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         timeController.isPlay = false;
+        isGameOver = true;
         gameManager.fillter.folding = false;
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
