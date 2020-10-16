@@ -26,17 +26,7 @@ public class Title : MonoBehaviour
     public Text debugText;
 
 
-    private void Awake() {
-
-    }
-
     private void Start() {
-
-        //if (DebugManager.instance.isNavCheack) {
-        //    Screen.fullScreen = true;
-        //} else {
-        //    Screen.fullScreen = false;
-        //}
 
         if (DebugManager.instance.isDebug) {
             Destroy(debugText.gameObject);

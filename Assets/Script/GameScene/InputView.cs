@@ -35,6 +35,8 @@ public class InputView : MonoBehaviour {
     public Button superChatButton;
     public Text superChatButtonText;
     public bool superChat;
+    public GameObject moneyImage;
+
 
     private void Start() {
         foldingButton.onClick.AddListener(FoldingPosition);
@@ -146,8 +148,18 @@ public class InputView : MonoBehaviour {
     /// 青チャットの制御
     /// </summary>
     public void SuperChat() {
+
         //On
         if (superChatButtonText.text == "通常") {
+
+            int currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
+            //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
+            //仮で10消費する
+            if (10 > currency) {
+                moneyImage.SetActive(true);
+                return;
+            }
+
             superChatButtonText.text = "青";
             superChat = true;
             Debug.Log("superChat" + superChat);

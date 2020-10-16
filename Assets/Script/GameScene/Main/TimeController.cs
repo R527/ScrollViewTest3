@@ -56,6 +56,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public TimeContollerPopUp timeContollerPopUpObj;
     public Transform mainCanvasTran;
 
+    //課金関連のPopUp
+    public GameObject currencyPopUP;//課金が必要な場面で課金についての説明文を入れる
+    public bool exitCurrency;//退出用の課金PopUPを出すか否か
 
     //x日　GMのチャット追加
     public GameObject chatContent;
@@ -490,6 +493,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
     private IEnumerator PsychicAction() {
         yield return new WaitForSeconds(intervalTime + 0.3f);
         gameMasterChatManager.PsychicAction();
+    }
+
+    /// <summary>
+    ///ゲーム終了時でないときにPlayerが死亡した場合　課金して退出できるシステムを紹介する説明文を表示
+    /// </summary>
+    private void ExitCurrencyPopUp() {
+        if(!gameManager.chatSystem.myPlayer.live && !gameOver.isGameOver && !exitCurrency) {
+            exitCurrency = true;
+            Instantiate(currencyPopUP, mainCanvasTran.transform, false);
+        }
     }
 
     /// <summary>

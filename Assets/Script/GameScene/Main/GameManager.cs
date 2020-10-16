@@ -61,6 +61,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Button nextDayButton;
     public Button lastDayButton;
 
+    //タイトル上部にある情報をのテキスト
+    public Text titleRollText;
+    public Text currencyText;
+
 
     //ボタン
     public Button exitButton;
@@ -71,7 +75,14 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public List<ROLLTYPE> rollTypeList = new List<ROLLTYPE>();//設定されている役職を追加
     public List<ROLLTYPE> ComingOutButtonList = new List<ROLLTYPE>();
 
+
+
     public void GameManagerSetUp() {
+
+        ////Moneytest
+        //GameObject trn = GameObject.FindGameObjectWithTag("GameCanvas");
+        //Instantiate(moneyTestObj, trn.transform, false);
+
         //BGM開始
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.GAME);
 
@@ -132,6 +143,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //BanListの作成
         CreateBanList();
 
+        //課金額表示
+        currencyText.text = PlayerManager.instance.currency.ToString();
 
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
@@ -564,6 +577,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             Debug.Log(playerData.ActorNumber);
             if (chatSystem.myPlayer.playerID == playerData.ActorNumber) {
                 chatSystem.myPlayer.rollType = (ROLLTYPE)playerData.CustomProperties["roll"];
+                titleRollText.text = chatSystem.myPlayer.rollType.ToString();
                 break;
             }
         }
