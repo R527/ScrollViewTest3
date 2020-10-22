@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 /// <summary>
@@ -25,7 +26,9 @@ public class CurrencyManager : MonoBehaviour
         PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.currency, PlayerManager.ID_TYPE.currency);
 
         //GameObject gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
-        gameManager.UpdateCurrencyText();
+        if(SceneManager.GetActiveScene().name == "Game") {
+            gameManager.UpdateCurrencyText();
+        }
 
 
     }

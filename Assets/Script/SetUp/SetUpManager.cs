@@ -97,7 +97,7 @@ public class SetUpManager : MonoBehaviour
         AudioManager.instance.seVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.seVolume.ToString(), -25);
 
         //課金額を取得する
-        if (DebugManager.instance.isCurrency) {
+        if (DebugManager.instance.isCurrency && !DebugManager.instance.isDebug) {
             PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
         }
 

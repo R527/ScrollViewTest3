@@ -241,6 +241,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
                     gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
                 } else {
+                    Debug.Log("時短");
                     gameManager.gameMasterChatManager.timeSavingButtonText.text = "時短";
                 }
 
@@ -607,9 +608,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// ButtonなどをRollに応じてfalseにする
     /// </summary>
     public void TimesavingControllerFalse() {
-        savingButton.interactable = false;
-        //superChatButton.interactable = false;
-        COButton.interactable = false;
+        if(chatSystem.myPlayer.live) {
+            savingButton.interactable = false;
+            COButton.interactable = false;
+        }
+
 
         //if (!chatSystem.myPlayer.wolfChat) {
         //    ////WolfChatしゃべれないプレイヤーの処理

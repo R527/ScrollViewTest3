@@ -28,9 +28,9 @@ public class UnderBar : MonoBehaviour
         playerInfoButton.UpdateCurrencyText();
     }
 
-    public void MovingFriendContent() {
-        //contentRectTransform.DOLocalMoveX(-522.5f, 0.4f);
-        contentRectTransform.DOLocalMoveX(-507.5f, 0.4f);
+    //public void MovingFriendContent() {
+    //    //contentRectTransform.DOLocalMoveX(-522.5f, 0.4f);
+    //    contentRectTransform.DOLocalMoveX(-507.5f, 0.4f);
 
-    }
+    //}
 }

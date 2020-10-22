@@ -25,7 +25,6 @@ public class BasePopUP : MonoBehaviour {
             closeButton.onClick.AddListener(ClosePopUp);
         } else {
             if(closeButton != null) {
-                Debug.Log("DestroyPopUP");
                 closeButton.onClick.AddListener(DestroyPopUP);
             }
         }
@@ -49,7 +48,6 @@ public class BasePopUP : MonoBehaviour {
     /// インスタンスされたObjを削除する
     /// </summary>
     public virtual void DestroyPopUP() {
-        Debug.Log("DestroyPopUP");
         Destroy(gameObject);
     }
 }

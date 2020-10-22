@@ -10153,7 +10153,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u767A\u8A00\u3057\u3088\u3046\uFF01"
+  m_Text: "\u767A\u8A00\u3057\u3088\u3046"
 --- !u!222 &1146688297
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18967,7 +18967,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closeButton: {fileID: 0}
-  destroyObject: {fileID: 797423580}
   closeButtonSwich: 0
   numLimitText: {fileID: 4361875647601014977}
   fortuneText: {fileID: 4361875647675079281}
