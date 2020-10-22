@@ -265,14 +265,14 @@ public class Search : MonoBehaviour {
     public void DifficultySelectionRight() {
 
         switch (searchRoomSelection) {
-            case ROOMSELECTION.観戦:
-                searchRoomSelection = ROOMSELECTION.初心者;
-                break;
+            //case ROOMSELECTION.観戦:
+            //    searchRoomSelection = ROOMSELECTION.初心者;
+            //    break;
             case ROOMSELECTION.初心者:
                 searchRoomSelection = ROOMSELECTION.一般;
                 break;
             case ROOMSELECTION.一般:
-                searchRoomSelection = ROOMSELECTION.観戦;
+                searchRoomSelection = ROOMSELECTION.初心者;
                 break;
 
         }
@@ -286,10 +286,10 @@ public class Search : MonoBehaviour {
     public void DifficultySelectionLeft() {
 
         switch (searchRoomSelection) {
+            //case ROOMSELECTION.初心者:
+            //    searchRoomSelection = ROOMSELECTION.観戦;
+            //    break;
             case ROOMSELECTION.初心者:
-                searchRoomSelection = ROOMSELECTION.観戦;
-                break;
-            case ROOMSELECTION.観戦:
                 searchRoomSelection = ROOMSELECTION.一般;
                 break;
             case ROOMSELECTION.一般:
@@ -457,7 +457,6 @@ public class Search : MonoBehaviour {
     /// </summary>
     public void SuddenDeath_TypeRight() {
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
-            Debug.Log("0ban");
             switch (suddenDeath_Type) {
                 case SUDDENDEATH_TYPE._０回:
                     suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
