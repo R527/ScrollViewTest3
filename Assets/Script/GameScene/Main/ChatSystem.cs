@@ -101,6 +101,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             if (!comingOut &&  String.IsNullOrWhiteSpace(chatInputField.text)) {
                 return;
             }
+
             //Playerの発言
             //chatInputField.text == string.Empty 
             //死亡しているプレイヤー
@@ -111,6 +112,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 boardColor = 2;
                 //青チャット
             } else if (inputView.superChat) {
+                PlayerManager.instance.UseCurrency(10);
+                gameMasterChatManager.gameManager.UpdateCurrencyText();
                 CheckSuddenDeath();
                 boardColor = 1;
                 //通常のチャット
@@ -129,9 +132,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
             //発言を生成
             myPlayer.CreateNode(id, inputData, boardColor, comingOut);
-
-
-
 
         }
 

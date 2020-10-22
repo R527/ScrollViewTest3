@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Advertisements;
 
 using UnityEngine.UI;
 using System;
@@ -38,8 +37,6 @@ public class SetUpManager : MonoBehaviour
             PlayerPrefs.DeleteAll();
         }
 
-        //広告を用意する
-        AdsManager();
 
         //自分のIDのロードをする、ない場合は空白を入れる
         PlayerManager.instance.myUniqueId = PlayerPrefs.GetString(PlayerManager.ID_TYPE.myUniqueId.ToString(),"");
@@ -99,6 +96,10 @@ public class SetUpManager : MonoBehaviour
         AudioManager.instance.bgmVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.bgmVolume.ToString(), -25);
         AudioManager.instance.seVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.seVolume.ToString(), -25);
 
+        //課金額を取得する
+        if (DebugManager.instance.isCurrency && !DebugManager.instance.isDebug) {
+            PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
+        }
 
         //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
         if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {
@@ -121,12 +122,6 @@ public class SetUpManager : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// 広告に関する制御
-    /// </summary>
-    private void AdsManager() {
-        string gameID = "3851447";
-        Advertisement.Initialize(gameID);
-    }
+
 
 }

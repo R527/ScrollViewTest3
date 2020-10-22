@@ -83,8 +83,8 @@ public class LobbyButtonManager : MonoBehaviour
     /// </summary>
     private void AdsManager(){
 
-        string gameID = "3851447";
-        Advertisement.Initialize(gameID);
+        string gameID = "3851633";
+        Advertisement.Initialize(gameID,true);
         Debug.Log("広告準備完了");
     }
 }

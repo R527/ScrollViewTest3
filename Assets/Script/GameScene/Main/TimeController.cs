@@ -56,6 +56,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public TimeContollerPopUp timeContollerPopUpObj;
     public Transform mainCanvasTran;
 
+    //課金関連のPopUp
+    public GameObject currencyPopUP;//課金が必要な場面で課金についての説明文を入れる
+    public bool exitCurrency;//退出用の課金PopUPを出すか否か
 
     //x日　GMのチャット追加
     public GameObject chatContent;
@@ -238,6 +241,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
                     gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
                 } else {
+                    Debug.Log("時短");
                     gameManager.gameMasterChatManager.timeSavingButtonText.text = "時短";
                 }
 
@@ -493,6 +497,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
+    ///ゲーム終了時でないときにPlayerが死亡した場合　課金して退出できるシステムを紹介する説明文を表示
+    /// </summary>
+    private void ExitCurrencyPopUp() {
+        if(!gameManager.chatSystem.myPlayer.live && !gameOver.isGameOver && !exitCurrency) {
+            exitCurrency = true;
+            Instantiate(currencyPopUP, mainCanvasTran.transform, false);
+        }
+    }
+
+    /// <summary>
     /// 昼、夜、投票後にあるインターバル時間を設定
     /// </summary>
     /// <returns></returns>
@@ -594,9 +608,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// ButtonなどをRollに応じてfalseにする
     /// </summary>
     public void TimesavingControllerFalse() {
-        savingButton.interactable = false;
-        //superChatButton.interactable = false;
-        COButton.interactable = false;
+        if(chatSystem.myPlayer.live) {
+            savingButton.interactable = false;
+            COButton.interactable = false;
+        }
+
 
         //if (!chatSystem.myPlayer.wolfChat) {
         //    ////WolfChatしゃべれないプレイヤーの処理

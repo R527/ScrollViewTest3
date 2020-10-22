@@ -14,7 +14,13 @@ public class PlayerManager : MonoBehaviour {
     public string playerName;
     
 
+
+    /// <summary>
+    /// Prefsで保存
+    /// </summary>
+    //=================================
     //Ban関連
+    //=================================
     [Header("Ban関連")]
     public List<string> banUniqueIDList = new List<string>();
     public List<string> banUserNickNameList = new List<string>();
@@ -27,7 +33,9 @@ public class PlayerManager : MonoBehaviour {
     [Header("BanListの最大の登録数")]
     public int banListMaxIndex;//BanListの最大の登録数
 
+    //============================
     //戦績関連
+    //============================
     [Header("戦績関連")]
     //総合
     public int totalNumberOfMatches;//総対戦回数
@@ -53,10 +61,15 @@ public class PlayerManager : MonoBehaviour {
     public List<string> getChatLogList = new List<string>();
     public int saveRoomCount;
     public int myID;
-    //List<string> buttonInfoList = new List<string>();
+
+    //==========================
+    //課金関連
+    //==========================
+    public int currency;
+
 
     /// <summary>
-    /// Ban関連
+    /// Prefs保存用
     /// </summary>
     public enum ID_TYPE {
         //BanList
@@ -77,7 +90,11 @@ public class PlayerManager : MonoBehaviour {
 
         //音量
         bgmVolume,
-        seVolume
+        seVolume,
+
+        //課金用
+        currency,//ゲーム内通貨
+        currencyPopUp
     }
 
     /// <summary>
@@ -168,6 +185,10 @@ public class PlayerManager : MonoBehaviour {
                 PlayerPrefs.SetString("roomNum" + saveRoomCount, setString);
                 saveRoomCount++;
                 break;
+            //課金用のPopUpの表示非表示を決める
+            case ID_TYPE.currencyPopUp:
+                PlayerPrefs.SetString(ID_TYPE.currencyPopUp.ToString(), setString);
+                break;
         }
 
         //端末の中に保存する
@@ -176,7 +197,7 @@ public class PlayerManager : MonoBehaviour {
 
 
     /// <summary>
-    /// PlayerPrefsにBanLIstに関する数字をセットする
+    /// PlayerPrefsに数字をセットする
     /// </summary>
     /// <param name="setInt"></param>
     /// <param name="idType"></param>
@@ -198,6 +219,11 @@ public class PlayerManager : MonoBehaviour {
                 break;
             case ID_TYPE.seVolume:
                 PlayerPrefs.SetInt(ID_TYPE.seVolume.ToString(), setInt);
+                break;
+
+            //課金関連
+            case ID_TYPE.currency:
+                PlayerPrefs.SetInt(ID_TYPE.currency.ToString(), setInt);
                 break;
         }
         PlayerPrefs.Save();
@@ -421,7 +447,19 @@ public class PlayerManager : MonoBehaviour {
 
     }
 
-    
 
-    
+    //=====================
+    //課金関連
+    //======================
+
+    /// <summary>
+    /// ゲーム内通貨を利用する
+    /// </summary>
+    public void UseCurrency(int useCurrency) {
+
+        currency -= useCurrency;
+        SetIntForPlayerPrefs(currency, ID_TYPE.currency);
+        Debug.Log("currency" + currency);
+    }
+
 }

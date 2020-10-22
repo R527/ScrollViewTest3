@@ -570,6 +570,7 @@ MonoBehaviour:
   getChatLogList: []
   saveRoomCount: 0
   myID: 0
+  currency: 0
 --- !u!1 &2820532273166376551
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,10 +616,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isTimeController: 1
-  testMainTime: 2
-  testNightTime: 2
-  testVotingTime: 10
-  testExecutionTime: 2
+  testMainTime: 10
+  testNightTime: 5
+  testVotingTime: 5
+  testExecutionTime: 5
   testCheckGameOverTime: 2
   testResultTime: 2
   num: 0
@@ -628,12 +629,13 @@ MonoBehaviour:
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isPlayerPrefsDeleteAll: 1
-  isGameOver: 0
+  isPlayerPrefsDeleteAll: 0
+  isGameOver: 1
   isCheckSuddenDeath: 0
   isVoteCount: 0
-  isTestPlay: 1
+  isTestPlay: 0
   testRollTypeList: 04000000020000000400000000000000
+  isCurrency: 0
 --- !u!1 &4274428794974511839
 GameObject:
   m_ObjectHideFlags: 0

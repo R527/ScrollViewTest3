@@ -11,15 +11,21 @@ public class PlayerInfoButton : MonoBehaviour
 {
 
     public Text playerNameText;
+    public Text currencyText;
+
     // Start is called before the first frame update
     void Start()
     {
         playerNameText.text = PlayerManager.instance.playerName;
+        UpdateCurrencyText();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+    /// <summary>
+    /// ゲーム内通貨のテキスト更新
+    /// </summary>
+    public void UpdateCurrencyText() {
+        currencyText.text = PlayerManager.instance.currency.ToString();
+
     }
 }

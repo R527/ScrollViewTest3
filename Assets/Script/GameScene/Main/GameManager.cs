@@ -61,6 +61,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Button nextDayButton;
     public Button lastDayButton;
 
+    //タイトル上部にある情報をのテキスト
+    public Text titleRollText;
+    public Text currencyText;
+
+    //課金用のPopUp
+    public GameObject currencyTextPopUpObj;
 
     //ボタン
     public Button exitButton;
@@ -71,7 +77,14 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public List<ROLLTYPE> rollTypeList = new List<ROLLTYPE>();//設定されている役職を追加
     public List<ROLLTYPE> ComingOutButtonList = new List<ROLLTYPE>();
 
+
+
     public void GameManagerSetUp() {
+
+        ////Moneytest
+        //GameObject trn = GameObject.FindGameObjectWithTag("GameCanvas");
+        //Instantiate(moneyTestObj, trn.transform, false);
+
         //BGM開始
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.GAME);
 
@@ -132,6 +145,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //BanListの作成
         CreateBanList();
 
+        //内部通貨を更新する
+        UpdateCurrencyText();
 
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
@@ -564,6 +579,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             Debug.Log(playerData.ActorNumber);
             if (chatSystem.myPlayer.playerID == playerData.ActorNumber) {
                 chatSystem.myPlayer.rollType = (ROLLTYPE)playerData.CustomProperties["roll"];
+                titleRollText.text = chatSystem.myPlayer.rollType.ToString();
                 break;
             }
         }
@@ -856,6 +872,30 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
     }
 
+
+    //=======================
+    //課金
+    //=======================
+    /// <summary>
+    /// 内部通貨を更新します。
+    /// </summary>
+    public void UpdateCurrencyText() {
+        //課金額表示
+        currencyText.text = PlayerManager.instance.currency.ToString();
+    }
+
+    /// <summary>
+    /// ゲーム内通貨の利用に関するテキストを表示する
+    /// </summary>
+    public void InstantiateCurrencyTextPopUP() {
+        Debug.Log("InstantiateCurrencyTextPopUP");
+        if (!PlayerPrefs.HasKey(PlayerManager.ID_TYPE.currencyPopUp.ToString())) {
+            Debug.Log("InstantiateCurrencyTextPopUP2");
+
+            GameObject gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
+            Instantiate(currencyTextPopUpObj, gameCanvas.transform, false);
+        }
+    }
 
     /////////////////////////////
     ///カスタムプロパティ関連
