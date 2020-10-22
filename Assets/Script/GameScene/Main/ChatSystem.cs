@@ -112,7 +112,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 boardColor = 2;
                 //青チャット
             } else if (inputView.superChat) {
-                CurrencyManager.instance.UseCurrency(10);
+                PlayerManager.instance.UseCurrency(10);
+                gameMasterChatManager.gameManager.UpdateCurrencyText();
                 CheckSuddenDeath();
                 boardColor = 1;
                 //通常のチャット

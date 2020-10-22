@@ -93,7 +93,8 @@ public class PlayerManager : MonoBehaviour {
         seVolume,
 
         //課金用
-        currency//ゲーム内通貨
+        currency,//ゲーム内通貨
+        currencyPopUp
     }
 
     /// <summary>
@@ -183,6 +184,10 @@ public class PlayerManager : MonoBehaviour {
                 saveRoomCount = PlayerPrefs.GetInt(ID_TYPE.saveRoomCount.ToString(), 0);
                 PlayerPrefs.SetString("roomNum" + saveRoomCount, setString);
                 saveRoomCount++;
+                break;
+            //課金用のPopUpの表示非表示を決める
+            case ID_TYPE.currencyPopUp:
+                PlayerPrefs.SetString(ID_TYPE.currencyPopUp.ToString(), setString);
                 break;
         }
 
@@ -442,7 +447,21 @@ public class PlayerManager : MonoBehaviour {
 
     }
 
-    
 
-    
+    //=====================
+    //課金関連
+    //======================
+
+    /// <summary>
+    /// ゲーム内通貨を利用する
+    /// </summary>
+    public void UseCurrency(int useCurrency) {
+
+        currency = PlayerPrefs.GetInt(ID_TYPE.currency.ToString(), 0);
+
+        currency -= useCurrency;
+        SetIntForPlayerPrefs(currency, ID_TYPE.currency);
+        Debug.Log("currency" + currency);
+    }
+
 }

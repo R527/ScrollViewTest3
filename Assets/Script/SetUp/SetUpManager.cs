@@ -97,9 +97,9 @@ public class SetUpManager : MonoBehaviour
         AudioManager.instance.seVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.seVolume.ToString(), -25);
 
         //課金額を取得する
-        PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
-
-
+        if (DebugManager.instance.isCurrency) {
+            PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
+        }
 
         //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
         if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {

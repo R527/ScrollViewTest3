@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Text titleRollText;
     public Text currencyText;
 
+    //課金用のPopUp
+    public GameObject currencyTextPopUpObj;
 
     //ボタン
     public Button exitButton;
@@ -143,8 +145,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //BanListの作成
         CreateBanList();
 
-        //課金額表示
-        currencyText.text = PlayerManager.instance.currency.ToString();
+        //内部通貨を更新する
+        UpdateCurrencyText();
 
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
@@ -870,6 +872,27 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
     }
 
+
+    //=======================
+    //課金
+    //=======================
+    /// <summary>
+    /// 内部通貨を更新します。
+    /// </summary>
+    public void UpdateCurrencyText() {
+        //課金額表示
+        currencyText.text = PlayerManager.instance.currency.ToString();
+    }
+
+    /// <summary>
+    /// ゲーム内通貨の利用に関するテキストを表示する
+    /// </summary>
+    public void InstantiateCurrencyTextPopUP() {
+        if (!PlayerPrefs.HasKey(PlayerManager.ID_TYPE.currencyPopUp.ToString())) {
+            GameObject gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
+            Instantiate(currencyTextPopUpObj, gameCanvas.transform, false);
+        }
+    }
 
     /////////////////////////////
     ///カスタムプロパティ関連

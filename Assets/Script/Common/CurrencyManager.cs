@@ -10,38 +10,18 @@ using UnityEngine.UI;
 public class CurrencyManager : MonoBehaviour
 {
 
-    public static CurrencyManager instance;
-
-
-    private void Awake() {
-        if (instance == null) {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        } else {
-            Destroy(gameObject);
-        }
-    }
-
-
-    //課金用のボタンに取り付けているテスト中
-    public void CheckMoneyTest() {
-        Debug.Log("100水晶獲得しました");
-
-        int currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
-        currency += 100;
-        Debug.Log("currency" + currency);
-        PlayerManager.instance.SetIntForPlayerPrefs(currency, PlayerManager.ID_TYPE.currency);
-    }
-
     /// <summary>
-    /// ゲーム内通貨を利用する
+    /// ゲーム内通貨を購入
     /// </summary>
-    public void UseCurrency(int useCurrency) {
+    public void BuyCurrency(int buyCurrency) {
+        Debug.Log(buyCurrency + "水晶獲得しました");
 
-        int currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
+        //PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
+        PlayerManager.instance.currency += buyCurrency;
+        Debug.Log("currency" + PlayerManager.instance.currency);
+        PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.currency, PlayerManager.ID_TYPE.currency);
 
-        currency -= useCurrency;
-        PlayerManager.instance.SetIntForPlayerPrefs(currency, PlayerManager.ID_TYPE.currency);
-        Debug.Log("currency" + currency);
     }
+
+
 }

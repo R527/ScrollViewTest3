@@ -17,7 +17,15 @@ public class PlayerInfoButton : MonoBehaviour
     void Start()
     {
         playerNameText.text = PlayerManager.instance.playerName;
-        currencyText.text = PlayerManager.instance.currency.ToString();
+        UpdateCurrencyText();
     }
 
+
+    /// <summary>
+    /// ゲーム内通貨のテキスト更新
+    /// </summary>
+    public void UpdateCurrencyText() {
+        currencyText.text = PlayerManager.instance.currency.ToString();
+
+    }
 }

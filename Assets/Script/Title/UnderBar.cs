@@ -11,6 +11,7 @@ public class UnderBar : MonoBehaviour
 {
 
     //class
+    public PlayerInfoButton playerInfoButton;
 
     //main
     public RectTransform contentRectTransform;
@@ -24,7 +25,7 @@ public class UnderBar : MonoBehaviour
     public void MovingHomeContent() {
         //contentRectTransform.DOLocalMoveX(-313.5f, 0.4f);
         contentRectTransform.DOLocalMoveX(-305f, 0.4f);
-
+        playerInfoButton.UpdateCurrencyText();
     }
 
     public void MovingFriendContent() {
