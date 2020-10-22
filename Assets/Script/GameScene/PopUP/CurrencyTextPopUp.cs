@@ -13,9 +13,13 @@ public class CurrencyTextPopUp : BasePopUP
     public Toggle checkBox;//このPopUpを二度と出さないようにするチェックボックス
 
 
-    public override void DestroyPopUP() {
-        
+    private void Start() {
+        base.Start();
+    }
 
+    public override void DestroyPopUP() {
+
+        Debug.Log("DestroyPopUP");
         //チェックボックスがOnなら次回以降このPopUpを表示しない
         if (checkBox.isOn) {
             PlayerManager.instance.SetStringForPlayerPrefs("非表示",PlayerManager.ID_TYPE.currencyPopUp);

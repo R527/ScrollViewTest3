@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class BasePopUP : MonoBehaviour {
 
     public Button closeButton;
-    public GameObject destroyObject;
+    //public GameObject destroyObject;
     [Header("trueならSetActive(False)")]
     public bool closeButtonSwich;
 
@@ -25,6 +25,7 @@ public class BasePopUP : MonoBehaviour {
             closeButton.onClick.AddListener(ClosePopUp);
         } else {
             if(closeButton != null) {
+                Debug.Log("DestroyPopUP");
                 closeButton.onClick.AddListener(DestroyPopUP);
             }
         }
@@ -48,7 +49,8 @@ public class BasePopUP : MonoBehaviour {
     /// インスタンスされたObjを削除する
     /// </summary>
     public virtual void DestroyPopUP() {
-        Destroy(destroyObject);
+        Debug.Log("DestroyPopUP");
+        Destroy(gameObject);
     }
 }
 

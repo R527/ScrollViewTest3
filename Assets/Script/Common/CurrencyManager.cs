@@ -6,9 +6,12 @@ using UnityEngine.UI;
 
 /// <summary>
 /// 課金に関するイベントなどを管理する
+/// GameCanvas内の課金Imageに取り付けている
 /// </summary>
 public class CurrencyManager : MonoBehaviour
 {
+
+    public GameManager gameManager;
 
     /// <summary>
     /// ゲーム内通貨を購入
@@ -20,6 +23,10 @@ public class CurrencyManager : MonoBehaviour
         PlayerManager.instance.currency += buyCurrency;
         Debug.Log("currency" + PlayerManager.instance.currency);
         PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.currency, PlayerManager.ID_TYPE.currency);
+
+        //GameObject gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
+        gameManager.UpdateCurrencyText();
+
 
     }
 

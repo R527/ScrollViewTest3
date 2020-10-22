@@ -188,8 +188,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.7, y: 82.846}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -6.5964994, y: 82.846}
+  m_SizeDelta: {x: 148.207, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3525898166770262521
 CanvasRenderer:
@@ -481,7 +481,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closeButton: {fileID: 8493253941370424396}
-  destroyObject: {fileID: 3525898167930933553}
   closeButtonSwich: 0
   checkBox: {fileID: 3525898168252207935}
 --- !u!1 &3525898168164521958
@@ -598,7 +597,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000013351, y: -87.846}
+  m_AnchoredPosition: {x: 0.00001335144, y: -87.846}
   m_SizeDelta: {x: 167.01428, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3525898168252207935

@@ -457,8 +457,6 @@ public class PlayerManager : MonoBehaviour {
     /// </summary>
     public void UseCurrency(int useCurrency) {
 
-        currency = PlayerPrefs.GetInt(ID_TYPE.currency.ToString(), 0);
-
         currency -= useCurrency;
         SetIntForPlayerPrefs(currency, ID_TYPE.currency);
         Debug.Log("currency" + currency);

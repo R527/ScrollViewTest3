@@ -888,7 +888,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// ゲーム内通貨の利用に関するテキストを表示する
     /// </summary>
     public void InstantiateCurrencyTextPopUP() {
+        Debug.Log("InstantiateCurrencyTextPopUP");
         if (!PlayerPrefs.HasKey(PlayerManager.ID_TYPE.currencyPopUp.ToString())) {
+            Debug.Log("InstantiateCurrencyTextPopUP2");
+
             GameObject gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
             Instantiate(currencyTextPopUpObj, gameCanvas.transform, false);
         }

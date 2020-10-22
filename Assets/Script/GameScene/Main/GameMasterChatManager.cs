@@ -185,7 +185,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //課金額が指定した料金に達している場合
             //TODO 初めての退出と初めての青チャットをする際に課金が必要であることをPoPUp等で知らせる処理を追加する
             int exitCurrenecy = 120;
-            int currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
 
             if (timeController.isPlay && PlayerManager.instance.currency >= exitCurrenecy) {
                 timeController.gameOver.CheckEndGame();
@@ -193,7 +192,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 gameManager.UpdateCurrencyText();
             } else if(timeController.isPlay && PlayerManager.instance.currency < exitCurrenecy) {
                 //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
-                if (exitCurrenecy > currency) {
+                if (exitCurrenecy > PlayerManager.instance.currency) {
                     gameManager.InstantiateCurrencyTextPopUP();
                     gameManager.inputView.moneyImage.SetActive(true);
                     return;

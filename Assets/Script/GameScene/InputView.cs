@@ -154,10 +154,9 @@ public class InputView : MonoBehaviour {
 
             chatListManager.gameManager.InstantiateCurrencyTextPopUP();
 
-            int currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
             //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
             //仮で10消費する
-            if (10 > currency) {
+            if (10 > PlayerManager.instance.currency) {
                 moneyImage.SetActive(true);
                 return;
             }
