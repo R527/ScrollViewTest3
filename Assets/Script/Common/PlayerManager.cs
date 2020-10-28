@@ -469,10 +469,12 @@ public class PlayerManager : MonoBehaviour {
     /// <summary>
     /// サブスクライブの設定をする
     /// </summary>
-    public void SetSubscribe() {
+    public bool SetSubscribe() {
+
         SubscriptionInfo subscInfo = new SubscriptionInfo(productId);
         Debug.Log(subscInfo);
 
+        
         if (subscInfo != null) {
             subscResult = subscInfo.isSubscribed();
             Debug.Log(subscInfo.getPurchaseDate());
@@ -480,11 +482,20 @@ public class PlayerManager : MonoBehaviour {
             Debug.Log(subscInfo.getProductId());
             Debug.Log(subscResult);
 
+//            DebugManager.instance.debugText.text = "subscInfo.getPurchaseDate()" + subscInfo.getPurchaseDate() + "subscInfo.getProductId()"
+// + subscInfo.getProductId() + "subscResult" + subscResult
+//;
+            
+            //TODO 課金システムの確認　常にTrueが返ってくる
             if (subscResult == Result.False) {
                 Debug.Log("課金中");
+                //return false;
             } else {
                 Debug.Log("未課金");
+                //return true;
             }
         }
+
+        return false;
     }
 }

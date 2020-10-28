@@ -38,8 +38,8 @@ public class CurrencyManager : MonoBehaviour
     /// 定期購入
     /// </summary>
     public void BuySubscribe() {
-        PlayerManager.instance.subscribe = true;
-        PlayerManager.instance.SetSubscribe();
+        //PlayerManager.instance.subscribe = true;
+        Debug.Log("購入" + PlayerManager.instance.SetSubscribe());
     }
 
     public void FailedSubscribe() {

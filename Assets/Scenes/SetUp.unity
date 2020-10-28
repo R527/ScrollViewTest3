@@ -618,7 +618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isTimeController: 1
-  testMainTime: 10
+  testMainTime: 30
   testNightTime: 5
   testVotingTime: 5
   testExecutionTime: 5
@@ -638,6 +638,7 @@ MonoBehaviour:
   isTestPlay: 0
   testRollTypeList: 04000000020000000400000000000000
   isCurrency: 0
+  debugText: {fileID: 0}
 --- !u!1 &4274428794974511839
 GameObject:
   m_ObjectHideFlags: 0

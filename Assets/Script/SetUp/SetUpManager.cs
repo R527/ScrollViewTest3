@@ -99,7 +99,7 @@ public class SetUpManager : MonoBehaviour
         }
 
         //サブスクライブを取得する（期間中ならフラグを入れる
-        PlayerManager.instance.SetSubscribe();
+        PlayerManager.instance.subscribe = PlayerManager.instance.SetSubscribe();
 
         //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
         if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {

@@ -38,8 +38,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public Color [] color;
     public int boardColor;
 
-    //test
-    public string testName;
+    //課金関連
+    public int superChatCount;//1Gmae3回まで無料
 
 
     private void Start() {
@@ -112,8 +112,14 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 boardColor = 2;
                 //青チャット
             } else if (inputView.superChat) {
-                PlayerManager.instance.UseCurrency(10);
-                gameMasterChatManager.gameManager.UpdateCurrencyText();
+                //メンバーシップ加入プレイヤーでかつ青チャットを3回打ってないプレイヤーは無料で青チャットを打つことができる
+                if(superChatCount >= 3 || PlayerManager.instance.subscribe) {
+                    PlayerManager.instance.UseCurrency(10);
+                    gameMasterChatManager.gameManager.UpdateCurrencyText();
+                } else {
+                    superChatCount++;
+                }
+
                 CheckSuddenDeath();
                 boardColor = 1;
                 //通常のチャット

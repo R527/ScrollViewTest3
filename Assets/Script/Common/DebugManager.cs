@@ -51,6 +51,8 @@ public class DebugManager : MonoBehaviour
     [Header("課金管理　trueなら内部通貨初期化")]
     public bool isCurrency;
 
+    public Text debugText;
+
     private void Awake() {
         if (instance == null) {
             instance = this;
