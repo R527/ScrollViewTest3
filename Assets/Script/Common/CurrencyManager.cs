@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,7 @@ public class CurrencyManager : MonoBehaviour
 {
 
     public GameManager gameManager;
+
 
     /// <summary>
     /// ゲーム内通貨を購入
@@ -29,9 +31,19 @@ public class CurrencyManager : MonoBehaviour
         if(SceneManager.GetActiveScene().name == "Game") {
             gameManager.UpdateCurrencyText();
         }
-
-
     }
 
+
+    /// <summary>
+    /// 定期購入
+    /// </summary>
+    public void BuySubscribe() {
+        PlayerManager.instance.subscribe = true;
+        PlayerManager.instance.SetSubscribe();
+    }
+
+    public void FailedSubscribe() {
+        Debug.Log("購入失敗");
+    }
 
 }

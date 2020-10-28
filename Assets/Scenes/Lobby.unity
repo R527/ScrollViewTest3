@@ -14439,7 +14439,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 156.7273}
+  m_AnchoredPosition: {x: 0, y: 156.71774}
   m_SizeDelta: {x: 205, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1417060680
@@ -19521,7 +19521,7 @@ MonoBehaviour:
   RoomNodePrefab: {fileID: -6102697575381228676, guid: caf01ddcf56975949bae3b11d4211a48,
     type: 3}
   content: {fileID: 1417060678}
-  roomSelectCanvas: {fileID: 1792950986}
+  rollSettingCanvas: {fileID: 1536450138}
   roomSettingCanvas: {fileID: 371853315}
   createRoomButton: {fileID: 1376616116}
   backButton: {fileID: 1118566865}

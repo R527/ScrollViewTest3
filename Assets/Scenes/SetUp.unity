@@ -571,6 +571,8 @@ MonoBehaviour:
   saveRoomCount: 0
   myID: 0
   currency: 0
+  subscribe: 0
+  productId: test_jinrou_subscribe
 --- !u!1 &2820532273166376551
 GameObject:
   m_ObjectHideFlags: 0

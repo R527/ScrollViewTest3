@@ -147,7 +147,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //部屋を作るのに失敗
     public override void OnCreateRoomFailed(short returnCode, string message) {
         Debug.Log("OnCreateRoomFailed");
-        roomSetting.roomSelectCanvas.SetActive(true);
+        roomSetting.rollSettingCanvas.SetActive(true);
         roomSetting.roomSettingCanvas.SetActive(false);
     }
     /// <summary>

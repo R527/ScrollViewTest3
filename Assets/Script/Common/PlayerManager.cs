@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using System.Linq;
 
 
@@ -66,7 +67,9 @@ public class PlayerManager : MonoBehaviour {
     //課金関連
     //==========================
     public int currency;
-
+    public bool subscribe;
+    public string productId;//test_jinrou_subscribe
+    private Result subscResult;
 
     /// <summary>
     /// Prefs保存用
@@ -462,4 +465,26 @@ public class PlayerManager : MonoBehaviour {
         Debug.Log("currency" + currency);
     }
 
+
+    /// <summary>
+    /// サブスクライブの設定をする
+    /// </summary>
+    public void SetSubscribe() {
+        SubscriptionInfo subscInfo = new SubscriptionInfo(productId);
+        Debug.Log(subscInfo);
+
+        if (subscInfo != null) {
+            subscResult = subscInfo.isSubscribed();
+            Debug.Log(subscInfo.getPurchaseDate());
+            Debug.Log("Debug SubscProcess A start");
+            Debug.Log(subscInfo.getProductId());
+            Debug.Log(subscResult);
+
+            if (subscResult == Result.False) {
+                Debug.Log("課金中");
+            } else {
+                Debug.Log("未課金");
+            }
+        }
+    }
 }

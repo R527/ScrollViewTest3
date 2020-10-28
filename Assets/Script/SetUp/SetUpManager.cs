@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-
 /// <summary>
 /// ゲーム開始時にデータをロードする
 /// </summary>
@@ -13,10 +12,8 @@ public class SetUpManager : MonoBehaviour
 {
 
 
+    
 
-    //void Awake() {
-    //    Screen.fullScreen = false;
-    //}
 
     void Start()
     {
@@ -101,6 +98,9 @@ public class SetUpManager : MonoBehaviour
             PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
         }
 
+        //サブスクライブを取得する（期間中ならフラグを入れる
+        PlayerManager.instance.SetSubscribe();
+
         //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
         if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {
 
@@ -121,6 +121,8 @@ public class SetUpManager : MonoBehaviour
 
     }
 
+
+    
 
 
 
