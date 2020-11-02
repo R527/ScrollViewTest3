@@ -21,6 +21,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     public GameObject statusObj;
     public GameObject iconObj;
     public Text statusText;
+    public List<Color> statusColorList = new List<Color>();
     [SerializeField] LayoutGroup layoutGroup;
     public  Image chatBoard;
     public LayoutElement iconObjLayoutElement;
@@ -82,6 +83,14 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         } else {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
+
+        //サブすく中なら
+        if (!PlayerManager.instance.subscribe) {
+            statusText.color = statusColorList[1];
+        } else {
+            statusText.color = statusColorList[0];
+        }
+
         //COした場合幅等を変更する
         if (comingOut) {
             chatSystem.chatInputField.text = "";

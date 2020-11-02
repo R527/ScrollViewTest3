@@ -632,7 +632,7 @@ MonoBehaviour:
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 1
+  isGameOver: 0
   isCheckSuddenDeath: 0
   isVoteCount: 0
   isTestPlay: 0

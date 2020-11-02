@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour {
     //課金関連
     //==========================
     public int currency;
-    public bool subscribe;
+    public bool subscribe;//falseならサブすく中
     public string productId;//test_jinrou_subscribe
     private Result subscResult;
 

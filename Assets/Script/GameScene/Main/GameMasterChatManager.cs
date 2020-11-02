@@ -202,7 +202,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
 
             //game終了後に退出する場合広告を表示する
-            if (timeController.gameOver.isGameOver) {
+            //さぶすく中なら除外
+            if (timeController.gameOver.isGameOver && PlayerManager.instance.subscribe) {
                 Advertisement.Show(VIDEO_PLACEMENT_ID);
             }
 
