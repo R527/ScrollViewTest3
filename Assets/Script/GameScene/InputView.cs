@@ -156,7 +156,7 @@ public class InputView : MonoBehaviour {
 
             //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
             //仮で10消費する
-            if (10 > PlayerManager.instance.currency) {
+            if (10 > PlayerManager.instance.currency && (chatListManager.gameManager.chatSystem. superChatCount >= 3 || PlayerManager.instance.subscribe)) {
                 moneyImage.SetActive(true);
                 return;
             }

@@ -12,12 +12,18 @@ public class PlayerInfoButton : MonoBehaviour
 
     public Text playerNameText;
     public Text currencyText;
+    public GameObject menberShipTextObj;
 
     // Start is called before the first frame update
     void Start()
     {
         playerNameText.text = PlayerManager.instance.playerName;
         UpdateCurrencyText();
+
+        //さぶすく中ならメンバーシップ用のテキストを表示する
+        if(!PlayerManager.instance.subscribe) {
+            UpdateMenberShipText();
+        }
     }
 
 
@@ -27,5 +33,12 @@ public class PlayerInfoButton : MonoBehaviour
     public void UpdateCurrencyText() {
         currencyText.text = PlayerManager.instance.currency.ToString();
 
+    }
+
+    /// <summary>
+    /// メンバーシップ用のテキスト表示
+    /// </summary>
+    public void UpdateMenberShipText() {
+        menberShipTextObj.SetActive(true);
     }
 }

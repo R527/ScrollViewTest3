@@ -34,7 +34,7 @@ public class RoomSetting : MonoBehaviour
     public InputField titleText;//タイトル入力部分
     public RoomNode RoomNodePrefab;//RoomNodePrefab
     public GameObject content;//Lobby画面のScrollViewについているコンテント
-    public GameObject roomSelectCanvas;//部屋選択画面Canvas
+    public GameObject rollSettingCanvas;//部屋選択画面Canvas
     public GameObject roomSettingCanvas;//ルーム設定Canvas
     public Button createRoomButton;//部屋作成用ボタン
     public Button backButton;
@@ -378,7 +378,7 @@ public class RoomSetting : MonoBehaviour
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
 
         roomSettingCanvas.SetActive(false);
-        roomSelectCanvas.SetActive(true);
+        rollSettingCanvas.SetActive(true);
 
     }
 

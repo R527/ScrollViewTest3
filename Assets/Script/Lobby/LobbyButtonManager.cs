@@ -51,6 +51,10 @@ public class LobbyButtonManager : MonoBehaviour
         backButton.onClick.AddListener(BackButton);
         menuButton.onClick.AddListener(MenuPopUp);
         createRoomButton.onClick.AddListener(CreateRoomButton);
+
+        //Lobby画面でサブスクライブ期間中かを確認する
+        PlayerManager.instance.SetSubscribe();
+
     }
 
     /// <summary>

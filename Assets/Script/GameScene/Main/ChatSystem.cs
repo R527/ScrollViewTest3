@@ -38,8 +38,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     public Color [] color;
     public int boardColor;
 
-    //test
-    public string testName;
+    //課金関連
+    public int superChatCount;//1Gmae3回まで無料
 
 
     private void Start() {
@@ -86,7 +86,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
                 chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
                 //チャットデータをもとにちゃっとNodeに情報を持たせる
-                chatNode.InitChatNode(chatData, 0, false);
+                chatNode.InitChatNode(chatData, 0, false, true);
 
                 SetChatNode(chatNode, chatData, false);
                 //OnLine
@@ -112,8 +112,14 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 boardColor = 2;
                 //青チャット
             } else if (inputView.superChat) {
-                PlayerManager.instance.UseCurrency(10);
-                gameMasterChatManager.gameManager.UpdateCurrencyText();
+                //メンバーシップ加入プレイヤーでかつ青チャットを3回打ってないプレイヤーは無料で青チャットを打つことができる
+                if(superChatCount >= 3 || PlayerManager.instance.subscribe) {
+                    PlayerManager.instance.UseCurrency(10);
+                    gameMasterChatManager.gameManager.UpdateCurrencyText();
+                } else {
+                    superChatCount++;
+                }
+
                 CheckSuddenDeath();
                 boardColor = 1;
                 //通常のチャット
@@ -131,7 +137,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             chatInputField.text = "";
 
             //発言を生成
-            myPlayer.CreateNode(id, inputData, boardColor, comingOut);
+            myPlayer.CreateNode(id, inputData, boardColor, comingOut,PlayerManager.instance.subscribe);
 
         }
 
@@ -171,7 +177,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         ChatData chatData = new ChatData(inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
         chatData.chatType = CHAT_TYPE.GM;
-        chatNode.InitChatNode(chatData, 0, comingOut);
+        chatNode.InitChatNode(chatData, 0, comingOut, true);
 
         SetChatNode(chatNode, chatData, comingOut);
     }

@@ -26,6 +26,7 @@ public class UnderBar : MonoBehaviour
         //contentRectTransform.DOLocalMoveX(-313.5f, 0.4f);
         contentRectTransform.DOLocalMoveX(-305f, 0.4f);
         playerInfoButton.UpdateCurrencyText();
+        PlayerManager.instance.SetSubscribe();
     }
 
     //public void MovingFriendContent() {

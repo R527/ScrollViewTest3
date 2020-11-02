@@ -571,6 +571,8 @@ MonoBehaviour:
   saveRoomCount: 0
   myID: 0
   currency: 0
+  subscribe: 0
+  productId: test_jinrou_subscribe
 --- !u!1 &2820532273166376551
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,7 +618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isTimeController: 1
-  testMainTime: 10
+  testMainTime: 30
   testNightTime: 5
   testVotingTime: 5
   testExecutionTime: 5
@@ -624,7 +626,7 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 1
+  numLimit: 2
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
@@ -636,6 +638,7 @@ MonoBehaviour:
   isTestPlay: 0
   testRollTypeList: 04000000020000000400000000000000
   isCurrency: 0
+  debugText: {fileID: 0}
 --- !u!1 &4274428794974511839
 GameObject:
   m_ObjectHideFlags: 0

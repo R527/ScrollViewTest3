@@ -220,9 +220,9 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <param name="inputData"></param>
     /// <param name="boardColor"></param>
     /// <param name="comingOut"></param>
-    public void CreateNode(int id, string inputData, int boardColor, bool comingOut) {
+    public void CreateNode(int id, string inputData, int boardColor, bool comingOut, bool subescribe) {
         //Debug.Log("CreateNode: Player");
-        photonView.RPC(nameof(CreateChatNodeFromPlayer), RpcTarget.All, id, inputData, boardColor, comingOut);
+        photonView.RPC(nameof(CreateChatNodeFromPlayer), RpcTarget.All, id, inputData, boardColor, comingOut, subescribe);
     }
 
 
@@ -234,7 +234,7 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <param name="boardColor"></param>
     /// <param name="comingOut"></param>
     [PunRPC]
-    public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut) {
+    public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut, bool subescribe) {
 
         ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, rollType);
 
@@ -258,7 +258,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //RPC内にあるメソッドもRPCと同じ挙動をする
         //そのメソッドの先で呼ばれるメソッドもRPCと同じ挙動をする
-        chatNode.InitChatNode(chatData, iconNo, comingOut);
+        chatNode.InitChatNode(chatData, iconNo, comingOut, subescribe);
 
         chatSystem.SetChatNode(chatNode, chatData, comingOut);
     }

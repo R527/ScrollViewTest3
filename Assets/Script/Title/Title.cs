@@ -25,12 +25,14 @@ public class Title : MonoBehaviour
 
     public Text debugText;
 
-
     private void Start() {
+        //Debug用のテキストを用意する
+        DebugManager.instance.debugText = debugText;
 
         if (DebugManager.instance.isDebug) {
-            Destroy(debugText.gameObject);
+            Destroy(DebugManager.instance.debugText.gameObject);
         }
+
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);
         begginerButton.onClick.AddListener(BegginerGuideMenu);
         gameStartButton.onClick.AddListener(StartGameButton);
