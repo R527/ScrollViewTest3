@@ -86,7 +86,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
                 chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
                 //チャットデータをもとにちゃっとNodeに情報を持たせる
-                chatNode.InitChatNode(chatData, 0, false);
+                chatNode.InitChatNode(chatData, 0, false, true);
 
                 SetChatNode(chatNode, chatData, false);
                 //OnLine
@@ -137,7 +137,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             chatInputField.text = "";
 
             //発言を生成
-            myPlayer.CreateNode(id, inputData, boardColor, comingOut);
+            myPlayer.CreateNode(id, inputData, boardColor, comingOut,PlayerManager.instance.subscribe);
 
         }
 
@@ -177,7 +177,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
         ChatData chatData = new ChatData(inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
         chatData.chatType = CHAT_TYPE.GM;
-        chatNode.InitChatNode(chatData, 0, comingOut);
+        chatNode.InitChatNode(chatData, 0, comingOut, true);
 
         SetChatNode(chatNode, chatData, comingOut);
     }

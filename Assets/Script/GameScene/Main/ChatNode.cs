@@ -21,7 +21,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     public GameObject statusObj;
     public GameObject iconObj;
     public Text statusText;
-    public List<Color> statusColorList = new List<Color>();
+    public Color statusColor;
     [SerializeField] LayoutGroup layoutGroup;
     public  Image chatBoard;
     public LayoutElement iconObjLayoutElement;
@@ -32,13 +32,13 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     public bool chatLive;
     public bool chatWolf;
     public int playerID;
-
+    public bool subescribe;
     /// <summary>
     /// ChatSystemからデータを受け取りそれをもとにちゃっとNODEを作る
     /// 名前、CO状況の処理、アイコンやそれに伴うRollName、COスタンプ
     /// </summary>
     /// <param name="chatData"></param>
-    public void InitChatNode(ChatData chatData, int iconNo, bool comingOut) {
+    public void InitChatNode(ChatData chatData, int iconNo, bool comingOut, bool subescribe) {
 
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         comingOutClass = GameObject.FindGameObjectWithTag("ComingOut").GetComponent<ComingOut>();
@@ -52,7 +52,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
         playerID = chatData.playerID;
         chatLive = chatData.chatLive;
         chatWolf = chatData.chatWolf;
-
+        this.subescribe = subescribe;
 
         //GMか否か
         if (chatData.chatType == CHAT_TYPE.GM) {
@@ -84,12 +84,10 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             layoutGroup.childAlignment = TextAnchor.UpperLeft;
         }
 
-        //サブすく中なら
-        if (!PlayerManager.instance.subscribe) {
-            statusText.color = statusColorList[1];
-        } else {
-            statusText.color = statusColorList[0];
-        }
+        //サブすく中ならPlayerNameを金色にする
+        if (!this.subescribe && chatData.chatType != CHAT_TYPE.GM) {
+            statusText.color = statusColor;
+        } 
 
         //COした場合幅等を変更する
         if (comingOut) {

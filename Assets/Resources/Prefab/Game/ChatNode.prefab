@@ -679,9 +679,7 @@ MonoBehaviour:
   statusObj: {fileID: 1235808738732009459}
   iconObj: {fileID: 7407571817137271022}
   statusText: {fileID: 7543894743011651805}
-  statusColorList:
-  - {r: 1, g: 1, b: 1, a: 0}
-  - {r: 1, g: 0.98393744, b: 0, a: 0}
+  statusColor: {r: 1, g: 0.97001815, b: 0, a: 1}
   layoutGroup: {fileID: 5080018548450252811}
   chatBoard: {fileID: 6995840903809688898}
   iconObjLayoutElement: {fileID: 6187143868307752041}
@@ -691,6 +689,7 @@ MonoBehaviour:
   chatLive: 0
   chatWolf: 0
   playerID: 0
+  subescribe: 0
 --- !u!114 &7595674281625313176
 MonoBehaviour:
   m_ObjectHideFlags: 0
