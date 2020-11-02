@@ -4059,6 +4059,7 @@ GameObject:
   - component: {fileID: 757757271}
   - component: {fileID: 757757273}
   - component: {fileID: 757757274}
+  - component: {fileID: 757757275}
   m_Layer: 0
   m_Name: TitleButtonManager
   m_TagString: Title
@@ -4136,6 +4137,18 @@ MonoBehaviour:
   playerNameText: {fileID: 1717778944}
   currencyText: {fileID: 1350956116}
   menberShipTextObj: {fileID: 564069231}
+--- !u!114 &757757275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757757270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a879004ce918841b17d718c6862c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &802322003
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Advertisements;
 
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -44,8 +43,6 @@ public class LobbyButtonManager : MonoBehaviour
 
     private void Start() {
 
-        //広告の準備をする
-        AdsManager();
 
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY);
         backButton.onClick.AddListener(BackButton);
@@ -82,13 +79,5 @@ public class LobbyButtonManager : MonoBehaviour
         SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
     }
 
-    /// <summary>
-    /// 広告に関する制御
-    /// </summary>
-    private void AdsManager(){
-
-        string gameID = "3851633";
-        Advertisement.Initialize(gameID,true);
-        Debug.Log("広告準備完了");
-    }
+    
 }
