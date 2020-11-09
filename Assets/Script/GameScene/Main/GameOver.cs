@@ -124,7 +124,11 @@ public class GameOver : MonoBehaviour {
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         gameManager.inputView.wolfMode = false;
+        gameManager.inputView.wolfBtnImage.color = gameManager.inputView.btnColor[0];
         gameManager.inputView.wolfModeButtonText.text = "市民";
+        gameManager.inputView.superChatBtnImage.color = gameManager.inputView.btnColor[0];
+        gameManager.inputView.superChat = false;
+        gameManager.inputView.superChatButton.interactable = true;
         gameManager.inputView.foldingButton.interactable = true;
         gameManager.timeController.inputField.interactable = true;
         gameManager.chatSystem.myPlayer.live = true;

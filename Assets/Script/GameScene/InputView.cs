@@ -27,6 +27,7 @@ public class InputView : MonoBehaviour {
 
     //wolfMode（狼チャットの制御関連
     public Button wolfModeButton;
+    public Image wolfBtnImage;
     public Text wolfModeButtonText;
     public bool wolfMode;//trueで狼モード
 
@@ -36,7 +37,10 @@ public class InputView : MonoBehaviour {
     public Text superChatButtonText;
     public bool superChat;
     public GameObject moneyImage;
+    public Image superChatBtnImage;
 
+    //
+    public Color[] btnColor;
 
     private void Start() {
         foldingButton.onClick.AddListener(FoldingPosition);
@@ -132,11 +136,13 @@ public class InputView : MonoBehaviour {
 
         //On
         if (wolfModeButtonText.text == "市民") {
+            wolfBtnImage.color = btnColor[2];
             wolfModeButtonText.text = "狼";
             wolfMode = true;
             chatListManager.OnWolfMode();
             //Off
         } else {
+            wolfBtnImage.color = btnColor[0];
             wolfModeButtonText.text = "市民";
             wolfMode = false;
             chatListManager.OffWolfMode();
@@ -149,8 +155,8 @@ public class InputView : MonoBehaviour {
     /// </summary>
     public void SuperChat() {
 
-        //On
-        if (superChatButtonText.text == "通常") {
+        //Onにするとき
+        if (!superChat) {
 
             chatListManager.gameManager.InstantiateCurrencyTextPopUP();
 
@@ -161,15 +167,14 @@ public class InputView : MonoBehaviour {
                 return;
             }
 
-            superChatButtonText.text = "青";
+            superChatBtnImage.color = btnColor[1];
+            //superChatButtonText.text = "青";
             superChat = true;
-            Debug.Log("superChat" + superChat);
-            //Off
+            //Offにするとき
         } else {
-            superChatButtonText.text = "通常";
+            superChatBtnImage.color = btnColor[0];
+            //superChatButtonText.text = "通常";
             superChat = false;
-            Debug.Log("superChat" + superChat);
-
         }
     }
 
@@ -185,10 +190,13 @@ public class InputView : MonoBehaviour {
     /// </summary>
     private void InvalidButton() {
         //狼ボタンとスパーチャットボタンを無効にする
+        wolfBtnImage.color = btnColor[0];
         wolfModeButtonText.text = "市民";
         wolfMode = false;
         wolfModeButton.interactable = false;
-        superChatButtonText.text = "通常";
+
+        superChatBtnImage.color = btnColor[0];
+        //superChatButtonText.text = "通常";
         superChat = false;
         superChatButton.interactable = false;
     }

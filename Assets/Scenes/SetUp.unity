@@ -632,10 +632,10 @@ MonoBehaviour:
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 0
+  isGameOver: 1
   isCheckSuddenDeath: 0
   isVoteCount: 0
-  isTestPlay: 0
+  isTestPlay: 1
   testRollTypeList: 04000000020000000400000000000000
   isCurrency: 0
   debugText: {fileID: 0}

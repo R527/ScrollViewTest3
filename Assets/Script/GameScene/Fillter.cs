@@ -30,7 +30,7 @@ public class Fillter : MonoBehaviour
     void Start()
     {
         //フィルターボタンの追加
-        filterButton.onClick.AddListener(() => FilterButton());
+        filterButton.onClick.AddListener(() => StartCoroutine(FilterButton()));
        
     }
 
@@ -42,7 +42,6 @@ public class Fillter : MonoBehaviour
     /// フィルター機能のONOFFを制御
     /// </summary>
     public IEnumerator FilterButton() {
-        Debug.Log("filter");
 
         //PopUpを消す処理が終わるまで押せない
         if (!ischeackCloseInputView) {
@@ -50,7 +49,7 @@ public class Fillter : MonoBehaviour
         }
 
         //フィルターボタン
-        if (filterButtanText.text == "フィルター") {
+        if (!chatListManager.isfilter) {
             filterButtanText.text = "解除";
             chatListManager.isfilter = true;
             //既にInputViewが上にあるなら下の処理をしない

@@ -128,7 +128,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 boardColor = 0;
             }
 
-            inputView.superChatButtonText.text = "通常";
+
+            inputView.superChatBtnImage.color = inputView.btnColor[0];
+            //inputView.superChatButtonText.text = "通常";
             inputView.superChat = false;
 
             //禁止Wordチェック

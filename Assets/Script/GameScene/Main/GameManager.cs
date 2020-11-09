@@ -549,6 +549,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //自分が狼チャットが使えるなら
         if (chatSystem.myPlayer.wolfChat) {
+
+            inputView.wolfBtnImage.color = inputView.btnColor[2];
             inputView.wolfModeButtonText.text = "狼";
             inputView.wolfModeButton.interactable = false;
             inputView.wolfMode = true;
