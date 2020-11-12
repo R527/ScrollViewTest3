@@ -63,7 +63,7 @@ public class BegginerGuide : MonoBehaviour
         psychicButton.onClick.AddListener(PsychicButton);
         groupButton.onClick.AddListener(GroupButton);
         campButton.onClick.AddListener(CampButton);
-        closeAnnotationButton.onClick.AddListener(CloseAnnotation);
+        //closeAnnotationButton.onClick.AddListener(CloseAnnotation);
     }
 
     /// <summary>
@@ -282,17 +282,17 @@ public class BegginerGuide : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// 注釈閉じる
-    /// </summary>
-    public void CloseAnnotation() {
-        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
-        annotationButtonObj.SetActive(false);
-        mainButtonObj.SetActive(true);
-        annotationText.gameObject.SetActive(false);
-        rollObj.SetActive(true);
+    ///// <summary>
+    ///// 注釈閉じる
+    ///// </summary>
+    //public void CloseAnnotation() {
+    //    AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+    //    annotationButtonObj.SetActive(false);
+    //    mainButtonObj.SetActive(true);
+    //    annotationText.gameObject.SetActive(false);
+    //    rollObj.SetActive(true);
 
-    }
+    //}
 
     /// <summary>
     /// Objの交換とOnOff
