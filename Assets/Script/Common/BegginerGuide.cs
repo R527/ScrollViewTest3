@@ -63,7 +63,7 @@ public class BegginerGuide : MonoBehaviour
         psychicButton.onClick.AddListener(PsychicButton);
         groupButton.onClick.AddListener(GroupButton);
         campButton.onClick.AddListener(CampButton);
-        //closeAnnotationButton.onClick.AddListener(CloseAnnotation);
+        closeAnnotationButton.onClick.AddListener(CloseAnnotation);
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public class BegginerGuide : MonoBehaviour
                         commentaryText.text = "<b>囲い・逆囲い</b>\r\n偽の占い師結果で、<color=red>狼</color>に対して<color=blue>白（市民）</color>と騙していることを<b>囲い</b>\r\n<color=blue>市民</color>に対して<color=red>黒（狼）</color>と騙していることを<b>逆囲い</b>と言う。\r\n\r\n<b>噛み・襲撃</b>  <color=red>狼</color>が夜の行動で、プレイヤー倒すことを指す。\r\n\r\n<b>潜伏</b>\r\n市民以外が<b>カミングアウトせずに市民のふり</b>をすること。\r\n\r\n<b>凸</b>  突然死の略。<b>1日の間に一言も話さないと<color=red>死亡</color>する</b>。";
                         break;
                     case 4:
-                        commentaryText.text = "また、ゲーム中でも右上のメニューから確認できます！";
+                        commentaryText.text = "また、その他の用語もゲーム中に右上のメニューから確認できます！";
                         //メニューへの誘導画像
                         break;
                 }
@@ -282,17 +282,17 @@ public class BegginerGuide : MonoBehaviour
 
     }
 
-    ///// <summary>
-    ///// 注釈閉じる
-    ///// </summary>
-    //public void CloseAnnotation() {
-    //    AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
-    //    annotationButtonObj.SetActive(false);
-    //    mainButtonObj.SetActive(true);
-    //    annotationText.gameObject.SetActive(false);
-    //    rollObj.SetActive(true);
+    /// <summary>
+    /// 注釈閉じる
+    /// </summary>
+    public void CloseAnnotation() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+        annotationButtonObj.SetActive(false);
+        mainButtonObj.SetActive(true);
+        annotationText.gameObject.SetActive(false);
+        rollObj.SetActive(true);
 
-    //}
+    }
 
     /// <summary>
     /// Objの交換とOnOff

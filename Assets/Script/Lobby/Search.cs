@@ -254,8 +254,9 @@ public class Search : MonoBehaviour {
         joinNumText.text = "未設定";
         openVotingText.text = "未設定";
         firstDayFrotuneText.text = "未設定";
+        suddenDeath_TypeText.text = "未設定";
         isNumLimit = true;
-        SearchRoomNode();
+        //SearchRoomNode();
     }
 
     

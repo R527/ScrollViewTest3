@@ -217,12 +217,6 @@ public class PlayerManager : MonoBehaviour {
             case ID_TYPE.saveRoomCount:
                 PlayerPrefs.SetInt("saveRoomCount", setInt);
                 break;
-            case ID_TYPE.bgmVolume:
-                PlayerPrefs.SetInt(ID_TYPE.bgmVolume.ToString(), setInt);
-                break;
-            case ID_TYPE.seVolume:
-                PlayerPrefs.SetInt(ID_TYPE.seVolume.ToString(), setInt);
-                break;
 
             //課金関連
             case ID_TYPE.currency:
@@ -230,6 +224,19 @@ public class PlayerManager : MonoBehaviour {
                 break;
         }
         PlayerPrefs.Save();
+    }
+
+    public void SetFloatForPlayerPrefs(float setFloat, ID_TYPE idType) {
+        switch (idType) {
+            case ID_TYPE.bgmVolume:
+                PlayerPrefs.SetFloat(ID_TYPE.bgmVolume.ToString(), setFloat);
+                break;
+            case ID_TYPE.seVolume:
+                PlayerPrefs.SetFloat(ID_TYPE.seVolume.ToString(), setFloat);
+                break;
+        }
+        PlayerPrefs.Save();
+
     }
 
 
