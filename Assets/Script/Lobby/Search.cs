@@ -53,18 +53,19 @@ public class Search : MonoBehaviour {
         openVotingText.text = searchOpenVoting.ToString();
         searchRoomSelectText.text = searchRoomSelection.ToString();
         joinNumText.text = "未設定";
+        suddenDeath_TypeText.text = "未設定";
 
-        //突然死数を見て設定を設ける
-        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
-            suddenDeath_Type = SUDDENDEATH_TYPE._０回;
-            suddenDeath_TypeText.text = SUDDENDEATH_TYPE._０回.ToString().Trim('_');
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
-            suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
-            suddenDeath_TypeText.text = SUDDENDEATH_TYPE._1回以下.ToString().Trim('_');
-        } else {
-            suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
-            suddenDeath_TypeText.text = SUDDENDEATH_TYPE._制限なし.ToString().Trim('_');
-        }
+        ////突然死数を見て設定を設ける
+        //if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+        //    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
+        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._０回.ToString().Trim('_');
+        //} else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+        //    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._1回以下.ToString().Trim('_');
+        //} else {
+        //    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
+        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._制限なし.ToString().Trim('_');
+        //}
 
         //button
         initSearchButton.onClick.AddListener(InitSearch);
@@ -120,6 +121,9 @@ public class Search : MonoBehaviour {
             }
             if (searchOpenVoting == VOTING.未設定) {
                 searchOpenVoting = Obj.openVoting;
+            }
+            if(suddenDeath_Type == SUDDENDEATH_TYPE._未設定) {
+                suddenDeath_Type = Obj.suddenDeath_Type;
             }
 
             //フィルターにかける
@@ -428,7 +432,7 @@ public class Search : MonoBehaviour {
     public void SuddenDeath_TypeLeft() {
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
             switch (suddenDeath_Type) {
-                case SUDDENDEATH_TYPE._０回:
+                case SUDDENDEATH_TYPE._未設定:
                     suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
                 case SUDDENDEATH_TYPE._制限なし:
@@ -437,15 +441,21 @@ public class Search : MonoBehaviour {
                 case SUDDENDEATH_TYPE._1回以下:
                     suddenDeath_Type = SUDDENDEATH_TYPE._０回;
                     break;
+                case SUDDENDEATH_TYPE._０回:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._未設定;
+                    break;
             }
         } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
             switch (suddenDeath_Type) {
 
-                case SUDDENDEATH_TYPE._1回以下:
+                case SUDDENDEATH_TYPE._未設定:
                     suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
                 case SUDDENDEATH_TYPE._制限なし:
                     suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+                    break;
+                case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._未設定;
                     break;
             }
         } else {
@@ -466,6 +476,9 @@ public class Search : MonoBehaviour {
                     suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
                 case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._未設定;
+                    break;
+                case SUDDENDEATH_TYPE._未設定:
                     suddenDeath_Type = SUDDENDEATH_TYPE._０回;
                     break;
             }
@@ -473,10 +486,12 @@ public class Search : MonoBehaviour {
             switch (suddenDeath_Type) {
 
                 case SUDDENDEATH_TYPE._1回以下:
-                    Debug.Log("一回以下");
                     suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
                 case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._未設定;
+                    break;
+                case SUDDENDEATH_TYPE._未設定:
                     suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
                     break;
             }

@@ -6717,7 +6717,7 @@ MonoBehaviour:
   searchFortuneType: 3
   searchRoomSelection: 0
   searchOpenVoting: 2
-  suddenDeath_Type: 0
+  suddenDeath_Type: 3
   roomSelectionText: {fileID: 3556330742058220620}
   firstDayFrotuneText: {fileID: 603758899}
   openVotingText: {fileID: 1688390958}
