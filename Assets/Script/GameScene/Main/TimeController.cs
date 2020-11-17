@@ -547,14 +547,17 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public IEnumerator UpInputView() {
-        fillter.folding = true;
+        //fillter.folding = true;
         inputView.foldingButton.interactable = false;
         yield return new WaitForSeconds(intervalTime + 0.3f);
         inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
         //inputView.viewport.DOLocalMoveY(72, 0.5f);
         inputView.viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
         inputView.menberViewPopUpObj.SetActive(true);
-        inputView.foldingText.text = "↓";
+        //inputView.foldingText.text = "↓";
+        inputView.folding = false;
+        inputView.foldingImage.sprite = inputView.downBtnSprite;
+
     }
 
     /// <summary>
@@ -562,13 +565,16 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public IEnumerator DownInputView() {
-        fillter.folding = false;
+        //fillter.folding = false;
         inputView.foldingButton.interactable = true;
         yield return new WaitForSeconds(intervalTime + 0.3f);
-        inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
+        inputView.inputRectTransform.DOLocalMoveY(-70, 0.5f);
         inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
         StartCoroutine(inputView.PopUpFalse());
-        inputView.foldingText.text = "↑";
+        inputView.folding = true;
+        //inputView.foldingText.text = "↑";
+        inputView.foldingImage.sprite = inputView.upBtnSprite;
+
     }
 
     /// <summary>

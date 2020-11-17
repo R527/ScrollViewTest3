@@ -25,6 +25,12 @@ public class InputView : MonoBehaviour {
     public GameObject coPopUpObj;//Coの入っているPrefab
     public Button comingOutButton;
 
+    //折畳ボタン
+    public Sprite upBtnSprite;
+    public Sprite downBtnSprite;
+    public Image foldingImage;
+    public bool folding;//trueなら上向き
+
     //wolfMode（狼チャットの制御関連
     public Button wolfModeButton;
     public Image wolfBtnImage;
@@ -59,7 +65,7 @@ public class InputView : MonoBehaviour {
     public void FoldingPosition() {
 
         //COPopUp
-        if (coPopUpObj.activeSelf && foldingText.text == "↓") {
+        if (coPopUpObj.activeSelf && !folding) {
             coPopUpObj.SetActive(false);
             menberViewPopUpObj.SetActive(true);
 
@@ -67,8 +73,8 @@ public class InputView : MonoBehaviour {
             availabilityButton();
 
             return;
-        } else if (menberViewPopUpObj.activeSelf && foldingText.text == "↓" ) {
-            inputRectTransform.DOLocalMoveY(-67, 0.5f);
+        } else if (menberViewPopUpObj.activeSelf && !folding) {
+            inputRectTransform.DOLocalMoveY(-70, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
             filterButton.interactable = true;
 
@@ -76,15 +82,19 @@ public class InputView : MonoBehaviour {
             availabilityButton();
 
             //stampButton.interactable = true;
-            foldingText.text = "↑";
+            folding = true;
+            foldingImage.sprite = upBtnSprite;
             StartCoroutine(PopUpFalse());
-        } else if (foldingText.text == "↑") {
+        } else if (folding) {
             menberViewPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = false;
-            foldingText.text = "↓";
+            folding = false;
+            //foldingText.text = "↓";
+            foldingImage.sprite = downBtnSprite;
+
         }
     }
 
@@ -95,7 +105,7 @@ public class InputView : MonoBehaviour {
     /// </summary>
     public void ComingOut() {
         //メンバーが表示されている状態でCOボタン押したときの処理
-        if (menberViewPopUpObj.activeSelf && foldingText.text == "↓") {
+        if (menberViewPopUpObj.activeSelf && !folding) {
             coPopUpObj.SetActive(true);
             menberViewPopUpObj.SetActive(false);
 
@@ -103,12 +113,15 @@ public class InputView : MonoBehaviour {
             InvalidButton();
 
             //COPopUpがアクティブ状態の時の処理
-        } else if (coPopUpObj.activeSelf && foldingText.text == "↓") {
-            inputRectTransform.DOLocalMoveY(-67, 0.5f);
+        } else if (coPopUpObj.activeSelf && !folding) {
+            inputRectTransform.DOLocalMoveY(-70, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = true;
-            foldingText.text = "↑";
+
+            folding = true;
+            //foldingText.text = "↑";
+            foldingImage.sprite = upBtnSprite;
 
             //ボタン有効にする
             availabilityButton();
@@ -116,7 +129,7 @@ public class InputView : MonoBehaviour {
             StartCoroutine(PopUpFalse());
 
             //InPutViewが閉じている時
-        } else if (foldingText.text == "↑") {
+        } else if (!folding) {
             coPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
@@ -125,7 +138,11 @@ public class InputView : MonoBehaviour {
             //ほかのボタン無効
             InvalidButton();
             //stampButton.interactable = false;
-            foldingText.text = "↓";
+
+            folding = false;
+            //foldingText.text = "↓";
+            foldingImage.sprite = downBtnSprite;
+
         }
     }
 

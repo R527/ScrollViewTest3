@@ -120,7 +120,7 @@ public class GameOver : MonoBehaviour {
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         timeController.isPlay = false;
         isGameOver = true;
-        gameManager.fillter.folding = false;
+        //gameManager.fillter.folding = false;
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         gameManager.inputView.wolfMode = false;

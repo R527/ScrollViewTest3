@@ -20,10 +20,7 @@ public class Fillter : MonoBehaviour
     public Button comingOutButton;
 
     public bool ischeackCloseInputView = true;
-
-
-
-    public bool folding;//夕方～夜にかけて折り畳みを制限する
+    //public bool folding;//夕方～夜にかけて折り畳みを制限する
 
 
     // Start is called before the first frame update
@@ -53,7 +50,7 @@ public class Fillter : MonoBehaviour
             filterButtanText.text = "解除";
             chatListManager.isfilter = true;
             //既にInputViewが上にあるなら下の処理をしない
-            if (inputView.foldingText.text == "↓") {
+            if (!inputView.folding) {
                 yield break;
             }
             //テキストが解除ならフィルターを解除する
@@ -63,28 +60,33 @@ public class Fillter : MonoBehaviour
             chatListManager.OffFilter();
         }
 
-        //MenbarViewの上下ボタン
-        Debug.Log(folding);
         //ボタンのテキストが上向きならInputViewを上にあげる
-        if (inputView.foldingText.text == "↑") {
+        if (inputView.folding) {
             Debug.Log("上に");
             inputView.menberViewPopUpObj.SetActive(true);
             inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
             inputView.viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
             flodingButton.interactable = false;
             comingOutButton.interactable = false;
-            inputView.foldingText.text = "↓";
 
+            inputView.folding = false;
+            //inputView.foldingText.text = "↓";
+            inputView.foldingImage.sprite = inputView.downBtnSprite;
             //フィルター中に押したらInputViewを閉じる
-        } else if(!folding){
+        } else if(!inputView.folding) {
             Debug.Log("下に");
             ischeackCloseInputView = false;
             StartCoroutine(CloseInputView());
-            inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
+
+            inputView.inputRectTransform.DOLocalMoveY(-70, 0.5f);
+            //inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
             inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
             flodingButton.interactable = true;
             comingOutButton.interactable = true;
-            inputView.foldingText.text = "↑";
+
+            inputView.folding = true;
+            //inputView.foldingText.text = "↑";
+            inputView.foldingImage.sprite = inputView.upBtnSprite;
             StartCoroutine(inputView.PopUpFalse());
         }
     }
