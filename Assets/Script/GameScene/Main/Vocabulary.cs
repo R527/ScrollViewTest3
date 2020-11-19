@@ -21,6 +21,7 @@ public class Vocabulary : MonoBehaviour
     public Button vocabularybackButton;//用語ボタンのある方のバックボタン
     public Button glossarymaskButton;//解説側のマスク
     public Button glossarybackButton;//解説側のバックボタン
+
     private void Start() {
         vocabularymaskButton.onClick.AddListener(CloseVocabularyPopUP);
         vocabularybackButton.onClick.AddListener(CloseVocabularyPopUP);

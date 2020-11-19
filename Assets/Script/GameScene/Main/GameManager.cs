@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     //ボタン
     public Button exitButton;
     public Button enterButton;
+    public Button rollBtn;//左上のボタン
 
     //その他
     [Header("役職リスト")]
@@ -540,6 +541,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         comingOut.ComingOutSetUp(ComingOutButtonList);
         StartCoroutine(timeController.Init());
         chatListManager.PlayerListSetUp(chatSystem.myPlayer.wolfChat);
+        rollBtn.interactable = true;
         //voteCount.VoteCountListSetUp(numLimit);
         liveNum = PhotonNetwork.PlayerList.Length;
 
