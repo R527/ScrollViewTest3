@@ -22,6 +22,8 @@ public class RulePopUp : BasePopUP {
 
     public Text confirmationRollListText;
 
+    public Button maskBtn;
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -37,7 +39,7 @@ public class RulePopUp : BasePopUP {
         entryLevelText.text = RoomData.instance.roomInfo.roomSelection.ToString();
         timeText.text = RoomData.instance.roomInfo.mainTime + "/" + RoomData.instance.roomInfo.nightTime;
         votedText.text = RoomData.instance.roomInfo.openVoting.ToString();
-
+        maskBtn.onClick.AddListener(DestroyPopUP);
         DisplayRollList();
     }
 

@@ -157,6 +157,8 @@ public class Vocabulary : MonoBehaviour
     /// </summary>
     public void CloseVocabularyPopUP() {
         vocabularyPopUP.SetActive(false);
+        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(true);
+
     }
     /// <summary>
     /// 解説用のPopUP

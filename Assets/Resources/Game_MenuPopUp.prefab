@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.44705883, g: 1, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.44705883, g: 1, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -558,19 +558,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9058563480286864518}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9058563480494422036}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &9058563480367447062
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +595,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 42.150005, y: 48.20501}
+  m_AnchoredPosition: {x: 42.150005, y: 37.282}
   m_SizeDelta: {x: 16, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9058563480367447066
@@ -821,10 +809,10 @@ MonoBehaviour:
   settingButton: {fileID: 9058563480983176463}
   ruleButton: {fileID: 555969362858411660}
   backButton: {fileID: 9058563480367447060}
-  maskButton: {fileID: 9058563480367447060}
+  maskButton: {fileID: 9058563480286864513}
   settingPopUpObj: {fileID: 8189307270004751238, guid: c25cf77a6390a87429932aa8a1a49fe5,
     type: 3}
-  begginerGuidePopUpObj: {fileID: 8136206898632055133, guid: beabe2b1c5b1c0d40b1814e461940a47,
+  begginerGuidePopUpObj: {fileID: 2645508698204678958, guid: 8df5b0f5c5e2d1d48bd483ec6d04b22f,
     type: 3}
   rulePopUpObj: {fileID: 7277491064392280501, guid: ecb3b9bf6b611d244aa5f65d2ca34baf,
     type: 3}
@@ -969,7 +957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.44705883, g: 1, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1165,8 +1153,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 148.9, y: -71.96001}
-  m_SizeDelta: {x: 100.3, y: 111.41}
+  m_AnchoredPosition: {x: 148.9, y: -61.5}
+  m_SizeDelta: {x: 100.3, y: 90.56424}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9058563481090255959
 CanvasRenderer:
@@ -1196,7 +1184,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1400,7 +1388,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.7, y: 48.205}
+  m_AnchoredPosition: {x: -11.7, y: 37.282}
   m_SizeDelta: {x: 76.9, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9058563481417265644
@@ -1506,7 +1494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.44705883, g: 1, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

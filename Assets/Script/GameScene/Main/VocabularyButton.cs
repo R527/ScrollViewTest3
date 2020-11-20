@@ -22,6 +22,7 @@ public class VocabularyButton : MonoBehaviour
 
 
     public void OpenVocabulary() {
+        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(false);
         vocabularyPopUp.SetActive(true);
     }
 }

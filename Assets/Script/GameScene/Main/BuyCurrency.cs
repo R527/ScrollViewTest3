@@ -7,18 +7,23 @@ using UnityEngine.UI;
 /// <summary>
 /// ゲーム中に内部通貨を購入する用のクラス
 /// </summary>
-public class BuyCurrency : MonoBehaviour
-{
+public class BuyCurrency : MonoBehaviour {
 
     public Button currencyBtn;
     public GameObject currencyImage;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        currencyBtn.onClick.AddListener(buyCurrency); 
+        currencyBtn.onClick.AddListener(buyCurrency);
     }
 
     void buyCurrency() {
+        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(false);
         currencyImage.SetActive(true);
     }
+
+
+
 }

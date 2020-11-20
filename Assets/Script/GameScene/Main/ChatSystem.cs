@@ -311,7 +311,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// </summary>
     public void DownCOPopUP() {
         inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
-        inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
+        inputView.viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
         StartCoroutine(gameMasterChatManager.gameManager.inputView.PopUpFalse());
     }
 

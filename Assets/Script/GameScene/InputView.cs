@@ -75,7 +75,7 @@ public class InputView : MonoBehaviour {
             return;
         } else if (menberViewPopUpObj.activeSelf && !folding) {
             inputRectTransform.DOLocalMoveY(-70, 0.5f);
-            viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             filterButton.interactable = true;
 
             //ボタン有効にする
@@ -88,7 +88,7 @@ public class InputView : MonoBehaviour {
         } else if (folding) {
             menberViewPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
-            viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = false;
             folding = false;
@@ -115,7 +115,7 @@ public class InputView : MonoBehaviour {
             //COPopUpがアクティブ状態の時の処理
         } else if (coPopUpObj.activeSelf && !folding) {
             inputRectTransform.DOLocalMoveY(-70, 0.5f);
-            viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = true;
 
@@ -132,7 +132,7 @@ public class InputView : MonoBehaviour {
         } else if (!folding) {
             coPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
-            viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
             filterButton.interactable = false;
 
             //ほかのボタン無効
