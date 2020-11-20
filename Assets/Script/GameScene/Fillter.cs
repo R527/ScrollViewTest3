@@ -20,6 +20,9 @@ public class Fillter : MonoBehaviour
     public Button comingOutButton;
 
     public bool ischeackCloseInputView = true;
+
+    public Color[] filterColor;
+    public Image filterImage;
     //public bool folding;//夕方～夜にかけて折り畳みを制限する
 
 
@@ -49,6 +52,7 @@ public class Fillter : MonoBehaviour
         if (!chatListManager.isfilter) {
             filterButtanText.text = "解除";
             chatListManager.isfilter = true;
+            filterImage.color = filterColor[1];
             //既にInputViewが上にあるなら下の処理をしない
             if (!inputView.folding) {
                 yield break;
@@ -57,6 +61,7 @@ public class Fillter : MonoBehaviour
         } else {
             filterButtanText.text = "フィルター";
             chatListManager.isfilter = false;
+            filterImage.color = filterColor[0];
             chatListManager.OffFilter();
         }
 

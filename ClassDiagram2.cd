@@ -772,10 +772,6 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="UnityEngine.MonoBehaviour" Collapsed="true">
-    <Position X="43.75" Y="13" Width="1.5" />
-    <TypeIdentifier />
-  </Class>
   <Enum Name="GUIDE_TYPE" Collapsed="true">
     <Position X="32.5" Y="21.5" Width="1.5" />
     <TypeIdentifier>
