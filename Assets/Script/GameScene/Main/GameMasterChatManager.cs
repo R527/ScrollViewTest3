@@ -118,7 +118,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             case TIME.夜の行動:
                 if (gameManager.chatSystem.myPlayer.live) {
-                    gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう。";
+                    gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう";
                 } else {
                     gameMasterChat = "夜の行動時間です。待ってくれ。";
                 }

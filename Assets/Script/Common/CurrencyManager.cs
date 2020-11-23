@@ -16,11 +16,14 @@ public class CurrencyManager : MonoBehaviour
     public GameManager gameManager;
 
     public Button closeBtn;
+    public Button maskBtn;
 
     void Start() {
-        if(closeBtn != null) {
+        if(closeBtn != null) 
             closeBtn.onClick.AddListener(closePopUp);
-        }
+        
+        if(maskBtn != null)
+            maskBtn.onClick.AddListener(closePopUp);
     }
     /// <summary>
     /// ゲーム内通貨を購入

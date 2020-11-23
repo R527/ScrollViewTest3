@@ -135,7 +135,7 @@ public class ChatListManager : MonoBehaviour {
     public void OnWolfMode() {
         //GMチャット
         foreach (ChatNode chatObj in gameMasterList) {
-            chatObj.gameObject.SetActive(false);
+            chatObj.gameObject.SetActive(true);
         }
         //通常のチャット
         foreach (List<ChatNode> chatList in allnormalList) {

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// 参加確認画面にコンポーネントされている
 /// スタートの時点でルールと役職を記載する
 /// </summary>
-public class RulePopUp : BasePopUP {
+public class RulePopUp : MonoBehaviour {
 
     //Text
     public Text numLimitText;
@@ -23,12 +23,12 @@ public class RulePopUp : BasePopUP {
     public Text confirmationRollListText;
 
     public Button maskBtn;
+    public Button closeBtn;
 
 
     // Start is called before the first frame update
-    protected override void Start()
+    void Start()
     {
-        base.Start();
 
         //役職一覧記載
 
@@ -39,8 +39,15 @@ public class RulePopUp : BasePopUP {
         entryLevelText.text = RoomData.instance.roomInfo.roomSelection.ToString();
         timeText.text = RoomData.instance.roomInfo.mainTime + "/" + RoomData.instance.roomInfo.nightTime;
         votedText.text = RoomData.instance.roomInfo.openVoting.ToString();
-        maskBtn.onClick.AddListener(DestroyPopUP);
+
+        maskBtn.onClick.AddListener(DestroyPopUp);
+        closeBtn.onClick.AddListener(DestroyPopUp);
         DisplayRollList();
+    }
+
+    void DestroyPopUp() {
+        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(true);
+        Destroy(gameObject);
     }
 
     /// <summary>

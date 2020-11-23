@@ -5012,7 +5012,7 @@ GameObject:
   m_Component:
   - component: {fileID: 491159203}
   m_Layer: 5
-  m_Name: BtnObj (1)
+  m_Name: "\u6C34\u6676500"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6570,7 +6570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a5f511b0d8142cba0aeb92d0b264c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: test_suisyou_100
+  productId: ' test_suisyou_2500'
   buttonType: 0
   consumePurchase: 1
   onPurchaseComplete:
@@ -6583,7 +6583,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 100
+          m_IntArgument: 2500
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -8253,7 +8253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 785891155}
   m_Layer: 5
-  m_Name: BtnObj (3)
+  m_Name: "\u6C34\u66765000"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12901,7 +12901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a5f511b0d8142cba0aeb92d0b264c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: test_suisyou_100
+  productId: ' test_suisyou_5000'
   buttonType: 0
   consumePurchase: 1
   onPurchaseComplete:
@@ -12914,7 +12914,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 100
+          m_IntArgument: 5000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -16694,7 +16694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a5f511b0d8142cba0aeb92d0b264c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: test_suisyou_100
+  productId: test_suisyou_500
   buttonType: 0
   consumePurchase: 1
   onPurchaseComplete:
@@ -16707,7 +16707,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 100
+          m_IntArgument: 500
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -17382,7 +17382,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1795812180}
   m_Layer: 5
-  m_Name: BtnObj
+  m_Name: "\u6C34\u6676100"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18371,7 +18371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2006024570}
   m_Layer: 5
-  m_Name: BtnObj (2)
+  m_Name: "\u6C34\u66762500"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19535,7 +19535,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000019073, y: 15.5}
+  m_AnchoredPosition: {x: 0.0000019073, y: -5.3396}
   m_SizeDelta: {x: 202.99998, y: 193.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2067936473
@@ -20577,6 +20577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1130743578}
   closeBtn: {fileID: 677135707}
+  maskBtn: {fileID: 8674886039055221224}
 --- !u!114 &635784463619713651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20881,8 +20882,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92abcb152f9d60442be230ec1c8fd92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closeButton: {fileID: 0}
-  closeButtonSwich: 0
   numLimitText: {fileID: 4361875647601014977}
   fortuneText: {fileID: 4361875647675079281}
   entryLevelText: {fileID: 4361875648279472786}
@@ -20892,6 +20891,7 @@ MonoBehaviour:
   rollExplanationButtonPrefab: {fileID: 0}
   confirmationRollListText: {fileID: 207274619}
   maskBtn: {fileID: 0}
+  closeBtn: {fileID: 0}
 --- !u!224 &1811975796405337138
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24214,8 +24214,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 23.999996}
-  m_SizeDelta: {x: 0, y: 245.16214}
+  m_AnchoredPosition: {x: 0, y: 26.3}
+  m_SizeDelta: {x: 0, y: 249.67688}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7610601753193853861
 MonoBehaviour:

@@ -52,6 +52,7 @@ public class Game_MenuPopUp : MonoBehaviour
 
     public void rulePopUp() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(false);
         Instantiate(rulePopUpObj, objTran,false);
         OnDestroy();
     }
