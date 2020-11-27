@@ -18,6 +18,9 @@ public class Fillter : MonoBehaviour
     public Button filterButton;
     public Button flodingButton;
     public Button comingOutButton;
+    public FillterPopUp fillterPopUpObj;
+    public FillterPopUp destroyObj;
+    public Transform gameCanvasTran;
 
     public bool ischeackCloseInputView = true;
 
@@ -31,7 +34,6 @@ public class Fillter : MonoBehaviour
     {
         //フィルターボタンの追加
         filterButton.onClick.AddListener(() => StartCoroutine(FilterButton()));
-       
     }
 
     ///////////////////////
@@ -50,7 +52,11 @@ public class Fillter : MonoBehaviour
 
         //フィルターボタン
         if (!chatListManager.isfilter) {
-            filterButtanText.text = "解除";
+            //filterButtanText.text = "解除";
+
+            destroyObj = Instantiate(fillterPopUpObj, gameCanvasTran, false);
+            destroyObj.fillterText.text = "フィルター中";
+
             chatListManager.isfilter = true;
             filterImage.color = filterColor[1];
             //既にInputViewが上にあるなら下の処理をしない
@@ -59,7 +65,9 @@ public class Fillter : MonoBehaviour
             }
             //テキストが解除ならフィルターを解除する
         } else {
-            filterButtanText.text = "フィルター";
+            //filterButtanText.text = "フィルター";
+
+            Destroy(destroyObj.gameObject);
             chatListManager.isfilter = false;
             filterImage.color = filterColor[0];
             chatListManager.OffFilter();
