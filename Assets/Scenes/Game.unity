@@ -343,12 +343,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 10
-    m_Right: 10
-    m_Top: 10
+    m_Left: 3
+    m_Right: 3
+    m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 10
+  m_Spacing: 5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -9951,7 +9951,7 @@ MonoBehaviour:
   upBtnSprite: {fileID: 21300000, guid: 137c605350849a743b8a4644b7de27be, type: 3}
   downBtnSprite: {fileID: 21300000, guid: 515e1722bb0b86e4bb28c0aaade52e65, type: 3}
   foldingImage: {fileID: 48525515}
-  folding: 0
+  folding: 1
   wolfModeButton: {fileID: 972337835}
   wolfBtnImage: {fileID: 972337836}
   wolfModeButtonText: {fileID: 1484097463}

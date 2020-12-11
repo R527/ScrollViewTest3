@@ -70,12 +70,13 @@ MonoBehaviour:
   chatNodePrefab: {fileID: 305502188816226707, guid: eaad2c9bff9814d409aeaa2fe5a5d085,
     type: 3}
   iconNo: 0
-  playerButton: {fileID: 0}
+  playerButton: {fileID: 7534093506484074954, guid: 765fafd58a705684babe9cc1ecafa704,
+    type: 3}
   chatTran: {fileID: 0}
   emtyRoom: 0
   isVoteFlag: 0
   isRollAction: 0
-  playerButtonPrefab: {fileID: 7299260294203596066, guid: 765fafd58a705684babe9cc1ecafa704,
+  playerButtonPrefab: {fileID: 7534093506484074954, guid: 765fafd58a705684babe9cc1ecafa704,
     type: 3}
 --- !u!222 &5807723990393611466
 CanvasRenderer:

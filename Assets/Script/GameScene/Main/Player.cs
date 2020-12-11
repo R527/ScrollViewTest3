@@ -61,7 +61,6 @@ public class Player : MonoBehaviourPunCallbacks {
     /// 役職などの詳細は後程設定する
     /// </summary>
     private IEnumerator Start() {
-        Debug.Log("PlayerStart");
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         buttontran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
