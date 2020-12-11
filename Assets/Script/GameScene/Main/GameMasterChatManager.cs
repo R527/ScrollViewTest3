@@ -528,7 +528,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             PlayerButton playerObj = player.GetComponent<PlayerButton>();
             if (bitedID == playerObj.playerID) {
                 playerObj.live = false;
-                playerObj.playerText.text += timeController.day + "日目襲撃";
+                playerObj.playerInfoText.text += timeController.day + "日目襲撃";
             }
         }
 

@@ -233,8 +233,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.昼;
                 isDisplay = true;
                 totalTime = mainTime;
-                timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
-                timeContollerPopUpObj.text.text = "お昼の時間です。";
+
+                ChangeSecene();
 
                 //死亡している場合時短or退出ボタンを退出にする
                 if (chatSystem.myPlayer.live == false) {
@@ -261,11 +261,11 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //投票時間
             case TIME.昼:
                 timeType = TIME.投票時間;
-                timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
-                timeContollerPopUpObj.text.text = "投票の時間です。";
+
                 isDisplay = true;
                 totalTime = votingTime;
 
+                ChangeSecene();
                 //一日ごとに突然死チェックするのでリセット
                 isSpeaking = false;
 
@@ -322,7 +322,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                                     PlayerButton playerObj = obj.GetComponent<PlayerButton>();
                                     if (player.ActorNumber == playerObj.playerID) {
                                         playerObj.live = false;
-                                        playerObj.playerText.text += day + "日目突然死";
+                                        playerObj.playerInfoText.text += day + "日目突然死";
                                         break;
                                     }
                                 }
@@ -385,8 +385,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 isDisplay = true;
                 totalTime = nightTime;
-                timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
-                timeContollerPopUpObj.text.text = "夜の時間です。";
+                ChangeSecene();
 
 
                 //初期化
@@ -506,18 +505,45 @@ public class TimeController : MonoBehaviourPunCallbacks {
         }
     }
 
+
+    /// <summary>
+    /// ゲームシーンが変更されると時間の案内表示が出る
+    /// </summary>
+    private void ChangeSecene() {
+        timeContollerPopUpObj = Instantiate(timeControllerPopUpPrefab, mainCanvasTran, false);
+
+        switch (timeType) {
+            case TIME.昼:
+                timeContollerPopUpObj.text.text = "お昼の時間です。";
+                break;
+            case TIME.投票時間:
+                timeContollerPopUpObj.text.text = "投票の時間です。";
+                break;
+            case TIME.夜の行動:
+                timeContollerPopUpObj.text.text = "夜の行動。"; 
+                break;
+        }
+        timeContollerPopUpObj.image.color = new Color(255, 255, 255, 0);
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(timeContollerPopUpObj.image.DOFade(1, 1.0f));
+        sequence.AppendInterval(1.0f);
+        sequence.Append(timeContollerPopUpObj.image.DOFade(0, 1.0f))
+            .OnComplete(() => {
+                Destroy(timeContollerPopUpObj.gameObject);
+            });
+    }
     /// <summary>
     /// 昼、夜、投票後にあるインターバル時間を設定
     /// </summary>
     /// <returns></returns>
     private IEnumerator EndInterval(TIME nowTimeType) {
-        yield return new WaitForSeconds(intervalTime);//コルーチンでインターバル時間を設ける
+        //yield return new WaitForSeconds(intervalTime);//コルーチンでインターバル時間を設ける
 
-        //一定時間ごとに出てくるPopUp削除
-        if(timeContollerPopUpObj != null) {
-            Destroy(timeContollerPopUpObj.gameObject);
+        ////一定時間ごとに出てくるPopUp削除
+        //if(timeContollerPopUpObj != null) {
+        //    Destroy(timeContollerPopUpObj.gameObject);
 
-        }
+        //}
 
         //役職に合わせてボタンなどを変更する
         TimesavingControllerTrue();

@@ -6650,9 +6650,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u7279\u5B9A\u5546\u53D6\u5F15\u6CD5Btn": {fileID: 800555915}
   "\u8CC7\u91D1\u6C7A\u6E08\u6CD5Btn": {fileID: 496095946}
-  rulesTextObj: {fileID: 4321452377114443349, guid: 29688eaaf3e492a4b8c370f4c87af684,
-    type: 3}
-  shopObjTrn: {fileID: 1369242867}
 --- !u!4 &1253405041
 Transform:
   m_ObjectHideFlags: 0

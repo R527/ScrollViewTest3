@@ -11,18 +11,24 @@ using UnityEngine.UI;
 public class MenuButtonManager : MonoBehaviour
 {
     public Button beginnerButton;
-    public Button upDateButton;
+    //public Button upDateButton;
     public Button settingButton;
     public Button backButton;//戻るボタン
     public Button maskButton;//マスクについてるボタン
+    public Button rulesButton;//利用規約
 
     public GameObject settingPopUpObj;
     public GameObject begginerGuidePopUpObj;
 
+    //利用規約関連
+    private const string URL = "https://sun471044.wixsite.com/mysite";
+
+
     private void Start() {
         beginnerButton.onClick.AddListener(BegginerPopUp);
-        upDateButton.onClick.AddListener(UpDatePopUp);
+        //upDateButton.onClick.AddListener(UpDatePopUp);
         settingButton.onClick.AddListener(SettingPopUp);
+        rulesButton.onClick.AddListener(SubmitRules);
 
         backButton.onClick.AddListener(OnDestroy);
         maskButton.onClick.AddListener(OnDestroy);
@@ -37,9 +43,9 @@ public class MenuButtonManager : MonoBehaviour
         OnDestroy();
     }
 
-    public void UpDatePopUp() {
-        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
-    }
+    //public void UpDatePopUp() {
+    //    AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+    //}
 
     /// <summary>
     /// 初心者PopUpをインスタンス
@@ -56,6 +62,9 @@ public class MenuButtonManager : MonoBehaviour
         Destroy(gameObject);
     }
 
+    void SubmitRules() {
+        Application.OpenURL(URL);
+    }
 
 
 }

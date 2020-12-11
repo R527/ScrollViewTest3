@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// PlayerNameと利用規約の同意
+/// </summary>
 public class CreatePlayerName : MonoBehaviour
 {
     public Button createNameButton;
@@ -11,8 +14,17 @@ public class CreatePlayerName : MonoBehaviour
     public NGList nGList;
     public bool checkName;
 
+    //利用規約関連　
+    public GameObject rulesObj;
+    public Button rulesBtn;
+    public Button agreeBtn;
+    private const string URL = "https://sun471044.wixsite.com/mysite";
+
+
     private void Start() {
         createNameButton.onClick.AddListener(OnClickSubmit);
+        rulesBtn.onClick.AddListener(SubmitRules);
+        agreeBtn.onClick.AddListener(CheckRules);
     }
 
     /// <summary>
@@ -37,7 +49,20 @@ public class CreatePlayerName : MonoBehaviour
             Debug.Log("文字数制限にかかっています。");
             inputFieldName.text = string.Empty;
         }
+    }
+
+    /// <summary>
+    /// 利用規約同意をさせてからName登録画面に移る
+    /// </summary>
+    public void CheckRules() {
+        Destroy(rulesObj);
+    }
 
 
+    /// <summary>
+    /// 利用規約が書かれているサイトに飛ぶ
+    /// </summary>
+    public void SubmitRules() {
+        Application.OpenURL(URL);
     }
 }
