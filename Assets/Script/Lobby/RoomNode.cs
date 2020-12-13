@@ -187,15 +187,27 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// </summary>
     public bool CheckSuddenDeath() {
         bool isCheck = false;
-        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || suddenDeath_Type == SUDDENDEATH_TYPE._制限なし)) {
+
+        //凸1回以下
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) && PlayerManager.instance.totalNumberOfMatches >= 25) {
             Debug.Log("1");
             isCheck = true;
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
+        
+        //凸2回以上
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && suddenDeath_Type == SUDDENDEATH_TYPE._2回以上) {
             Debug.Log("2");
             isCheck = true;
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+
+        //凸0回
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             Debug.Log("0");
             isCheck = true;
+
+        //制限なし
+        }else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0 && suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
+            isCheck = true;
+            Debug.Log("seigennnasi");
+
         }
         return isCheck;
     }

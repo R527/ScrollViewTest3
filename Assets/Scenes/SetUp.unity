@@ -556,7 +556,7 @@ MonoBehaviour:
   totalNumberOfMatches: 0
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
-  totalNumberOfSuddenDeath: 1
+  totalNumberOfSuddenDeath: 0
   beginnerTotalNumberOfMatches: 0
   beginnerTotalNumberOfWins: 0
   beginnerTotalNumberOfLoses: 0
