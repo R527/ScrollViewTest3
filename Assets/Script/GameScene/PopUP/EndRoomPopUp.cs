@@ -44,7 +44,9 @@ public class EndRoomPopUp : MonoBehaviour
     /// 部屋退出
     /// </summary>
     private void ExitRoom() {
-        Advertisement.Show(VIDEO_PLACEMENT_ID);
+        if (PlayerManager.instance.subscribe) {
+            Advertisement.Show(VIDEO_PLACEMENT_ID);
+        }
         NetworkManager.instance.LeaveRoom();
     }
 }
