@@ -198,14 +198,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     return;
                 }
             }
-
-
-
-            //game終了後に退出する場合広告を表示する
-            //さぶすく中なら除外
-            if (timeController.gameOver.isGameOver && PlayerManager.instance.subscribe) {
-                Advertisement.Show(VIDEO_PLACEMENT_ID);
-            }
+            Debug.Log("退出");
+            ShowAds();
 
             gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
             gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
@@ -217,6 +211,44 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
     }
 
+    /// <summary>
+    /// 広告を表示するか否かを決定する
+    /// </summary>
+    void ShowAds() {
+        //game終了後に退出する場合広告を表示する
+        //さぶすく中なら除外
+
+        if (PlayerManager.instance.subscribe) {
+            Debug.Log("ShowAds");
+            //ゲームオーバー後なら必ず広告を入れる
+            if (timeController.gameOver.isGameOver) {
+                Advertisement.Show(VIDEO_PLACEMENT_ID);
+            } else if (!gameManager.gameStart &&  Random.value >= ReturnAds()) {
+                Advertisement.Show(VIDEO_PLACEMENT_ID);
+                Debug.Log("test");
+            }
+        }
+        
+        
+    }
+
+
+    /// <summary>
+    /// 突然死の状態に合わせて広告表示を変更する
+    /// </summary>
+    float ReturnAds() {
+
+        float num = 0;
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+            num = 2;
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+            num = 0.5f;
+            Debug.Log(Random.value);
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath >= 2) {
+            num = 0;
+        }
+        return num;
+    }
 
 
     ///// <summary>
