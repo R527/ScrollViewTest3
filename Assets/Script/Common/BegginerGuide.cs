@@ -146,7 +146,8 @@ public class BegginerGuide : MonoBehaviour
                         commentaryText.text = "人狼ではいくつかの専門用語を扱います。\r\n\r\n<b>CO・塩</b>\r\nカミングアウトの略。<b>自分の役職を公表すること</b>。\r\n\r\n<b>白・黒</b><color=blue> 白とは市民</color>。<color=red>黒とは狼</color>を指す。\r\n\r\n<b>確白・確黒</b>  占い、霊能結果から一人のプレイヤーが<b>白・黒確定</b>したこと。\r\n\r\n<b>グレー</b>\r\n<b>占われていない</b>、かつ、<b>役職が確定していない</b>プレイヤーを指す。";
                         break;
                     case 2:
-                        commentaryText.text = "<b>人外</b>\r\n<color=red>人狼陣営</color>、<color=fuchsia>第3陣営</color>を指す。\r\n\r\n<b>真・偽</b>  真は本物、偽は偽物を指す。<b>占い霊能者などが二人以上CO</b>したときに使われる。\r\n\r\n<b>吊</b>  処刑することや、<b>処刑対象</b>を指す\r\n\r\n<b>〇〇ロラ</b>  同じ役職が複数COされている時に、<b>その全員を処刑する</b>ことを指す。\r\n（例）霊能ロラ　霊能者COしているプレイヤー全員処刑する。";
+                        //、<color=fuchsia>第3陣営</color>
+                        commentaryText.text = "<b>人外</b>\r\n<color=red>人狼陣営</color>を指す。\r\n\r\n<b>真・偽</b>  真は本物、偽は偽物を指す。<b>占い霊能者などが二人以上CO</b>したときに使われる。\r\n\r\n<b>吊</b>  処刑することや、<b>処刑対象</b>を指す\r\n\r\n<b>〇〇ロラ</b>  同じ役職が複数COされている時に、<b>その全員を処刑する</b>ことを指す。\r\n（例）霊能ロラ　霊能者COしているプレイヤー全員処刑する。";
                         break;
                     case 3:
                         commentaryText.text = "<b>囲い・逆囲い</b>\r\n偽の占い師結果で、<color=red>狼</color>に対して<color=blue>白（市民）</color>と騙していることを<b>囲い</b>\r\n<color=blue>市民</color>に対して<color=red>黒（狼）</color>と騙していることを<b>逆囲い</b>と言う。\r\n\r\n<b>噛み・襲撃</b>  <color=red>狼</color>が夜の行動で、プレイヤー倒すことを指す。\r\n\r\n<b>潜伏</b>\r\n市民以外が<b>カミングアウトせずに市民のふり</b>をすること。\r\n\r\n<b>凸</b>  突然死の略。<b>1日の間に一言も話さないと<color=red>死亡</color>する</b>。";

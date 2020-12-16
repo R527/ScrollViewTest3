@@ -219,13 +219,11 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         //さぶすく中なら除外
 
         if (PlayerManager.instance.subscribe) {
-            Debug.Log("ShowAds");
             //ゲームオーバー後なら必ず広告を入れる
             if (timeController.gameOver.isGameOver) {
                 Advertisement.Show(VIDEO_PLACEMENT_ID);
             } else if (!gameManager.gameStart &&  Random.value >= ReturnAds()) {
                 Advertisement.Show(VIDEO_PLACEMENT_ID);
-                Debug.Log("test");
             }
         }
         
