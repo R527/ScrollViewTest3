@@ -114,7 +114,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             } else if (inputView.superChat) {
                 //メンバーシップ加入プレイヤーでかつ青チャットを3回打ってないプレイヤーは無料で青チャットを打つことができる
                 if(superChatCount >= 3 || PlayerManager.instance.subscribe) {
-                    PlayerManager.instance.UseCurrency(10);
+                    PlayerManager.instance.UseCurrency(gameMasterChatManager.gameManager.superChatCurrency);
                     gameMasterChatManager.gameManager.UpdateCurrencyText();
                 } else {
                     superChatCount++;
@@ -128,7 +128,9 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 boardColor = 0;
             }
 
-            inputView.superChatButtonText.text = "通常";
+
+            inputView.superChatBtnImage.color = inputView.btnColor[0];
+            //inputView.superChatButtonText.text = "通常";
             inputView.superChat = false;
 
             //禁止Wordチェック
@@ -309,7 +311,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// </summary>
     public void DownCOPopUP() {
         inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
-        inputView.viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
+        inputView.viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
         StartCoroutine(gameMasterChatManager.gameManager.inputView.PopUpFalse());
     }
 

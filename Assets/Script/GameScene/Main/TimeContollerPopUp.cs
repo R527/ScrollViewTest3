@@ -7,5 +7,6 @@ public class TimeContollerPopUp : MonoBehaviour
 {
 
     public Text text;
+    public Image image;
 
 }

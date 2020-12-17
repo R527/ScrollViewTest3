@@ -118,7 +118,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             case TIME.夜の行動:
                 if (gameManager.chatSystem.myPlayer.live) {
-                    gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう。";
+                    gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう";
                 } else {
                     gameMasterChat = "夜の行動時間です。待ってくれ。";
                 }
@@ -184,28 +184,23 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             //課金額が指定した料金に達している場合
             //TODO 初めての退出と初めての青チャットをする際に課金が必要であることをPoPUp等で知らせる処理を追加する
-            int exitCurrenecy = 120;
 
-            if (timeController.isPlay && PlayerManager.instance.currency >= exitCurrenecy) {
+
+            if (timeController.isPlay && PlayerManager.instance.currency >= gameManager.extitCurrency) {
                 timeController.gameOver.CheckEndGame();
-                PlayerManager.instance.UseCurrency(exitCurrenecy);
+                PlayerManager.instance.UseCurrency(gameManager.extitCurrency);
                 gameManager.UpdateCurrencyText();
-            } else if(timeController.isPlay && PlayerManager.instance.currency < exitCurrenecy) {
+            } else if(timeController.isPlay && PlayerManager.instance.currency < gameManager.extitCurrency) {
                 //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
-                if (exitCurrenecy > PlayerManager.instance.currency) {
-                    gameManager.InstantiateCurrencyTextPopUP();
+                if (gameManager.extitCurrency > PlayerManager.instance.currency) {
+
+                    gameManager.InstantiateCurrencyTextPopUP("exitStr");
                     gameManager.inputView.moneyImage.SetActive(true);
                     return;
                 }
             }
-
-
-
-            //game終了後に退出する場合広告を表示する
-            //さぶすく中なら除外
-            if (timeController.gameOver.isGameOver && PlayerManager.instance.subscribe) {
-                Advertisement.Show(VIDEO_PLACEMENT_ID);
-            }
+            Debug.Log("退出");
+            ShowAds();
 
             gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
             gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
@@ -217,6 +212,42 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
     }
 
+    /// <summary>
+    /// 広告を表示するか否かを決定する
+    /// </summary>
+    void ShowAds() {
+        //game終了後に退出する場合広告を表示する
+        //さぶすく中なら除外
+
+        if (PlayerManager.instance.subscribe) {
+            //ゲームオーバー後なら必ず広告を入れる
+            if (timeController.gameOver.isGameOver) {
+                Advertisement.Show(VIDEO_PLACEMENT_ID);
+            } else if (!gameManager.gameStart &&  Random.value >= ReturnAds()) {
+                Advertisement.Show(VIDEO_PLACEMENT_ID);
+            }
+        }
+        
+        
+    }
+
+
+    /// <summary>
+    /// 突然死の状態に合わせて広告表示を変更する
+    /// </summary>
+    float ReturnAds() {
+
+        float num = 0;
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+            num = 2;
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+            num = 0.5f;
+            Debug.Log(Random.value);
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath >= 2) {
+            num = 0;
+        }
+        return num;
+    }
 
 
     ///// <summary>
@@ -528,7 +559,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             PlayerButton playerObj = player.GetComponent<PlayerButton>();
             if (bitedID == playerObj.playerID) {
                 playerObj.live = false;
-                playerObj.playerText.text += timeController.day + "日目襲撃";
+                playerObj.playerInfoText.text += timeController.day + "日目襲撃";
             }
         }
 

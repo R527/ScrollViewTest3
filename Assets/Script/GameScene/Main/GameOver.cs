@@ -120,11 +120,15 @@ public class GameOver : MonoBehaviour {
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         timeController.isPlay = false;
         isGameOver = true;
-        gameManager.fillter.folding = false;
+        //gameManager.fillter.folding = false;
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         gameManager.inputView.wolfMode = false;
+        gameManager.inputView.wolfBtnImage.color = gameManager.inputView.btnColor[0];
         gameManager.inputView.wolfModeButtonText.text = "市民";
+        gameManager.inputView.superChatBtnImage.color = gameManager.inputView.btnColor[0];
+        gameManager.inputView.superChat = false;
+        gameManager.inputView.superChatButton.interactable = true;
         gameManager.inputView.foldingButton.interactable = true;
         gameManager.timeController.inputField.interactable = true;
         gameManager.chatSystem.myPlayer.live = true;

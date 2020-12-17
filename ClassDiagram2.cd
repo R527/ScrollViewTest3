@@ -1,0 +1,860 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DG.Tweening.DOTweenModuleAudio" Collapsed="true">
+    <Position X="41.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAIAAEAEgAAAAAAAAAACCBIAEghQ=</HashCode>
+      <FileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleAudio.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DG.Tweening.DOTweenModulePhysics" Collapsed="true">
+    <Position X="25.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAGBBAAAQAACAAAAEAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Demigiant\DOTween\Modules\DOTweenModulePhysics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DG.Tweening.DOTweenModulePhysics2D" Collapsed="true">
+    <Position X="27.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAGBAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Demigiant\DOTween\Modules\DOTweenModulePhysics2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DG.Tweening.DOTweenModuleSprite" Collapsed="true">
+    <Position X="29" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAQAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DG.Tweening.DOTweenModuleUI" Collapsed="true">
+    <Position X="30.75" Y="15.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="DG.Tweening.DOTweenModuleUI.Utils" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUI.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>YAIQABAAAAgAgKAgAAAIAAQCLQEFAABAQAABBQAAAAg=</HashCode>
+      <FileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DG.Tweening.DOTweenModuleUnityVersion" Collapsed="true">
+    <Position X="32.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAACAAAAAAAAQAAAAAAQEAUAAACAAAAABA=</HashCode>
+      <FileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DG.Tweening.DOTweenCYInstruction" Collapsed="true">
+    <Position X="39.5" Y="14.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="DG.Tweening.DOTweenCYInstruction.WaitForCompletion" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DG.Tweening.DOTweenCYInstruction.WaitForRewind" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DG.Tweening.DOTweenCYInstruction.WaitForKill" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DG.Tweening.DOTweenCYInstruction.WaitForElapsedLoops" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DG.Tweening.DOTweenCYInstruction.WaitForPosition" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DG.Tweening.DOTweenCYInstruction.WaitForStart" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DG.Tweening.DOTweenModuleUtils" Collapsed="true">
+    <Position X="34.25" Y="15.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="DG.Tweening.DOTweenModuleUtils.Physics" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAACABCAAAAAAA=</HashCode>
+      <FileName>Assets\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Photon.Chat.UtilityScripts.EventSystemSpawner" Collapsed="true">
+    <Position X="37.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Photon.Chat.UtilityScripts.OnStartDelete" Collapsed="true">
+    <Position X="37.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Photon.Chat.UtilityScripts.TextButtonTransition" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="41.25" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAABAAAAAAAAAAAAAAAAAgAAAIAAAAAQAACEI=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Photon.Chat.UtilityScripts.TextToggleIsOnTransition" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.5" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAADAAggAEIAAAQAQAAKAA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\Common\TextToggleIsOnTransition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ChannelSelector" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ChatAppIdCheckerUI" Collapsed="true">
+    <Position X="41.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatGui" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CGQBAFoQQCoDGEQAABCAAICUAEBggQIYCRAwTAAQAJA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FriendItem" Collapsed="true">
+    <Position X="25.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAIAAAAAAABAAAAEAAAAQAAAEA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IgnoreUiRaycastWhenInactive" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\DemoChat\IgnoreUiRaycastWhenInactive.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NamePickGui" Collapsed="true">
+    <Position X="29" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAACAAACAACAAAAAAAAAAAAAAAACAAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasePopUP" Collapsed="true">
+    <Position X="20.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiAAAAgAAAAAAAAAAAAAAAAAAAgAAAAEAAA=</HashCode>
+      <FileName>Assets\Script\BasePopUP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AdvertisingManager" Collapsed="true">
+    <Position X="27.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Common\AdvertisingManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AudioManager" Collapsed="true">
+    <Position X="29" Y="12.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="AudioManager.BGM_TYPE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Common\AudioManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="AudioManager.SE_TYPE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Common\AudioManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAQAAgAAEAAgAAUABEAAKQAAAAACAAAEA=</HashCode>
+      <FileName>Assets\Script\Common\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BegginerGuide" Collapsed="true">
+    <Position X="34.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EA2AACAAACAAAABAELAJQEAnAUJQgoFgAAgYAgAIAAA=</HashCode>
+      <FileName>Assets\Script\Common\BegginerGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BegginerGuidePopUp" Collapsed="true">
+    <Position X="18.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAACCAAAAAAABBAAAAAAAAAAAAAAACgAAAAAA=</HashCode>
+      <FileName>Assets\Script\Common\BegginerGuidePopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraSizeUpdater" Collapsed="true">
+    <Position X="37.75" Y="12.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="CameraSizeUpdater.BaseType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Common\CameraSizeUpdater.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAAAgEgAAAAAABAAAAAAAAABCAEAEA=</HashCode>
+      <FileName>Assets\Script\Common\CameraSizeUpdater.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLog" Collapsed="true">
+    <Position X="30.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgICAEACAAAQAAJAEAQYwCBAIAFAEEAAAZAAAAAAU=</HashCode>
+      <FileName>Assets\Script\Common\ChatLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLogPlayerButton" Collapsed="true">
+    <Position X="32.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAgAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Assets\Script\Common\ChatLogPlayerButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CheckTabooWard" Collapsed="true">
+    <Position X="39.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAQA=</HashCode>
+      <FileName>Assets\Script\Common\CheckTabooWard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CurrencyManager" Collapsed="true">
+    <Position X="34.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAAAAAEAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Common\CurrencyManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DayOrderButton" Collapsed="true">
+    <Position X="36" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAACIAEEAAABAAAARAIAAACAABAAIkAwIA=</HashCode>
+      <FileName>Assets\Script\Common\DayOrderButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DebugManager" Collapsed="true">
+    <Position X="37.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQACAhAAAACgBAAIUEAACIAABCAIggAAAAIAAIMMA=</HashCode>
+      <FileName>Assets\Script\Common\DebugManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLogNode" Collapsed="true">
+    <Position X="30.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAiAACCAAAAAAAAAAAEAAAAAACAAAAABgAAAAAA=</HashCode>
+      <FileName>Assets\Script\Common\GameLogNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainCamera" Collapsed="true">
+    <Position X="25.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAQAQAAAAAAABAAAAAAAAAAAAAAAEEA=</HashCode>
+      <FileName>Assets\Script\Common\MainCamera.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MenuButtonManager" Collapsed="true">
+    <Position X="27.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQBAAAAACAAQAAAQIAKAAAAAwAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Common\MenuButtonManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NetworkManager" Collapsed="true">
+    <Position X="30.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kECAgAAAAGAAAAgEAGAREoAGgAlAADEEEAAkAYACAFI=</HashCode>
+      <FileName>Assets\Script\Common\NetworkManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NGList" Collapsed="true">
+    <Position X="34.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Assets\Script\Common\NGList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerManager" Collapsed="true">
+    <Position X="30.75" Y="18.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="PlayerManager.ID_TYPE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Common\PlayerManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="PlayerManager.BATTLE_RECORD_TYPE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Common\PlayerManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="PlayerManager.SuddenDeath_TYPE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Common\PlayerManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>UEQqABAAICAJCBmQiBEJkgMAJCBCIQACAABACCQBBmA=</HashCode>
+      <FileName>Assets\Script\Common\PlayerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneStateManager" Collapsed="true">
+    <Position X="32.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIABAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Script\Common\SceneStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SettingPopUp" Collapsed="true">
+    <Position X="36" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAAAAACAAAIAAAAAQAAAAAAAAAABAEAAAA=</HashCode>
+      <FileName>Assets\Script\Common\SettingPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StableAspect" Collapsed="true">
+    <Position X="39.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAQAQAAAQAAAAABAAAAAAAAAAAAAEEA=</HashCode>
+      <FileName>Assets\Script\Common\StableAspect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fillter" Collapsed="true">
+    <Position X="41.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACABAAAAASEACgAAAAAAAgQAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Fillter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Game_Menu" Collapsed="true">
+    <Position X="27.25" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Script\GameScene\Game_Menu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Game_MenuPopUp" Collapsed="true">
+    <Position X="29" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQBAAAAACAAQAAAQIgKAgAAAwAAIAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Game_MenuPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputView" Collapsed="true">
+    <Position X="39.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABgIAQBACAAAQAChSAAgAgAIhYAAAYEAAAQAAjBQQA=</HashCode>
+      <FileName>Assets\Script\GameScene\InputView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActionPopUp" Collapsed="true">
+    <Position X="25.5" Y="12.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="ActionPopUp.Action_Type" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\GameScene\Main\ActionPopUp.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AEAAAAEgACBAAAEAACMAAgAAAAQAAAAAAAQgAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ActionPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BanPlayerList" Collapsed="true">
+    <Position X="32.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\BanPlayerList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BuyCurrency" Collapsed="true">
+    <Position X="36" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAABAACAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\BuyCurrency.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatData" Collapsed="true">
+    <Position X="25.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAgAgAAAAAAAAEAAAABQAAAAAAAEEAEAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ChatData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatListManager" Collapsed="true">
+    <Position X="29" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMAICRAAMCAAgAEAAAAAgAAABAAQAAAAAAAAAAgBBAE=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ChatListManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatNode" Collapsed="true">
+    <Position X="34.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAkCAAABAAQAAACQgAhQAAACAAAAEAAAAAIABQ=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ChatNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatSystem" Collapsed="true">
+    <Position X="36" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAkAFAiAAEAABAAAgAIgAEAAAEBSEAEAVAAgAAiA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ChatSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CheckEnteredRoom" Collapsed="true">
+    <Position X="37.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAAAAADAAAAAAAACEAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\CheckEnteredRoom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ComingOut" Collapsed="true">
+    <Position X="25.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAEAAAAAAAAAAABBAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ComingOut.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ComingOutButton" Collapsed="true">
+    <Position X="27.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAACAAAAAAACAAQAAAAAAAAAAAEAAAAAAAAAE=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ComingOutButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExitPopUp" Collapsed="true">
+    <Position X="39.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAgAAAgIAAQAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ExitPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager" Collapsed="true">
+    <Position X="32.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABYYBGBKgCAgQBgBI8XqcJEkYGgAgKRyIcRwhCrTSIU=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameMasterChatManager" Collapsed="true">
+    <Position X="34.25" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUIBIIACCCgCACBAEoEEAgGQAGACIAACAhAAZECADAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\GameMasterChatManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameOver" Collapsed="true">
+    <Position X="36" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEYBAAAAAAACAEQAEBA0UACAAAAAAAAQAAAAgAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\GameOver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NextDay" Collapsed="true">
+    <Position X="32.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\NextDay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NGWordChecker" Collapsed="true">
+    <Position X="36" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\NGWordChecker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="41.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CGcAQEQkACEAARAAICFAVIACIAMAAiAAAAQEBIASAAU=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerButton" Collapsed="true">
+    <Position X="25.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEUhQEAgACAAAAgAAKFkAgAAABAAAAAgAIgEgIAAAAU=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\PlayerButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RollExplanation" Collapsed="true">
+    <Position X="32.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCAgIAAAAAAAAAAAAQAAQgAAABAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\RollExplanation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RollExplanationButtonPrefab" Collapsed="true">
+    <Position X="34.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAACAAAhAAAIAAAAAAAAAAAAAgAAAAAAAgAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\RollExplanationButtonPrefab.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RollPopUp" Collapsed="true">
+    <Position X="37.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgIAAAACAAABAAAAAAAgAAAQBAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\RollPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RulePopUp" Collapsed="true">
+    <Position X="23" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAEACACACAAAAAAAwAAAAAQABAABAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\RulePopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TimeContollerPopUp" Collapsed="true">
+    <Position X="27.25" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\TimeContollerPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TimeController" Collapsed="true">
+    <Position X="29" Y="20.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="TimeController.PlayState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\GameScene\Main\TimeController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gHSgIkgEGBACyBABzRBwR4SQGQgAIEQmAALjJAAAQIA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\TimeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vocabulary" Collapsed="true">
+    <Position X="34.25" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgACAACAACABAGgAAIAEAAAAAAAAIAAAAAAgAAACAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\Vocabulary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VocabularyButton" Collapsed="true">
+    <Position X="36" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAQAAAAAAAAAAAAAAIAAgACAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\VocabularyButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VoteCount" Collapsed="true">
+    <Position X="37.75" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAQAACAgAAAAAAAAQRAgCAAAAAAAAAAIAABAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\VoteCount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CurrencyTextPopUp" Collapsed="true">
+    <Position X="20.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\PopUP\CurrencyTextPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EndRoomPopUp" Collapsed="true">
+    <Position X="36" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAACAAAAQAAAAQAAAAAAAAAAAAEAAACAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\PopUP\EndRoomPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LobbyButtonManager" Collapsed="true">
+    <Position X="41.25" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAgIIAAAACAQABAAAAABAAAAAQAQAAAAAAAAAEAAAEA=</HashCode>
+      <FileName>Assets\Script\Lobby\LobbyButtonManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RollNum" Collapsed="true">
+    <Position X="36" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgACAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Lobby\RollNum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RollSetting" Collapsed="true">
+    <Position X="39.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAjABAAAGQAAAmBALABAAIgAQgIAAgAABASAAgBEgk=</HashCode>
+      <FileName>Assets\Script\Lobby\RollSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RollSettingButton" Collapsed="true">
+    <Position X="41.25" Y="18.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="RollSettingButton.Applicant_Type" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Lobby\RollSettingButton.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Class Name="RollSettingButton.RollNumButton" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Lobby\RollSettingButton.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAAAAAAZRAAAAAAgQBAIAAAAAkAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Lobby\RollSettingButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RoomData" Collapsed="true">
+    <Position X="25.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAABAAABAAAAAAAAAAEE=</HashCode>
+      <FileName>Assets\Script\Lobby\RoomData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RoomNode" Collapsed="true">
+    <Position X="29" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAkAoAAUABAQghAQAkAAQAAAABAIITQACgCAABBAME=</HashCode>
+      <FileName>Assets\Script\Lobby\RoomNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RoomSetting" Collapsed="true">
+    <Position X="30.75" Y="19.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="RoomSetting.RoomSettingButton" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\Lobby\RoomSetting.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EKBCgQIAUCAEpAgAAAkhAgIAIQAQII0gQACAQAAAkDE=</HashCode>
+      <FileName>Assets\Script\Lobby\RoomSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RoomInfo" Collapsed="true">
+    <Position X="27.25" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAkAAAAAAAAAIIAAAAAAAAAAAAE=</HashCode>
+      <FileName>Assets\Script\Lobby\RoomSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Search" Collapsed="true">
+    <Position X="34.25" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IOhIggMCECAAwAECjEEgCABCAAEAAAAAJCAgIApIAgk=</HashCode>
+      <FileName>Assets\Script\Lobby\Search.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WrongPopUp" Collapsed="true">
+    <Position X="39.5" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Lobby\WrongPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SetUpManager" Collapsed="true">
+    <Position X="37.75" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\SetUp\SetUpManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BanPlayer" Collapsed="true">
+    <Position X="30.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAACAAgAgAAAAAAAAAAAAABAACAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Title\BanPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PageScrollRect" Collapsed="true">
+    <Position X="39.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgQAAAAAAAAAAEAAAAAAAACAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Script\Title\PageScrollRect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerInfoButton" Collapsed="true">
+    <Position X="27.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAQAAAAAAAAEAAABAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Title\PlayerInfoButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerInfoPopUp" Collapsed="true">
+    <Position X="29" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>TAAEACAAACAAAABAAEAoARQAAQAAKBFAAEACAAAEIAA=</HashCode>
+      <FileName>Assets\Script\Title\PlayerInfoPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Title" Collapsed="true">
+    <Position X="30.75" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBgAAAgIACAAABAAAEAIAAQBABAAgAkACAAAAEAAEAA=</HashCode>
+      <FileName>Assets\Script\Title\Title.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnderBar" Collapsed="true">
+    <Position X="32.5" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAgAAAAAAAAQAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Title\UnderBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreatePlayerName" Collapsed="true">
+    <Position X="32.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAgCIAAAAEAAAAAAAAAAAgABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\準備\CreatePlayerName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Comingout" Collapsed="true">
+    <Position X="41.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAgRAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\没\Script\Comingout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ComingoutPrefab" Collapsed="true">
+    <Position X="29" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\没\Script\ComingoutPrefab.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Photon.Realtime.Demo.ConnectAndJoinRandomLb" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEaAAEIAACAAEQAAAEACAIEAAAGBAAIEEAIAAAQAQIA=</HashCode>
+      <FileName>Assets\Photon\PhotonRealtime\Demos\DemoLoadBalancing\ConnectAndJoinRandomLb.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Enum Name="GUIDE_TYPE" Collapsed="true">
+    <Position X="32.5" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAQAAACAAACAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Assets\Script\Common\GUIDE_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SCENE_TYPE" Collapsed="true">
+    <Position X="37.75" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAgBAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Assets\Script\Common\SCENE_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CAMP_TYPE" Collapsed="true">
+    <Position X="25.5" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\CAMP_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CHAT_TYPE" Collapsed="true">
+    <Position X="27.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\CHAT_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EMPTYROOM" Collapsed="true">
+    <Position X="29" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABBAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ENPTYROOM.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ROLLTYPE" Collapsed="true">
+    <Position X="34.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAABAAACAAAAQAAACEAAIEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\ROLLTYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SPEAKER_TYPE" Collapsed="true">
+    <Position X="39.5" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAIAAAAAAAAAAAAIAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\SPEAKER_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TIME" Collapsed="true">
+    <Position X="25.5" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAgAAAAABAAAABAAABAABAAAAAACQAAAAAAAEAA=</HashCode>
+      <FileName>Assets\Script\GameScene\Main\TIME.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FORTUNETYPE" Collapsed="true">
+    <Position X="30.75" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAgAACAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Lobby\FORTUNETYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ROOMSELECTION" Collapsed="true">
+    <Position X="36" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAAQAA=</HashCode>
+      <FileName>Assets\Script\Lobby\ROOMSELECTION.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SUDDENDEATH_TYPE" Collapsed="true">
+    <Position X="41.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAEAAIAA=</HashCode>
+      <FileName>Assets\Script\Lobby\SUDDENDEATH_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="VOTING" Collapsed="true">
+    <Position X="27.25" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAgAAAEAAAA=</HashCode>
+      <FileName>Assets\Script\Lobby\VOTING.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Yu Gothic UI" Size="9" />
+</ClassDiagram>

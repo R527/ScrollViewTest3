@@ -47,24 +47,26 @@ public class Search : MonoBehaviour {
     public bool isSearch;
 
 
+
     private void Start() {
         roomSelectionText.text = searchRoomSelection.ToString();
         firstDayFrotuneText.text = searchFortuneType.ToString();
         openVotingText.text = searchOpenVoting.ToString();
         searchRoomSelectText.text = searchRoomSelection.ToString();
         joinNumText.text = "未設定";
+        suddenDeath_TypeText.text = "未設定";
 
-        //突然死数を見て設定を設ける
-        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
-            suddenDeath_Type = SUDDENDEATH_TYPE._０回;
-            suddenDeath_TypeText.text = SUDDENDEATH_TYPE._０回.ToString().Trim('_');
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
-            suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
-            suddenDeath_TypeText.text = SUDDENDEATH_TYPE._1回以下.ToString().Trim('_');
-        } else {
-            suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
-            suddenDeath_TypeText.text = SUDDENDEATH_TYPE._制限なし.ToString().Trim('_');
-        }
+        ////突然死数を見て設定を設ける
+        //if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+        //    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
+        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._０回.ToString().Trim('_');
+        //} else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+        //    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._1回以下.ToString().Trim('_');
+        //} else {
+        //    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
+        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._制限なし.ToString().Trim('_');
+        //}
 
         //button
         initSearchButton.onClick.AddListener(InitSearch);
@@ -121,6 +123,9 @@ public class Search : MonoBehaviour {
             if (searchOpenVoting == VOTING.未設定) {
                 searchOpenVoting = Obj.openVoting;
             }
+            if(suddenDeath_Type == SUDDENDEATH_TYPE._未設定) {
+                suddenDeath_Type = Obj.suddenDeath_Type;
+            }
 
             //フィルターにかける
             //人数設定が未設定
@@ -160,15 +165,27 @@ public class Search : MonoBehaviour {
     /// </summary>
     public bool CheckSuddenDeath(RoomNode Obj) {
         bool isCheck = false;
-        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (Obj.suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || Obj.suddenDeath_Type == SUDDENDEATH_TYPE._制限なし)) {
+
+        //凸1回以下　
+        //(Obj.suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || Obj.suddenDeath_Type == SUDDENDEATH_TYPE._2回以上 ||
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 &&  Obj.suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             Debug.Log("1");
             isCheck = true;
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
+
+        //凸2回以上
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE._2回以上) {
             Debug.Log("2");
             isCheck = true;
-        } else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+
+        //凸0回以下
+        } else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE._0回) {
             Debug.Log("0");
             isCheck = true;
+
+        //新規プレイヤー受け入れ
+        }else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
+            isCheck = true;
+            Debug.Log("新規");
         }
         return isCheck;
     }
@@ -254,8 +271,9 @@ public class Search : MonoBehaviour {
         joinNumText.text = "未設定";
         openVotingText.text = "未設定";
         firstDayFrotuneText.text = "未設定";
+        suddenDeath_TypeText.text = "未設定";
         isNumLimit = true;
-        SearchRoomNode();
+        //SearchRoomNode();
     }
 
     
@@ -425,26 +443,42 @@ public class Search : MonoBehaviour {
     /// 突然死設定　左
     /// </summary>
     public void SuddenDeath_TypeLeft() {
-        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+
+        //凸0回のプレイヤー
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             switch (suddenDeath_Type) {
-                case SUDDENDEATH_TYPE._０回:
+                case SUDDENDEATH_TYPE._未設定:
                     suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
                 case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._2回以上;
+                    break;
+                case SUDDENDEATH_TYPE._2回以上:
                     suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
                     break;
                 case SUDDENDEATH_TYPE._1回以下:
-                    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
+                    suddenDeath_Type = SUDDENDEATH_TYPE._0回;
+                    break;
+                case SUDDENDEATH_TYPE._0回:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._未設定;
                     break;
             }
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+
+        //凸1回のプレイヤー
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             switch (suddenDeath_Type) {
 
-                case SUDDENDEATH_TYPE._1回以下:
+                case SUDDENDEATH_TYPE._未設定:
                     suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
                 case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._2回以上;
+                    break;
+                case SUDDENDEATH_TYPE._2回以上:
                     suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
+                    break;
+                case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._未設定;
                     break;
             }
         } else {
@@ -456,32 +490,50 @@ public class Search : MonoBehaviour {
     /// 突然死設定　右
     /// </summary>
     public void SuddenDeath_TypeRight() {
-        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
+
+        //凸0回のプレイヤー
+        if (PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             switch (suddenDeath_Type) {
-                case SUDDENDEATH_TYPE._０回:
+                case SUDDENDEATH_TYPE._0回:
                     suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
                     break;
                 case SUDDENDEATH_TYPE._1回以下:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._2回以上;
+                    break;
+                case SUDDENDEATH_TYPE._2回以上:
                     suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
                 case SUDDENDEATH_TYPE._制限なし:
-                    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
+                    suddenDeath_Type = SUDDENDEATH_TYPE._未設定;
+                    break;
+                case SUDDENDEATH_TYPE._未設定:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._0回;
                     break;
             }
-        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
+
+            //凸1回のプレイヤー
+        } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             switch (suddenDeath_Type) {
 
                 case SUDDENDEATH_TYPE._1回以下:
-                    Debug.Log("一回以下");
+                    suddenDeath_Type = SUDDENDEATH_TYPE._2回以上;
+                    break;
+                case SUDDENDEATH_TYPE._2回以上:
                     suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
                     break;
                 case SUDDENDEATH_TYPE._制限なし:
+                    suddenDeath_Type = SUDDENDEATH_TYPE._未設定;
+                    break;
+                case SUDDENDEATH_TYPE._未設定:
                     suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
                     break;
             }
-        } else {
+
+            //新規プレイヤー
+        } else { 
             return;
         }
+
         suddenDeath_TypeText.text = suddenDeath_Type.ToString().Trim('_');
 
     }

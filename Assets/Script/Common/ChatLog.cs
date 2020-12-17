@@ -143,20 +143,22 @@ public class ChatLog : MonoBehaviour
     /// チャットログを閉じるときに使われる
     /// </summary>
     public void CloseChatLog() {
-        GameObject chatContentObj = GameObject.FindGameObjectWithTag("ChatContent");
-        //すでに生成しているチャットを消去する
-        foreach(Transform tran in chatContentObj.transform) {
-            Destroy(tran.gameObject);
-        }
-        //すでに生成しているPlayerButtonを消去する
-        GameObject menbarContentObj = GameObject.FindGameObjectWithTag("MenbarContent");
-        foreach (Transform tran in menbarContentObj.transform) {
-            Destroy(tran.gameObject);
-        }
-        gameObject.GetComponent<CanvasGroup>().alpha = 0;
-        gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
-        mainCanvas.SetActive(true);
-        underBarCanvas.SetActive(true);
+        //GameObject chatContentObj = GameObject.FindGameObjectWithTag("ChatContent");
+        ////すでに生成しているチャットを消去する
+        //foreach(Transform tran in chatContentObj.transform) {
+        //    Destroy(tran.gameObject);
+        //}
+        ////すでに生成しているPlayerButtonを消去する
+        //GameObject menbarContentObj = GameObject.FindGameObjectWithTag("MenbarContent");
+        //foreach (Transform tran in menbarContentObj.transform) {
+        //    Destroy(tran.gameObject);
+        //}
+        //gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        //gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        //mainCanvas.SetActive(true);
+        //underBarCanvas.SetActive(true);
+
+        Destroy(gameObject);
     }
 
 

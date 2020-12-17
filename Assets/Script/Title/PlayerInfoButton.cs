@@ -17,6 +17,9 @@ public class PlayerInfoButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(PlayerManager.instance.playerName.Length >= 8) {
+            playerNameText.fontSize = 9;
+        }
         playerNameText.text = PlayerManager.instance.playerName;
         UpdateCurrencyText();
 

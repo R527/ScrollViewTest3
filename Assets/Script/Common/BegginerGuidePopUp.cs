@@ -12,7 +12,7 @@ public class BegginerGuidePopUp : BasePopUP {
 
     //Button
     public List<Button> guideButtonList = new List<Button>();
-    public List<Button> destroyButtonList = new List<Button>();
+    public Button maskBtn;
 
 
     //main
@@ -27,9 +27,7 @@ public class BegginerGuidePopUp : BasePopUP {
         foreach(Button Obj in guideButtonList) {
             Obj.onClick.AddListener(GuideButton);
         }
-        //foreach (Button Obj in destroyButtonList) {
-        //    Obj.onClick.AddListener(OnDestroy);
-        //}
+        maskBtn.onClick.AddListener(DestroyPopUP);
 
     }
 

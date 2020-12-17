@@ -10,7 +10,7 @@ using UnityEngine.Advertisements;
 public class AdvertisingManager : MonoBehaviour
 {
 
-    
+
     // Start is called before the first frame update
     void Start()
     {

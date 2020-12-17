@@ -14,7 +14,8 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
     //main
     public Button playerButton;
-    public Text playerText;
+    public Text playerInfoText;
+    public Text playerNameText;
     public Image iconImage;
     public RectTransform tran;
 
@@ -58,7 +59,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         yield return null;
         this.gameManager = gameManager;
         this.playerName = playerName;
-        playerText.text = playerName;
+        playerNameText.text = playerName;
 
         this.iconNo = iconNo;
         this.playerID = playerID;

@@ -25,13 +25,15 @@ public class GameLogNode : MonoBehaviour
     /// ボタンを押すとRoomNumに応じてログを取得する
     /// </summary>
     private void GetSaveLogButton(int roomNum) {
-        playerInfoPopUp.mainCanvas.SetActive(false);
-        playerInfoPopUp.underBarCanvas.SetActive(false);
+        //playerInfoPopUp.mainCanvas.SetActive(false);
+        //playerInfoPopUp.underBarCanvas.SetActive(false);
         GameObject playerInfoPopUpObj = GameObject.FindGameObjectWithTag("PlayerInfoPopUp").gameObject;
         playerInfoPopUpObj.SetActive(false);
-        CanvasGroup chatLogCanvas = GameObject.FindGameObjectWithTag("ChatLog").GetComponent<CanvasGroup>();
-        chatLogCanvas.alpha = 1;
-        chatLogCanvas.blocksRaycasts = true;
+        //CanvasGroup chatLogCanvas = GameObject.FindGameObjectWithTag("ChatLog").GetComponent<CanvasGroup>();
+        //GameObject mainCanvas = GameObject.FindGameObjectWithTag("MainCanvas");
+        Instantiate(chatLogCanvasPrefab, chatLogCanvasPrefab.transform, false);
+        //chatLogCanvas.gameObject.SetActive(true);
+        //chatLogCanvas.blocksRaycasts = true;
 
         PlayerManager.instance.GetGameChatLog(roomNum);
         

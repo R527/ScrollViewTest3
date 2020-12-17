@@ -15,7 +15,17 @@ public class CurrencyManager : MonoBehaviour
 
     public GameManager gameManager;
 
+    public Button closeBtn;
+    public Button maskBtn;
+    public GameObject CurrencyObj;
 
+    void Start() {
+        if(closeBtn != null) 
+            closeBtn.onClick.AddListener(closePopUp);
+        
+        if(maskBtn != null)
+            maskBtn.onClick.AddListener(closePopUp);
+    }
     /// <summary>
     /// ゲーム内通貨を購入
     /// </summary>
@@ -45,5 +55,11 @@ public class CurrencyManager : MonoBehaviour
     public void FailedSubscribe() {
         Debug.Log("購入失敗");
     }
+
+    void closePopUp() {
+        CurrencyObj.SetActive(false);
+        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(true);
+    }
+
 
 }

@@ -17,8 +17,8 @@ public class AudioManager : MonoBehaviour
     private int currentBgmNum;
     
     //音量調節
-    public int bgmVolume;
-    public int seVolume;
+    public float bgmVolume;
+    public float seVolume;
 
     //シングルトン
     public static AudioManager instance;
@@ -48,8 +48,8 @@ public class AudioManager : MonoBehaviour
     /// <param name="volume"></param>
     public void SetBGM(float volume) {
         audioMixer.SetFloat("BGMvol", volume);
-        bgmVolume = (int)volume;
-        PlayerManager.instance.SetIntForPlayerPrefs(bgmVolume, PlayerManager.ID_TYPE.bgmVolume);
+        bgmVolume = ConvertVolume2db(volume);
+        PlayerManager.instance.SetFloatForPlayerPrefs(bgmVolume, PlayerManager.ID_TYPE.bgmVolume);
     }
     /// <summary>
     /// 音量調節SE
@@ -57,10 +57,16 @@ public class AudioManager : MonoBehaviour
     /// <param name="volume"></param>
     public void SetSE(float volume) {
         audioMixer.SetFloat("SEvol", volume);
-        seVolume = (int)volume;
-        PlayerManager.instance.SetIntForPlayerPrefs(seVolume, PlayerManager.ID_TYPE.seVolume);
-
+        bgmVolume = ConvertVolume2db(volume);
+        PlayerManager.instance.SetFloatForPlayerPrefs(seVolume, PlayerManager.ID_TYPE.seVolume);
     }
+
+    /// <summary>
+    /// 0-1の値を-80～0dB(デシベル)に変換(0にすると音量MAXになるので0.01fで止める) 
+    /// </summary>
+    /// <param name="volume"></param>
+    /// <returns></returns>
+    private float ConvertVolume2db(float volume) => 20f * Mathf.Log10(Mathf.Clamp(volume, 0.01f, 1f));
 
     /// <summary>
     /// BGMの配列を数字に変換して、流す

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 
 
 /// <summary>
@@ -13,6 +14,8 @@ public class EndRoomPopUp : MonoBehaviour
     private float chekTimer;
     private bool isCheck;
     public int time;
+
+    private string VIDEO_PLACEMENT_ID = "video";
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +44,9 @@ public class EndRoomPopUp : MonoBehaviour
     /// 部屋退出
     /// </summary>
     private void ExitRoom() {
+        if (PlayerManager.instance.subscribe) {
+            Advertisement.Show(VIDEO_PLACEMENT_ID);
+        }
         NetworkManager.instance.LeaveRoom();
     }
 }

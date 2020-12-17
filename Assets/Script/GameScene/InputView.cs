@@ -25,8 +25,15 @@ public class InputView : MonoBehaviour {
     public GameObject coPopUpObj;//Coの入っているPrefab
     public Button comingOutButton;
 
+    //折畳ボタン
+    public Sprite upBtnSprite;
+    public Sprite downBtnSprite;
+    public Image foldingImage;
+    public bool folding;//trueなら上向き
+
     //wolfMode（狼チャットの制御関連
     public Button wolfModeButton;
+    public Image wolfBtnImage;
     public Text wolfModeButtonText;
     public bool wolfMode;//trueで狼モード
 
@@ -36,14 +43,17 @@ public class InputView : MonoBehaviour {
     public Text superChatButtonText;
     public bool superChat;
     public GameObject moneyImage;
+    public Image superChatBtnImage;
 
+    //
+    public Color[] btnColor;
 
     private void Start() {
         foldingButton.onClick.AddListener(FoldingPosition);
         comingButton.onClick.AddListener(ComingOut);
 
         wolfModeButton.onClick.AddListener(WolfMode);
-        superChatButton.onClick.AddListener(SuperChat);
+        superChatButton.onClick.AddListener(() => StartCoroutine(SuperChat()));
 
         if (PhotonNetwork.IsMasterClient) {
             superChatButton.interactable = true;
@@ -55,7 +65,7 @@ public class InputView : MonoBehaviour {
     public void FoldingPosition() {
 
         //COPopUp
-        if (coPopUpObj.activeSelf && foldingText.text == "↓") {
+        if (coPopUpObj.activeSelf && !folding) {
             coPopUpObj.SetActive(false);
             menberViewPopUpObj.SetActive(true);
 
@@ -63,24 +73,28 @@ public class InputView : MonoBehaviour {
             availabilityButton();
 
             return;
-        } else if (menberViewPopUpObj.activeSelf && foldingText.text == "↓" ) {
-            inputRectTransform.DOLocalMoveY(-67, 0.5f);
-            viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
+        } else if (menberViewPopUpObj.activeSelf && !folding) {
+            inputRectTransform.DOLocalMoveY(-70, 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             filterButton.interactable = true;
 
             //ボタン有効にする
             availabilityButton();
 
             //stampButton.interactable = true;
-            foldingText.text = "↑";
+            folding = true;
+            foldingImage.sprite = upBtnSprite;
             StartCoroutine(PopUpFalse());
-        } else if (foldingText.text == "↑") {
+        } else if (folding) {
             menberViewPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
-            viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = false;
-            foldingText.text = "↓";
+            folding = false;
+            //foldingText.text = "↓";
+            foldingImage.sprite = downBtnSprite;
+
         }
     }
 
@@ -91,7 +105,7 @@ public class InputView : MonoBehaviour {
     /// </summary>
     public void ComingOut() {
         //メンバーが表示されている状態でCOボタン押したときの処理
-        if (menberViewPopUpObj.activeSelf && foldingText.text == "↓") {
+        if (menberViewPopUpObj.activeSelf && !folding) {
             coPopUpObj.SetActive(true);
             menberViewPopUpObj.SetActive(false);
 
@@ -99,12 +113,15 @@ public class InputView : MonoBehaviour {
             InvalidButton();
 
             //COPopUpがアクティブ状態の時の処理
-        } else if (coPopUpObj.activeSelf && foldingText.text == "↓") {
-            inputRectTransform.DOLocalMoveY(-67, 0.5f);
-            viewport.DOSizeDelta(new Vector2(202f, 342f), 0.5f);
+        } else if (coPopUpObj.activeSelf && !folding) {
+            inputRectTransform.DOLocalMoveY(-70, 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             filterButton.interactable = true;
             //stampButton.interactable = true;
-            foldingText.text = "↑";
+
+            folding = true;
+            //foldingText.text = "↑";
+            foldingImage.sprite = upBtnSprite;
 
             //ボタン有効にする
             availabilityButton();
@@ -112,16 +129,20 @@ public class InputView : MonoBehaviour {
             StartCoroutine(PopUpFalse());
 
             //InPutViewが閉じている時
-        } else if (foldingText.text == "↑") {
+        } else if (!folding) {
             coPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
-            viewport.DOSizeDelta(new Vector2(202f, 270f), 0.5f);
+            viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
             filterButton.interactable = false;
 
             //ほかのボタン無効
             InvalidButton();
             //stampButton.interactable = false;
-            foldingText.text = "↓";
+
+            folding = false;
+            //foldingText.text = "↓";
+            foldingImage.sprite = downBtnSprite;
+
         }
     }
 
@@ -132,11 +153,13 @@ public class InputView : MonoBehaviour {
 
         //On
         if (wolfModeButtonText.text == "市民") {
+            wolfBtnImage.color = btnColor[2];
             wolfModeButtonText.text = "狼";
             wolfMode = true;
             chatListManager.OnWolfMode();
             //Off
         } else {
+            wolfBtnImage.color = btnColor[0];
             wolfModeButtonText.text = "市民";
             wolfMode = false;
             chatListManager.OffWolfMode();
@@ -147,29 +170,30 @@ public class InputView : MonoBehaviour {
     /// <summary>
     /// 青チャットの制御
     /// </summary>
-    public void SuperChat() {
+    public IEnumerator SuperChat() {
 
-        //On
-        if (superChatButtonText.text == "通常") {
-
-            chatListManager.gameManager.InstantiateCurrencyTextPopUP();
+        //Onにするとき
+        if (!superChat) {
+            chatListManager.gameManager.InstantiateCurrencyTextPopUP("superChatStr");
+            yield return new WaitUntil(() => chatListManager.gameManager.showPopUp);
 
             //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
             //仮で10消費する
-            if (10 > PlayerManager.instance.currency && (chatListManager.gameManager.chatSystem. superChatCount >= 3 || PlayerManager.instance.subscribe)) {
+            Debug.Log("chatListManager.gameManager.superChatCurrency" + chatListManager.gameManager.superChatCurrency);
+            Debug.Log("PlayerManager.instance.currency" + PlayerManager.instance.currency);
+            if (chatListManager.gameManager.superChatCurrency > PlayerManager.instance.currency && (chatListManager.gameManager.chatSystem. superChatCount >= 3 || PlayerManager.instance.subscribe)) {
                 moneyImage.SetActive(true);
-                return;
+                yield break;
             }
 
-            superChatButtonText.text = "青";
+            superChatBtnImage.color = btnColor[1];
+            //superChatButtonText.text = "青";
             superChat = true;
-            Debug.Log("superChat" + superChat);
-            //Off
+            //Offにするとき
         } else {
-            superChatButtonText.text = "通常";
+            superChatBtnImage.color = btnColor[0];
+            //superChatButtonText.text = "通常";
             superChat = false;
-            Debug.Log("superChat" + superChat);
-
         }
     }
 
@@ -185,10 +209,13 @@ public class InputView : MonoBehaviour {
     /// </summary>
     private void InvalidButton() {
         //狼ボタンとスパーチャットボタンを無効にする
+        wolfBtnImage.color = btnColor[0];
         wolfModeButtonText.text = "市民";
         wolfMode = false;
         wolfModeButton.interactable = false;
-        superChatButtonText.text = "通常";
+
+        superChatBtnImage.color = btnColor[0];
+        //superChatButtonText.text = "通常";
         superChat = false;
         superChatButton.interactable = false;
     }

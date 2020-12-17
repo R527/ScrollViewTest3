@@ -302,6 +302,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
     }
 
+    /// <summary>
+    /// 部屋に新しいプレイヤーが入室した際に呼ばれる
+    /// </summary>
+    /// <param name="newPlayer"></param>
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
         Debug.Log("OnPlayerEnteredRoom");
         checkEmptyRoomCoroutine = SetCoroutine(newPlayer);
@@ -309,6 +313,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         StartCoroutine(checkEmptyRoomCoroutine);
         StartCoroutine(banPlayerKickOutOREnteredRoomCoroutine);
 
+        
     }
 
     /// <summary>

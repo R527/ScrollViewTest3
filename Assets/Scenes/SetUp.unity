@@ -556,7 +556,7 @@ MonoBehaviour:
   totalNumberOfMatches: 0
   totalNumberOfWins: 0
   totalNumberOfLoses: 0
-  totalNumberOfSuddenDeath: 1
+  totalNumberOfSuddenDeath: 0
   beginnerTotalNumberOfMatches: 0
   beginnerTotalNumberOfWins: 0
   beginnerTotalNumberOfLoses: 0
@@ -626,16 +626,16 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 1
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isPlayerPrefsDeleteAll: 0
-  isGameOver: 1
+  isPlayerPrefsDeleteAll: 1
+  isGameOver: 0
   isCheckSuddenDeath: 0
   isVoteCount: 0
-  isTestPlay: 0
+  isTestPlay: 1
   testRollTypeList: 04000000020000000400000000000000
   isCurrency: 0
   debugText: {fileID: 0}
