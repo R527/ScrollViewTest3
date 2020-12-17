@@ -97,7 +97,8 @@ public class PlayerManager : MonoBehaviour {
 
         //課金用
         currency,//ゲーム内通貨
-        currencyPopUp
+        superChat,
+        exit
     }
 
     /// <summary>
@@ -189,8 +190,13 @@ public class PlayerManager : MonoBehaviour {
                 saveRoomCount++;
                 break;
             //課金用のPopUpの表示非表示を決める
-            case ID_TYPE.currencyPopUp:
-                PlayerPrefs.SetString(ID_TYPE.currencyPopUp.ToString(), setString);
+            case ID_TYPE.superChat:
+                Debug.Log("superChatStr2");
+                PlayerPrefs.SetString(ID_TYPE.superChat.ToString(), setString);
+                break;
+            case ID_TYPE.exit:
+                    Debug.Log("exitStr2");
+                PlayerPrefs.SetString(ID_TYPE.superChat.ToString(), setString);
                 break;
         }
 

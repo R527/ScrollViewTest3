@@ -626,12 +626,12 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 9
+  numLimit: 1
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
   timeType: 4
-  isPlayerPrefsDeleteAll: 0
+  isPlayerPrefsDeleteAll: 1
   isGameOver: 0
   isCheckSuddenDeath: 0
   isVoteCount: 0

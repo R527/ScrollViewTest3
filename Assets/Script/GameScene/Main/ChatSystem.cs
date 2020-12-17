@@ -114,7 +114,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             } else if (inputView.superChat) {
                 //メンバーシップ加入プレイヤーでかつ青チャットを3回打ってないプレイヤーは無料で青チャットを打つことができる
                 if(superChatCount >= 3 || PlayerManager.instance.subscribe) {
-                    PlayerManager.instance.UseCurrency(10);
+                    PlayerManager.instance.UseCurrency(gameMasterChatManager.gameManager.superChatCurrency);
                     gameMasterChatManager.gameManager.UpdateCurrencyText();
                 } else {
                     superChatCount++;

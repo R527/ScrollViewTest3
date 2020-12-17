@@ -66,7 +66,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Text currencyText;
 
     //課金用のPopUp
-    public GameObject currencyTextPopUpObj;
+    public CurrencyTextPopUp currencyTextPopUpObj;
+    public int superChatCurrency;
+    public int extitCurrency;
+    public bool showPopUp;
 
     //ボタン
     public Button exitButton;
@@ -891,14 +894,23 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// ゲーム内通貨の利用に関するテキストを表示する
     /// </summary>
-    public void InstantiateCurrencyTextPopUP() {
+    public void InstantiateCurrencyTextPopUP(string warning) {
         Debug.Log("InstantiateCurrencyTextPopUP");
-        if (!PlayerPrefs.HasKey(PlayerManager.ID_TYPE.currencyPopUp.ToString())) {
-            Debug.Log("InstantiateCurrencyTextPopUP2");
-
-            GameObject gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
-            Instantiate(currencyTextPopUpObj, gameCanvas.transform, false);
+        if (warning == "superChatStr" && !PlayerPrefs.HasKey(PlayerManager.ID_TYPE.superChat.ToString())) {
+            InstantiatePopUp(warning);
+        } else if(warning == "exitStr" && !PlayerPrefs.HasKey(PlayerManager.ID_TYPE.exit.ToString())) {
+            InstantiatePopUp(warning);
+        } else {
+            gameMasterChatManager.gameManager.showPopUp = true;
         }
+    }
+
+    void InstantiatePopUp(string warning) {
+        Debug.Log("InstantiateCurrencyTextPopUP2");
+
+        GameObject gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
+        CurrencyTextPopUp obj = Instantiate(currencyTextPopUpObj, gameCanvas.transform, false);
+        obj.warningStr = warning;
     }
 
     /////////////////////////////

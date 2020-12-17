@@ -53,7 +53,7 @@ public class InputView : MonoBehaviour {
         comingButton.onClick.AddListener(ComingOut);
 
         wolfModeButton.onClick.AddListener(WolfMode);
-        superChatButton.onClick.AddListener(SuperChat);
+        superChatButton.onClick.AddListener(() => StartCoroutine(SuperChat()));
 
         if (PhotonNetwork.IsMasterClient) {
             superChatButton.interactable = true;
@@ -170,18 +170,20 @@ public class InputView : MonoBehaviour {
     /// <summary>
     /// 青チャットの制御
     /// </summary>
-    public void SuperChat() {
+    public IEnumerator SuperChat() {
 
         //Onにするとき
         if (!superChat) {
-
-            chatListManager.gameManager.InstantiateCurrencyTextPopUP();
+            chatListManager.gameManager.InstantiateCurrencyTextPopUP("superChatStr");
+            yield return new WaitUntil(() => chatListManager.gameManager.showPopUp);
 
             //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
             //仮で10消費する
-            if (10 > PlayerManager.instance.currency && (chatListManager.gameManager.chatSystem. superChatCount >= 3 || PlayerManager.instance.subscribe)) {
+            Debug.Log("chatListManager.gameManager.superChatCurrency" + chatListManager.gameManager.superChatCurrency);
+            Debug.Log("PlayerManager.instance.currency" + PlayerManager.instance.currency);
+            if (chatListManager.gameManager.superChatCurrency > PlayerManager.instance.currency && (chatListManager.gameManager.chatSystem. superChatCount >= 3 || PlayerManager.instance.subscribe)) {
                 moneyImage.SetActive(true);
-                return;
+                yield break;
             }
 
             superChatBtnImage.color = btnColor[1];

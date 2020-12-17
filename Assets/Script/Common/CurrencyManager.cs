@@ -17,6 +17,7 @@ public class CurrencyManager : MonoBehaviour
 
     public Button closeBtn;
     public Button maskBtn;
+    public GameObject CurrencyObj;
 
     void Start() {
         if(closeBtn != null) 
@@ -56,7 +57,7 @@ public class CurrencyManager : MonoBehaviour
     }
 
     void closePopUp() {
-        gameObject.SetActive(false);
+        CurrencyObj.SetActive(false);
         GraphicRaycastersManager.instance.SwitchGraphicRaycasters(true);
     }
 
