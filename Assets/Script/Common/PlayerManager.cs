@@ -196,7 +196,7 @@ public class PlayerManager : MonoBehaviour {
                 break;
             case ID_TYPE.exit:
                     Debug.Log("exitStr2");
-                PlayerPrefs.SetString(ID_TYPE.superChat.ToString(), setString);
+                PlayerPrefs.SetString(ID_TYPE.exit.ToString(), setString);
                 break;
         }
 

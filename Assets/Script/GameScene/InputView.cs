@@ -178,9 +178,6 @@ public class InputView : MonoBehaviour {
             yield return new WaitUntil(() => chatListManager.gameManager.showPopUp);
 
             //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
-            //仮で10消費する
-            Debug.Log("chatListManager.gameManager.superChatCurrency" + chatListManager.gameManager.superChatCurrency);
-            Debug.Log("PlayerManager.instance.currency" + PlayerManager.instance.currency);
             if (chatListManager.gameManager.superChatCurrency > PlayerManager.instance.currency && (chatListManager.gameManager.chatSystem. superChatCount >= 3 || PlayerManager.instance.subscribe)) {
                 moneyImage.SetActive(true);
                 yield break;

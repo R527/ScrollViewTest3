@@ -43,7 +43,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
         gameCancasTran = GameObject.FindGameObjectWithTag("GameCanvas").transform;
 
-        timeSavingButton.onClick.AddListener(() => TimeSavingOrExitButton());
+        timeSavingButton.onClick.AddListener(() => StartCoroutine(TimeSavingOrExitButton()));
         //exitButton.onClick.AddListener(ExitButton);
         //カスタムプロパティ
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
@@ -133,7 +133,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 時短と退出処理のGMチャットを制御
     /// </summary>
     /// <returns></returns>
-    public void TimeSavingOrExitButton() {
+    public IEnumerator TimeSavingOrExitButton() {
         Debug.Log("TimeSavingChat");
         //時短処理
         if (timeSavingButtonText.text == "時短") {
@@ -178,7 +178,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //退出処理
         } else if (timeSavingButtonText.text == "退出" ) {
             //&& photonView.IsMine
-            Debug.Log("退出");
 
             //game中なら正常終了しているかの確認を取る
 
@@ -191,15 +190,14 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 PlayerManager.instance.UseCurrency(gameManager.extitCurrency);
                 gameManager.UpdateCurrencyText();
             } else if(timeController.isPlay && PlayerManager.instance.currency < gameManager.extitCurrency) {
+                Debug.Log("退出テスト");
                 //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
-                if (gameManager.extitCurrency > PlayerManager.instance.currency) {
+                gameManager.InstantiateCurrencyTextPopUP("exitStr");
+                yield return new WaitUntil(() => gameManager.showPopUp);
 
-                    gameManager.InstantiateCurrencyTextPopUP("exitStr");
-                    gameManager.inputView.moneyImage.SetActive(true);
-                    return;
-                }
+                gameManager.inputView.moneyImage.SetActive(true);
+                yield break;
             }
-            Debug.Log("退出");
             ShowAds();
 
             gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";

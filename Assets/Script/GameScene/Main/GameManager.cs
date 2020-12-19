@@ -897,9 +897,13 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public void InstantiateCurrencyTextPopUP(string warning) {
         Debug.Log("InstantiateCurrencyTextPopUP");
         if (warning == "superChatStr" && !PlayerPrefs.HasKey(PlayerManager.ID_TYPE.superChat.ToString())) {
+            Debug.Log("superChatStr");
             InstantiatePopUp(warning);
+
         } else if(warning == "exitStr" && !PlayerPrefs.HasKey(PlayerManager.ID_TYPE.exit.ToString())) {
+            Debug.Log("exitStr");
             InstantiatePopUp(warning);
+
         } else {
             gameMasterChatManager.gameManager.showPopUp = true;
         }
