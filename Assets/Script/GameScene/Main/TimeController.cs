@@ -190,11 +190,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
             if(totalTime >= 0 && isDisplay) {
                 timerText.text = totalTime.ToString("F0");
             }
-                
+
             //0秒になったら次のシーンへ移行する
             //時短が成立しても実行される
-            if ((totalTime < 0  || gameManager.gameMasterChatManager.GetIsTimeSaving())&& PhotonNetwork.IsMasterClient) {
+            
+            if ((totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
                 SetPlayState(PlayState.Stop);
+                gameManager.gameMasterChatManager.isTimeSaving = false;
+                gameManager.gameMasterChatManager.SetIsTimeSaving();
             } 
 
             GetPlayState();

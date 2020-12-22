@@ -98,6 +98,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// タイムコントローラのシーンが変更するたびに発言するチャット
     /// </summary>
     public void TimeManagementChat() {
+        Debug.Log("TimeManagementChat");
         switch (timeController.timeType) {
 
             case TIME.昼:
