@@ -124,6 +124,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                     gameMasterChat = "夜の行動時間です。待ってくれ。";
                 }
                 break;
+            default:
+                Debug.Log("時間外");
+                break;
         }
         gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         gameMasterChat = string.Empty;

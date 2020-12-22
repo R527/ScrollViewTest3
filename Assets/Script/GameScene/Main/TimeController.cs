@@ -466,6 +466,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator GameMasterChat() {
+        //yield return new WaitForSeconds(0);
         yield return new WaitForSeconds(intervalTime + 0.2f);
         gameMasterChatManager.TimeManagementChat();
     }
@@ -540,7 +541,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private IEnumerator EndInterval(TIME nowTimeType) {
-        //yield return new WaitForSeconds(intervalTime);//コルーチンでインターバル時間を設ける
+        yield return new WaitForSeconds(intervalTime);//コルーチンでインターバル時間を設ける
 
         ////一定時間ごとに出てくるPopUp削除
         //if(timeContollerPopUpObj != null) {
@@ -559,7 +560,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             SetPlayState(PlayState.Play);
         }
 
-        yield return new WaitForSeconds(2.0f);
+        //yield return new WaitForSeconds(2.0f);
         playState = GetPlayState();
         //while (playState == PlayState.Interval) {
         //    playState = GetPlayState();
