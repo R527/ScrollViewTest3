@@ -42,7 +42,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool isPlay;//falseならゲームオーバー
     private float chekTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
-
+    public bool isCeackPlayState;
     //ボタン・Input関連
     public Button savingButton;//時短ボタン
     
@@ -85,7 +85,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         firstDay = true;
         isPlay = true;
         timeType = TIME.処刑後チェック;
-        playState = PlayState.Interval;
+        playState = PlayState.Play;
         //savingButton.interactable = true;
 
 
@@ -134,7 +134,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         yield return new WaitForSeconds(2.0f);
 
-        playState = GetPlayState();
+        //playState = GetPlayState();
 
         //ゲームスタート
         gameReady = GetGameReady();
@@ -194,17 +194,29 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //0秒になったら次のシーンへ移行する
             //時短が成立しても実行される
             
-            if ((totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
+            if ((totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient && !isCeackPlayState) {
+                Debug.Log("SetPlayState");
                 SetPlayState(PlayState.Stop);
+
                 gameManager.gameMasterChatManager.isTimeSaving = false;
                 gameManager.gameMasterChatManager.SetIsTimeSaving();
-            } 
+            }
 
-            GetPlayState();
+            if ((totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && !isCeackPlayState) {
+                isCeackPlayState = true;
+                GetPlayState();
+            }
 
             //次のシーンへ移行する処理
-        } else if (playState == PlayState.Stop){
-            playState = PlayState.Interval;
+        } else if (playState == PlayState.Stop && isCeackPlayState) {
+            Debug.Log("SetPlayState2");
+
+            if (PhotonNetwork.IsMasterClient) {
+                Debug.Log("masuta-");
+                SetPlayState(PlayState.Interval);
+            }
+            GetPlayState();
+            //playState = PlayState.Interval;
             timerText.text = string.Empty;
             StartInterval();
             Debug.Log(timeType);
@@ -557,11 +569,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //isPlaying = true;
             //playState = PlayState.Play;
             //SetTimeType(nowTimeType);
+            Debug.Log("PlayState-Play");
             SetPlayState(PlayState.Play);
         }
 
-        //yield return new WaitForSeconds(2.0f);
-        playState = GetPlayState();
+        GetPlayState();
+        isCeackPlayState = false;
+
+
         //while (playState == PlayState.Interval) {
         //    playState = GetPlayState();
         //    yield return null;
@@ -754,8 +769,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             {"playState",nowPlayState.ToString() }
         };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        //Debug.Log("SetPlayState" + (PlayState)Enum.Parse(typeof(PlayState),PhotonNetwork.CurrentRoom.CustomProperties["playState"].ToString()));
+
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            //player.CustomProperties["playState"] = nowPlayState.ToString();
+            player.SetCustomProperties(customRoomProperties);
+        }
+        Debug.Log("SetPlayState" + (PlayState)Enum.Parse(typeof(PlayState),PhotonNetwork.CurrentRoom.CustomProperties["playState"].ToString()));
     }
 
     /// <summary>

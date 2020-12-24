@@ -622,7 +622,7 @@ MonoBehaviour:
   testNightTime: 5
   testVotingTime: 5
   testExecutionTime: 5
-  testCheckGameOverTime: 5
+  testCheckGameOverTime: 2
   testResultTime: 5
   num: 0
   enterNum: 0
@@ -632,7 +632,7 @@ MonoBehaviour:
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 0
+  isGameOver: 1
   isCheckSuddenDeath: 0
   isVoteCount: 0
   isTestPlay: 1
