@@ -179,7 +179,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
             if (!isCeackFlag) {
                 isCeackFlag = true;
-                ChangeIsCheckPlayState_Play(false);
+                isCeackInterval = false;
                 ChangeIsCheckPlayState_Interval(false);
             }
 
@@ -256,7 +256,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         } else if (playState == PlayState.Interval && !isCeackInterval) {
             isCeackInterval = true;
-            isCeackFlag = true;
+            isCeackFlag = false;
+            ChangeIsCheckPlayState_Play(false);
             StartInterval();
             Debug.Log(timeType);
         }
@@ -615,9 +616,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
         yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == IsCheckPlayState_Play());
 
 
-        GetPlayState();
+        playState = GetPlayState();
+        Debug.Log("playState" + playState);
+        
 
-        isCeackInterval = false;
         //while (playState == PlayState.Interval) {
         //    playState = GetPlayState();
         //    yield return null;

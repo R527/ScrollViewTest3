@@ -650,6 +650,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isTimeSaving", out object isTimeSavingObj)) {
             isTimeSaving = (bool)isTimeSavingObj;
         }
+        Debug.Log("isTimeSaving" + isTimeSaving); 
         return isTimeSaving;
     }
 }
