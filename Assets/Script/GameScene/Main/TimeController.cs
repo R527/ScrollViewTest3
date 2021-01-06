@@ -183,7 +183,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 Debug.Log("isCeackFlag" + isCeackFlag);
 
                 isCeackInterval = false;
-                ChangeIsCheckPlayState_Interval(false);
+                ChangeIsCheckPlayState_Stop_Play(false);
             }
 
             //マスターだけトータルタイムを管理する
@@ -248,9 +248,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
             timerText.text = string.Empty;
 
 
-            ChangeIsCheckPlayState_Interval(true);
+            ChangeIsCheckPlayState_Stop_Play(true);
+            Debug.Log("PhotonNetwork.PlayerList.Length" + PhotonNetwork.PlayerList.Length);
+            Debug.Log("IsCheckPlayState_Stop_Play()" + IsCheckPlayState_Stop_Play());
+
             //全員がPlayStateをもらえる状態まで待つ
-            if (PhotonNetwork.PlayerList.Length != IsCheckPlayState_Interval ()) {
+            if (PhotonNetwork.PlayerList.Length != IsCheckPlayState_Stop_Play()) {
                 return;
             }
 
@@ -615,6 +618,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == IsCheckPlayState_Play());
 
 
+        
         //次の時間へ移行する
         if (PhotonNetwork.IsMasterClient) {
             //isPlaying = true;
@@ -622,7 +626,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //SetTimeType(nowTimeType);
             Debug.Log("PlayState-Play");
             SetPlayState(PlayState.Play);
+            isCeackStop = false;
         }
+
+        yield return new WaitForSeconds(2.0f);
 
         playState = GetPlayState();
         Debug.Log("playState" + playState);
@@ -839,12 +846,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// isCeackPlayStateのBoolを返す　 全員がPlayStateを取れる状態化の確認を取る用
     /// </summary>
     /// <param name="isCheackPlayState"></param>
-    bool ChangeIsCheckPlayState_Interval(bool isCheackPlayState) {
+    bool ChangeIsCheckPlayState_Stop_Play(bool isCheackPlayState) {
         var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"isCeackPlayState-Interval",isCheackPlayState }
+            {"isCeackPlayState-Stop-Play",isCheackPlayState }
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(customRoomProperties);
-        Debug.Log("isCeackPlayState-Interval" + PhotonNetwork.LocalPlayer.CustomProperties["isCeackPlayState-Interval"]);
+        Debug.Log("isCeackPlayState-Stop-Play" + PhotonNetwork.LocalPlayer.CustomProperties["isCeackPlayState-Stop-Play"]);
         return isCheackPlayState;
     }
 
