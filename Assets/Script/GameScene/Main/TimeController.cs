@@ -44,6 +44,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool isVotingCompleted;
     public bool isCeackFlag;//PlayStateのフラグ確認
     public bool isCeackInterval;
+    public bool isCeackStop;
     //ボタン・Input関連
     public Button savingButton;//時短ボタン
     
@@ -69,9 +70,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
     public enum PlayState {
         Play,
-        Stop,
+        Stop_play,
         Interval,
-        Buffer
+        Stop_Interval
     }
     public PlayState playState;
 
@@ -123,7 +124,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //playState = PlayState.Play;
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                 { "totalTime", totalTime },
-                {"playState", PlayState.Stop.ToString() },
+                {"playState", PlayState.Stop_play.ToString() },
                 {"gameReady",true },
                 {"timeType",timeType }
             };
@@ -179,6 +180,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
             if (!isCeackFlag) {
                 isCeackFlag = true;
+                Debug.Log("isCeackFlag" + isCeackFlag);
+
                 isCeackInterval = false;
                 ChangeIsCheckPlayState_Interval(false);
             }
@@ -206,16 +209,21 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //時短が成立しても実行される
 
 
-            //マスターの処理
-            //トータルタイムが0秒になったらPlayStateをStopにする
-            //Stopを受け取りPlayStateをインターバルにした後　←問題
-            //スタートインターバル、エンドインターバル開始
-            //PlayStateをPlayに戻す
+            //0秒になったらマスターが他プレイヤーに次のシーンへ移行するためのフラグを送信する
+            //マスターから今のTimeTypeを受けたうえでStartIntervalを実行する←問題になりそう
+            //他プレイヤーはそれをもとにStartIntervalを実行する
+            //フラグをリセットする←問題になりそう
+            //
+
+            //0秒になったらマスターがPlayStateStop＿Playにする
+            //全員がPlayStateStopを受け取ったら　PlayStateをIntervalにする
+            //StartIntervalを実行すると同時にPlayStateをStop＿Intervalにする
+            //EndInterval終了後Playに戻す
 
             //マスターだけの処理
             if ((totalTime <= 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
                 Debug.Log("SetPlayState");
-                SetPlayState(PlayState.Interval);
+                SetPlayState(PlayState.Stop_play);
 
                 gameManager.gameMasterChatManager.isTimeSaving = false;
                 gameManager.gameMasterChatManager.SetIsTimeSaving();
@@ -224,39 +232,39 @@ public class TimeController : MonoBehaviourPunCallbacks {
             
             if (totalTime <= 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) {
                 Debug.Log("isCeackPlayState True");
-                ChangeIsCheckPlayState_Interval(true);
+                
 
-                if (PhotonNetwork.PlayerList.Length != IsCheckPlayState_Interval()) {
-                    return;
-                }
+                //if (PhotonNetwork.PlayerList.Length != IsCheckPlayState_Interval()) {
+                //    return;
+                //}
 
                 GetPlayState();
             }
 
 
-        //    次のシーンへ移行する処理
-        //} else if (playState == PlayState.Stop) {
-        //    Debug.Log("SetPlayState2");
-        //    timerText.text = string.Empty;
+            //次のシーンへ移行する処理
+        } else if (playState == PlayState.Stop_play) {
+            Debug.Log("SetPlayState2");
+            timerText.text = string.Empty;
 
 
-        //    if (PhotonNetwork.IsMasterClient && !isCeackStop) {
-        //        isCeackStop = true;
-        //        SetPlayState(PlayState.Interval);
-        //    }
+            ChangeIsCheckPlayState_Interval(true);
+            //全員がPlayStateをもらえる状態まで待つ
+            if (PhotonNetwork.PlayerList.Length != IsCheckPlayState_Interval ()) {
+                return;
+            }
 
-        //    ChangeIsCheckPlayState(true);
+            if (PhotonNetwork.IsMasterClient && !isCeackStop) {
+                isCeackStop = true;
+                SetPlayState(PlayState.Interval);
+            }
 
-        //    全員がPlayStateをもらえる状態まで待つ
-        //    if (PhotonNetwork.PlayerList.Length != IsCheckPlayState()) {
-        //        return;
-        //    }
-
-            //    GetPlayState();
+            GetPlayState();
 
         } else if (playState == PlayState.Interval && !isCeackInterval) {
             isCeackInterval = true;
             isCeackFlag = false;
+            Debug.Log("isCeackFlag" + isCeackFlag);
             ChangeIsCheckPlayState_Play(false);
             StartInterval();
             Debug.Log(timeType);
@@ -603,6 +611,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //役職に合わせてボタンなどを変更する
         TimesavingControllerTrue();
 
+        ChangeIsCheckPlayState_Play(true);
+        yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == IsCheckPlayState_Play());
+
+
         //次の時間へ移行する
         if (PhotonNetwork.IsMasterClient) {
             //isPlaying = true;
@@ -611,10 +623,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
             Debug.Log("PlayState-Play");
             SetPlayState(PlayState.Play);
         }
-
-        ChangeIsCheckPlayState_Play(true);
-        yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == IsCheckPlayState_Play());
-
 
         playState = GetPlayState();
         Debug.Log("playState" + playState);
@@ -882,6 +890,37 @@ public class TimeController : MonoBehaviourPunCallbacks {
         Debug.Log("CheckPlayState" + retReadyPlayerCount);
         return retReadyPlayerCount;
     }
+
+    /// <summary>
+    /// 全員がPlayStateを取れる状態化の確認を取る
+    /// </summary>
+    /// <returns></returns>
+    int IsCheckPlayState_Stop_Interval () {
+        int retReadyPlayerCount = 0;
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if (player.CustomProperties["isCeackPlayState-Stop-Interval"] != null && (bool)player.CustomProperties["isCeackPlayState-Stop-Interval"]) {
+                retReadyPlayerCount++;
+            }
+        }
+        Debug.Log("CheckPlayState" + retReadyPlayerCount);
+        return retReadyPlayerCount;
+    }  
+    
+    /// <summary>
+         /// 全員がPlayStateを取れる状態化の確認を取る
+         /// </summary>
+         /// <returns></returns>
+    int IsCheckPlayState_Stop_Play() {
+        int retReadyPlayerCount = 0;
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if (player.CustomProperties["isCeackPlayState-Stop-Play"] != null && (bool)player.CustomProperties["isCeackPlayState-Stop-Play"]) {
+                retReadyPlayerCount++;
+            }
+        }
+        Debug.Log("CheckPlayState" + retReadyPlayerCount);
+        return retReadyPlayerCount;
+    }
+
 
     /// <summary>
     /// 全員が投票完了したらtrue
