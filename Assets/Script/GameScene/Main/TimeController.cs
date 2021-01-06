@@ -213,7 +213,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //PlayStateをPlayに戻す
 
             //マスターだけの処理
-            if ((totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
+            if ((totalTime <= 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
                 Debug.Log("SetPlayState");
                 SetPlayState(PlayState.Interval);
 
@@ -221,8 +221,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 gameManager.gameMasterChatManager.SetIsTimeSaving();
             }
 
-            //マスター以外の処理
-            if (totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) {
+            
+            if (totalTime <= 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) {
                 Debug.Log("isCeackPlayState True");
                 ChangeIsCheckPlayState_Interval(true);
 
@@ -234,7 +234,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             }
 
 
-            //次のシーンへ移行する処理
+        //    次のシーンへ移行する処理
         //} else if (playState == PlayState.Stop) {
         //    Debug.Log("SetPlayState2");
         //    timerText.text = string.Empty;
@@ -245,14 +245,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //        SetPlayState(PlayState.Interval);
         //    }
 
-        //    //ChangeIsCheckPlayState(true);
+        //    ChangeIsCheckPlayState(true);
 
-        //    //全員がPlayStateをもらえる状態まで待つ
+        //    全員がPlayStateをもらえる状態まで待つ
         //    if (PhotonNetwork.PlayerList.Length != IsCheckPlayState()) {
         //        return;
         //    }
 
-        //    GetPlayState();
+            //    GetPlayState();
 
         } else if (playState == PlayState.Interval && !isCeackInterval) {
             isCeackInterval = true;
