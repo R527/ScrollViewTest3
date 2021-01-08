@@ -37,6 +37,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool isDisplay;//時間を表示するか否か　trueなら表示
     public bool isPlaying;　　//gameが動いているかの判定
     public bool isNextInterval;
+    public bool intervalState;
     public bool gameReady;//ゲーム待機状態か否か
     public bool isSpeaking;//喋ったか否かtrueならしゃべった
     public bool setSuddenDeath;
@@ -208,16 +209,32 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timerText.text = totalTime.ToString("F0");
             }
 
-            //0秒になったら次のシーンへ移行する
-            //時短が成立しても実行される
-            if (totalTime <= 0 && !isNextInterval) {
-                SubmitIsNextInterval(true);
-                if(PhotonNetwork.PlayerList.Length != CheckIsNextInterval(true)) {
-                    return;
-                }
+            if (totalTime <= 0 && PhotonNetwork.IsMasterClient) {
+                intervalState = true;
+                SetIntervalState();
+            }
+
+            if(totalTime <= 0) {
+                GetIntervalState();
+            }
+
+            if (totalTime <= 0 && intervalState  && !isNextInterval) {
                 isNextInterval = true;
+                Debug.Log("isNextInterval" + isNextInterval);
                 StartInterval();
             }
+            //0秒になったら次のシーンへ移行する
+            //時短が成立しても実行される
+            //if (totalTime <= 0 && !isNextInterval) {
+            //    Debug.Log("次のシーンへ");
+            //    SubmitIsNextInterval(true);
+            //    if (PhotonNetwork.PlayerList.Length != CheckIsNextInterval(true)) {
+            //        return;
+            //    }
+            //    isNextInterval = true;
+            //    Debug.Log("isNextInterval" + isNextInterval);
+            //    StartInterval();
+            //}
         }
        
 
@@ -625,8 +642,26 @@ public class TimeController : MonoBehaviourPunCallbacks {
         TimesavingControllerTrue();
 
 
-        SubmitIsNextInterval(false);
-        yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckIsNextInterval(false));
+        //yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckIsNextInterval(true));
+
+
+
+        //SubmitIsNextInterval(false);
+
+        //yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length == CheckIsNextInterval(false));
+        yield return new WaitForSeconds(3.0f);
+        intervalState = false;
+        if (PhotonNetwork.IsMasterClient) {
+            SetIntervalState();
+        }
+
+        yield return new WaitForSeconds(3.0f);
+
+        GetIntervalState();
+
+
+        isNextInterval = false;
+        Debug.Log("isNextInterval" + isNextInterval);
 
         ////次の時間へ移行する
         //if (PhotonNetwork.IsMasterClient) {
@@ -641,7 +676,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //yield return new WaitForSeconds(2.0f);
 
         //playState = GetPlayState();
-        Debug.Log("playState" + playState);
+        //Debug.Log("playState" + playState);
         
 
         //while (playState == PlayState.Interval) {
@@ -813,11 +848,21 @@ public class TimeController : MonoBehaviourPunCallbacks {
         return time;
     }
 
-    void SetIsNextInterval() {
+    /// <summary>
+    /// 次のインターバルへ以降するフラグ
+    /// </summary>
+    void SetIntervalState() {
         ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"isNextInterval", isNextInterval }
+            {"intervalState", intervalState }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    }
+
+    bool GetIntervalState() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("intervalState", out object intervalStateObj)) {
+            intervalState = (bool)intervalStateObj;
+        }
+        return intervalState;
     }
 
 
@@ -898,7 +943,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     //}
 
     /// <summary>
-    /// 全員がPlayStateを取れる状態化の確認を取る
+    /// Intervalに全員が入れるかの確認
     /// </summary>
     /// <returns></returns>
     int CheckIsNextInterval(bool isNextInterval) {

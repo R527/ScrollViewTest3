@@ -9174,15 +9174,18 @@ MonoBehaviour:
   executionTime: 10
   checkGameOverTime: 10
   resultTime: 10
-  intervalTime: 2
+  intervalTime: 10
   isDisplay: 0
   isPlaying: 0
+  isNextInterval: 0
   gameReady: 0
   isSpeaking: 0
   setSuddenDeath: 0
   isPlay: 0
   isVotingCompleted: 0
-  isCeackPlayState: 0
+  isCeackFlag: 0
+  isCeackInterval: 0
+  isCeackStop: 0
   savingButton: {fileID: 163000424}
   COButton: {fileID: 1812546287}
   superChatButton: {fileID: 194684091}
