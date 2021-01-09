@@ -9172,12 +9172,13 @@ MonoBehaviour:
   votingTime: 30
   nightTime: 10
   executionTime: 10
-  checkGameOverTime: 10
+  checkGameOverTime: 5
   resultTime: 10
-  intervalTime: 10
+  intervalTime: 2
   isDisplay: 0
   isPlaying: 0
   isNextInterval: 0
+  intervalState: 0
   gameReady: 0
   isSpeaking: 0
   setSuddenDeath: 0
