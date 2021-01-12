@@ -77,8 +77,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
         //自分の世界の自分のボタンだけ外枠を青くする、ロールテキストを有効にする
         if (isMine) {
-            playerButton.GetComponent<Outline>().enabled = true;
-            rollText.enabled = true;
+            playBtnOutLine.enabled = true;
         }
 
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
