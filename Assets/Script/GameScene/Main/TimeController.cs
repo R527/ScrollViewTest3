@@ -211,15 +211,18 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timerText.text = totalTime.ToString("F0");
             }
 
-            if (totalTime <= 0 && PhotonNetwork.IsMasterClient) {
+            //マスターだけが0秒もしくは時短成立の確認を取れたら全員に次のシーンへと行くフラグを送信する
+            if ((totalTime <= 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
                 intervalState = true;
                 SetIntervalState();
             }
 
-            if(totalTime <= 0) {
+            //時短もしくは時間が0秒になったら次のシーンへ以降するフラグを受け取る
+            if(totalTime <= 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) {
                 GetIntervalState();
             }
 
+            //フラグを受け取るとスタートインターバルを走らせる
             if (intervalState  && !isNextInterval) {
                 isNextInterval = true;
                 Debug.Log("isNextInterval" + isNextInterval);
