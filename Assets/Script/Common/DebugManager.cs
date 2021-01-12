@@ -62,23 +62,5 @@ public class DebugManager : MonoBehaviour
         }
     }
 
-    //private void Start() {
-    //    navBtn.onClick.AddListener(NavbarBtn);
-    //    fullScrBtn.onClick.AddListener(FullScreanBtn);
-    //}
 
-    //public void NavbarBtn() {
-    //    Screen.fullScreen = false;
-    //    EndSetUp();
-    //}
-
-    //public void FullScreanBtn() {
-    //    Screen.fullScreen = true;
-    //    isNavCheack = true;
-    //    EndSetUp();
-    //}
-
-    //public void EndSetUp() {
-       
-    //}
 }

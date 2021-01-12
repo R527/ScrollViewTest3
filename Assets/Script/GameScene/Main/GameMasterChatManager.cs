@@ -308,10 +308,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 投票を完了させる
     /// </summary>
     public void Voted(Photon.Realtime.Player player) {
-        //if(!live) {
-        //    Debug.Log("押せません");
-        //    return;
-        //}
+
         gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんは" + player.NickName + "に投票しました。";
         gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         gameMasterChat = string.Empty;
@@ -357,10 +354,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
                     
                     if (player.ActorNumber == playerObj.playerID && (int)player.CustomProperties["voteNum"] != 0) {
-
-                        //Debug.Log("投票時のPlayerList" + PhotonNetwork.PlayerList);
-                        //Debug.Log("投票時のPlayerList" + player.NickName);
-                        //Debug.Log("投票数" + player.CustomProperties["voteNum"]);
 
                         //投票開示する場合
                         if (RoomData.instance.roomInfo.openVoting == VOTING.開示する) {
@@ -650,7 +643,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isTimeSaving", out object isTimeSavingObj)) {
             isTimeSaving = (bool)isTimeSavingObj;
         }
-        Debug.Log("isTimeSaving" + isTimeSaving); 
         return isTimeSaving;
     }
 }
