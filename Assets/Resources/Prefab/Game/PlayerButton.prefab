@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!1 &1126103339133963237
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +622,6 @@ MonoBehaviour:
   playerButton: {fileID: 3891466349079106415}
   playerInfoText: {fileID: 3980162111679359139}
   playerNameText: {fileID: 4550416486614150916}
-  iconImage: {fileID: 0}
   tran: {fileID: 6875728530965073990}
   playerID: 0
   myUniqueId: 

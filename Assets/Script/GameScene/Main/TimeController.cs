@@ -188,8 +188,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //    //ChangeIsCheckPlayState_Stop_Play(false);
         //}
 
-        Debug.Log("__isNextInterval" + isNextInterval);
-        Debug.Log("__intervalState" + intervalState);
+        //Debug.Log("__isNextInterval" + isNextInterval);
+        //Debug.Log("__intervalState" + intervalState);
 
         if (!isNextInterval) {
             //マスターだけトータルタイムを管理する
