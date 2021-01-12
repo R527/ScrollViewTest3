@@ -337,6 +337,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         }
 
+        //一度時間を非表示にする
+        timerText.text = string.Empty;
+
         switch (timeType) {
             //お昼
             case TIME.結果発表後チェック:
