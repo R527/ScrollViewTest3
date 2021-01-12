@@ -390,6 +390,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
             //処刑
             case TIME.投票時間:
+
+                Debug.Log("処刑");
                 timeType = TIME.処刑;
                 isDisplay = false;
                 totalTime = executionTime;
@@ -406,6 +408,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //自分の世界で突然死したプレイヤーの生存情報をfalseにする
                 if (!DebugManager.instance.isCheckSuddenDeath) {
 
+                    Debug.Log("突然死チェック");
                     GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerButton");
 
                     foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
@@ -435,7 +438,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                                     PlayerButton playerObj = obj.GetComponent<PlayerButton>();
                                     if (player.ActorNumber == playerObj.playerID) {
                                         playerObj.live = false;
-                                        playerObj.playerInfoText.text += day + "日目突然死";
+                                        playerObj.playerInfoText.text = day + "日目突然死";
                                         Debug.Log("突然死");
                                         break;
                                     }
