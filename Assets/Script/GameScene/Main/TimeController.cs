@@ -207,7 +207,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
             //トータルタイム表示
             //トータルタイムを受け取る側はー1秒から始まるのでその調整用
-            if (totalTime >= 0 && isDisplay) {
+            if (totalTime > 0 && isDisplay) {
                 timerText.text = totalTime.ToString("F0");
             }
 
@@ -436,6 +436,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                                     if (player.ActorNumber == playerObj.playerID) {
                                         playerObj.live = false;
                                         playerObj.playerInfoText.text += day + "日目突然死";
+                                        Debug.Log("突然死");
                                         break;
                                     }
                                 }

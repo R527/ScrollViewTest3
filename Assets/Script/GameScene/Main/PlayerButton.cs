@@ -16,7 +16,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Button playerButton;
     public Text playerInfoText;
     public Text playerNameText;
-    public Image iconImage;
+    //public Image iconImage;
     public RectTransform tran;
 
     public int playerID;
@@ -28,6 +28,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Text rollText;
     public ActionPopUp actionPopUpPrefab;
     public Transform gameCancasTran;
+    public Outline playBtnOutLine;
     
     //後からもらう
     public bool fortune;//占い結果 true=黒

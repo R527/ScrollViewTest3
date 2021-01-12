@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 2649979036454956306}
   - component: {fileID: 7397193498824249633}
   - component: {fileID: 7732796916668069612}
+  - component: {fileID: 264226520327528868}
   m_Layer: 5
   m_Name: PlayerImage
   m_TagString: Untagged
@@ -397,6 +398,21 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &264226520327528868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4724689256248821043}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0.25959015, b: 1, a: 1}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5135180234944548050
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +482,6 @@ GameObject:
   - component: {fileID: 4865912823484916543}
   - component: {fileID: 3891466349079106415}
   - component: {fileID: 3084192544269291898}
-  - component: {fileID: 38565965868686495}
   - component: {fileID: 7534093506484074954}
   - component: {fileID: 672193252316704196}
   m_Layer: 5
@@ -591,21 +606,6 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &38565965868686495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5509011312376430755}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.0039215684, g: 0.42572284, b: 1, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
-  m_UseGraphicAlpha: 0
 --- !u!114 &7534093506484074954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,6 +634,7 @@ MonoBehaviour:
   actionPopUpPrefab: {fileID: 356964420616384462, guid: 41fd3eb5dc8d15d4e97cc9cd433f3ab9,
     type: 3}
   gameCancasTran: {fileID: 0}
+  playBtnOutLine: {fileID: 264226520327528868}
   fortune: 0
   spiritual: 0
   wolf: 0
