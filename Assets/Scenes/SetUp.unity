@@ -626,7 +626,7 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 3
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1

@@ -35,7 +35,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public float resultTime;
     public float intervalTime;
     public bool isDisplay;//時間を表示するか否か　trueなら表示
-    public bool isPlaying;　　//gameが動いているかの判定
     public bool isNextInterval;
     public bool intervalState;
     public bool gameReady;//ゲーム待機状態か否か
@@ -44,9 +43,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool isPlay;//falseならゲームオーバー
     private float chekTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
-    public bool isCeackFlag;//PlayStateのフラグ確認
-    public bool isCeackInterval;
-    public bool isCeackStop;
     //ボタン・Input関連
     public Button savingButton;//時短ボタン
     
@@ -488,11 +484,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //役職に合わせてボタンなどを変更する
         TimesavingControllerTrue();
 
-        //yield return new WaitForSeconds(3.0f);
-        //if (PhotonNetwork.IsMasterClient) {
-        //    intervalState = false;
-        //    SetIntervalState();
-        //}
         SetEndIntervalPassCount(true);
         if(PhotonNetwork.IsMasterClient) {
             yield return  new WaitUntil (() => PhotonNetwork.PlayerList.Length == GetEndIntervalPassCount()) ;
@@ -500,7 +491,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
             SetIntervalState();
         }
         
-
         yield return new WaitUntil(() => !GetIntervalState());
 
         //マスターだけTimeTypeをセットする
@@ -836,7 +826,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
         Debug.Log("timeType" + timeType);
         return timeType;
     }
-
 }
 
 
