@@ -194,17 +194,18 @@ public class TimeController : MonoBehaviourPunCallbacks {
             }
 
             //マスターだけが0秒もしくは時短成立の確認を取れたら全員に次のシーンへと行くフラグを送信する
-            if ((totalTime <= 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
+            if ((totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
                 intervalState = true;
                 SetIntervalState();
             }
 
             //時短もしくは時間が0秒になったら次のシーンへ以降するフラグを受け取る
-            if(totalTime <= 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) {
+            if(totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) {
                 GetIntervalState();
             }
 
             //フラグを受け取るとスタートインターバルを走らせる
+            //intervalStateはオンライン用、IsNextIntervalはOFFLine用のフラグ
             if (intervalState  && !isNextInterval) {
                 isNextInterval = true;
                 Debug.Log("isNextInterval" + isNextInterval);
@@ -479,6 +480,38 @@ public class TimeController : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
+    /// 昼、夜、投票後にあるインターバル時間を設定
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator EndInterval(TIME nowTimeType) {
+
+        //役職に合わせてボタンなどを変更する
+        TimesavingControllerTrue();
+
+        //yield return new WaitForSeconds(3.0f);
+        //if (PhotonNetwork.IsMasterClient) {
+        //    intervalState = false;
+        //    SetIntervalState();
+        //}
+        SetEndIntervalPassCount(true);
+        if(PhotonNetwork.IsMasterClient) {
+            yield return  new WaitUntil (() => PhotonNetwork.PlayerList.Length == GetEndIntervalPassCount()) ;
+            intervalState = false;
+            SetIntervalState();
+        }
+        
+
+        yield return new WaitUntil(() => !GetIntervalState());
+
+        //マスターだけTimeTypeをセットする
+        if (PhotonNetwork.IsMasterClient) {
+            SetTimeType();
+        }
+        SetEndIntervalPassCount(false);
+        isNextInterval = false;
+    }
+
+    /// <summary>
     /// GameMasterChatの制御
     /// </summary>
     /// <returns></returns>
@@ -553,33 +586,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 Destroy(timeContollerPopUpObj.gameObject);
             });
     }
-    /// <summary>
-    /// 昼、夜、投票後にあるインターバル時間を設定
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator EndInterval(TIME nowTimeType) {
-
-        //役職に合わせてボタンなどを変更する
-        TimesavingControllerTrue();
-
-        yield return new WaitForSeconds(3.0f);
-
-        //yield return new WaitUntil(() => GetIntervalState());
-        if (PhotonNetwork.IsMasterClient) {
-            intervalState = false;
-            SetIntervalState();
-        }
-
-        //yield return new WaitForSeconds(3.0f);
-        yield return new WaitUntil(() => !GetIntervalState());
-        GetIntervalState();
-
-        //マスターだけTimeTypeをセットする
-        if (PhotonNetwork.IsMasterClient) {
-            SetTimeType();
-        }
-        isNextInterval = false;
-    }
+    
 
     /// <summary>
     /// InPutViewを上げます
@@ -725,7 +732,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
-    /// 次のインターバルへ以降するフラグ
+    /// 次のインターバルへ以降するフラグをセットする
     /// </summary>
     void SetIntervalState() {
         ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
@@ -734,13 +741,39 @@ public class TimeController : MonoBehaviourPunCallbacks {
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
 
+    /// <summary>
+    /// 次のインターバルへ以降するフラグを受け取る
+    /// </summary>
     bool GetIntervalState() {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("intervalState", out object intervalStateObj)) {
             intervalState = (bool)intervalStateObj;
         }
+        Debug.Log("intervalState" + intervalState);
         return intervalState;
     }
+    
+    void SetEndIntervalPassCount(bool endIntervalPass) {
+        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+            {"endIntervalPass", endIntervalPass }
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(customRoomProperties);
+        Debug.Log("endIntervalPassCount" + (bool)PhotonNetwork.LocalPlayer.CustomProperties["endIntervalPass"]);
+    }
 
+    int GetEndIntervalPassCount() {
+        int endIntervalPassCount = 0;
+
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if(player.CustomProperties.TryGetValue("endIntervalPass" , out object endIntervalPassObj)) {
+                bool endIntervalPass = (bool)endIntervalPassObj;
+                if (endIntervalPass) {
+                    endIntervalPassCount++;
+                    Debug.Log("endIntervalPassCount" + endIntervalPassCount);
+                }
+            } 
+        }
+        return endIntervalPassCount;
+    }
     /// <summary>
     /// 全員が投票完了したらtrue
     /// </summary>
