@@ -16,7 +16,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Button playerButton;
     public Text playerInfoText;
     public Text playerNameText;
-    public Image iconImage;
+    //public Image iconImage;
     public RectTransform tran;
 
     public int playerID;
@@ -28,6 +28,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Text rollText;
     public ActionPopUp actionPopUpPrefab;
     public Transform gameCancasTran;
+    public Outline playBtnOutLine;
     
     //後からもらう
     public bool fortune;//占い結果 true=黒
@@ -76,7 +77,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
         //自分の世界の自分のボタンだけ外枠を青くする、ロールテキストを有効にする
         if (isMine) {
-            playerButton.GetComponent<Outline>().enabled = true;
+            playBtnOutLine.enabled = true;
             rollText.enabled = true;
         }
 

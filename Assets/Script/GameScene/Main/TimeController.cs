@@ -35,14 +35,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public float resultTime;
     public float intervalTime;
     public bool isDisplay;//時間を表示するか否か　trueなら表示
-    public bool isPlaying;　　//gameが動いているかの判定
+    public bool isNextInterval;
+    public bool intervalState;
     public bool gameReady;//ゲーム待機状態か否か
     public bool isSpeaking;//喋ったか否かtrueならしゃべった
     public bool setSuddenDeath;
     public bool isPlay;//falseならゲームオーバー
     private float chekTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
-
     //ボタン・Input関連
     public Button savingButton;//時短ボタン
     
@@ -68,8 +68,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
     public enum PlayState {
         Play,
-        Stop,
-        Interval
+        Stop_play,
+        Interval,
+        Stop_Interval
     }
     public PlayState playState;
 
@@ -85,8 +86,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         firstDay = true;
         isPlay = true;
         timeType = TIME.処刑後チェック;
-        playState = PlayState.Interval;
-        //savingButton.interactable = true;
+        playState = PlayState.Play;
 
 
         //Debug用
@@ -121,7 +121,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //playState = PlayState.Play;
             ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
                 { "totalTime", totalTime },
-                {"playState", PlayState.Stop.ToString() },
+                {"playState", PlayState.Stop_play.ToString() },
                 {"gameReady",true },
                 {"timeType",timeType }
             };
@@ -134,7 +134,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         yield return new WaitForSeconds(2.0f);
 
-        playState = GetPlayState();
+        //playState = GetPlayState();
 
         //ゲームスタート
         gameReady = GetGameReady();
@@ -168,10 +168,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
             return;
         }
-                
-        //カウントダウン処理
-        if (playState == PlayState.Play) {
 
+        if (!isNextInterval) {
             //マスターだけトータルタイムを管理する
             if (PhotonNetwork.IsMasterClient) {
                 chekTimer += Time.deltaTime;
@@ -180,36 +178,37 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     totalTime--;
                     SetGameTime();
                 }
-            //マスター以外はトータルタイムをもらう
+                //マスター以外はトータルタイムをもらう
             } else {
                 totalTime = GetGameTime();
             }
 
             //トータルタイム表示
             //トータルタイムを受け取る側はー1秒から始まるのでその調整用
-            if(totalTime >= 0 && isDisplay) {
+            if (totalTime > 0 && isDisplay) {
                 timerText.text = totalTime.ToString("F0");
             }
 
-            //0秒になったら次のシーンへ移行する
-            //時短が成立しても実行される
-            
+            //マスターだけが0秒もしくは時短成立の確認を取れたら全員に次のシーンへと行くフラグを送信する
             if ((totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
-                SetPlayState(PlayState.Stop);
-                gameManager.gameMasterChatManager.isTimeSaving = false;
-                gameManager.gameMasterChatManager.SetIsTimeSaving();
-            } 
+                intervalState = true;
+                SetIntervalState();
+            }
 
-            GetPlayState();
+            //時短もしくは時間が0秒になったら次のシーンへ以降するフラグを受け取る
+            if(totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) {
+                GetIntervalState();
+            }
 
-            //次のシーンへ移行する処理
-        } else if (playState == PlayState.Stop){
-            playState = PlayState.Interval;
-            timerText.text = string.Empty;
-            StartInterval();
-            Debug.Log(timeType);
+            //フラグを受け取るとスタートインターバルを走らせる
+            //intervalStateはオンライン用、IsNextIntervalはOFFLine用のフラグ
+            if (intervalState  && !isNextInterval) {
+                isNextInterval = true;
+                Debug.Log("isNextInterval" + isNextInterval);
+                StartInterval();
+            }
         }
-        
+       
         //全員の投票が完了したら
         if (!GetIsVotingCompleted() || !PhotonNetwork.IsMasterClient) {
             return;
@@ -230,6 +229,17 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// インターバルを決定する
     /// </summary>
     public void StartInterval() {
+        Debug.Log("StartInterval");
+
+        //タイムタイプに違いがある場合修正する
+        if(timeType != GetTimeType()) {
+            GetTimeType();
+
+        }
+
+        //一度時間を非表示にする
+        timerText.text = string.Empty;
+
         switch (timeType) {
             //お昼
             case TIME.結果発表後チェック:
@@ -280,6 +290,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
             //処刑
             case TIME.投票時間:
+
+                Debug.Log("処刑");
                 timeType = TIME.処刑;
                 isDisplay = false;
                 totalTime = executionTime;
@@ -296,6 +308,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //自分の世界で突然死したプレイヤーの生存情報をfalseにする
                 if (!DebugManager.instance.isCheckSuddenDeath) {
 
+                    Debug.Log("突然死チェック");
                     GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerButton");
 
                     foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
@@ -325,7 +338,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                                     PlayerButton playerObj = obj.GetComponent<PlayerButton>();
                                     if (player.ActorNumber == playerObj.playerID) {
                                         playerObj.live = false;
-                                        playerObj.playerInfoText.text += day + "日目突然死";
+                                        playerObj.playerInfoText.text = day + "日目突然死";
+                                        Debug.Log("突然死");
                                         break;
                                     }
                                 }
@@ -462,6 +476,32 @@ public class TimeController : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
+    /// 昼、夜、投票後にあるインターバル時間を設定
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator EndInterval(TIME nowTimeType) {
+
+        //役職に合わせてボタンなどを変更する
+        TimesavingControllerTrue();
+
+        SetEndIntervalPassCount(true);
+        if(PhotonNetwork.IsMasterClient) {
+            yield return  new WaitUntil (() => PhotonNetwork.PlayerList.Length == GetEndIntervalPassCount()) ;
+            intervalState = false;
+            SetIntervalState();
+        }
+        
+        yield return new WaitUntil(() => !GetIntervalState());
+
+        //マスターだけTimeTypeをセットする
+        if (PhotonNetwork.IsMasterClient) {
+            SetTimeType();
+        }
+        SetEndIntervalPassCount(false);
+        isNextInterval = false;
+    }
+
+    /// <summary>
     /// GameMasterChatの制御
     /// </summary>
     /// <returns></returns>
@@ -536,55 +576,18 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 Destroy(timeContollerPopUpObj.gameObject);
             });
     }
-    /// <summary>
-    /// 昼、夜、投票後にあるインターバル時間を設定
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator EndInterval(TIME nowTimeType) {
-        yield return new WaitForSeconds(intervalTime);//コルーチンでインターバル時間を設ける
-
-        ////一定時間ごとに出てくるPopUp削除
-        //if(timeContollerPopUpObj != null) {
-        //    Destroy(timeContollerPopUpObj.gameObject);
-
-        //}
-
-        //役職に合わせてボタンなどを変更する
-        TimesavingControllerTrue();
-
-        //次の時間へ移行する
-        if (PhotonNetwork.IsMasterClient) {
-            //isPlaying = true;
-            //playState = PlayState.Play;
-            //SetTimeType(nowTimeType);
-            SetPlayState(PlayState.Play);
-        }
-
-        //yield return new WaitForSeconds(2.0f);
-        playState = GetPlayState();
-        //while (playState == PlayState.Interval) {
-        //    playState = GetPlayState();
-        //    yield return null;
-        //}
-        //違うタイムタイプなら訂正する
-        //if(timeType != GetTimeType()) {
-        //    timeType = GetTimeType();
-        //}
-    }
+    
 
     /// <summary>
     /// InPutViewを上げます
     /// </summary>
     /// <returns></returns>
     public IEnumerator UpInputView() {
-        //fillter.folding = true;
         inputView.foldingButton.interactable = false;
         yield return new WaitForSeconds(intervalTime + 0.3f);
         inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
-        //inputView.viewport.DOLocalMoveY(72, 0.5f);
         inputView.viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
         inputView.menberViewPopUpObj.SetActive(true);
-        //inputView.foldingText.text = "↓";
         inputView.folding = false;
         inputView.foldingImage.sprite = inputView.downBtnSprite;
 
@@ -595,14 +598,12 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public IEnumerator DownInputView() {
-        //fillter.folding = false;
         inputView.foldingButton.interactable = true;
         yield return new WaitForSeconds(intervalTime + 0.3f);
         inputView.inputRectTransform.DOLocalMoveY(-70, 0.5f);
         inputView.viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
         StartCoroutine(inputView.PopUpFalse());
         inputView.folding = true;
-        //inputView.foldingText.text = "↑";
         inputView.foldingImage.sprite = inputView.upBtnSprite;
 
     }
@@ -648,25 +649,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
             savingButton.interactable = false;
             COButton.interactable = false;
         }
-
-
-        //if (!chatSystem.myPlayer.wolfChat) {
-        //    ////WolfChatしゃべれないプレイヤーの処理
-        //    wolfButton.interactable = false;
-        //    //inputField.interactable = false;
-        //}
     }
 
     /// <summary>
     /// 狼チャットを打つことができないプレイヤーは
     /// </summary>
     public void FalseInputViewButton() {
-        //if (!chatSystem.myPlayer.wolfChat) {
-            ////WolfChatしゃべれないプレイヤーの処理
-            wolfButton.interactable = false;
-            inputField.interactable = false;
-        //}
-
+        wolfButton.interactable = false;
+        inputField.interactable = false;
         //狼出ないプレイヤーはsuperチャットだけfalseにする
         superChatButton.interactable = false;
 
@@ -731,33 +721,49 @@ public class TimeController : MonoBehaviourPunCallbacks {
         return time;
     }
 
-
     /// <summary>
-    /// isPlayingのオンライン化をbool型で返す
+    /// 次のインターバルへ以降するフラグをセットする
     /// </summary>
-    /// <returns></returns>
-    private PlayState  GetPlayState() {
-        //isPlaying = false;
-        //playState = PlayerState.Stop;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playState", out object isPlayingeObj)) {
-            playState = (PlayState)Enum.Parse(typeof(PlayState),isPlayingeObj.ToString());
-            //Debug.Log(playState);
-        }
-        return playState;
-    }
-
-    /// <summary>
-    /// bool型IsPlayingをRoomPropertiesに保存する
-    /// </summary>
-    /// <returns></returns>
-    private void SetPlayState(PlayState nowPlayState) {
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"playState",nowPlayState.ToString() }
+    void SetIntervalState() {
+        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+            {"intervalState", intervalState }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        //Debug.Log("SetPlayState" + (PlayState)Enum.Parse(typeof(PlayState),PhotonNetwork.CurrentRoom.CustomProperties["playState"].ToString()));
     }
 
+    /// <summary>
+    /// 次のインターバルへ以降するフラグを受け取る
+    /// </summary>
+    bool GetIntervalState() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("intervalState", out object intervalStateObj)) {
+            intervalState = (bool)intervalStateObj;
+        }
+        Debug.Log("intervalState" + intervalState);
+        return intervalState;
+    }
+    
+    void SetEndIntervalPassCount(bool endIntervalPass) {
+        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+            {"endIntervalPass", endIntervalPass }
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(customRoomProperties);
+        Debug.Log("endIntervalPassCount" + (bool)PhotonNetwork.LocalPlayer.CustomProperties["endIntervalPass"]);
+    }
+
+    int GetEndIntervalPassCount() {
+        int endIntervalPassCount = 0;
+
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            if(player.CustomProperties.TryGetValue("endIntervalPass" , out object endIntervalPassObj)) {
+                bool endIntervalPass = (bool)endIntervalPassObj;
+                if (endIntervalPass) {
+                    endIntervalPassCount++;
+                    Debug.Log("endIntervalPassCount" + endIntervalPassCount);
+                }
+            } 
+        }
+        return endIntervalPassCount;
+    }
     /// <summary>
     /// 全員が投票完了したらtrue
     /// </summary>
@@ -798,6 +804,28 @@ public class TimeController : MonoBehaviourPunCallbacks {
         return setSuddenDeath;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    void SetTimeType() {
+        var properties = new ExitGames.Client.Photon.Hashtable {
+            {"timeType",timeType},
+        };
+        Debug.Log("timeType" + timeType);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+    }
+
+    /// <summary>
+    /// 突然死したプレイヤーのフラグをもらう
+    /// </summary>
+    /// <returns></returns>
+    TIME GetTimeType() {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeType", out object timeTypeObj)) {
+            timeType = (TIME)Enum.Parse(typeof(TIME), timeTypeObj.ToString());
+        }
+        Debug.Log("timeType" + timeType);
+        return timeType;
+    }
 }
 
 

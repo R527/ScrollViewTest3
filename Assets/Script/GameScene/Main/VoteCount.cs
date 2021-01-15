@@ -124,7 +124,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             PlayerButton playerObj = player.GetComponent<PlayerButton>();
             if (GetExecutionPlayerID() == playerObj.playerID) {
                 playerObj.live = false;
-                playerObj.playerInfoText.text += gameManager.timeController.day + "日目処刑";
+                playerObj.playerInfoText.text = gameManager.timeController.day + "日目処刑";
                 
             }
         }

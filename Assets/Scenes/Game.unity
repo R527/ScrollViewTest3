@@ -7933,8 +7933,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0072498, y: 184.22}
-  m_SizeDelta: {x: 205.47449, y: 49.5607}
+  m_AnchoredPosition: {x: 0.0072498, y: 185.42}
+  m_SizeDelta: {x: 205.47449, y: 51.960564}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &757363720
 MonoBehaviour:
@@ -9172,16 +9172,21 @@ MonoBehaviour:
   votingTime: 30
   nightTime: 10
   executionTime: 10
-  checkGameOverTime: 10
+  checkGameOverTime: 5
   resultTime: 10
   intervalTime: 2
   isDisplay: 0
   isPlaying: 0
+  isNextInterval: 0
+  intervalState: 0
   gameReady: 0
   isSpeaking: 0
   setSuddenDeath: 0
   isPlay: 0
   isVotingCompleted: 0
+  isCeackFlag: 0
+  isCeackInterval: 0
+  isCeackStop: 0
   savingButton: {fileID: 163000424}
   COButton: {fileID: 1812546287}
   superChatButton: {fileID: 194684091}
@@ -23686,7 +23691,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 102.74, y: -368.35}
-  m_SizeDelta: {x: 205.47, y: 330.71313}
+  m_SizeDelta: {x: 205.47, y: 330.7135}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4395145949457617572
 CanvasRenderer:
