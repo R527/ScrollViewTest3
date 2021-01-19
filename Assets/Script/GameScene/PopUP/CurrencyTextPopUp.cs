@@ -24,10 +24,10 @@ public class CurrencyTextPopUp : BasePopUP
         //退出と青チャットどちらの警告文化を分ける
         switch (warningStr) {
             case "superChatStr":
-                warningText.text = "水晶を" + gameManager.superChatCurrency + "消費します";
+                warningText.text = "水晶を" + gameManager.superChatCurrency + "消費します" + "\n\r\n\r(メンバーは1ゲーム3回まで無料です)";
                 break;
             case "exitStr":
-                warningText.text = "水晶を" + gameManager.superChatCurrency + "消費します";
+                warningText.text = "水晶を" + gameManager.extitCurrency + "消費します";
                 break;
         }
     }
