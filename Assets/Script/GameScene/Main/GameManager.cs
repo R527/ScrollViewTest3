@@ -157,8 +157,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
             //Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
             //Debug.Log(PhotonNetwork.CurrentRoom.MaxPlayers);
             PhotonNetwork.CurrentRoom.IsOpen = true;
-            //Debug.Log("IsOpne空室" + PhotonNetwork.CurrentRoom.IsOpen);
+            Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
         }
+        Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
 
         isCheckEnteredRoom = true;
     }

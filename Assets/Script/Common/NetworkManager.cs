@@ -203,66 +203,44 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
-    /// ルームを作っていない人が利用する　部屋情報がアップデートで監視
+    /// ルームを作っていない人が利用する　
+    /// 自分がLobbyに入った時とRoom情報が変更されたときに動作する
     /// </summary>
     /// <param name="roomList"></param>
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
-        base.OnRoomListUpdate(roomList);
+        //base.OnRoomListUpdate(roomList);
         Debug.Log("OnRoomListUpdate");
         roomInfoList = roomList;
         foreach (Photon.Realtime.RoomInfo info in roomList) {
-            Debug.Log("info.RemovedFromList"+info.RemovedFromList);
+            Debug.Log("info.RemovedFromList" + info.RemovedFromList);
+            Debug.Log("info.IsOpen" + info.IsOpen);
 
             RoomNode roomNode = new RoomNode();
+
             //アクティブの部屋がありますか
             if (activeEntries.TryGetValue(info.Name, out roomNode)) {
 
                 //IsOpenがtureの場合表示する
                 //最後のプレイヤーがRoomに入った時にfalseにする
                 if (!info.RemovedFromList && info.IsOpen) {
-                //RoomNode obj = null;
-
-                activeEntries.Remove(info.Name);
-                Debug.Log(roomNode);
-                    if (roomNode == null) {
-                        Debug.Log("GameObjがない場合");
-                        //部屋が一つ以上あったら部屋を一番下に配置する、部屋がないならインスタンスする
-                        roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
-                    }
                     roomNode.Activate(info);
-                    activeEntries.Add(info.Name,roomNode);
-                    //} else {
-                    //    //部屋情報を読み取ってアクティブ化する
-                    //    Debug.Log("GameObjがある場合");
-                    //    roomNode.Activate(info);
-                    //}
+                    activeEntries.Add(info.Name, roomNode);
 
-                    
-
-                } else if (!info.RemovedFromList && !info.IsOpen) {
-                    //部屋をfalse
-                    Debug.Log("Deactive" + "オブジェクトを隠す");
-                    if(roomNode == null) {
-                        return;
-                    }
-                    roomNode.Deactivate();
                 } else {
-                    Debug.Log("Deactive" + "オブジェクトを消す");
-
+                    Debug.Log("Deactiveオブジェクトを消す");
                     //部屋がなくなった場合
                     activeEntries.Remove(info.Name);
-
+                    roomNode.Deactivate();
                     inactiveEntries.Push(roomNode);
                 }
-            
-                //部屋が一つも作られていないとき
-            } else if (!info.RemovedFromList) {
-
+            }else if (!info.RemovedFromList) {
                 roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
-                Debug.Log("Activate2");
+                Debug.Log("自分のローカル情報として、部屋の情報を作成");
                 roomNode.Activate(info);
 
                 activeEntries.Add(info.Name, roomNode);
+                Debug.Log("自分のローカル情報としての部屋の数" + activeEntries.Count);
+                OnRoomListUpdate(roomList);
             }
         }
     }

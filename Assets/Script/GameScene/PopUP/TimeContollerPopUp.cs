@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class TimeContollerPopUp : MonoBehaviour
 {
 
+    public CanvasGroup canvasGroup;
     public Text text;
-    public Image image;
-
 }

@@ -567,11 +567,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeContollerPopUpObj.text.text = "夜の行動。"; 
                 break;
         }
-        timeContollerPopUpObj.image.color = new Color(255, 255, 255, 0);
+        //timeContollerPopUpObj.image.color = new Color(255, 255, 255, 0);
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(timeContollerPopUpObj.image.DOFade(1, 1.0f));
+        sequence.Append(timeContollerPopUpObj.canvasGroup.DOFade(1, 1.0f));
+        //sequence.Join(timeContollerPopUpObj.text.DOFade(1, 1.0f));
         sequence.AppendInterval(1.0f);
-        sequence.Append(timeContollerPopUpObj.image.DOFade(0, 1.0f))
+        sequence.Append(timeContollerPopUpObj.canvasGroup.DOFade(0, 1.0f))
+        //sequence.Join(timeContollerPopUpObj.text.DOFade(0, 1.0f))
             .OnComplete(() => {
                 Destroy(timeContollerPopUpObj.gameObject);
             });
