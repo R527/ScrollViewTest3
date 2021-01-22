@@ -50,8 +50,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
         roomContent = GameObject.FindGameObjectWithTag("content");
-
-
     }
 
     public override void OnConnectedToMaster() {
@@ -119,13 +117,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //部屋のIdを取得
         //room.SetRoomId(roomId);
 
+        Debug.Log("PhotonNetwork.IsConnectedAndReady" + PhotonNetwork.IsConnectedAndReady);
         PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
-
-
+        Debug.Log("PhotonNetwork.IsConnectedAndReady" + PhotonNetwork.IsConnectedAndReady);
     }
 
     /// <summary>
-    /// ただのメソッド　部屋に入室するときに使う
+    /// 部屋に入室するときに使う
     /// </summary>
     /// <param name="roomName"></param>
     public void JoinRoom(string roomName) {
@@ -143,6 +141,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //部屋ができたとき
     public override void OnCreatedRoom() {
         Debug.Log("OnCreatedRoom");
+        Debug.Log("PhotonNetwork.IsConnectedAndReady" + PhotonNetwork.IsConnectedAndReady);
     }
     //部屋を作るのに失敗
     public override void OnCreateRoomFailed(short returnCode, string message) {
@@ -159,8 +158,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         if (!PhotonNetwork.InRoom) {
             return;
         }
-
-
 
         //bool isBanCheck = false;
         ////自分BANIDとすでに入室しているmyUniqueIDを比べて一致したら退出する
@@ -191,15 +188,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);
         //Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);
 
-
         //シーン遷移
         PhotonNetwork.IsMessageQueueRunning = false;
         SceneStateManager.instance.NextScene(SCENE_TYPE.GAME);
 
-
         //プレイヤー作成
         StartCoroutine(FirstCreatePlayerObj());
-
     }
 
     /// <summary>
@@ -289,8 +283,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         banPlayerKickOutOREnteredRoomCoroutine = BanPlayerKickOutOREnteredRoom(newPlayer);
         StartCoroutine(checkEmptyRoomCoroutine);
         StartCoroutine(banPlayerKickOutOREnteredRoomCoroutine);
-
-        
     }
 
     /// <summary>
@@ -304,8 +296,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         if (!gameManager.gameStart && !gameManager.isConfirmation) {
             DeleateOtherPlayer(otherPlayer);
 
-
-
             //人数を減らす
             gameManager.num--;
             var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
@@ -317,9 +307,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
 
         //確認画面中に強制退出させたプレイヤーの処理
-        if (gameManager.gameStart && gameManager.isConfirmation) {
-            DeleateOtherPlayer(otherPlayer);
-        }
+        //if (gameManager.gameStart && gameManager.isConfirmation) {
+        //    DeleateOtherPlayer(otherPlayer);
+        //}
     }
 
 
@@ -386,8 +376,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             }
         }
 
-
-
         //BanPlayerがいる場合ここで処理を停止する
         //満室の場合もここで処理を止める
         if (isBanCheck) {
@@ -402,7 +390,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
 
         StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
-
     }
 
     /// <summary>

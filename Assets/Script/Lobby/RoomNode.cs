@@ -50,7 +50,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// <param name="rollSumNum"></param>
     public void InitRoomNode(RoomInfo roomInfo, List<int> numList,int rollSumNum) {
         //入室処理
-        enterButton.onClick.AddListener(OnClickJoinRoom);
+        //enterButton.onClick.AddListener(OnClickJoinRoom);
         //タイトル設定
         titleText.text = roomInfo.title;
         //ルール設定
@@ -87,6 +87,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         Debug.Log("Activate通過");
         Debug.Log("roomInfo.IsOpen" + roomInfo.IsOpen);
         //入室処理
+        enterButton.onClick.RemoveAllListeners();
         enterButton.onClick.AddListener(OnClickJoinRoom);
         //部屋の設定を表示する
         title = (string)roomInfo.CustomProperties["roomName"];
