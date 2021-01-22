@@ -618,7 +618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isTimeController: 1
-  testMainTime: 15
+  testMainTime: 10
   testNightTime: 10
   testVotingTime: 10
   testExecutionTime: 10
@@ -636,7 +636,7 @@ MonoBehaviour:
   isCheckSuddenDeath: 0
   isVoteCount: 0
   isTestPlay: 1
-  testRollTypeList: 04000000020000000400000000000000
+  testRollTypeList: 00000000020000000400000000000000
   isCurrency: 0
   debugText: {fileID: 0}
 --- !u!1 &4274428794974511839

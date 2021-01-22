@@ -37,6 +37,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool isDisplay;//時間を表示するか否か　trueなら表示
     public bool isNextInterval;
     public bool intervalState;
+
     public bool gameReady;//ゲーム待機状態か否か
     public bool isSpeaking;//喋ったか否かtrueならしゃべった
     public bool setSuddenDeath;
@@ -191,12 +192,20 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
             //マスターだけが0秒もしくは時短成立の確認を取れたら全員に次のシーンへと行くフラグを送信する
             if ((totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) && PhotonNetwork.IsMasterClient) {
+                Debug.Log("次のシーンへ");
+                totalTime = 0;
+                SetGameTime();
+
                 intervalState = true;
+                gameManager.gameMasterChatManager.isTimeSaving = false;
+
                 SetIntervalState();
             }
 
+
             //時短もしくは時間が0秒になったら次のシーンへ以降するフラグを受け取る
-            if(totalTime < 0 || gameManager.gameMasterChatManager.GetIsTimeSaving()) {
+            if (totalTime < 0) {
+                Debug.Log("次のシーンへフラグ受け取り");
                 GetIntervalState();
             }
 
@@ -491,6 +500,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
             SetIntervalState();
         }
         
+        //Debug用　人数が一人の時UpDateの処理に問題があるので1秒待つ
+        if(DebugManager.instance.numLimit == 1) {
+            yield return new WaitForSeconds(1.0f);
+        }
         yield return new WaitUntil(() => !GetIntervalState());
 
         //マスターだけTimeTypeをセットする
@@ -567,13 +580,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeContollerPopUpObj.text.text = "夜の行動。"; 
                 break;
         }
-        //timeContollerPopUpObj.image.color = new Color(255, 255, 255, 0);
         Sequence sequence = DOTween.Sequence();
         sequence.Append(timeContollerPopUpObj.canvasGroup.DOFade(1, 1.0f));
-        //sequence.Join(timeContollerPopUpObj.text.DOFade(1, 1.0f));
         sequence.AppendInterval(1.0f);
         sequence.Append(timeContollerPopUpObj.canvasGroup.DOFade(0, 1.0f))
-        //sequence.Join(timeContollerPopUpObj.text.DOFade(0, 1.0f))
             .OnComplete(() => {
                 Destroy(timeContollerPopUpObj.gameObject);
             });
