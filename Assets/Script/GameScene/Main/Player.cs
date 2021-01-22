@@ -85,6 +85,7 @@ public class Player : MonoBehaviourPunCallbacks {
         //生存者にする
         live = true;
 
+        //Player.cs自身をPlayerListの子供にする
         transform.SetParent(gameManager.playerListContent);
 
         //自分の世界の外枠を青色にするためにboolを用意する
@@ -117,6 +118,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //プレイヤーボタン作成
         if (photonView.IsMine) {
+            
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
         } else if (!photonView.IsMine) {
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
@@ -132,10 +134,10 @@ public class Player : MonoBehaviourPunCallbacks {
     private IEnumerator CreatePlayerButton() {
         yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
-        playerButton.transform.SetParent(buttontran);
+        //playerButton.transform.SetParent(buttontran);
         //Debug.Log("playerName" + playerName);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
-
+        Debug.Log("CreatePlayerButton SetUp");
         //Button作成完了を通知する
         var propertiers = new ExitGames.Client.Photon.Hashtable();
         propertiers.Add("isCreatePlayerButton", true);
@@ -300,6 +302,7 @@ public class Player : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(2.0f);
 
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
+        Debug.Log("SetOtherPlayer SetUp");
 
 
 

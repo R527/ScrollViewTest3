@@ -224,8 +224,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 //最後のプレイヤーがRoomに入った時にfalseにする
                 if (!info.RemovedFromList && info.IsOpen) {
                     roomNode.Activate(info);
-                    activeEntries.Add(info.Name, roomNode);
-
+                    //activeEntries.Add(info.Name, roomNode);
                 } else {
                     Debug.Log("Deactiveオブジェクトを消す");
                     //部屋がなくなった場合
@@ -349,7 +348,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.IsMessageQueueRunning = true;
 
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-
+        Debug.Log("gameManager" + gameManager);
         GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
         Player player = playerObj.GetComponent<Player>();
         gameManager.chatSystem.myPlayer = player;

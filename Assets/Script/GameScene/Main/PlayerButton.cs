@@ -57,6 +57,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     /// <param name="gameManager"></param>
     /// <returns></returns>
     public IEnumerator SetUp(string playerName,int iconNo, int playerID,GameManager gameManager,bool isMine) {
+
         yield return null;
         this.gameManager = gameManager;
         this.playerName = playerName;
@@ -82,7 +83,8 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         }
 
         menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
-        transform.SetParent(menbartran);
+        Debug.Log("menbartran" + menbartran);
+        //transform.SetParent(menbartran);
 
         if (PhotonNetwork.IsMasterClient && gameManager.GetNum() != gameManager.numLimit) {
             gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
