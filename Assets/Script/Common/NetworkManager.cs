@@ -217,7 +217,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 //IsOpenがtureの場合表示する
                 //最後のプレイヤーがRoomに入った時にfalseにする
                 if (!info.RemovedFromList && info.IsOpen) {
+                    Debug.Log("roomNode" + roomNode.roomId);
+                    Debug.Log("activeEntriesCount" + activeEntries.Count);
+                    //roomNode = (activeEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
+
+                    Debug.Log("roomNode" + roomNode);
+                    if(roomNode.gameObject == null) {
+                        roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
+                    }
                     roomNode.Activate(info);
+
+                    //if(activeEntries.Count == 0) {
+                    //    activeEntries.Add(info.Name, roomNode);
+                    //}
                     //activeEntries.Add(info.Name, roomNode);
                 } else {
                     Debug.Log("Deactiveオブジェクトを消す");
@@ -227,7 +239,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                     inactiveEntries.Push(roomNode);
                 }
             }else if (!info.RemovedFromList) {
+
                 roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
+                Debug.Log("roomNode" + roomNode.roomId);
                 Debug.Log("自分のローカル情報として、部屋の情報を作成");
                 roomNode.Activate(info);
 

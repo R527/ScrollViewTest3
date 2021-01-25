@@ -64,8 +64,9 @@ public class InputView : MonoBehaviour {
     /// </summary>
     public void FoldingPosition() {
 
-        //COPopUp
+        //COPopUpが有効でかつ
         if (coPopUpObj.activeSelf && !folding) {
+            Debug.Log("tesut foding");
             coPopUpObj.SetActive(false);
             menberViewPopUpObj.SetActive(true);
 
@@ -73,11 +74,17 @@ public class InputView : MonoBehaviour {
             availabilityButton();
 
             return;
+
+
         } else if (menberViewPopUpObj.activeSelf && !folding) {
+            //InputViewを下げるボタン
+
+            Debug.Log("tesut foding２");
+
             inputRectTransform.DOLocalMoveY(-70, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             filterButton.interactable = true;
-
+            
             //ボタン有効にする
             availabilityButton();
 
@@ -86,6 +93,10 @@ public class InputView : MonoBehaviour {
             foldingImage.sprite = upBtnSprite;
             StartCoroutine(PopUpFalse());
         } else if (folding) {
+
+            //InputViewをあげるボタン
+            Debug.Log("tesut foding３");
+
             menberViewPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
@@ -221,9 +232,8 @@ public class InputView : MonoBehaviour {
         //ボタン有効にする
 
         //プレイ中かつ狼ならtrueにする
-        if(chatListManager.gameManager.timeController.isPlay && chatListManager.gameManager.chatSystem.myPlayer.wolfChat) {
+        if(chatListManager.gameManager.timeController.isPlay && chatListManager.gameManager.chatSystem.myPlayer.wolfChat && chatListManager.gameManager.chatSystem.myPlayer.live) {
             wolfModeButton.interactable = true;
-
         }
         superChatButton.interactable = true;
     }

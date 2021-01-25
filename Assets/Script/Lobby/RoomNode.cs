@@ -116,6 +116,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
         //GameObjectがNullでなければ、
         //かつ自分がBanListに登録されていなければtrueにする
+
         gameObject.SetActive(false);
 
         if (gameObject != null && !CheckBanListToRoomOwner()) {

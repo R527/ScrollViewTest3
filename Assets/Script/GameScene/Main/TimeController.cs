@@ -697,6 +697,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             if (chatSystem.myPlayer.wolfChat) {
                 gameManager.chatListManager.OffWolfMode();
                 inputView.wolfModeButtonText.text = "市民";
+                inputView.wolfBtnImage.color = inputView.btnColor[0];
+
             }
         }
     }
