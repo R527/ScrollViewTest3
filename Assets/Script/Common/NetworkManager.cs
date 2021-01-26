@@ -211,8 +211,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //base.OnRoomListUpdate(roomList);
         Debug.Log("OnRoomListUpdate");
-        roomInfoList = roomList;
+        Debug.Log("roomListCount" + roomList.Count);
 
+        //if(roomInfoList == null) {
+        //    roomInfoList = roomList;
+        //}
+
+        //if(roomInfoList. == roomList) {
+        //    Debug.Log("合致");
+        //} else {
+        //    Debug.Log("不一致");
+        //}
 
         foreach (Photon.Realtime.RoomInfo info in roomList) {
             Debug.Log("info.RemovedFromList" + info.RemovedFromList);
@@ -232,11 +241,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
                     Debug.Log("sceneTypeName" + sceneType);
                     if (sceneType == "GAME") {
+                    //if(roomNode == null) {
                         Debug.Log("roomNodeCreate");
                         roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
+                        
                     }
                     roomNode.Activate(info);
-
                     //if(activeEntries.Count == 0) {
                     //    activeEntries.Add(info.Name, roomNode);
                     //}
