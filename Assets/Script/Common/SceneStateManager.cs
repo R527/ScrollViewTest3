@@ -11,6 +11,7 @@ public class SceneStateManager : MonoBehaviour
 {
 
     public static SceneStateManager instance;
+    public bool isCeack;
 
     private void Awake() {
         if(instance == null) {

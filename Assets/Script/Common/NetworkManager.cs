@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun;
@@ -32,6 +33,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public string banListStr;
     public string roomName;
     List<Photon.Realtime.RoomInfo> roomInfoList;
+    List<Photon.Realtime.RoomInfo> testroomInfoList;
+
+    //Lobby関連
+    public string sceneType;
 
     //Lobby入室完了確認
     public bool isCheckJoinLobby;//Lobbyに入室しているかどうかの確認 falseなら入室していない
@@ -45,6 +50,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             Destroy(gameObject);
         }
     }
+
 
     public void SetUp() {
         PhotonNetwork.ConnectUsingSettings();
@@ -202,9 +208,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="roomList"></param>
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
+
         //base.OnRoomListUpdate(roomList);
         Debug.Log("OnRoomListUpdate");
         roomInfoList = roomList;
+
+
         foreach (Photon.Realtime.RoomInfo info in roomList) {
             Debug.Log("info.RemovedFromList" + info.RemovedFromList);
             Debug.Log("info.IsOpen" + info.IsOpen);
@@ -221,8 +230,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                     Debug.Log("activeEntriesCount" + activeEntries.Count);
                     //roomNode = (activeEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
 
-                    Debug.Log("roomNode" + roomNode);
-                    if(roomNode.gameObject == null) {
+                    Debug.Log("sceneTypeName" + sceneType);
+                    if (sceneType == "GAME") {
+                        Debug.Log("roomNodeCreate");
                         roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
                     }
                     roomNode.Activate(info);
@@ -250,6 +260,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 OnRoomListUpdate(roomList);
             }
         }
+        sceneType = "LOBBY";
     }
 
 
@@ -259,6 +270,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void LeaveRoom() {
         gameManager.timeController.isPlay = false;
+        sceneType = "GAME";
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
             Debug.Log("退出完了");
