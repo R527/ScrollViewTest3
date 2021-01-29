@@ -39,9 +39,9 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     public bool isCheckBanList;//banListのチェックtrueならBanListに登録されている
 
 
-    private void Awake() {
-        DontDestroyOnLoad(gameObject);
-    }
+    //private void Awake() {
+    //    DontDestroyOnLoad(gameObject);
+    //}
     /// <summary>
     /// 部屋を作った人（マスターだけが利用する
     /// </summary>
@@ -83,7 +83,9 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="roomInfo"></param>
     public void Activate(Photon.Realtime.RoomInfo roomInfo) {
-        
+
+        DontDestroyOnLoad(gameObject);
+
         Debug.Log("Activate通過");
         Debug.Log("roomInfo.IsOpen" + roomInfo.IsOpen);
         //入室処理
@@ -251,7 +253,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
     ///部屋が閉じられた時の処理
     public void Deactivate() {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
 
