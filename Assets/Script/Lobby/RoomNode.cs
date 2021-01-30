@@ -84,7 +84,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// <param name="roomInfo"></param>
     public void Activate(Photon.Realtime.RoomInfo roomInfo) {
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         Debug.Log("Activate通過");
         Debug.Log("roomInfo.IsOpen" + roomInfo.IsOpen);

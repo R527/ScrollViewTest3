@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
 using Photon.Realtime;
@@ -162,6 +163,10 @@ public class GameManager : MonoBehaviourPunCallbacks {
         Debug.Log("IsOpne" + PhotonNetwork.CurrentRoom.IsOpen);
 
         isCheckEnteredRoom = true;
+
+        //シーン遷移関連
+        Scene gameScene = SceneManager.GetSceneByName(SCENE_TYPE.GAME.ToString());
+        SceneManager.SetActiveScene(gameScene);
     }
 
     

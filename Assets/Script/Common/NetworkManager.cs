@@ -25,6 +25,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public GameObject roomContent;
     public Dictionary<string, RoomNode> activeEntries = new Dictionary<string, RoomNode>();
     private Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
+    public List<GameObject> roomNodeObjList = new List<GameObject>();
     public bool isBanCheck;
     public EMPTYROOM emtyRoom;
     public IEnumerator checkBanListCoroutine = null;
@@ -50,8 +51,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
     }
 
+    private void Update() {
+        Debug.Log("PhotonNetwork.IsConnectedAndReady" +PhotonNetwork.IsConnectedAndReady);
+    }
+
 
     public void SetUp() {
+        Debug.Log("SetUp");
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
         roomContent = GameObject.FindGameObjectWithTag("content");
@@ -202,7 +208,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     /// <summary>
-    /// 
+    /// 入室に失敗しました
     /// </summary>
     /// <param name="returnCode"></param>
     /// <param name="message"></param>
@@ -242,11 +248,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                     //roomNode = (activeEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
 
                     //Debug.Log("sceneTypeName" + sceneType);
-                    if (sceneType == "GAME") {
-                        //if(roomNode == null) {
-                        Debug.Log("roomNodeCreate");
-                        roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
-                    }
+                    //if (sceneType == "GAME") {
+                    //    //if(roomNode == null) {
+                    //    Debug.Log("roomNodeCreate");
+                    //    roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
+                    //}
                     //else if (sceneType == "LOBBY") {
 
                     //}
@@ -277,11 +283,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 roomNode.Activate(info);
 
                 activeEntries.Add(info.Name, roomNode);
-                RoomNodeList.roomNodeObjList.Add(roomNode.gameObject);
+
+                //
+                //roomNodeObjList.Add(roomNode.gameObject);
+
+
                 Debug.Log("自分のローカル情報としての部屋の数" + activeEntries.Count);
                 OnRoomListUpdate(roomList);
             }
         }
+
+        //
+        //RoomNodeList.instance.roomNodeObjList = new List<GameObject>(roomNodeObjList);
         sceneType = "LOBBY";
     }
 
@@ -318,9 +331,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         Destroy(gameManager.timeController);
         Debug.Log("OnLeftRoom");
         PhotonNetwork.Disconnect();
+
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
+        StartCoroutine(ReSetSetUp());
     }
 
+
+    public IEnumerator ReSetSetUp() {
+        yield return new WaitForSeconds(5.0f);
+        SetUp();
+    }
     /// <summary>
     /// 部屋に新しいプレイヤーが入室した際に呼ばれる
     /// </summary>

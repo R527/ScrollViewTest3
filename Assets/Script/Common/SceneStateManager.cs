@@ -12,6 +12,7 @@ public class SceneStateManager : MonoBehaviour
 
     public static SceneStateManager instance;
     public bool isCeack;
+    //public AsyncOperation lobbyScene;
 
     private void Awake() {
         if(instance == null) {
@@ -27,7 +28,21 @@ public class SceneStateManager : MonoBehaviour
     /// </summary>
     /// <param name="sceneName"></param>
     public void NextScene(SCENE_TYPE sceneName) {
-        SceneManager.LoadScene(sceneName.ToString());
+        Debug.Log("SceneManager.GetActiveScene().name" + SceneManager.GetActiveScene().name);
+        //Debug.Log("SCENE_TYPE.GAME.ToString()" + SCENE_TYPE.GAME.ToString());
+        if (sceneName == SCENE_TYPE.GAME) {
+            //lobbyScene = SceneManager.UnloadSceneAsync(3);
+            Debug.Log("gameシーンを追加");
+            SceneManager.LoadScene(sceneName.ToString(), LoadSceneMode.Additive);
+            
+            //次の呼び出すシーンがLobbyかつ現在のシーンがGameならGameシーンを破棄する
+        } else if(SceneManager.GetActiveScene().name == "Game"){
+            Debug.Log("次の呼び出すシーンがLobbyかつ現在のシーンがGameならGameシーンを破棄する");
+            SceneManager.UnloadSceneAsync(SCENE_TYPE.GAME.ToString());
+        }else {
+            Debug.Log("その他のシーン移動");
+            SceneManager.LoadScene(sceneName.ToString());
+        }
     }
 
 }

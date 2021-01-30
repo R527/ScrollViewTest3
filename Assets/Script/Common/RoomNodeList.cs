@@ -6,7 +6,7 @@ public class RoomNodeList : MonoBehaviour
 {
 
     public static RoomNodeList instance;
-    public static List<GameObject> roomNodeObjList = new List<GameObject>();//Gameシーンから退出時RoomNodeObjが破壊されるのを防ぐため
+    public List<GameObject> roomNodeObjList = new List<GameObject>();//Gameシーンから退出時RoomNodeObjが破壊されるのを防ぐため
     
 
     private void Awake() {
