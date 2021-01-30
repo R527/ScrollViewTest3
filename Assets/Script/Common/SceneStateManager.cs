@@ -12,7 +12,9 @@ public class SceneStateManager : MonoBehaviour
 
     public static SceneStateManager instance;
     public bool isCeack;
-    //public AsyncOperation lobbyScene;
+
+    public  GameObject roomSelectCanvas;
+    public  GameObject roomSettingCanvas;
 
     private void Awake() {
         if(instance == null) {
@@ -23,6 +25,7 @@ public class SceneStateManager : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// シーン名をここでTostringにて変換　大文字小文字を無視して判定できる
     /// </summary>
@@ -31,13 +34,21 @@ public class SceneStateManager : MonoBehaviour
         Debug.Log("SceneManager.GetActiveScene().name" + SceneManager.GetActiveScene().name);
         //Debug.Log("SCENE_TYPE.GAME.ToString()" + SCENE_TYPE.GAME.ToString());
         if (sceneName == SCENE_TYPE.GAME) {
-            //lobbyScene = SceneManager.UnloadSceneAsync(3);
             Debug.Log("gameシーンを追加");
+            //Lobbyシーンを見えなくする処理
+            GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSelectCanvas.SetActive(false);
+            GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSettingCanvas.SetActive(false);
+
             SceneManager.LoadScene(sceneName.ToString(), LoadSceneMode.Additive);
             
             //次の呼び出すシーンがLobbyかつ現在のシーンがGameならGameシーンを破棄する
         } else if(SceneManager.GetActiveScene().name == "Game"){
             Debug.Log("次の呼び出すシーンがLobbyかつ現在のシーンがGameならGameシーンを破棄する");
+
+            //Lobbyシーンを見えるようにする処理
+            GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSelectCanvas.SetActive(true);
+            GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSettingCanvas.SetActive(false);
+
             SceneManager.UnloadSceneAsync(SCENE_TYPE.GAME.ToString());
         }else {
             Debug.Log("その他のシーン移動");

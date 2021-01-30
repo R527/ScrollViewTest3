@@ -128,9 +128,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //部屋のIdを取得
         //room.SetRoomId(roomId);
 
-        Debug.Log("PhotonNetwork.IsConnectedAndReady" + PhotonNetwork.IsConnectedAndReady);
         PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
-        Debug.Log("PhotonNetwork.IsConnectedAndReady" + PhotonNetwork.IsConnectedAndReady);
     }
 
     /// <summary>

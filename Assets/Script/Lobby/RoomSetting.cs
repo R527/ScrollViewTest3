@@ -109,7 +109,6 @@ public class RoomSetting : MonoBehaviour
     /// </summary>
     public void CreateRoomNode() {
 
-        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
         //タイトルも字数制限を監視
         if (titleText.text.Length >= 13) {
@@ -130,6 +129,7 @@ public class RoomSetting : MonoBehaviour
             }
         }
         title = titleText.text;
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
         //titleText.text = "";
 
@@ -426,7 +426,7 @@ public class RoomSetting : MonoBehaviour
     public void BackButton() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
 
-        roomSettingCanvas.SetActive(false);
+        roomSettingCanvas.GetComponent<CanvasGroup>().alpha = 0;
         rollSettingCanvas.SetActive(true);
 
     }

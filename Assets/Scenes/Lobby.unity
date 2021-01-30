@@ -1041,8 +1041,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 26.478262, y: -7.502174}
-  m_SizeDelta: {x: 52.956524, y: 15.004348}
+  m_AnchoredPosition: {x: 27.309416, y: -7.737668}
+  m_SizeDelta: {x: 54.61883, y: 15.475336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &197140834
 MonoBehaviour:
@@ -1120,8 +1120,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 66.195656, y: -7.502174}
-  m_SizeDelta: {x: 26.478262, y: 15.004348}
+  m_AnchoredPosition: {x: 68.27354, y: -7.737668}
+  m_SizeDelta: {x: 27.309416, y: 15.475336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &205469607
 MonoBehaviour:
@@ -1399,6 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5806f89df1884764c8370fc3f451d435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomNodeObjList: []
 --- !u!4 &255845875
 Transform:
   m_ObjectHideFlags: 0
@@ -1666,7 +1667,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 101.5, y: -15}
-  m_SizeDelta: {x: 123.00001, y: 30}
+  m_SizeDelta: {x: 123, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &292617452
 MonoBehaviour:
@@ -2889,6 +2890,7 @@ GameObject:
   - component: {fileID: 371853318}
   - component: {fileID: 371853317}
   - component: {fileID: 371853316}
+  - component: {fileID: 371853321}
   m_Layer: 5
   m_Name: RoomSettingCanvas
   m_TagString: Untagged
@@ -3004,6 +3006,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &371853321
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371853315}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &392417190
 GameObject:
   m_ObjectHideFlags: 0
@@ -3039,8 +3053,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 26.478262, y: -13.813287}
-  m_SizeDelta: {x: 52.956524, y: 15.004348}
+  m_AnchoredPosition: {x: 27.309416, y: -14.040547}
+  m_SizeDelta: {x: 54.61883, y: 15.475336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &392417192
 MonoBehaviour:
@@ -4858,8 +4872,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 127.97827, y: -13.813287}
-  m_SizeDelta: {x: 150.04349, y: 27.626574}
+  m_AnchoredPosition: {x: 128.80942, y: -14.040547}
+  m_SizeDelta: {x: 148.38116, y: 28.081095}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &675581620
 MonoBehaviour:
@@ -5252,8 +5266,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 26.478262, y: -7.502174}
-  m_SizeDelta: {x: 52.956524, y: 15.004348}
+  m_AnchoredPosition: {x: 27.309416, y: -7.737668}
+  m_SizeDelta: {x: 54.61883, y: 15.475336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &710359864
 MonoBehaviour:
@@ -5651,8 +5665,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.50001, y: -185.40439}
-  m_SizeDelta: {x: 203.00002, y: 315.55563}
+  m_AnchoredPosition: {x: 101.5, y: -185.65309}
+  m_SizeDelta: {x: 203, y: 315.14398}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &749385070
 MonoBehaviour:
@@ -7743,8 +7757,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.50001, y: -389.5911}
-  m_SizeDelta: {x: 203.00002, y: 32.817787}
+  m_AnchoredPosition: {x: 101.5, y: -389.61255}
+  m_SizeDelta: {x: 203, y: 32.774975}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &943010949
 MonoBehaviour:
@@ -10232,8 +10246,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -7.502174}
-  m_SizeDelta: {x: 0, y: 15.004348}
+  m_AnchoredPosition: {x: 0, y: -7.737668}
+  m_SizeDelta: {x: 0, y: 15.475336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1241275034
 MonoBehaviour:
@@ -11212,8 +11226,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.50001, y: -201.5911}
-  m_SizeDelta: {x: 203.00002, y: 343.1822}
+  m_AnchoredPosition: {x: 101.5, y: -201.61253}
+  m_SizeDelta: {x: 203, y: 343.22507}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1315222229
 MonoBehaviour:
@@ -12561,6 +12575,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCeack: 0
+  roomSelectCanvas: {fileID: 0}
+  roomSettingCanvas: {fileID: 0}
 --- !u!4 &1426863083
 Transform:
   m_ObjectHideFlags: 0
@@ -12726,8 +12742,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.50001, y: -13.813287}
-  m_SizeDelta: {x: 203.00002, y: 27.626574}
+  m_AnchoredPosition: {x: 101.5, y: -14.040547}
+  m_SizeDelta: {x: 203, y: 28.081095}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1465388384
 MonoBehaviour:
@@ -13306,6 +13322,7 @@ GameObject:
   - component: {fileID: 1536450141}
   - component: {fileID: 1536450140}
   - component: {fileID: 1536450139}
+  - component: {fileID: 1536450144}
   m_Layer: 5
   m_Name: RollSettingCanvas
   m_TagString: Untagged
@@ -13421,6 +13438,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &1536450144
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536450138}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1540467025
 GameObject:
   m_ObjectHideFlags: 0
@@ -13596,8 +13625,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 66.195656, y: -7.502174}
-  m_SizeDelta: {x: 26.478262, y: 15.004348}
+  m_AnchoredPosition: {x: 68.27354, y: -7.737668}
+  m_SizeDelta: {x: 27.309416, y: 15.475336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1541119762
 MonoBehaviour:
@@ -17586,8 +17615,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 101.50001, y: -15}
-  m_SizeDelta: {x: 203.00002, y: 30}
+  m_AnchoredPosition: {x: 101.5, y: -15}
+  m_SizeDelta: {x: 203, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1936037628
 MonoBehaviour:
@@ -20490,6 +20519,7 @@ GameObject:
   - component: {fileID: 3556330741947033358}
   - component: {fileID: 3556330741947033359}
   - component: {fileID: 3556330741947033352}
+  - component: {fileID: 3556330741947033354}
   m_Layer: 5
   m_Name: RoomSelectCanvas
   m_TagString: Untagged
@@ -20497,6 +20527,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!225 &3556330741947033354
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3556330741947033353}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &3556330741947033356
 RectTransform:
   m_ObjectHideFlags: 0
