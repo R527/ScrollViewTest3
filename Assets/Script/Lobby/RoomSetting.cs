@@ -140,7 +140,7 @@ public class RoomSetting : MonoBehaviour
             openVoting = DebugManager.instance.openVoting;
             fortuneType = DebugManager.instance.fortuneType;
         }
-        RoomInfo roomInfo = new RoomInfo(openVoting, title, fortuneType, mainTime, nightTime, roomSelection, suddenDeath_Type);
+        room_information roomInfo = new room_information(openVoting, title, fortuneType, mainTime, nightTime, roomSelection, suddenDeath_Type);
         room.InitRoomNode(roomInfo, rollSetting.NumList,rollSetting.numLimit);
 
 
@@ -434,7 +434,7 @@ public class RoomSetting : MonoBehaviour
 }
 
 [System.Serializable]
-public class RoomInfo {
+public class room_information {
     public VOTING openVoting;
     public string title;
     public FORTUNETYPE fortuneType;
@@ -443,7 +443,7 @@ public class RoomInfo {
     public ROOMSELECTION roomSelection;
     public SUDDENDEATH_TYPE suddenDeath_Type;
 
-    public RoomInfo(VOTING openVoting, string title, FORTUNETYPE fortuneType,int mainTime,int nightTime, ROOMSELECTION roomSelection, SUDDENDEATH_TYPE suddenDeath_Type) {
+    public room_information(VOTING openVoting, string title, FORTUNETYPE fortuneType,int mainTime,int nightTime, ROOMSELECTION roomSelection, SUDDENDEATH_TYPE suddenDeath_Type) {
         this.openVoting = openVoting;
         this.title = title;
         this.fortuneType = fortuneType;

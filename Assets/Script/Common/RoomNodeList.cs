@@ -22,8 +22,8 @@ public class RoomNodeList : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("roomNodeObjListCount" + roomNodeObjList.Count);//Countは1を取り続ける
-        Debug.Log("roomNodeID" + roomNodeObjList[0].GetComponent<RoomNode>().roomId);//シーンを切り替えるとＮｕｌｌになる
+        //Debug.Log("roomNodeObjListCount" + roomNodeObjList.Count);//Countは1を取り続ける
+        //Debug.Log("roomNodeID" + roomNodeObjList[0].GetComponent<RoomNode>().roomId);//シーンを切り替えるとＮｕｌｌになる
 
     }
 }

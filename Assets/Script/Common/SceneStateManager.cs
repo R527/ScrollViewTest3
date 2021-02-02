@@ -45,11 +45,12 @@ public class SceneStateManager : MonoBehaviour
         } else if(SceneManager.GetActiveScene().name == "Game"){
             Debug.Log("次の呼び出すシーンがLobbyかつ現在のシーンがGameならGameシーンを破棄する");
 
+            SceneManager.UnloadSceneAsync(SCENE_TYPE.GAME.ToString());
+
             //Lobbyシーンを見えるようにする処理
             GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSelectCanvas.SetActive(true);
             GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSettingCanvas.SetActive(false);
 
-            SceneManager.UnloadSceneAsync(SCENE_TYPE.GAME.ToString());
         }else {
             Debug.Log("その他のシーン移動");
             SceneManager.LoadScene(sceneName.ToString());

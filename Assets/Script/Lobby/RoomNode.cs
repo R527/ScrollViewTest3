@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using Photon.Pun;
+using Photon.Realtime;
 using System.Linq;
 
 
@@ -48,11 +49,12 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// <param name="roomInfo"></param>
     /// <param name="numList"></param>
     /// <param name="rollSumNum"></param>
-    public void InitRoomNode(RoomInfo roomInfo, List<int> numList,int rollSumNum) {
+    public void InitRoomNode(room_information roomInfo, List<int> numList,int rollSumNum) {
         //入室処理
         //enterButton.onClick.AddListener(OnClickJoinRoom);
         //タイトル設定
         titleText.text = roomInfo.title;
+        
         //ルール設定
         //TODO テキストの最後に突然死関連を入れると部屋が表示されない
         ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting + "\r\n凸数：" + suddenDeath_Type.ToString().Trim('_');
@@ -84,7 +86,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// <param name="roomInfo"></param>
     public void Activate(Photon.Realtime.RoomInfo roomInfo) {
 
-        //DontDestroyOnLoad(gameObject);
+        
+
 
         Debug.Log("Activate通過");
         Debug.Log("roomInfo.IsOpen" + roomInfo.IsOpen);
@@ -96,8 +99,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         settingNum = (int)roomInfo.MaxPlayers;
         titleText.text = title;
         enterButtonText.text = roomInfo.PlayerCount + "/" + settingNum + "入室";
-
-
+        roomInfo.CustomProperties["playerCount"] = roomInfo.PlayerCount;
+        Debug.Log("roomInfo.CustomProperties[playerCount]" + (int)roomInfo.CustomProperties["playerCount"]);
         //banListStrを解凍する
         string banListStr = (string)roomInfo.CustomProperties["banListStr"];
         Debug.Log(banListStr);
@@ -282,6 +285,23 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
         //banListのチェックを入れる、はじく場合はPopUpを出して
         NetworkManager.instance.JoinRoom(roomId);
+
+        //Roomを削除する際にエラーが発生するのでそれを回避するためのroomInfoとObjを登録する
+        foreach (RoomInfo roomInfo in NetworkManager.instance.roomInfoList) {
+            Debug.Log("(string)roomInfo.CustomProperties[roomId]" + (string)roomInfo.CustomProperties["roomId"]);
+            if(roomId == (string)roomInfo.CustomProperties["roomId"]) {
+                Debug.Log("roomInfoSet完了");
+                NetworkManager.instance.joinedRoom = roomInfo;
+            }
+        }
+        foreach(RoomNode roomObj in NetworkManager.instance.roomNodeObjList) {
+            Debug.Log("roomId" + roomId);
+            Debug.Log("roomObj.roomId" + roomObj.roomId);
+            if (roomId == roomObj.roomId) {
+                Debug.Log("roomObj.gameObject完了");
+                NetworkManager.instance.joinedRoomObj = roomObj.gameObject;
+            }
+        }
         Debug.Log(roomId);
     }
 

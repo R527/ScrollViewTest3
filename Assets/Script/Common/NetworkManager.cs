@@ -24,8 +24,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public RoomNode roomNodePrefab;
     public GameObject roomContent;
     public Dictionary<string, RoomNode> activeEntries = new Dictionary<string, RoomNode>();
-    private Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
-    public List<GameObject> roomNodeObjList = new List<GameObject>();
+    public Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
+    public List<RoomNode> roomNodeObjList = new List<RoomNode>();
     public bool isBanCheck;
     public EMPTYROOM emtyRoom;
     public IEnumerator checkBanListCoroutine = null;
@@ -33,7 +33,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public IEnumerator checkEmptyRoomCoroutine = null;
     public string banListStr;
     public string roomName;
-    List<Photon.Realtime.RoomInfo> roomInfoList;
+    public Photon.Realtime.RoomInfo joinedRoom;
+    public GameObject joinedRoomObj;
+    public List<Photon.Realtime.RoomInfo> roomInfoList;
+    public bool isRoomMaster;//trueなら部屋を作成した人
 
     //Lobby関連
     public string sceneType;
@@ -97,7 +100,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //ルームオプションにカスタムプロパティを設定
         ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
             //ルームネームの情報を部屋に与える
-            { "roomId", roomId},
+            {"roomId", roomId},
             {"roomName",  room.title},
             {"mainTime", room.mainTime },
             { "nightTime", room.nightTime },
@@ -107,6 +110,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"banListStr", banListStr},
             {"roomSelect", room.roomSelection },
             {"numLimit", maxPlayer},
+            {"playerCount", 1},
             {"suddenDeath_Type", room.suddenDeath_Type}
         };
         Debug.Log("room.suddenDeath_Type" + room.suddenDeath_Type);
@@ -129,6 +133,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //room.SetRoomId(roomId);
 
         PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
+        isRoomMaster = true;
+        Destroy(room.gameObject);
     }
 
     /// <summary>
@@ -241,27 +247,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 //IsOpenがtureの場合表示する
                 //最後のプレイヤーがRoomに入った時にfalseにする
                 if (!info.RemovedFromList && info.IsOpen) {
+                    Debug.Log("部屋情報更新");
                     Debug.Log("roomNode" + roomNode.roomId);
                     Debug.Log("activeEntriesCount" + activeEntries.Count);
-                    //roomNode = (activeEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
-
-                    //Debug.Log("sceneTypeName" + sceneType);
-                    //if (sceneType == "GAME") {
-                    //    //if(roomNode == null) {
-                    //    Debug.Log("roomNodeCreate");
-                    //    roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
-                    //}
-                    //else if (sceneType == "LOBBY") {
-
-                    //}
                     roomNode.Activate(info);
-
-
-
-                    //if(activeEntries.Count == 0) {
-                    //    activeEntries.Add(info.Name, roomNode);
-                    //}
-                    //activeEntries.Add(info.Name, roomNode);
                 } else {
                     Debug.Log("Deactiveオブジェクトを消す");
                     Debug.Log("roomNodeID" + roomNode.roomId);
@@ -279,12 +268,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 Debug.Log("roomNode" + roomNode.roomId);
                 Debug.Log("自分のローカル情報として、部屋の情報を作成");
                 roomNode.Activate(info);
-
+                roomNodeObjList.Add(roomNode);
                 activeEntries.Add(info.Name, roomNode);
-
-                //
-                //roomNodeObjList.Add(roomNode.gameObject);
-
 
                 Debug.Log("自分のローカル情報としての部屋の数" + activeEntries.Count);
                 OnRoomListUpdate(roomList);
@@ -304,9 +289,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void LeaveRoom() {
         gameManager.timeController.isPlay = false;
         sceneType = "GAME";
+
+
+        //部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
+        if (!isRoomMaster) {
+            if (joinedRoom.CustomProperties.TryGetValue("playerCount", out object joinedRoomPlayerCountObj)) {
+                Debug.Log("joinedRoomPlayerCountObj" + (int)joinedRoomPlayerCountObj);
+                if ((int)joinedRoomPlayerCountObj == 1) {
+                    Destroy(joinedRoomObj);
+                    joinedRoom = null;
+                }
+            }
+        }
+        
         if (PhotonNetwork.InRoom) {
-            PhotonNetwork.LeaveRoom();
             Debug.Log("退出完了");
+            PhotonNetwork.LeaveRoom();
         }
     }
 

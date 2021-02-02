@@ -10,7 +10,7 @@ public class RoomData : MonoBehaviour
 {
     public static RoomData instance;
 
-    public RoomInfo roomInfo;
+    public room_information roomInfo;
     public List<int> rollList = new List<int>();
     public int numLimit;
    
