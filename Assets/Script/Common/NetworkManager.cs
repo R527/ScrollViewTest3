@@ -339,9 +339,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     public IEnumerator ReSetSetUp() {
-        //yield return new WaitForSeconds(5.0f);
         yield return new WaitUntil(() => PhotonNetwork.NetworkingClient.DisconnectedCause == DisconnectCause.DisconnectByClientLogic);
-
         SetUp();
     }
     /// <summary>
@@ -403,8 +401,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// ロールなど詳細な情報は後程追加する
     /// </summary>
     public IEnumerator FirstCreatePlayerObj() {
-        yield return new WaitForSeconds(1.0f);
+
+        //yield return new WaitForSeconds(1.0f);
+        //yield return new WaitUntil(() => !PhotonNetwork.IsMessageQueueRunning);
+        yield return null;
         PhotonNetwork.IsMessageQueueRunning = true;
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "Game");
 
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         Debug.Log("gameManager" + gameManager);

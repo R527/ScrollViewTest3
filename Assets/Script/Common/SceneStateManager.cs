@@ -33,11 +33,12 @@ public class SceneStateManager : MonoBehaviour
     public void NextScene(SCENE_TYPE sceneName) {
         Debug.Log("SceneManager.GetActiveScene().name" + SceneManager.GetActiveScene().name);
         //Debug.Log("SCENE_TYPE.GAME.ToString()" + SCENE_TYPE.GAME.ToString());
+
         if (sceneName == SCENE_TYPE.GAME) {
             Debug.Log("gameシーンを追加");
             //Lobbyシーンを見えなくする処理
-            RollSetting roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>();
 
+            RollSetting roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>();
             roomSetting.roomSelectCanvas.SetActive(false);
             roomSetting.roomSettingCanvas.SetActive(false);
             NetworkManager.instance.roomSetting.GetComponent<RoomSetting>().createRoomButton.interactable = false;

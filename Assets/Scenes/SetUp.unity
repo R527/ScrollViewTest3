@@ -503,6 +503,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8167c57330bd44a350feba9dc513f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isCeack: 0
+  roomSelectCanvas: {fileID: 0}
+  roomSettingCanvas: {fileID: 0}
 --- !u!4 &1688638719249178110
 Transform:
   m_ObjectHideFlags: 0
@@ -626,7 +629,7 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 3
+  numLimit: 2
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1

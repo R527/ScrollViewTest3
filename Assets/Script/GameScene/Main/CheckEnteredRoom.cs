@@ -80,7 +80,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         }
 
         if (PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"] == null) {
-            //Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]);
+            Debug.Log("Playerが作成されていないです。PhotonNetwork.LocalPlayer.CustomProperties[isBanPlayer" + PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]);
             return;
         }
 

@@ -133,12 +133,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
         // 本当の姿を表示する
         gameMasterChatManager.TrueCharacter();
 
-        yield return new WaitForSeconds(2.0f);
-
-        //playState = GetPlayState();
-
         //ゲームスタート
-        gameReady = GetGameReady();
+        yield return new WaitUntil(() => GetGameReady());
+        //gameReady = GetGameReady();
     }
 
 

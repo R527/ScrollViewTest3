@@ -66,9 +66,6 @@ public class Player : MonoBehaviourPunCallbacks {
         buttontran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
         chatTran = GameObject.FindGameObjectWithTag("ChatContent").transform;
 
-
-
-
         //BanListをカスタムプロパティにセットする
         var propertiers = new ExitGames.Client.Photon.Hashtable();
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
@@ -79,8 +76,6 @@ public class Player : MonoBehaviourPunCallbacks {
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
             //Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
         }
-
-
 
         //生存者にする
         live = true;
@@ -132,16 +127,17 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     [PunRPC]
     private IEnumerator CreatePlayerButton() {
-        yield return new WaitForSeconds(2.0f);
+        yield return null;
+        //yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         //playerButton.transform.SetParent(buttontran);
         //Debug.Log("playerName" + playerName);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
         Debug.Log("CreatePlayerButton SetUp");
         //Button作成完了を通知する
-        var propertiers = new ExitGames.Client.Photon.Hashtable();
-        propertiers.Add("isCreatePlayerButton", true);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+        //var propertiers = new ExitGames.Client.Photon.Hashtable();
+        //propertiers.Add("isCreatePlayerButton", true);
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
     }
 
 
@@ -273,10 +269,9 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <returns></returns>
 
     private IEnumerator SetOtherPlayer() {
+
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
-                //Debug.Log(player.ActorNumber);
-                //Debug.Log(player.NickName);
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
 
@@ -289,22 +284,19 @@ public class Player : MonoBehaviourPunCallbacks {
 
 
         //自分のボタンが作られるまで待つ
-        bool isCreatePlayerButton = false;
-        while (!isCreatePlayerButton || playerButton == null) {
-            if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCreatePlayerButton", out object isCreatePlayerButtonObj)) {
-                isCreatePlayerButton = (bool)isCreatePlayerButtonObj;
-                yield return null;
-            } else {
-                yield return null;
-            }
-        }
+        //bool isCreatePlayerButton = false;
 
-        yield return new WaitForSeconds(2.0f);
-
+        //while (!isCreatePlayerButton || playerButton == null) {
+        //    if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCreatePlayerButton", out object isCreatePlayerButtonObj)) {
+        //        isCreatePlayerButton = (bool)isCreatePlayerButtonObj;
+        //        yield return null;
+        //    } else {
+        //        yield return null;
+        //    }
+        //}
+        yield return null;
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
         Debug.Log("SetOtherPlayer SetUp");
-
-
 
         //参加人数が揃っていたらtrueにしない
         if (gameManager.GetNum() != gameManager.numLimit) {
@@ -394,14 +386,14 @@ public class Player : MonoBehaviourPunCallbacks {
         }
     }
 
-    private IEnumerator SetCoroutine() {
-        yield return WaitCreatePlayerButton();
-    }
+    //private IEnumerator SetCoroutine() {
+    //    yield return WaitCreatePlayerButton();
+    //}
 
-    private IEnumerator WaitCreatePlayerButton() {
-        yield return new WaitForSeconds(2.0f);
+    //private IEnumerator WaitCreatePlayerButton() {
+    //    yield return new WaitForSeconds(2.0f);
         
-    }
+    //}
     /// <summary>
     /// マスタークライアント以外のプレイヤーボタンの生成を入室許可するまで止める
     /// </summary>
