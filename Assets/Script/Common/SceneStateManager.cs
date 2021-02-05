@@ -36,8 +36,11 @@ public class SceneStateManager : MonoBehaviour
         if (sceneName == SCENE_TYPE.GAME) {
             Debug.Log("gameシーンを追加");
             //Lobbyシーンを見えなくする処理
-            GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSelectCanvas.SetActive(false);
-            GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSettingCanvas.SetActive(false);
+            RollSetting roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>();
+
+            roomSetting.roomSelectCanvas.SetActive(false);
+            roomSetting.roomSettingCanvas.SetActive(false);
+            NetworkManager.instance.roomSetting.GetComponent<RoomSetting>().createRoomButton.interactable = false;
 
             SceneManager.LoadScene(sceneName.ToString(), LoadSceneMode.Additive);
             

@@ -70,7 +70,7 @@ public class Search : MonoBehaviour {
 
         //button
         initSearchButton.onClick.AddListener(InitSearch);
-        upDateButton.onClick.AddListener(UpDateButton);
+        //upDateButton.onClick.AddListener(UpDateButton);
         searchPopUPButton.onClick.AddListener(SearchPopUP);
         selectionButtonLeftButton.onClick.AddListener(SelectionButtonLeft);
         selectionButtonRightButton.onClick.AddListener(SelectionButtonRight);

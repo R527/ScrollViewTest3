@@ -333,8 +333,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
 
+    /// <summary>
+    /// 退出時に一度ネットワークを閉じてからつなぐ処理をする
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator ReSetSetUp() {
-        yield return new WaitForSeconds(5.0f);
+        //yield return new WaitForSeconds(5.0f);
+        yield return new WaitUntil(() => PhotonNetwork.NetworkingClient.DisconnectedCause == DisconnectCause.DisconnectByClientLogic);
+
         SetUp();
     }
     /// <summary>
