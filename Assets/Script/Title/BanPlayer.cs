@@ -26,8 +26,6 @@ public class BanPlayer : MonoBehaviour
         PlayerManager.instance.banUserNickNameList.Remove(userNickNameText.text);
         PlayerManager.instance.banUniqueIDList.Remove(banUniqueID);
 
-        
-
         //Keyの削除
         for (int i = 0; i < PlayerManager.instance.banListMaxIndex; i++) {
             PlayerPrefs.DeleteKey(PlayerManager.ID_TYPE.banUniqueID.ToString() + i.ToString());
@@ -35,13 +33,10 @@ public class BanPlayer : MonoBehaviour
         }
         //PlayerPrefsの情報書き換え
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
-            
             PlayerManager.instance.banIndex = i;
             PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.banUniqueIDList[i], PlayerManager.ID_TYPE.banUniqueID);
             PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.banUserNickNameList[i], PlayerManager.ID_TYPE.banUserNickName);
-
         }
-
 
         PlayerManager.instance.banListIndex = PlayerManager.instance.banUniqueIDList.Count;
         PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.banUniqueIDList.Count, PlayerManager.ID_TYPE.banListMaxIndex);

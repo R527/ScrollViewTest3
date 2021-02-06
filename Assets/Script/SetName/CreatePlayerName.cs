@@ -12,7 +12,6 @@ public class CreatePlayerName : MonoBehaviour
     public InputField inputFieldName;//画面で登録した名前
     public CheckTabooWard checkTabooWard;
     public NGList nGList;
-    public bool checkName;
     public SetNameWrongPopUP wrongPopUp;
     public Transform trn;
 
@@ -21,7 +20,6 @@ public class CreatePlayerName : MonoBehaviour
     public Button rulesBtn;
     public Button agreeBtn;
     private const string URL = "https://sun471044.wixsite.com/mysite";
-
 
     private void Start() {
         createNameButton.onClick.AddListener(OnClickSubmit);
@@ -36,21 +34,19 @@ public class CreatePlayerName : MonoBehaviour
         //禁止用語のチェック
         inputFieldName.text = checkTabooWard.StrMatch(inputFieldName.text, nGList.ngWordList);
         if (inputFieldName.text.Contains("*")) {
-            Debug.Log("禁止Word含まれてます");
             SetNameWrongPopUP obj = Instantiate(wrongPopUp, trn, false);
             obj.wrongText.text = "禁止ワードが含まれています。";
             inputFieldName.text = string.Empty;
             return;
         }
+
         //文字数制限のチェック
         if (inputFieldName.text.Trim().Length >= 3 && inputFieldName.text.Trim().Length <= 10) {
             //名前を登録する
             PlayerManager.instance.playerName = inputFieldName.text;
-            
             PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.playerName, PlayerManager.ID_TYPE.playerName);
             SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
         } else {
-            Debug.Log("文字数制限にかかっています。");
             SetNameWrongPopUP obj = Instantiate(wrongPopUp, trn, false);
             obj.wrongText.text = "文字数制限があります。\n\r 3～10文字に収めてください。";
             inputFieldName.text = string.Empty;
@@ -63,7 +59,6 @@ public class CreatePlayerName : MonoBehaviour
     public void CheckRules() {
         Destroy(rulesObj);
     }
-
 
     /// <summary>
     /// 利用規約が書かれているサイトに飛ぶ

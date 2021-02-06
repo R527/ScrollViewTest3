@@ -6,7 +6,4 @@ using UnityEngine.UI;
 public class SetNameWrongPopUP : BasePopUP
 {
     public Text wrongText;
-
-
-
 }

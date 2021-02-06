@@ -29,13 +29,11 @@ public class PlayerInfoButton : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// ゲーム内通貨のテキスト更新
     /// </summary>
     public void UpdateCurrencyText() {
         currencyText.text = PlayerManager.instance.currency.ToString();
-
     }
 
     /// <summary>

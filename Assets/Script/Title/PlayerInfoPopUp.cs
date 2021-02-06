@@ -10,39 +10,38 @@ using System.Linq;
 /// </summary>
 public class PlayerInfoPopUp : MonoBehaviour
 {
-    public GameObject playerInfoPopUpObj;
     public Button maskButton;
     public Button backButton;
 
     //Text
+    public Text totalNumberOfSuddenDeathText;
+
     public Text totalNumberOfMatchesText;
     public Text totalNumberOfWinsText;
     public Text totalNumberOfLosesText;
     public Text totalNumberOfwinRateText;
-    public Text totalNumberOfSuddenDeathText;
 
     public Text begginerOfMatchesText;
     public Text begginerOfWinsText;
-    public Text begginerOfwinRateText;
     public Text begginerOfLosesText;
+    public Text begginerOfwinRateText;
 
     public Text generalOfMatchesText;
     public Text generalOfWinsText;
-    public Text generalOfwinRateText;
     public Text generalOfLosesText;
-
+    public Text generalOfwinRateText;
 
     //GameLog
     public GameLogNode gameLogPrefab;
     public Transform logTran;
-    public GameObject mainCanvas;
-    public GameObject underBarCanvas;
 
     public List<int> rollNumList = new List<int>();
 
     private void Start() {
         backButton.onClick.AddListener(ClosePopUp);
         maskButton.onClick.AddListener(ClosePopUp);
+
+        //総合成績
         totalNumberOfMatchesText.text = PlayerManager.instance.totalNumberOfMatches + "回";
         totalNumberOfWinsText.text = PlayerManager.instance.totalNumberOfWins + "回";
         totalNumberOfLosesText.text = PlayerManager.instance.totalNumberOfLoses + "回";
@@ -55,15 +54,18 @@ public class PlayerInfoPopUp : MonoBehaviour
 
         totalNumberOfSuddenDeathText.text = PlayerManager.instance.totalNumberOfSuddenDeath + "回";
 
+        //初心者成績
         begginerOfMatchesText.text = PlayerManager.instance.beginnerTotalNumberOfMatches + "回";
         begginerOfWinsText.text = PlayerManager.instance.beginnerTotalNumberOfWins + "回";
         begginerOfLosesText.text = PlayerManager.instance.beginnerTotalNumberOfLoses + "回";
+
         if(PlayerManager.instance.beginnerTotalNumberOfMatches == 0) {
             begginerOfwinRateText.text = "0%";
         } else {
             begginerOfwinRateText.text = 100 * (PlayerManager.instance.beginnerTotalNumberOfWins / PlayerManager.instance.beginnerTotalNumberOfMatches) + "%";
         }
 
+        //一般成績
         generalOfMatchesText.text = PlayerManager.instance.generalTotalNumberOfMatches + "回";
         generalOfWinsText.text = PlayerManager.instance.generalTotalNumberOfWins + "回";
         generalOfLosesText.text = PlayerManager.instance.generalTotalNumberOfLoses + "回";
@@ -76,7 +78,9 @@ public class PlayerInfoPopUp : MonoBehaviour
         CreateGameLog();
     }
 
-
+    /// <summary>
+    /// PoｐUpを閉じる
+    /// </summary>
     public void ClosePopUp() {
         gameObject.SetActive(false);
     }
@@ -85,16 +89,12 @@ public class PlayerInfoPopUp : MonoBehaviour
     /// ゲームデータの数だけインスタンスします。
     /// </summary>
     public void CreateGameLog() {
-
         //チャットログがない場合
         //生成しない
         if(PlayerManager.instance.getChatLogList.Count <= 0) {
             Debug.Log("CreateGameLog Return");
             return;
         }
-
-        
-        
 
         //ちゃっとログがある分部屋を生成する
         for(int i = 0; i < PlayerManager.instance.getChatLogList.Count; i++) {
@@ -140,6 +140,4 @@ public class PlayerInfoPopUp : MonoBehaviour
             }
         }
     }
-
-    
 }

@@ -9,7 +9,6 @@ using UnityEngine.UI;
 /// </summary>
 public class Title : MonoBehaviour
 {
-
     public Button gameStartButton;
     public Button menuButton;
     public Button begginerButton;
@@ -19,9 +18,6 @@ public class Title : MonoBehaviour
     public BanPlayer banPlayerPrefab;
     public Transform banListTran;
     public Button playerInfoButton;
-
-    public GameObject mainCanvas;
-    public GameObject underBarCanvas;
 
     public Text debugText;
 
@@ -39,13 +35,15 @@ public class Title : MonoBehaviour
         menuButton.onClick.AddListener(MenuPopUp);
         playerInfoButton.onClick.AddListener(PlayerInfoPopUP);
 
-
         CreateBanList();
     }
+
+    /// <summary>
+    /// Player情報のPopUpの表示
+    /// </summary>
     public void PlayerInfoPopUP() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         playerInfoPopUp.SetActive(true);
-
     }
     /// <summary>
     /// メニューPopUpをインスタンスする
@@ -61,7 +59,6 @@ public class Title : MonoBehaviour
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         Instantiate(begginerGuidePopUp);
     }
-
 
     /// <summary>
     /// 起動時にBanListを作成する
@@ -80,10 +77,10 @@ public class Title : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// GameStartボタン
+    /// </summary>
     public void StartGameButton() {
         SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
     }
-
-
-
 }
