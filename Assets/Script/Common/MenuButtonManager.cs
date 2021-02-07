@@ -65,6 +65,4 @@ public class MenuButtonManager : MonoBehaviour
     void SubmitRules() {
         Application.OpenURL(URL);
     }
-
-
 }

@@ -44,6 +44,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //Lobby入室完了確認
     public bool isCheckJoinLobby;//Lobbyに入室しているかどうかの確認 falseなら入室していない
 
+    /////////////////////
+    /// SetUp
+    /////////////////////
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -54,13 +58,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
     }
 
-    private void Update() {
-        Debug.Log("PhotonNetwork.IsConnectedAndReady" +PhotonNetwork.IsConnectedAndReady);
-    }
-
 
     public void SetUp() {
-        Debug.Log("SetUp");
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
         roomContent = GameObject.FindGameObjectWithTag("content");
@@ -84,7 +83,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         RoomOptions roomOptions = new RoomOptions {
             //プロパティを設定している
             MaxPlayers = (byte)maxPlayer,
-            //MaxPlayers = 3,
             //プライベートにするかしないか
             IsVisible = true,
             //部屋が開いている状態にする
@@ -92,7 +90,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         };
         //BanListの登録用→後程解凍する
         string banListStr = room.GetStringBanList();
-        //Debug.Log(banListStr);
         //部屋の各役職の人数を一度一つのストリングにまとめたもの→後程解凍
         string numListStr = room.GetStringFromIntArray(room.rollNumList.ToArray());
         //部屋IDを決定する　名前とリアルタイムで
@@ -113,7 +110,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"playerCount", 1},
             {"suddenDeath_Type", room.suddenDeath_Type}
         };
-        Debug.Log("room.suddenDeath_Type" + room.suddenDeath_Type);
         //カスタムプロパティで設定したキーをロービーで参照できるようにする
         roomOptions.CustomRoomPropertiesForLobby = new string[] {
             "roomId",
@@ -130,23 +126,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         };
         roomOptions.CustomRoomProperties = customRoomProperties;
         //部屋のIdを取得
-        //room.SetRoomId(roomId);
 
         PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
         isRoomMaster = true;
         Destroy(room.gameObject);
     }
 
-    /// <summary>
-    /// 部屋に入室するときに使う
-    /// </summary>
-    /// <param name="roomName"></param>
-    public void JoinRoom(string roomName) {
-        Debug.Log("roomName"+roomName);
-        Debug.Log("joinRoom");
-        this.roomName = roomName;
-        PhotonNetwork.JoinRoom(roomName);
-    }
+
+    //////////////////
+    /// PhotonNetwork関連
+    //////////////////
 
     //条件を満たすと自動で呼び出す
     //ロビーを離れたとき
@@ -156,7 +145,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //部屋ができたとき
     public override void OnCreatedRoom() {
         Debug.Log("OnCreatedRoom");
-        Debug.Log("PhotonNetwork.IsConnectedAndReady" + PhotonNetwork.IsConnectedAndReady);
     }
     //部屋を作るのに失敗
     public override void OnCreateRoomFailed(short returnCode, string message) {
@@ -174,34 +162,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             return;
         }
 
-        //bool isBanCheck = false;
-        ////自分BANIDとすでに入室しているmyUniqueIDを比べて一致したら退出する
-        //Debug.Log(PhotonNetwork.PlayerList.Length);
-        //foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerListOthers) {
-        //    foreach (string banUniqueID in PlayerManager.instance.banUniqueIDList) {
-        //        if ((string)player.CustomProperties["myUniqueID"] == banUniqueID) {
-        //            Debug.Log("banPlayerがいます。");
-
-        //            //退出説明のPopUp表示してから退出処理をする
-        //            isBanCheck = true;
-        //            //Instantiate();
-
-        //            PhotonNetwork.LeaveRoom();
-        //            break;
-        //        }
-        //    }
-        //}
-
-        //if (isBanCheck) {
-        //    return;
-        //}
-
         Debug.Log("OnJoinedRoom");
         PhotonNetwork.LocalPlayer.NickName = PlayerManager.instance.playerName;
-        //Debug.Log("NickName;" + PhotonNetwork.LocalPlayer.NickName);
-        //Debug.Log("RoomName:" + PhotonNetwork.CurrentRoom.Name);
-        //Debug.Log("HostName:" + PhotonNetwork.MasterClient.NickName);
-        //Debug.Log("Slots:" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers);
 
         //シーン遷移
         PhotonNetwork.IsMessageQueueRunning = false;
@@ -217,7 +179,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="returnCode"></param>
     /// <param name="message"></param>
     public override void OnJoinRoomFailed(short returnCode, string message) {
-        Debug.Log("入室失敗");
+        Debug.Log("OnJoinRoomFailed");
         OnRoomListUpdate(roomInfoList);
         roomSetting.rollSetting.wrongPopUpObj.SetActive(true);
         roomSetting.rollSetting.wrongPopUp.wrongText.text = "入室に失敗しました。";
@@ -230,14 +192,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="roomList"></param>
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
 
-        //base.OnRoomListUpdate(roomList);
         Debug.Log("OnRoomListUpdate");
-        Debug.Log("roomListCount" + roomList.Count);
+        //Debug.Log("roomListCount" + roomList.Count);
         roomInfoList = roomList;
 
         foreach (Photon.Realtime.RoomInfo info in roomList) {
-            Debug.Log("info.RemovedFromList" + info.RemovedFromList);
-            Debug.Log("info.IsOpen" + info.IsOpen);
+            //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
 
             RoomNode roomNode = new RoomNode();
 
@@ -247,16 +207,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 //IsOpenがtureの場合表示する
                 //最後のプレイヤーがRoomに入った時にfalseにする
                 if (!info.RemovedFromList && info.IsOpen) {
-                    Debug.Log("部屋情報更新");
-                    Debug.Log("roomNode" + roomNode.roomId);
-                    Debug.Log("activeEntriesCount" + activeEntries.Count);
                     roomNode.Activate(info);
                 } else {
-                    Debug.Log("Deactiveオブジェクトを消す");
-                    Debug.Log("roomNodeID" + roomNode.roomId);
                     //部屋がなくなった場合
                     activeEntries.Remove(info.Name);
-                    //roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
                     roomNode.Deactivate();
                     inactiveEntries.Push(roomNode);
                 }
@@ -265,83 +219,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             }else if (!info.RemovedFromList || sceneType == "GAME") {
 
                 roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
-                Debug.Log("roomNode" + roomNode.roomId);
-                Debug.Log("自分のローカル情報として、部屋の情報を作成");
                 roomNode.Activate(info);
                 roomNodeObjList.Add(roomNode);
                 activeEntries.Add(info.Name, roomNode);
 
-                Debug.Log("自分のローカル情報としての部屋の数" + activeEntries.Count);
                 OnRoomListUpdate(roomList);
             }
         }
-
-        //
-        //RoomNodeList.instance.roomNodeObjList = new List<GameObject>(roomNodeObjList);
         sceneType = "LOBBY";
     }
 
 
-    //部屋入室後処理まとめ
-    /// <summary>
-    /// 部屋から退出させる。
-    /// </summary>
-    public void LeaveRoom() {
-        gameManager.timeController.isPlay = false;
-        sceneType = "GAME";
-
-
-        //部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
-        if (!isRoomMaster) {
-            if (joinedRoom.CustomProperties.TryGetValue("playerCount", out object joinedRoomPlayerCountObj)) {
-                Debug.Log("joinedRoomPlayerCountObj" + (int)joinedRoomPlayerCountObj);
-                if ((int)joinedRoomPlayerCountObj == 1) {
-                    Destroy(joinedRoomObj);
-                    joinedRoom = null;
-                }
-            }
-        }
-        
-        if (PhotonNetwork.InRoom) {
-            Debug.Log("退出完了");
-            PhotonNetwork.LeaveRoom();
-        }
-    }
-
-    /// <summary>
-    /// 強制退出させます。
-    /// </summary>
-    public void ForcedExitRoom() {
-        gameManager.timeController.isPlay = false;
-        if (PhotonNetwork.InRoom) {
-            PhotonNetwork.LeaveRoom();
-            Debug.Log("強制退出完了");
-        }
-    }
-
-    /// <summary>
-    /// 部屋から退出したときに自動で呼ばれる
-    /// </summary>
-    public override void OnLeftRoom() {
-        base.OnLeftRoom();
-        Destroy(gameManager.timeController);
-        Debug.Log("OnLeftRoom");
-        PhotonNetwork.Disconnect();
-
-        SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
-        StartCoroutine(ReSetSetUp());
-    }
-
-
-    /// <summary>
-    /// 退出時に一度ネットワークを閉じてからつなぐ処理をする
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator ReSetSetUp() {
-        yield return new WaitUntil(() => PhotonNetwork.NetworkingClient.DisconnectedCause == DisconnectCause.DisconnectByClientLogic);
-        SetUp();
-    }
+    
     /// <summary>
     /// 部屋に新しいプレイヤーが入室した際に呼ばれる
     /// </summary>
@@ -374,17 +263,81 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
             PhotonNetwork.CurrentRoom.IsOpen = true;
         }
-
-        //確認画面中に強制退出させたプレイヤーの処理
-        //if (gameManager.gameStart && gameManager.isConfirmation) {
-        //    DeleateOtherPlayer(otherPlayer);
-        //}
     }
 
 
     //////////////////////////////
     ///メソッド
     //////////////////////////////
+
+    //部屋入室後処理まとめ
+    /// <summary>
+    /// 部屋から退出させる。
+    /// </summary>
+    public void LeaveRoom() {
+        gameManager.timeController.isPlay = false;
+        sceneType = "GAME";
+
+
+        //部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
+        if (!isRoomMaster) {
+            if (joinedRoom.CustomProperties.TryGetValue("playerCount", out object joinedRoomPlayerCountObj)) {
+                if ((int)joinedRoomPlayerCountObj == 1) {
+                    Destroy(joinedRoomObj);
+                    joinedRoom = null;
+                }
+            }
+        }
+
+        if (PhotonNetwork.InRoom) {
+            PhotonNetwork.LeaveRoom();
+        }
+
+        isRoomMaster = false;
+    }
+
+    /// <summary>
+    /// 強制退出させます。
+    /// </summary>
+    public void ForcedExitRoom() {
+        gameManager.timeController.isPlay = false;
+        if (PhotonNetwork.InRoom) {
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+
+    /// <summary>
+    /// 部屋から退出したときに自動で呼ばれる
+    /// </summary>
+    public override void OnLeftRoom() {
+        base.OnLeftRoom();
+        Destroy(gameManager.timeController);
+        Debug.Log("OnLeftRoom");
+        PhotonNetwork.Disconnect();
+
+        SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
+        StartCoroutine(ReSetSetUp());
+    }
+
+
+    /// <summary>
+    /// 退出時に一度ネットワークを閉じてからつなぐ処理をする
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator ReSetSetUp() {
+        yield return new WaitUntil(() => PhotonNetwork.NetworkingClient.DisconnectedCause == DisconnectCause.DisconnectByClientLogic);
+        SetUp();
+    }
+
+    /// <summary>
+    /// 部屋に入室するときに使う
+    /// </summary>
+    /// <param name="roomName"></param>
+    public void JoinRoom(string roomName) {
+        this.roomName = roomName;
+        PhotonNetwork.JoinRoom(roomName);
+    }
 
     /// <summary>
     /// マスターだけが扱える
@@ -402,14 +355,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public IEnumerator FirstCreatePlayerObj() {
 
-        //yield return new WaitForSeconds(1.0f);
-        //yield return new WaitUntil(() => !PhotonNetwork.IsMessageQueueRunning);
         yield return null;
         PhotonNetwork.IsMessageQueueRunning = true;
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "Game");
 
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        Debug.Log("gameManager" + gameManager);
         GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
         Player player = playerObj.GetComponent<Player>();
         gameManager.chatSystem.myPlayer = player;
@@ -524,8 +474,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     private void KickBanPlayer(ExitGames.Client.Photon.Hashtable propertiers,Photon.Realtime.Player newPlayer) {
-        Debug.Log("banPlayerがいます。");
-
         //BanPlayerにbool型を送信します。
         propertiers.Add("isBanPlayer", true);
         newPlayer.SetCustomProperties(propertiers);

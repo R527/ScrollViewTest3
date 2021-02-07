@@ -23,7 +23,6 @@ public class ChatLog : MonoBehaviour
     public Transform chatTran;
     
     List<ChatNode> chatNodeList = new List<ChatNode>();
-    string playerName;
     public ChatNode lastChatNode;
 
 
@@ -48,7 +47,6 @@ public class ChatLog : MonoBehaviour
     /// </summary>
     public void CreateLogChat(SPEAKER_TYPE speaker_Type, string inputData, int playerID, int boardColor,string playerName) {
 
-        Debug.Log("CreateLogChat");
         ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, ROLLTYPE.ETC);
         if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
             playerName = "GM";
@@ -61,15 +59,12 @@ public class ChatLog : MonoBehaviour
         chatNode.statusText.text = playerName;
 
         //ComingOutなら横幅を調節する
-        Debug.Log("boardColor" + boardColor);
         if(inputData == "") {
             chatNode.chatObjLayoutElement.preferredWidth = 60;
             chatNode.chatObjLayoutElement.preferredHeight = 60;
         }
 
         chatNodeList.Add(chatNode);
-        //gameManager.chatSystem.SetChatNode(chatNode, chatData, false);
-        Debug.Log("復元完了");
     }
 
     /// <summary>
@@ -90,22 +85,17 @@ public class ChatLog : MonoBehaviour
     /// <param name="playerID"></param>
     /// <param name="gameManager"></param>
     public void CreatePlayerButton(string playerName, int playerID, string roll) {
-        Debug.Log("CreatePlayerButton");
 
         playerButton = Instantiate(playerButtonPrefab, buttonTran, false);
-        //playerButton.gameManager = gameManager;
         playerButton.transform.SetParent(buttonTran);
         playerButton.playerNameText.text = playerName;
         playerButton.playerID = playerID;
         playerButton.rollText.text = roll;
-        Debug.Log(playerID);
-        Debug.Log(PlayerManager.instance.myID);
         if (PlayerManager.instance.myID == playerID) {
             
             playerButton.GetComponent<Outline>().enabled = true;
         }
         //PlayerButtonにフィルタ機能を追加
-        //playerButton.playerButton.onClick.RemoveAllListeners();
         playerButton.playerButton.onClick.AddListener(() => FillterButton(playerID));
     }
     /// <summary>
@@ -143,21 +133,6 @@ public class ChatLog : MonoBehaviour
     /// チャットログを閉じるときに使われる
     /// </summary>
     public void CloseChatLog() {
-        //GameObject chatContentObj = GameObject.FindGameObjectWithTag("ChatContent");
-        ////すでに生成しているチャットを消去する
-        //foreach(Transform tran in chatContentObj.transform) {
-        //    Destroy(tran.gameObject);
-        //}
-        ////すでに生成しているPlayerButtonを消去する
-        //GameObject menbarContentObj = GameObject.FindGameObjectWithTag("MenbarContent");
-        //foreach (Transform tran in menbarContentObj.transform) {
-        //    Destroy(tran.gameObject);
-        //}
-        //gameObject.GetComponent<CanvasGroup>().alpha = 0;
-        //gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
-        //mainCanvas.SetActive(true);
-        //underBarCanvas.SetActive(true);
-
         Destroy(gameObject);
     }
 

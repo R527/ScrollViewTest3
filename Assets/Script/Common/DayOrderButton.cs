@@ -14,7 +14,6 @@ public class DayOrderButton : MonoBehaviour
     public ChatListManager chatListManager;
     public List<GameObject> nextDaysList = new List<GameObject>();
     public ScrollRect scrollRect;
-    //public List<float> targetPosYList = new List<float>();
 
     //Button
     public Button topButton;
@@ -64,8 +63,6 @@ public class DayOrderButton : MonoBehaviour
             isCheckNormalizedPosition = false;
             return;
         }
-
- 
     }
 
     /// <summary>
@@ -85,12 +82,10 @@ public class DayOrderButton : MonoBehaviour
     /// 1日戻る
     /// </summary>
     public void PrevDay() {
-        //Debug.Log(GetContentPosY());
         ScrollToCore(nextDaysList[GetPrevDayPosY()], 1.0f);
     }
 
     public void NextDay() {
-        //Debug.Log(GetNextDayPosY());
         ScrollToCore(nextDaysList[GetNextDayPosY()], 1.0f);
     }
     /// <summary>
@@ -112,34 +107,19 @@ public class DayOrderButton : MonoBehaviour
             scrollRect.verticalNormalizedPosition = 0f;
         }
 
-        ////InputViewが上に上昇中の微調整分
-        //float inputViewHeight = 0;
-        //if(chatListManager.gameManager.fillter.inputView.foldingText.text == "↓") {
-        //    inputViewHeight = - 72.0f;
-        //}
         //ローカル座標がContentHeightの上辺を0として負の値で格納される
         float targetPos = contentHeight + GetPosY(targetRect,contentHeight, viewportHeight) + targetRect.rect.height * align;
 
         //上端～下端合わせたのための調整量
         float gap = viewportHeight * align;
-        //Debug.Log(viewportHeight);
-        //Debug.Log(align);
 
         //差分を計算する
         float normalizedPos = (targetPos - gap) / (contentHeight - viewportHeight);
-        //Debug.Log("normalizedPos" + normalizedPos);
         //Clamp01を使ってFloatを０～1にする
         normalizedPos = Mathf.Clamp01(normalizedPos);
 
         //上記の情報を使ってVerticalNormalizedPositionを実行
         scrollRect.verticalNormalizedPosition = normalizedPos;
-        Debug.Log("contentHeight" + contentHeight);//正しい
-        //Debug.Log("viewportHeight" + viewportHeight);//正しい
-        Debug.Log("targetPos" + targetPos);
-        Debug.Log("GetPosY(targetRect)" + GetPosY(targetRect,contentHeight, viewportHeight));
-        Debug.Log("targetRect.rect.height" + targetRect.rect.height);//正しい日付変更Objの高さ
-        //Debug.Log("gap" + gap);//正しい
-        Debug.Log("normalizedPos" + normalizedPos);
         
     }
 
@@ -149,11 +129,7 @@ public class DayOrderButton : MonoBehaviour
     /// <param name="transform"></param>
     /// <returns></returns>
     private float GetPosY(RectTransform transform,float contentHeight, float viewportHeight) {
-        Debug.Log("transform.localPosition.y" + transform.localPosition.y);
         float i = transform.localPosition.y - contentHeight;
-        Debug.Log(i);
-        Debug.Log("transform.rect.y" + transform.rect.y);
-        Debug.Log("viewportHeight" + viewportHeight);
         return i + transform.rect.y;
     }
 
@@ -165,23 +141,11 @@ public class DayOrderButton : MonoBehaviour
     public int GetPrevDayPosY() {
 
         int i = 0;
-        Debug.Log("GetContentPosY");
         for (i = nextDaysList.Count - 1; 0 <= i; i--) {
-
             RectTransform targetRect = nextDaysList[i].transform.GetComponent<RectTransform>();
-            Debug.Log("targetRect.localPosition.y" + targetRect.localPosition.y);//マイナスになってない
-            Debug.Log("targetRect.rect.y"+targetRect.rect.y);
             float targetPosY = targetRect.localPosition.y + targetRect.rect.y;
-            Debug.Log("targetPosY" + targetPosY);
             float contentPosY = - scrollRect.content.localPosition.y;
-            //float chatAreaHeight = - scrollRect.GetComponent<RectTransform>().rect.height;
-            //float gap = contentPosY + chatAreaHeight;
-            Debug.Log("contentPosY"+contentPosY);//
-            //Debug.Log("chatAreaHeight" + chatAreaHeight);//正しい
-            //Debug.Log("gap" + gap);
             if (targetPosY > contentPosY) {
-                Debug.Log(i);
-                Debug.Log("決定");
                 break;
             }
         }
@@ -199,24 +163,13 @@ public class DayOrderButton : MonoBehaviour
     /// <returns></returns>
     public int GetNextDayPosY() {
         int i = 0;
-        Debug.Log("GetContentPosY");
         for (i = 0; nextDaysList.Count - 1  > i; i++) {
-            Debug.Log("test");
-            Debug.Log(i);
             RectTransform targetRect = nextDaysList[i].transform.GetComponent<RectTransform>();
             float targetPosY = targetRect.localPosition.y + targetRect.rect.y;
-            Debug.Log(targetPosY);
             float contentPosY = - scrollRect.content.localPosition.y;
             float chatAreaHeight = scrollRect.GetComponent<RectTransform>().rect.height;
-            //float gap = contentPosY + chatAreaHeight;
-            //Debug.Log("gap" + gap);
-            Debug.Log("chatAreaHeight" + chatAreaHeight);
-            Debug.Log("contentPosY" + contentPosY);
-            Debug.Log("targetPosY" + targetPosY);
             if (targetPosY < contentPosY) {
                 i++;
-                Debug.Log(i);
-                Debug.Log("決定");
                 break;
             }
         }

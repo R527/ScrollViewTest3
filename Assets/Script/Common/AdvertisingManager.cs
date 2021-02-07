@@ -9,8 +9,6 @@ using UnityEngine.Advertisements;
 /// </summary>
 public class AdvertisingManager : MonoBehaviour
 {
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -20,11 +18,9 @@ public class AdvertisingManager : MonoBehaviour
     /// <summary>
     /// 広告に関する制御
     /// </summary>
-    private void AdsManager() {
-
+    void AdsManager() {
         string gameID = "3851633";
         Advertisement.Initialize(gameID, true);
         Debug.Log("広告準備完了");
     }
-
 }

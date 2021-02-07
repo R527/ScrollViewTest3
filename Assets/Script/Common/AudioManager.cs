@@ -11,7 +11,6 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
-    public GameObject settingPopUp;
     public AudioSource[] bgmSource;
     public AudioSource[] seSource;
     private int currentBgmNum;
@@ -41,7 +40,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// 音量調節BGM
     /// </summary>
@@ -51,6 +49,7 @@ public class AudioManager : MonoBehaviour
         bgmVolume = ConvertVolume2db(volume);
         PlayerManager.instance.SetFloatForPlayerPrefs(bgmVolume, PlayerManager.ID_TYPE.bgmVolume);
     }
+
     /// <summary>
     /// 音量調節SE
     /// </summary>
@@ -79,13 +78,7 @@ public class AudioManager : MonoBehaviour
         currentBgmNum = (int)bgmType;
         bgmSource[currentBgmNum].Play();
     }
-    ///// <summary>
-    ///// BGMの配列を数字に変換して止める
-    ///// </summary>
-    ///// <param name="bgmType"></param>
-    //public void StopBGM(BGM_TYPE bgmType) {
-    //    currentBgmNum = (int)bgmType;
-    //}
+
     /// <summary>
     /// SEの配列を数字に変換して、流す
     /// </summary>

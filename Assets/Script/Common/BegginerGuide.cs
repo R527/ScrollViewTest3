@@ -49,7 +49,6 @@ public class BegginerGuide : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         backButton.interactable = false;
         num = 1;
         Commentary();

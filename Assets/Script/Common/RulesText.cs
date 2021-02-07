@@ -11,6 +11,4 @@ public class RulesText : BasePopUP
 {
     public Text titleText;
     public Text rulesText;
-
-
 }

@@ -22,7 +22,6 @@ public class RulesManager : MonoBehaviour
 
     public void OnClick() {
         //コルーチンを呼び出す
-        //StartCoroutine(OnSend(URL));
         Application.OpenURL(URL);
     }
 

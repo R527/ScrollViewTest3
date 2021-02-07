@@ -27,13 +27,9 @@ public class SettingPopUp : MonoBehaviour
         seSlider.onValueChanged.AddListener(AudioManager.instance.SetSE);
         maskButton.onClick.AddListener(OnDestroy);
         backButton.onClick.AddListener(OnDestroy);
-        //sliderButton.OnPointerUp
     }
 
     public void OnDestroy() {
         Destroy(SettingPopUpObj);
     }
-
-
-
 }

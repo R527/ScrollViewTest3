@@ -11,10 +11,6 @@ public class SceneStateManager : MonoBehaviour
 {
 
     public static SceneStateManager instance;
-    public bool isCeack;
-
-    public  GameObject roomSelectCanvas;
-    public  GameObject roomSettingCanvas;
 
     private void Awake() {
         if(instance == null) {
@@ -31,11 +27,7 @@ public class SceneStateManager : MonoBehaviour
     /// </summary>
     /// <param name="sceneName"></param>
     public void NextScene(SCENE_TYPE sceneName) {
-        Debug.Log("SceneManager.GetActiveScene().name" + SceneManager.GetActiveScene().name);
-        //Debug.Log("SCENE_TYPE.GAME.ToString()" + SCENE_TYPE.GAME.ToString());
-
         if (sceneName == SCENE_TYPE.GAME) {
-            Debug.Log("gameシーンを追加");
             //Lobbyシーンを見えなくする処理
 
             RollSetting roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>();
@@ -47,7 +39,6 @@ public class SceneStateManager : MonoBehaviour
             
             //次の呼び出すシーンがLobbyかつ現在のシーンがGameならGameシーンを破棄する
         } else if(SceneManager.GetActiveScene().name == "Game"){
-            Debug.Log("次の呼び出すシーンがLobbyかつ現在のシーンがGameならGameシーンを破棄する");
 
             SceneManager.UnloadSceneAsync(SCENE_TYPE.GAME.ToString());
 
@@ -56,9 +47,7 @@ public class SceneStateManager : MonoBehaviour
             GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSettingCanvas.SetActive(false);
 
         }else {
-            Debug.Log("その他のシーン移動");
             SceneManager.LoadScene(sceneName.ToString());
         }
     }
-
 }

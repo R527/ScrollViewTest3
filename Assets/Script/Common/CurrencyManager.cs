@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -32,9 +31,7 @@ public class CurrencyManager : MonoBehaviour
     public void BuyCurrency(int buyCurrency) {
         Debug.Log(buyCurrency + "水晶獲得しました");
 
-        //PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
         PlayerManager.instance.currency += buyCurrency;
-        Debug.Log("currency" + PlayerManager.instance.currency);
         PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.currency, PlayerManager.ID_TYPE.currency);
 
         //GameObject gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
@@ -48,7 +45,6 @@ public class CurrencyManager : MonoBehaviour
     /// 定期購入
     /// </summary>
     public void BuySubscribe() {
-        //PlayerManager.instance.subscribe = true;
         Debug.Log("購入" + PlayerManager.instance.SetSubscribe());
     }
 
@@ -60,6 +56,4 @@ public class CurrencyManager : MonoBehaviour
         CurrencyObj.SetActive(false);
         GraphicRaycastersManager.instance.SwitchGraphicRaycasters(true);
     }
-
-
 }
