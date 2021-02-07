@@ -6991,7 +6991,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4fec9ce2acab36478e28c02a7eaf505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSetting: {fileID: 1850661070}
   searchFortuneType: 3
   searchRoomSelection: 0
   searchOpenVoting: 2
@@ -7015,7 +7014,6 @@ MonoBehaviour:
   upDateButton: {fileID: 3556330743257276804}
   searchJoinNum: 3
   isNumLimit: 1
-  isSearch: 0
 --- !u!4 &827804780
 Transform:
   m_ObjectHideFlags: 0
@@ -16726,17 +16724,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e6b3e639f1ab04c9d07595a92af594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomNode: {fileID: -6102697575381228676, guid: caf01ddcf56975949bae3b11d4211a48,
-    type: 3}
   rollSetting: {fileID: 1850661069}
-  firstDayFortune: "\u30E9\u30F3\u30C0\u30E0\u767D"
-  mainTime: 400
-  nightTime: 30
   openVoting: 0
   fortuneType: 0
   suddenDeath_Type: 0
   roomSelection: 0
-  title: 
   firstDayFrotuneText: {fileID: 1254408074}
   roomLevelText: {fileID: 1520257335}
   mainTimeText: {fileID: 1534659818}

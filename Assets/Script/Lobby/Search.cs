@@ -11,7 +11,6 @@ using Photon.Realtime;
 /// </summary>
 public class Search : MonoBehaviour {
     //class
-    public RoomSetting roomSetting;
     public FORTUNETYPE searchFortuneType;
     public ROOMSELECTION searchRoomSelection;
     public VOTING searchOpenVoting;
@@ -43,8 +42,8 @@ public class Search : MonoBehaviour {
 
     public int searchJoinNum;
     public bool isNumLimit;//参加人数未設定か否かの判定
-    public Dictionary<string, RoomNode> activeEntriesList = new Dictionary<string, RoomNode>();
-    public bool isSearch;
+    private Dictionary<string, RoomNode> activeEntriesList = new Dictionary<string, RoomNode>();
+    private bool isSearch;
 
 
 
@@ -55,18 +54,6 @@ public class Search : MonoBehaviour {
         searchRoomSelectText.text = searchRoomSelection.ToString();
         joinNumText.text = "未設定";
         suddenDeath_TypeText.text = "未設定";
-
-        ////突然死数を見て設定を設ける
-        //if (PlayerManager.instance.totalNumberOfSuddenDeath == 0) {
-        //    suddenDeath_Type = SUDDENDEATH_TYPE._０回;
-        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._０回.ToString().Trim('_');
-        //} else if (PlayerManager.instance.totalNumberOfSuddenDeath == 1) {
-        //    suddenDeath_Type = SUDDENDEATH_TYPE._1回以下;
-        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._1回以下.ToString().Trim('_');
-        //} else {
-        //    suddenDeath_Type = SUDDENDEATH_TYPE._制限なし;
-        //    suddenDeath_TypeText.text = SUDDENDEATH_TYPE._制限なし.ToString().Trim('_');
-        //}
 
         //button
         initSearchButton.onClick.AddListener(InitSearch);
@@ -87,27 +74,19 @@ public class Search : MonoBehaviour {
         if (isSearch) {
             return;
         }
-
+        isSearch = true;
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
-        isSearch = true;
 
         //Listを取得する
         activeEntriesList = NetworkManager.instance.GetActiveEntries();
-        Debug.Log(activeEntriesList.Count);
 
-
-        Debug.Log("SearchRoomNode");
         //一度falseに
         foreach (RoomNode Obj in activeEntriesList.Values) {
             Obj.gameObject.SetActive(false);
         }
 
         foreach (RoomNode Obj in activeEntriesList.Values) {
-            Debug.Log("searchRoomSelection" + searchRoomSelection);
-            Debug.Log("Obj.roomSelection" + Obj.roomSelection);
-            
-
             //BanListをチェックする
             if(Obj.isCheckBanList == true) {
                 continue;
@@ -130,18 +109,7 @@ public class Search : MonoBehaviour {
             //フィルターにかける
             //人数設定が未設定
 
-            Debug.Log("Obj.fortuneType" + Obj.fortuneType);
-            Debug.Log("searchFortuneType" + searchFortuneType);
-            Debug.Log("Obj.openVoting" + Obj.openVoting);
-            Debug.Log("searchOpenVoting" + searchOpenVoting);
-            Debug.Log("Obj.settingNum" + Obj.settingNum);
-            Debug.Log("searchJoinNum" + searchJoinNum);
-            Debug.Log("Obj.suddenDeath_Type" + Obj.suddenDeath_Type);
-            Debug.Log("suddenDeath_Type" + suddenDeath_Type);
-
-            //&& Obj.settingNum > searchJoinNum
             if (isNumLimit == true) {
-                Debug.Log("tess");
                 if (Obj.fortuneType == searchFortuneType && Obj.openVoting == searchOpenVoting && searchRoomSelection == Obj.roomSelection && CheckSuddenDeath(Obj) && Obj.suddenDeath_Type == suddenDeath_Type) {
                     Obj.gameObject.SetActive(true);
                 }
@@ -169,23 +137,19 @@ public class Search : MonoBehaviour {
         //凸1回以下　
         //(Obj.suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || Obj.suddenDeath_Type == SUDDENDEATH_TYPE._2回以上 ||
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 &&  Obj.suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 && PlayerManager.instance.totalNumberOfMatches >= 25) {
-            Debug.Log("1");
             isCheck = true;
 
         //凸2回以上
         } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE._2回以上) {
-            Debug.Log("2");
             isCheck = true;
 
         //凸0回以下
         } else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE._0回) {
-            Debug.Log("0");
             isCheck = true;
 
         //新規プレイヤー受け入れ
         }else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0 && Obj.suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
             isCheck = true;
-            Debug.Log("新規");
         }
         return isCheck;
     }
@@ -247,7 +211,6 @@ public class Search : MonoBehaviour {
     /// </summary>
     public void UpDateButton() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
-
         SearchRoomNode();
     }
 
@@ -273,7 +236,6 @@ public class Search : MonoBehaviour {
         firstDayFrotuneText.text = "未設定";
         suddenDeath_TypeText.text = "未設定";
         isNumLimit = true;
-        //SearchRoomNode();
     }
 
     
@@ -383,7 +345,6 @@ public class Search : MonoBehaviour {
     /// 投票開示設定　左
     /// </summary>
     public void OpenVotingLeft() {
-
         switch (searchOpenVoting) {
             case VOTING.開示する:
                 searchOpenVoting = VOTING.開示しない;
@@ -401,7 +362,6 @@ public class Search : MonoBehaviour {
     /// 人数設定　プラスボタン
     /// </summary>
     public void SumNumberPlusButton() {
-
         searchJoinNum++;
         if(searchJoinNum == 3) {
             joinNumText.text = "未設定";
@@ -533,7 +493,6 @@ public class Search : MonoBehaviour {
         } else { 
             return;
         }
-
         suddenDeath_TypeText.text = suddenDeath_Type.ToString().Trim('_');
 
     }

@@ -111,6 +111,8 @@ public class RollSetting : MonoBehaviour
     private void SetUpRollNum() {
 
         foreach (ROLLTYPE rollType in Enum.GetValues(typeof(ROLLTYPE))) {
+
+            //GMとETCは除外する
             if (rollType == ROLLTYPE.GM || rollType == ROLLTYPE.ETC) {
                 continue;
             }
@@ -258,7 +260,6 @@ public class RollSetting : MonoBehaviour
         citizenCampNumText.text = citizenCampNum + "人";
         wolfCampNumText.text = wolfCampNum + "人";
 
-
         //人数差異を表示
         if(numLimit > citizenCampNum + wolfCampNum) {
             //人数が不足している時
@@ -270,7 +271,6 @@ public class RollSetting : MonoBehaviour
             //人数が指定通りの時
             differenceNumText.text = "";
         }
-
     }
 }
 

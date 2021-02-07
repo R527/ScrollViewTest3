@@ -399,7 +399,6 @@ public class Player : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <returns></returns>
     private bool WaitOtherCreatePlayerButton() {
-
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEnteredRoom", out object isCheckEnteredRoomObj)) {
 
             return (bool)isCheckEnteredRoomObj;
@@ -407,7 +406,5 @@ public class Player : MonoBehaviourPunCallbacks {
             return false;
         }
     }
-
-
 }
 

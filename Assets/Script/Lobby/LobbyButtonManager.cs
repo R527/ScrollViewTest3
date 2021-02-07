@@ -1,17 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-
 
 /// <summary>
 /// Lobbyに関するボタン等を管理
 /// </summary>
 public class LobbyButtonManager : MonoBehaviour
 {
-
     //main
     public Button backButton;
     public Button menuButton;
@@ -23,12 +19,10 @@ public class LobbyButtonManager : MonoBehaviour
     public GameObject roomSelectCanvasObj;
     public GameObject rollSettingCanvasObj;
 
-
     /// <summary>
     /// NetworkManagerのSetUpをする
     /// </summary>
     private void Awake() {
-
         GameObject network = GameObject.FindGameObjectWithTag("networkManager");
         if (network == null) {
             NetworkManager networkManager = Instantiate(networkManagerPrefab);
@@ -36,14 +30,9 @@ public class LobbyButtonManager : MonoBehaviour
         } else {
             network.GetComponent<NetworkManager>().SetUp();
         }
-
-
     }
 
-
     private void Start() {
-
-
         AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY);
         backButton.onClick.AddListener(BackButton);
         menuButton.onClick.AddListener(MenuPopUp);
@@ -51,7 +40,6 @@ public class LobbyButtonManager : MonoBehaviour
 
         //Lobby画面でサブスクライブ期間中かを確認する
         PlayerManager.instance.SetSubscribe();
-
     }
 
     /// <summary>
@@ -67,7 +55,6 @@ public class LobbyButtonManager : MonoBehaviour
     /// </summary>
     public void CreateRoomButton() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
-
         roomSelectCanvasObj.SetActive(false);
         rollSettingCanvasObj.SetActive(true);
     }
@@ -78,6 +65,4 @@ public class LobbyButtonManager : MonoBehaviour
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
         SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
     }
-
-    
 }

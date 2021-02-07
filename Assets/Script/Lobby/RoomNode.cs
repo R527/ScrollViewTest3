@@ -15,6 +15,11 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
     //calss
     public Search search;
+    public FORTUNETYPE fortuneType;
+    public VOTING openVoting;
+    public ROOMSELECTION roomSelection;
+    public SUDDENDEATH_TYPE suddenDeath_Type;
+
     //main
     public Text titleText;
     public Text rollText;
@@ -28,21 +33,13 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     public string title;
     public int mainTime;
     public int nightTime;
-    public FORTUNETYPE fortuneType;
-    public VOTING openVoting;
     public int settingNum;
-    public ROOMSELECTION roomSelection;
-    public SUDDENDEATH_TYPE suddenDeath_Type;
     public string roomId;
     public List<int> rollNumList = new List<int>();
-    public List<string> banList = new List<string>();
-    public Photon.Realtime.RoomInfo roomInfo;
+    private List<string> banList = new List<string>();
     public bool isCheckBanList;//banListのチェックtrueならBanListに登録されている
 
 
-    //private void Awake() {
-    //    DontDestroyOnLoad(gameObject);
-    //}
     /// <summary>
     /// 部屋を作った人（マスターだけが利用する
     /// </summary>
@@ -50,15 +47,12 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// <param name="numList"></param>
     /// <param name="rollSumNum"></param>
     public void InitRoomNode(room_information roomInfo, List<int> numList,int rollSumNum) {
-        //入室処理
-        //enterButton.onClick.AddListener(OnClickJoinRoom);
         //タイトル設定
         titleText.text = roomInfo.title;
         
         //ルール設定
         //TODO テキストの最後に突然死関連を入れると部屋が表示されない
         ruleText.text = "時間:" + roomInfo.mainTime + "/" + roomInfo.nightTime + "\r\n占い:" + roomInfo.fortuneType + "\r\n投票:" + roomInfo.openVoting + "\r\n凸数：" + suddenDeath_Type.ToString().Trim('_');
-        Debug.Log("roomInfo.suddenDeath_Type" + roomInfo.suddenDeath_Type.ToString());
         //+ "\r\n凸数:" + roomInfo.suddenDeath_Type
         DisplayRollList(numList);
 
@@ -74,7 +68,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         roomSelection = roomInfo.roomSelection;
         title = roomInfo.title;
         suddenDeath_Type = roomInfo.suddenDeath_Type;
-        Debug.Log("suddenDeath_Type" + suddenDeath_Type);
         rollNumList = numList;
     }
 
@@ -85,12 +78,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="roomInfo"></param>
     public void Activate(Photon.Realtime.RoomInfo roomInfo) {
-
-        
-
-
-        Debug.Log("Activate通過");
-        Debug.Log("roomInfo.IsOpen" + roomInfo.IsOpen);
         //入室処理
         enterButton.onClick.RemoveAllListeners();
         enterButton.onClick.AddListener(OnClickJoinRoom);
@@ -100,10 +87,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         titleText.text = title;
         enterButtonText.text = roomInfo.PlayerCount + "/" + settingNum + "入室";
         roomInfo.CustomProperties["playerCount"] = roomInfo.PlayerCount;
-        Debug.Log("roomInfo.CustomProperties[playerCount]" + (int)roomInfo.CustomProperties["playerCount"]);
         //banListStrを解凍する
         string banListStr = (string)roomInfo.CustomProperties["banListStr"];
-        Debug.Log(banListStr);
         banList = banListStr.Split(',').ToList<string>();
 
         //ルール設定を表示する
@@ -114,10 +99,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         roomSelection = (ROOMSELECTION)roomInfo.CustomProperties["roomSelect"];
         suddenDeath_Type = (SUDDENDEATH_TYPE)roomInfo.CustomProperties["suddenDeath_Type"];
         ruleText.text = "時間:" + mainTime + "/" + nightTime + "\r\n占い:" + fortuneType + "\r\n投票:" + openVoting + "\r\n凸数:" + suddenDeath_Type.ToString().Trim('_');
-
-        Debug.Log("suddenDeath_Type.ToString().Trim('_')" + suddenDeath_Type.ToString().Trim('_'));
-        Debug.Log("suddenDeath_Type" + suddenDeath_Type);
-
 
         //GameObjectがNullでなければ、
         //かつ自分がBanListに登録されていなければtrueにする
@@ -131,8 +112,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
             }
 
             //未設定を処理する
-            Debug.Log(search);
-            Debug.Log(search.searchFortuneType);
             FORTUNETYPE lastSearchFortuneType = search.searchFortuneType;
             VOTING lastSearchOpenVoting = search.searchOpenVoting;
             int lastSearchJoinNum = search.searchJoinNum;
@@ -145,16 +124,13 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
             //フィルターにかける
             //人数設定が未設定
-
             if (search.isNumLimit == true) {
                 if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && search.searchRoomSelection == roomSelection && CheckSuddenDeath()) {
-                    Debug.Log("GameObjtrue");
                     gameObject.SetActive(true);
                 }
                 //人数設定が設定されている場合
             } else {
                 if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && settingNum == search.searchJoinNum && search.searchRoomSelection == roomSelection && CheckSuddenDeath()) {
-                    Debug.Log("GameObjtrue");
                     gameObject.SetActive(true);
                 }
             }
@@ -168,14 +144,11 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         //人数が満員だったら押せない
         enterButton.interactable = (roomInfo.PlayerCount < roomInfo.MaxPlayers);
 
-
         //ルームID取得
-        Debug.Log((string)roomInfo.CustomProperties["roomId"]);
         roomId = (string)roomInfo.CustomProperties["roomId"];
 
         //役職情報取得
         string roll = (string)roomInfo.CustomProperties["numListStr"];
-        Debug.Log(roll);
         //RollListを解凍する
         int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
         rollNumList = intArray.ToList();
@@ -185,7 +158,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
         //新規のRoomNodeを一番下に置く
         SetAsLastSibling();
-
     }
 
 
@@ -197,23 +169,19 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
         //凸1回以下
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 1 && (suddenDeath_Type == SUDDENDEATH_TYPE._1回以下 || suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) && PlayerManager.instance.totalNumberOfMatches >= 25) {
-            Debug.Log("1");
             isCheck = true;
         
         //凸2回以上
         } else if (PlayerManager.instance.totalNumberOfSuddenDeath > 1 && suddenDeath_Type == SUDDENDEATH_TYPE._2回以上) {
-            Debug.Log("2");
             isCheck = true;
 
         //凸0回
         } else if (PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25) {
-            Debug.Log("0");
             isCheck = true;
 
         //制限なし
         }else if(PlayerManager.instance.totalNumberOfSuddenDeath == 0 && suddenDeath_Type == SUDDENDEATH_TYPE._制限なし) {
             isCheck = true;
-            Debug.Log("seigennnasi");
 
         }
         return isCheck;
@@ -256,10 +224,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
     ///部屋が閉じられた時の処理
     public void Deactivate() {
-        //gameObject.SetActive(false);
         Destroy(gameObject);
     }
-
 
     /// <summary>
     ///部屋のListのTransformを一番下へ
@@ -282,27 +248,20 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// roomIDをもとに部屋に参加する
     /// </summary>
     private void OnClickJoinRoom() {
-
         //banListのチェックを入れる、はじく場合はPopUpを出して
         NetworkManager.instance.JoinRoom(roomId);
 
         //Roomを削除する際にエラーが発生するのでそれを回避するためのroomInfoとObjを登録する
         foreach (RoomInfo roomInfo in NetworkManager.instance.roomInfoList) {
-            Debug.Log("(string)roomInfo.CustomProperties[roomId]" + (string)roomInfo.CustomProperties["roomId"]);
             if(roomId == (string)roomInfo.CustomProperties["roomId"]) {
-                Debug.Log("roomInfoSet完了");
                 NetworkManager.instance.joinedRoom = roomInfo;
             }
         }
         foreach(RoomNode roomObj in NetworkManager.instance.roomNodeObjList) {
-            Debug.Log("roomId" + roomId);
-            Debug.Log("roomObj.roomId" + roomObj.roomId);
             if (roomId == roomObj.roomId) {
-                Debug.Log("roomObj.gameObject完了");
                 NetworkManager.instance.joinedRoomObj = roomObj.gameObject;
             }
         }
-        Debug.Log(roomId);
     }
 
     /// <summary>
@@ -342,7 +301,4 @@ public class RoomNode : MonoBehaviourPunCallbacks {
             return "";
         }
     }
-
-
-
 }

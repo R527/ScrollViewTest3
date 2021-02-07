@@ -11,20 +11,18 @@ public class RoomSetting : MonoBehaviour
 {
 
     //class
-
-    public RoomNode roomNode;
     public RollSetting rollSetting;
     //main
-    public string firstDayFortune;
-    public int mainTime;//お昼の時間
-    public int nightTime;//夜の時間
+    private string firstDayFortune;
+    private int mainTime;//お昼の時間
+    private int nightTime;//夜の時間
 
     public VOTING openVoting;//投票開示するか否か
     public FORTUNETYPE fortuneType;
     public SUDDENDEATH_TYPE suddenDeath_Type;
     public ROOMSELECTION roomSelection;//部屋の難易度
 
-    public string title;//部屋のタイトル
+    private string title;//部屋のタイトル
     public Text firstDayFrotuneText;//各設定のテキスト
     public Text roomLevelText;
     public Text mainTimeText;
