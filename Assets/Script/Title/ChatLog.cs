@@ -31,10 +31,12 @@ public class ChatLog : MonoBehaviour
 
     //折畳ボタン
     public Button foldingButton;
-    public Text foldingText;
-    public Transform mainRectTransform;
+    public bool isFolding;
+    public RectTransform mainRectTransform;
     public Transform inputRectTransform;
-    public GameObject mainCanvas;
+    public Sprite upBtnSprite;
+    public Sprite downBtnSprite;
+    public Image foldingImage;
 
     public Button exitButtn;
 
@@ -119,14 +121,18 @@ public class ChatLog : MonoBehaviour
     /// 折畳ボタンの制御
     /// </summary>
     public void FoldingPosition() {
-        if (foldingText.text == "↓") {
-            inputRectTransform.DOLocalMoveY(-65, 0.5f);
-            mainRectTransform.DOLocalMoveY(0, 0.5f);
-            foldingText.text = "↑";
+        if (!isFolding) {
+            //下へ
+            isFolding = true;
+            inputRectTransform.DOLocalMoveY(-72, 0.5f);
+            mainRectTransform.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
+            foldingImage.sprite = upBtnSprite;
         } else {
-            inputRectTransform.DOLocalMoveY(0, 0.5f);
-            mainRectTransform.DOLocalMoveY(72, 0.5f);
-            foldingText.text = "↓";
+            //上へ
+            isFolding = false;
+            inputRectTransform.DOLocalMoveY(0, 0.5f); 
+            mainRectTransform.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
+            foldingImage.sprite = downBtnSprite;
         }
     }
 
