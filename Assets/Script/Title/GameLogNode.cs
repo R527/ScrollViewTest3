@@ -14,7 +14,7 @@ public class GameLogNode : MonoBehaviour
     public Button gameLogBtn;
     public Text resultText;//勝敗
     public Text rollListText;//役職一覧
-    public GameObject chatLogCanvasPrefab;
+    public ChatLog chatLogCanvasPrefab;
     public PlayerInfoPopUp playerInfoPopUp;
 
     private void Start() {
@@ -27,7 +27,16 @@ public class GameLogNode : MonoBehaviour
     private void GetSaveLogButton(int roomNum) {
         GameObject playerInfoPopUpObj = GameObject.FindGameObjectWithTag("PlayerInfoPopUp").gameObject;
         playerInfoPopUpObj.SetActive(false);
-        Instantiate(chatLogCanvasPrefab, chatLogCanvasPrefab.transform, false);
+        GameObject titleCanvas = GameObject.FindGameObjectWithTag("TitleCanvas").gameObject;
+        titleCanvas.SetActive(false);
+        GameObject underCanvas = GameObject.FindGameObjectWithTag("UnderCanvas").gameObject;
+        underCanvas.SetActive(false);
+
+        GameObject chatLogCanvas = GameObject.FindGameObjectWithTag("ChatLogCanvas").gameObject;
+        ChatLog chatLogObj = Instantiate(chatLogCanvasPrefab, chatLogCanvas.transform, false);
+        chatLogObj.titleCanvas = titleCanvas;
+        chatLogObj.underCanvas = underCanvas;
+
         PlayerManager.instance.GetGameChatLog(roomNum);
     }
 

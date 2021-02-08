@@ -2270,7 +2270,7 @@ GameObject:
   - component: {fileID: 455802187}
   m_Layer: 5
   m_Name: MainCanvas
-  m_TagString: Untagged
+  m_TagString: TitleCanvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4325,8 +4325,6 @@ MonoBehaviour:
     type: 3}
   banListTran: {fileID: 1629712375}
   playerInfoButton: {fileID: 1451272320}
-  mainCanvas: {fileID: 0}
-  underBarCanvas: {fileID: 0}
   debugText: {fileID: 1377959029}
 --- !u!4 &757757272
 Transform:
@@ -7337,7 +7335,7 @@ GameObject:
   - component: {fileID: 1356888921}
   m_Layer: 5
   m_Name: UnderBarCanvas
-  m_TagString: Untagged
+  m_TagString: UnderCanvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8780,6 +8778,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1514299478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1514299479}
+  m_Layer: 0
+  m_Name: ChatLogCanvas
+  m_TagString: ChatLogCanvas
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1514299479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514299478}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 148.72849, y: 231.93793, z: -77.57895}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1622122005
 GameObject:
@@ -11083,9 +11111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8167c57330bd44a350feba9dc513f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCeack: 0
-  roomSelectCanvas: {fileID: 0}
-  roomSettingCanvas: {fileID: 0}
 --- !u!4 &2005569118
 Transform:
   m_ObjectHideFlags: 0
@@ -11113,7 +11138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 0}
-  settingPopUp: {fileID: 0}
   bgmSource: []
   seSource: []
   bgmVolume: 0
@@ -13298,27 +13322,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1beea81df4b7a44b85530420488cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInfoPopUpObj: {fileID: 7655497595038451035}
   maskButton: {fileID: 8707105659282575659}
   backButton: {fileID: 857341203846348346}
+  totalNumberOfSuddenDeathText: {fileID: 7655497596458918125}
   totalNumberOfMatchesText: {fileID: 7655497595476378279}
   totalNumberOfWinsText: {fileID: 7655497595019006005}
   totalNumberOfLosesText: {fileID: 7655497596971830865}
   totalNumberOfwinRateText: {fileID: 258605800}
-  totalNumberOfSuddenDeathText: {fileID: 7655497596458918125}
   begginerOfMatchesText: {fileID: 7655497595897816451}
   begginerOfWinsText: {fileID: 7655497595102319226}
-  begginerOfwinRateText: {fileID: 7655497596690966428}
   begginerOfLosesText: {fileID: 7655497595793997803}
+  begginerOfwinRateText: {fileID: 7655497596690966428}
   generalOfMatchesText: {fileID: 7655497595924070125}
   generalOfWinsText: {fileID: 7655497595763224209}
-  generalOfwinRateText: {fileID: 7655497596318022673}
   generalOfLosesText: {fileID: 7655497596700579267}
+  generalOfwinRateText: {fileID: 7655497596318022673}
   gameLogPrefab: {fileID: 3527774131418453617, guid: b19d475cfa5c411478b3a2f1851b1850,
     type: 3}
   logTran: {fileID: 7655497595574440422}
-  mainCanvas: {fileID: 455802186}
-  underBarCanvas: {fileID: 1356888920}
   rollNumList: 
 --- !u!1 &7155958562012281515
 GameObject:

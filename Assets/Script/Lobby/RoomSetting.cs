@@ -13,9 +13,8 @@ public class RoomSetting : MonoBehaviour
     //class
     public RollSetting rollSetting;
     //main
-    private string firstDayFortune;
-    private int mainTime;//お昼の時間
-    private int nightTime;//夜の時間
+    private int mainTime = 400;//お昼の時間
+    private int nightTime = 30;//夜の時間
 
     public VOTING openVoting;//投票開示するか否か
     public FORTUNETYPE fortuneType;
@@ -73,7 +72,7 @@ public class RoomSetting : MonoBehaviour
         }
 
 
-        firstDayFrotuneText.text = firstDayFortune;
+        firstDayFrotuneText.text = fortuneType.ToString();
         roomLevelText.text = roomSelection.ToString();
         mainTimeText.text = mainTime.ToString();
         nightTimeText.text = nightTime.ToString();
@@ -128,8 +127,6 @@ public class RoomSetting : MonoBehaviour
         }
         title = titleText.text;
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
-
-        //titleText.text = "";
 
         //部屋をインスタンスと同時に部屋情報を渡す。
         RoomNode room = Instantiate(RoomNodePrefab, content.transform, false);

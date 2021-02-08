@@ -25,6 +25,9 @@ public class ChatLog : MonoBehaviour
     List<ChatNode> chatNodeList = new List<ChatNode>();
     public ChatNode lastChatNode;
 
+    public GameObject titleCanvas;
+    public GameObject underCanvas;
+
 
     //折畳ボタン
     public Button foldingButton;
@@ -32,7 +35,6 @@ public class ChatLog : MonoBehaviour
     public Transform mainRectTransform;
     public Transform inputRectTransform;
     public GameObject mainCanvas;
-    public GameObject underBarCanvas;
 
     public Button exitButtn;
 
@@ -134,6 +136,8 @@ public class ChatLog : MonoBehaviour
     /// </summary>
     public void CloseChatLog() {
         Destroy(gameObject);
+        titleCanvas.SetActive(true);
+        underCanvas.SetActive(true);
     }
 
 

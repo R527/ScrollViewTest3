@@ -32,13 +32,6 @@ public class BasePopUP : MonoBehaviour {
     }
 
     /// <summary>
-    /// BackButtonのセットアップ
-    /// </summary>
-    public virtual void SetUp() {
-
-    }
-
-    /// <summary>
     /// 既にHierarchy上にあるObjを非表示にする
     /// </summary>
     public virtual void ClosePopUp() {
@@ -49,7 +42,6 @@ public class BasePopUP : MonoBehaviour {
     /// インスタンスされたObjを削除する
     /// </summary>
     public virtual void DestroyPopUP() {
-        Debug.Log("DestorpyPopUp");
         Destroy(gameObject);
     }
 }
