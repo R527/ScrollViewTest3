@@ -96,8 +96,7 @@ public class ChatLog : MonoBehaviour
         playerButton.playerID = playerID;
         playerButton.rollText.text = roll;
         if (PlayerManager.instance.myID == playerID) {
-            
-            playerButton.GetComponent<Outline>().enabled = true;
+            playerButton.playerBtnImage.GetComponent<Outline>().enabled = true;
         }
         //PlayerButtonにフィルタ機能を追加
         playerButton.playerButton.onClick.AddListener(() => FillterButton(playerID));
@@ -117,6 +116,12 @@ public class ChatLog : MonoBehaviour
         }
     }
 
+    void ResetRillter() {
+        foreach (ChatNode chatObj in chatNodeList) {
+           chatObj.gameObject.SetActive(true);
+        }
+    }
+
     /// <summary>
     /// 折畳ボタンの制御
     /// </summary>
@@ -125,13 +130,14 @@ public class ChatLog : MonoBehaviour
             //下へ
             isFolding = true;
             inputRectTransform.DOLocalMoveY(-72, 0.5f);
-            mainRectTransform.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
+            mainRectTransform.DOSizeDelta(new Vector2(202f, 359.8427f), 0.5f);
             foldingImage.sprite = upBtnSprite;
+            ResetRillter();
         } else {
             //上へ
             isFolding = false;
             inputRectTransform.DOLocalMoveY(0, 0.5f); 
-            mainRectTransform.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
+            mainRectTransform.DOSizeDelta(new Vector2(202f, 287.3251f), 0.5f);
             foldingImage.sprite = downBtnSprite;
         }
     }

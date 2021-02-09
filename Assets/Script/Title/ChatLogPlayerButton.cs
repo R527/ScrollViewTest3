@@ -9,4 +9,5 @@ public class ChatLogPlayerButton : MonoBehaviour
     public Text rollText;
     public int playerID;
     public Button playerButton;
+    public Image playerBtnImage;
 }

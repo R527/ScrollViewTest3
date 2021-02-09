@@ -503,9 +503,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8167c57330bd44a350feba9dc513f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCeack: 0
-  roomSelectCanvas: {fileID: 0}
-  roomSettingCanvas: {fileID: 0}
 --- !u!4 &1688638719249178110
 Transform:
   m_ObjectHideFlags: 0
@@ -546,7 +543,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9755b275ed87106478a67d0cce29a603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
   playerName: 
   banUniqueIDList: []
   banUserNickNameList: []
@@ -567,7 +563,6 @@ MonoBehaviour:
   generalTotalNumberOfWins: 0
   generalTotalNumberOfLoses: 0
   checkTotalNumberOfMatches: 0
-  gameLogCount: 0
   roomName: 
   saveChatLog: 
   getChatLogList: []
@@ -629,7 +624,7 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 2
+  numLimit: 1
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
@@ -1157,8 +1152,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: e3a7ad8ea87e06d4ab95305aa5262e76, type: 2}
-  settingPopUp: {fileID: 8189307270004751238, guid: c25cf77a6390a87429932aa8a1a49fe5,
-    type: 3}
   bgmSource:
   - {fileID: 7820655679748590675}
   - {fileID: 7820655679748590673}
