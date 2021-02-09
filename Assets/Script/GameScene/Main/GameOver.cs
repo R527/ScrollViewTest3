@@ -118,9 +118,9 @@ public class GameOver : MonoBehaviour {
         //ゲーム終了後の処理
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        timeController.isPlay = false;
+        timeController.isPlay2 = false;
+        timeController.testText3.text = "GameOver" + timeController.isPlay2;
         isGameOver = true;
-        //gameManager.fillter.folding = false;
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         gameManager.inputView.wolfMode = false;

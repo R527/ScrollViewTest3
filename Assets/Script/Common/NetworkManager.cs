@@ -275,7 +275,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// 部屋から退出させる。
     /// </summary>
     public void LeaveRoom() {
-        gameManager.timeController.isPlay = false;
+        gameManager.timeController.isPlay2 = false;
+        gameManager.timeController.testText3.text = "LeaveRoom" + gameManager.timeController.isPlay2;
         sceneType = "GAME";
 
 
@@ -300,7 +301,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// 強制退出させます。
     /// </summary>
     public void ForcedExitRoom() {
-        gameManager.timeController.isPlay = false;
+        gameManager.timeController.isPlay2 = false;
+        gameManager.timeController.testText3.text = "ForcedExitRoom" + gameManager.timeController.isPlay2;
+
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
         }
