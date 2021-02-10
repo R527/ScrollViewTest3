@@ -189,11 +189,11 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //TODO 初めての退出と初めての青チャットをする際に課金が必要であることをPoPUp等で知らせる処理を追加する
 
 
-            if (timeController.isPlay2 && PlayerManager.instance.currency >= gameManager.extitCurrency) {
+            if (timeController.isPlay && PlayerManager.instance.currency >= gameManager.extitCurrency) {
                 timeController.gameOver.CheckEndGame();
                 PlayerManager.instance.UseCurrency(gameManager.extitCurrency);
                 gameManager.UpdateCurrencyText();
-            } else if(timeController.isPlay2 && PlayerManager.instance.currency < gameManager.extitCurrency) {
+            } else if(timeController.isPlay && PlayerManager.instance.currency < gameManager.extitCurrency) {
                 Debug.Log("退出テスト");
                 //利用額とゲーム内通貨の残高を比較して購入できないなら別のPopUpを呼び出す
                 gameManager.InstantiateCurrencyTextPopUP("exitStr");

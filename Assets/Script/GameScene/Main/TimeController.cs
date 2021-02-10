@@ -41,8 +41,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool gameReady;//ゲーム待機状態か否か
     public bool isSpeaking;//喋ったか否かtrueならしゃべった
     public bool setSuddenDeath;
-    public bool isPlay2;//falseならゲームオーバー
-    private float chekTimer;//1秒ごとに時間を管理する
+    public bool isPlay;//falseならゲームオーバー
+    public float checkTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
     //ボタン・Input関連
     public Button savingButton;//時短ボタン
@@ -89,8 +89,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public IEnumerator Init() {
         firstDay = true;
-        isPlay2 = true;
-        testText2.text = "TimeControllerのInit通過" + isPlay2;
+        isPlay = true;
+        testText2.text = "TimeControllerのInit通過" + isPlay;
         timeType = TIME.処刑後チェック;
         playState = PlayState.Play;
 
@@ -146,22 +146,25 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// <summary>
     /// カウントダウンタイマー
     /// </summary>
-    void Update() {
+    void FixedUpdate() {
 
         //ゲーム終了したら実行しない
-        if (!isPlay2) {
-            testText.text = "isPlay:" + isPlay2;
+        if (!isPlay) {
+            testText.text = "isPlay:" + isPlay;
             return;
         }
 
+        Debug.Log("FixedUpdate");
         //ゲーム待機中かどうかを確認する
         if (!gameReady) {
+            Debug.Log("gameReady" + gameReady);
             testText.text = "gameReady:" + gameReady;
             return;
         }
 
         //ゲームがスタートしてないなら実行しない
         if (!gameManager.gameStart) {
+            Debug.Log("gameManager.gameStart" + gameManager.gameStart);
             testText.text = "gameManager.gameStart:" + gameManager.gameStart;
             return;
         }
@@ -169,6 +172,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //ゲーム開始したら以下のUpdateを通過する
         //ゲームが終了したらUpdateを止める
         if (timeType == TIME.終了) {
+            Debug.Log("timeType" + timeType);
             testText.text = "timeType:" + timeType;
             timerText.text = string.Empty;
             gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
@@ -179,9 +183,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
         if (!isNextInterval) {
             //マスターだけトータルタイムを管理する
             if (PhotonNetwork.IsMasterClient) {
-                chekTimer += Time.deltaTime;
-                if (chekTimer >= 1) {
-                    chekTimer = 0;
+                //chekTimer += Time.deltaTime;
+                Debug.Log("カウントダウン");
+
+                checkTimer += Time.deltaTime;
+                if (checkTimer >= 1) {
+
+                    checkTimer = 0;
                     totalTime--;
                     testText.text = "totalTime:" + totalTime;
                     SetGameTime();
@@ -200,9 +208,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
             //マスターだけ時短処理のフラグを受け取る
             if (PhotonNetwork.IsMasterClient) {
-                chekTimer += Time.deltaTime;
-                if (chekTimer >= 1) {
-                    chekTimer = 0;
+                checkTimer += Time.deltaTime;
+                if (checkTimer >= 1) {
+                    checkTimer = 0;
                     gameManager.gameMasterChatManager.GetIsTimeSaving();
                 }
             }

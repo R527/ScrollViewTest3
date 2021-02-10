@@ -232,7 +232,7 @@ public class InputView : MonoBehaviour {
         //ボタン有効にする
 
         //プレイ中かつ狼ならtrueにする
-        if(chatListManager.gameManager.timeController.isPlay2 && chatListManager.gameManager.chatSystem.myPlayer.wolfChat && chatListManager.gameManager.chatSystem.myPlayer.live) {
+        if(chatListManager.gameManager.timeController.isPlay && chatListManager.gameManager.chatSystem.myPlayer.wolfChat && chatListManager.gameManager.chatSystem.myPlayer.live) {
             wolfModeButton.interactable = true;
         }
         superChatButton.interactable = true;
