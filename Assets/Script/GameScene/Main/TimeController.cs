@@ -67,10 +67,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public NextDay dayPrefab;
     public bool firstDay;
 
-    public Text testText;
-    public Text testText2;
-    public Text testText3;
-
     public enum PlayState {
         Play,
         Stop_play,
@@ -90,7 +86,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public IEnumerator Init() {
         firstDay = true;
         isPlay = true;
-        testText2.text = "TimeControllerのInit通過" + isPlay;
         timeType = TIME.処刑後チェック;
         playState = PlayState.Play;
 
@@ -150,30 +145,22 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         //ゲーム終了したら実行しない
         if (!isPlay) {
-            testText.text = "isPlay:" + isPlay;
             return;
         }
 
-        Debug.Log("FixedUpdate");
         //ゲーム待機中かどうかを確認する
         if (!gameReady) {
-            Debug.Log("gameReady" + gameReady);
-            testText.text = "gameReady:" + gameReady;
             return;
         }
 
         //ゲームがスタートしてないなら実行しない
         if (!gameManager.gameStart) {
-            Debug.Log("gameManager.gameStart" + gameManager.gameStart);
-            testText.text = "gameManager.gameStart:" + gameManager.gameStart;
             return;
         }
 
         //ゲーム開始したら以下のUpdateを通過する
         //ゲームが終了したらUpdateを止める
         if (timeType == TIME.終了) {
-            Debug.Log("timeType" + timeType);
-            testText.text = "timeType:" + timeType;
             timerText.text = string.Empty;
             gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
             return;
@@ -191,7 +178,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                     checkTimer = 0;
                     totalTime--;
-                    testText.text = "totalTime:" + totalTime;
                     SetGameTime();
                 }
                 //マスター以外はトータルタイムをもらう

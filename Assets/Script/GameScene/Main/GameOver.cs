@@ -17,6 +17,7 @@ public class GameOver : MonoBehaviour {
     public GameObject timeSavingButton;
     public string winnerList;
     public bool isGameOver;
+    public bool isWin;
 
     //gameOverになると時間を計測する
     private float chekTimer;
@@ -65,7 +66,7 @@ public class GameOver : MonoBehaviour {
         Debug.Log("生存者数：" + liverCount);
         Debug.Log("狼の人数:" + wolfCount);
 
-        bool isWin = false;
+        isWin = false;
 
         //狼が0人の場合(市民の勝利
         if (wolfCount == 0) {
@@ -118,8 +119,7 @@ public class GameOver : MonoBehaviour {
         //ゲーム終了後の処理
         timeController.timeType = TIME.終了;
         chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-        timeController.gameReady = false;
-        timeController.testText3.text = "GameOver" + timeController.gameReady;
+        timeController.isPlay = false;
         isGameOver = true;
         gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
         gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
@@ -136,8 +136,7 @@ public class GameOver : MonoBehaviour {
         //チャットログを全表示する
         gameManager.chatListManager.ReleaseChatLog();
 
-        //チャットログを保存する
-        PlayerManager.instance.SetGameChatLog(isWin);
+
         
     }
 

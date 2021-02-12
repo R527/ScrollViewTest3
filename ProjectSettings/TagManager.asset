@@ -30,6 +30,7 @@ TagManager:
   - TitleCanvas
   - ChatLogCanvas
   - UnderCanvas
+  - RaycastersManager
   layers:
   - Default
   - TransparentFX

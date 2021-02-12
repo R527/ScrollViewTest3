@@ -685,6 +685,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             string roll = (string)PhotonNetwork.CurrentRoom.CustomProperties["numListStr"];
             int[] intArray = roll.Split(',').Select(int.Parse).ToArray();
             RoomData.instance.rollList = intArray.ToList();
+            Debug.Log("rollListCount" + RoomData.instance.rollList.Count);
 
         }
         //全員の世界にComingOuottonと役職説明用のボタンを追加する
@@ -695,6 +696,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         rollExplanation.RollExplanationSetUp(rollTypeList);
+        rollTypeList.Clear();
 
         if (DebugManager.instance.isTimeController) {
             RoomData.instance.roomInfo.mainTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["testMainTime"];

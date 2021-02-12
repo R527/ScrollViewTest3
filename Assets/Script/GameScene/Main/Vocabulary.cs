@@ -157,7 +157,8 @@ public class Vocabulary : MonoBehaviour
     /// </summary>
     public void CloseVocabularyPopUP() {
         vocabularyPopUP.SetActive(false);
-        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(true);
+        GraphicRaycastersManager rayCastManagerObj = GameObject.FindGameObjectWithTag("RaycastersManager").GetComponent<GraphicRaycastersManager>();
+        rayCastManagerObj.SwitchGraphicRaycasters(true);
 
     }
     /// <summary>

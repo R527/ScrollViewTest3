@@ -20,7 +20,8 @@ public class BuyCurrency : MonoBehaviour {
     }
 
     void buyCurrency() {
-        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(false);
+        GraphicRaycastersManager rayCastManagerObj = GameObject.FindGameObjectWithTag("RaycastersManager").GetComponent<GraphicRaycastersManager>();
+        rayCastManagerObj.SwitchGraphicRaycasters(false);
         currencyImage.SetActive(true);
     }
 

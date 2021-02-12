@@ -46,7 +46,8 @@ public class RulePopUp : MonoBehaviour {
     }
 
     void DestroyPopUp() {
-        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(true);
+        GraphicRaycastersManager rayCastManagerObj = GameObject.FindGameObjectWithTag("RaycastersManager").GetComponent<GraphicRaycastersManager>();
+        rayCastManagerObj.SwitchGraphicRaycasters(true);
         Destroy(gameObject);
     }
 

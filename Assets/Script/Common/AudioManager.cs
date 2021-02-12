@@ -25,7 +25,12 @@ public class AudioManager : MonoBehaviour
     public enum BGM_TYPE {
         TITLE,
         LOBBY,
-        GAME
+        GAME,
+        
+        //Game中
+        お昼,
+        投票時間,
+        夜の行動,
     }
     public enum SE_TYPE {
         OK,

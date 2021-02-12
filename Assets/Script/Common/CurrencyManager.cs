@@ -54,6 +54,7 @@ public class CurrencyManager : MonoBehaviour
 
     void closePopUp() {
         CurrencyObj.SetActive(false);
-        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(true);
+        GraphicRaycastersManager rayCastManagerObj = GameObject.FindGameObjectWithTag("RaycastersManager").GetComponent<GraphicRaycastersManager>();
+        rayCastManagerObj.SwitchGraphicRaycasters(true);
     }
 }

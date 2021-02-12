@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 部屋ルールの設定（ロールは別にある
@@ -28,7 +29,7 @@ public class RoomSetting : MonoBehaviour
     public Text nightTimeText;
     public Text openVotingText;//各設定のテキスト
     public Text suddenDeathText;
-    public InputField titleText;//タイトル入力部分
+    public InputField titleInputField;//タイトル入力部分
     public RoomNode RoomNodePrefab;//RoomNodePrefab
     public GameObject content;//Lobby画面のScrollViewについているコンテント
     public GameObject rollSettingCanvas;//部屋選択画面Canvas
@@ -51,6 +52,7 @@ public class RoomSetting : MonoBehaviour
     public RoomSettingButton openVotingButton;
 
     private void Start() {
+
         //Lobby入室確認
         if (NetworkManager.instance.isCheckJoinLobby) {
             createRoomButton.interactable = true;
@@ -108,24 +110,24 @@ public class RoomSetting : MonoBehaviour
 
 
         //タイトルも字数制限を監視
-        if (titleText.text.Length >= 13) {
+        if (titleInputField.text.Length >= 13) {
             rollSetting.wrongPopUpObj.SetActive(true);
             rollSetting.wrongPopUp.wrongText.text = "タイトルの文字数が多すぎます。";
             return;
         }
 
-        if (titleText.text.Trim().Length < 1) {
+        if (titleInputField.text.Trim().Length < 1) {
 
             if (roomSelection == ROOMSELECTION.初心者) {
-                titleText.text = "初心者歓迎！";
+                titleInputField.text = "初心者歓迎！";
 
             } else {
                 Debug.Log("一般");
 
-                titleText.text = "一般部屋";
+                titleInputField.text = "一般部屋";
             }
         }
-        title = titleText.text;
+        title = titleInputField.text;
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
         //部屋をインスタンスと同時に部屋情報を渡す。

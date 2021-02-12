@@ -22,7 +22,8 @@ public class VocabularyButton : MonoBehaviour
 
 
     public void OpenVocabulary() {
-        GraphicRaycastersManager.instance.SwitchGraphicRaycasters(false);
+        GraphicRaycastersManager rayCastManagerObj = GameObject.FindGameObjectWithTag("RaycastersManager").GetComponent<GraphicRaycastersManager>();
+        rayCastManagerObj.SwitchGraphicRaycasters(false);
         vocabularyPopUp.SetActive(true);
     }
 }
