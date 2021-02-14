@@ -91,4 +91,10 @@ public class AudioManager : MonoBehaviour
     public void PlaySE(SE_TYPE seType) {
         seSource[(int)seType].Play();
     }
+
+    public void StopBGM() {
+        for (int i = 0; i < bgmSource.Length; i++) {
+            bgmSource[i].Stop();
+        }
+    }
 }

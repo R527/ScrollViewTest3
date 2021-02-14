@@ -264,6 +264,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //お昼
             case TIME.結果発表後チェック:
                 timeType = TIME.昼;
+
+                AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.お昼);
                 isDisplay = true;
                 totalTime = mainTime;
 
@@ -295,6 +297,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             case TIME.昼:
                 timeType = TIME.投票時間;
 
+
+                AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.投票時間);
                 isDisplay = true;
                 totalTime = votingTime;
 
@@ -311,6 +315,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //処刑
             case TIME.投票時間:
 
+                AudioManager.instance.StopBGM();
                 Debug.Log("処刑");
                 timeType = TIME.処刑;
                 isDisplay = false;
@@ -358,7 +363,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                                     PlayerButton playerObj = obj.GetComponent<PlayerButton>();
                                     if (player.ActorNumber == playerObj.playerID) {
                                         playerObj.live = false;
-                                        playerObj.playerInfoText.text = day + "日目突然死";
+                                        playerObj.playerInfoText.text = day + "日目\n\r突然死";
                                         Debug.Log("突然死");
                                         break;
                                     }
@@ -412,6 +417,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             case TIME.処刑後チェック:
                 timeType = TIME.夜の行動;
 
+                AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.夜の行動);
+
                 //狼ならチャット開放する
                 if (chatSystem.myPlayer.wolfChat) {
                     inputField.interactable = true;
@@ -444,6 +451,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //夜の行動の結果発表
             case TIME.夜の行動:
                 timeType = TIME.夜の結果発表;
+
+                AudioManager.instance.StopBGM();
 
                 //狼チャットできる人だけチャットfalseにする
                 if (chatSystem.myPlayer.wolfChat) {

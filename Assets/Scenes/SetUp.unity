@@ -630,7 +630,7 @@ MonoBehaviour:
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 0
+  isGameOver: 1
   isCheckSuddenDeath: 0
   isVoteCount: 0
   isTestPlay: 1
@@ -1156,9 +1156,9 @@ MonoBehaviour:
   - {fileID: 7820655679748590675}
   - {fileID: 7820655679748590673}
   - {fileID: 7820655679748590672}
-  - {fileID: 7820655679748590672}
-  - {fileID: 7820655679748590672}
-  - {fileID: 7820655679748590672}
+  - {fileID: 7820655679748590690}
+  - {fileID: 7820655679748590689}
+  - {fileID: 7820655679748590688}
   seSource:
   - {fileID: 7820655679748590674}
   - {fileID: 7820655679748590678}
