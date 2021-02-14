@@ -100,9 +100,9 @@ public class SetUpManager : MonoBehaviour
             }
             PlayerManager.instance.SetStringSuddenDeathTypeForPlayerPrefs(PlayerManager.SuddenDeath_TYPE.ゲーム正常終了);
 
-            SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
+            StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE));
         } else {
-            SceneStateManager.instance.NextScene(SCENE_TYPE.SetName);
+            StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.SetName));
         }
     }
 }

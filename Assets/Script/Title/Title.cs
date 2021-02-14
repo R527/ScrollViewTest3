@@ -81,6 +81,6 @@ public class Title : MonoBehaviour
     /// GameStartボタン
     /// </summary>
     public void StartGameButton() {
-        SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
+        StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY));
     }
 }

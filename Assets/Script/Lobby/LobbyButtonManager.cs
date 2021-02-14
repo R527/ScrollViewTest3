@@ -63,6 +63,6 @@ public class LobbyButtonManager : MonoBehaviour
     /// </summary>
     public void BackButton() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
-        SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
+        StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE));
     }
 }

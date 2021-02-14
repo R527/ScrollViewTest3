@@ -45,7 +45,7 @@ public class CreatePlayerName : MonoBehaviour
             //名前を登録する
             PlayerManager.instance.playerName = inputFieldName.text;
             PlayerManager.instance.SetStringForPlayerPrefs(PlayerManager.instance.playerName, PlayerManager.ID_TYPE.playerName);
-            SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE);
+            StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE));
         } else {
             SetNameWrongPopUP obj = Instantiate(wrongPopUp, trn, false);
             obj.wrongText.text = "文字数制限があります。\n\r 3～10文字に収めてください。";

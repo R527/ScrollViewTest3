@@ -167,7 +167,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //シーン遷移
         PhotonNetwork.IsMessageQueueRunning = false;
-        SceneStateManager.instance.NextScene(SCENE_TYPE.GAME);
+        StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.GAME)) ;
 
         //プレイヤー作成
         StartCoroutine(FirstCreatePlayerObj());
@@ -216,7 +216,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 }
 
                 //まだアクティブ化されていないRoomがある場合こちらで生成する
-            }else if (!info.RemovedFromList || sceneType == "GAME") {
+            }else if (!info.RemovedFromList) {
 
                 roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
                 roomNode.Activate(info);
@@ -226,7 +226,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 OnRoomListUpdate(roomList);
             }
         }
-        sceneType = "LOBBY";
     }
 
 
@@ -276,8 +275,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void LeaveRoom() {
         gameManager.timeController.isPlay = false;
-        sceneType = "GAME";
-
 
         //部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
         if (!isRoomMaster) {
@@ -316,7 +313,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         Debug.Log("OnLeftRoom");
         PhotonNetwork.Disconnect();
 
-        SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY);
+        StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY));
         StartCoroutine(ReSetSetUp());
     }
 

@@ -26,7 +26,7 @@ public class SceneStateManager : MonoBehaviour
     /// シーン名をここでTostringにて変換　大文字小文字を無視して判定できる
     /// </summary>
     /// <param name="sceneName"></param>
-    public void NextScene(SCENE_TYPE sceneName) {
+    public IEnumerator NextScene(SCENE_TYPE sceneName) {
         if (sceneName == SCENE_TYPE.GAME) {
             //Lobbyシーンを見えなくする処理
 
@@ -41,6 +41,9 @@ public class SceneStateManager : MonoBehaviour
         } else if(SceneManager.GetActiveScene().name == "Game"){
 
             SceneManager.UnloadSceneAsync(SCENE_TYPE.GAME.ToString());
+
+            yield return new WaitUntil(() => SceneManager.GetActiveScene().name != "Game");
+            yield return null;
 
             //Lobbyシーンを見えるようにする処理
             GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RollSetting>().roomSelectCanvas.SetActive(true);

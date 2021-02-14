@@ -209,7 +209,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             gameMasterChat = string.Empty;
 
             //チャットログを保存する
-            PlayerManager.instance.SetGameChatLog(gameManager.timeController.gameOver.isWin);
+            if(gameManager.gameMasterChatManager.timeController.gameOver.isGameOver) {
+                PlayerManager.instance.SetGameChatLog(gameManager.timeController.gameOver.isWin);
+            }
             //チャットログを保存した後に役職のリストを削除する
             RoomData.instance.rollList.Clear();
 
