@@ -46,6 +46,8 @@ public class Player : MonoBehaviourPunCallbacks {
     //PlayerButton
     public PlayerButton playerButtonPrefab;
     private Transform buttontran;
+    public List<int> playerImageNumList;
+    //public int playerImageNum;
 
     //masterのみCheckOnLine用
     private float checkTimer;
@@ -91,7 +93,7 @@ public class Player : MonoBehaviourPunCallbacks {
         if (photonView.IsMine) {
             chatSystem.myPlayer = this;
             playerName = PlayerManager.instance.playerName;
-            iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
+            //iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
             playerID = PhotonNetwork.LocalPlayer.ActorNumber;
 
         }
@@ -113,7 +115,28 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //プレイヤーボタン作成
         if (photonView.IsMine) {
-            
+
+            for (int i = 0; i < 15; i++) {
+                Debug.Log("List作成");
+                if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playerImageNum", out object playerImageNumObj)) {
+
+                    if ((int)playerImageNumObj != i) {
+                        playerImageNumList.Add(i);
+                        Debug.Log("List要素追加");
+
+                    } else {
+                        Debug.Log("List要素削除");
+                        continue;
+                    }
+                } else {
+                    Debug.Log("List要素追加");
+                    playerImageNumList.Add(i);
+                }
+
+
+            }
+            AddPlayerImage();
+
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
         } else if (!photonView.IsMine) {
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
@@ -275,7 +298,7 @@ public class Player : MonoBehaviourPunCallbacks {
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
 
-                iconNo = player.ActorNumber;
+                //iconNo = player.ActorNumber;
                 break;
             }
         }
@@ -405,6 +428,24 @@ public class Player : MonoBehaviourPunCallbacks {
         }else {
             return false;
         }
+    }
+
+    /// <summary>
+    /// //マスターがイラストの番号をすべて保存して既に使われているイラストを除外してランダムにセットする
+    /// </summary>
+    public void AddPlayerImage() {
+        Debug.Log("playerImageNumList.Count" + playerImageNumList.Count);
+        iconNo = playerImageNumList[UnityEngine.Random.Range(0, playerImageNumList.Count)];
+        
+        playerImageNumList.Remove(iconNo);
+        //使われた番号オンラインでもを削除する
+        var propertiers = new ExitGames.Client.Photon.Hashtable();
+        propertiers.Add("playerImageNum", iconNo);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+
+        //playerButton.iconImage.sprite = playerButton.iconSprite[playerImageNum];
+        Debug.Log("playerImageNum" + iconNo);
     }
 }
 

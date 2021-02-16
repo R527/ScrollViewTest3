@@ -12,9 +12,6 @@ public class PlayerManager : MonoBehaviour {
 
     //main
     public string playerName;
-    
-
-
     /// <summary>
     /// Prefsで保存
     /// </summary>

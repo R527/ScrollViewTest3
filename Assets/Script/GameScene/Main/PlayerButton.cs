@@ -16,7 +16,8 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Button playerButton;
     public Text playerInfoText;
     public Text playerNameText;
-    //public Image iconImage;
+    public Image iconImage;
+    public Sprite[] iconSprite;
     public RectTransform tran;
 
     public int playerID;
@@ -44,7 +45,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         gameCancasTran = GameObject.FindGameObjectWithTag("GameCanvas").transform;
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
         tran.localScale = new Vector3(1, 1, 1);
-        
     }
 
 
@@ -63,13 +63,14 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         this.playerName = playerName;
         playerNameText.text = playerName;
 
-        this.iconNo = iconNo;
         this.playerID = playerID;
         //ボタンにゆにーくIDを登録する
         //自分のボタンではない場合
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == playerID) {
                 myUniqueId = (string)player.CustomProperties["myUniqueID"];
+                this.iconNo = (int)player.CustomProperties["playerImageNum"];
+
                 //Debug.Log("myUniqueId" + myUniqueId);
             }
         }
@@ -211,20 +212,18 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             obj.playerName = playerName;
             obj.myUniqueId = this.myUniqueId;
             obj.action_Type = ActionPopUp.Action_Type.Ban;
-
-            
         }
     }
 
-    private void SetRoomBanPlayerID(Photon.Realtime.Player player) {
+    //private void SetRoomBanPlayerID(Photon.Realtime.Player player) {
         
-        var propertis = new ExitGames.Client.Photon.Hashtable {
-            {"roomBanPlayerID",(string)player.CustomProperties["myUniqueID"] }
-        };
-        Debug.Log(PhotonNetwork.LocalPlayer.NickName);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
-        Debug.Log("playerName" + (string)PhotonNetwork.LocalPlayer.CustomProperties["playerName"]);
-    }
+    //    var propertis = new ExitGames.Client.Photon.Hashtable {
+    //        {"roomBanPlayerID",(string)player.CustomProperties["myUniqueID"] }
+    //    };
+    //    Debug.Log(PhotonNetwork.LocalPlayer.NickName);
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
+    //    Debug.Log("playerName" + (string)PhotonNetwork.LocalPlayer.CustomProperties["playerName"]);
+    //}
 
 
 }

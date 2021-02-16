@@ -202,13 +202,15 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 gameManager.inputView.moneyImage.SetActive(true);
                 yield break;
             }
+
+            //広告表示
             ShowAds();
 
             gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
             gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
             gameMasterChat = string.Empty;
 
-            //チャットログを保存する
+            //GameOver時にチャットログを保存する
             if(gameManager.gameMasterChatManager.timeController.gameOver.isGameOver) {
                 PlayerManager.instance.SetGameChatLog(gameManager.timeController.gameOver.isWin);
             }
