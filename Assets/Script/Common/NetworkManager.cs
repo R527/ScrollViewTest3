@@ -448,6 +448,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void DeleateOtherPlayer(Photon.Realtime.Player otherPlayer) {
         PhotonNetwork.CurrentRoom.IsOpen = false;
+
+        //PlayerImageの処理
+        var propertiers = new ExitGames.Client.Photon.Hashtable();
+        propertiers.Remove("playerImageNum");
+        PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+
         //Playerが抜けたときにBanListの更新をする
         string banListStr = "";
         // 抜けたプレイヤーのBanListを無視して更新する

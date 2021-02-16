@@ -79,7 +79,6 @@ MonoBehaviour:
   playerButtonPrefab: {fileID: 7534093506484074954, guid: 765fafd58a705684babe9cc1ecafa704,
     type: 3}
   playerImageNumList: 
-  playerImageNum: 0
 --- !u!222 &5807723990393611466
 CanvasRenderer:
   m_ObjectHideFlags: 0

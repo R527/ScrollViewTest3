@@ -115,26 +115,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //プレイヤーボタン作成
         if (photonView.IsMine) {
-
-            for (int i = 0; i < 15; i++) {
-                Debug.Log("List作成");
-                if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playerImageNum", out object playerImageNumObj)) {
-
-                    if ((int)playerImageNumObj != i) {
-                        playerImageNumList.Add(i);
-                        Debug.Log("List要素追加");
-
-                    } else {
-                        Debug.Log("List要素削除");
-                        continue;
-                    }
-                } else {
-                    Debug.Log("List要素追加");
-                    playerImageNumList.Add(i);
-                }
-
-
-            }
+            
             AddPlayerImage();
 
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
@@ -434,6 +415,26 @@ public class Player : MonoBehaviourPunCallbacks {
     /// //マスターがイラストの番号をすべて保存して既に使われているイラストを除外してランダムにセットする
     /// </summary>
     public void AddPlayerImage() {
+
+        for (int i = 0; i < playerButton.iconSpriteList.Count; i++) {
+            Debug.Log("List作成");
+            if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playerImageNum", out object playerImageNumObj)) {
+
+                if ((int)playerImageNumObj != i) {
+                    playerImageNumList.Add(i);
+                    Debug.Log("List要素追加");
+
+                } else {
+                    Debug.Log("List要素削除");
+                    Debug.Log("playerImageNum" + (int)PhotonNetwork.CurrentRoom.CustomProperties["playerImageNum"]);
+                    continue;
+                }
+            } else {
+                Debug.Log("List要素追加");
+                playerImageNumList.Add(i);
+            }
+        }
+
         Debug.Log("playerImageNumList.Count" + playerImageNumList.Count);
         iconNo = playerImageNumList[UnityEngine.Random.Range(0, playerImageNumList.Count)];
         
@@ -443,7 +444,7 @@ public class Player : MonoBehaviourPunCallbacks {
         propertiers.Add("playerImageNum", iconNo);
         PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
-
+        Debug.Log("PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers)" + (int)PhotonNetwork.LocalPlayer.CustomProperties["playerImageNum"]);
         //playerButton.iconImage.sprite = playerButton.iconSprite[playerImageNum];
         Debug.Log("playerImageNum" + iconNo);
     }

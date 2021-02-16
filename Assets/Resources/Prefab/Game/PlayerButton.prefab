@@ -622,6 +622,23 @@ MonoBehaviour:
   playerButton: {fileID: 3891466349079106415}
   playerInfoText: {fileID: 3980162111679359139}
   playerNameText: {fileID: 4550416486614150916}
+  iconImage: {fileID: 0}
+  iconSpriteList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   tran: {fileID: 6875728530965073990}
   playerID: 0
   myUniqueId: 

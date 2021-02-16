@@ -17,7 +17,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Text playerInfoText;
     public Text playerNameText;
     public Image iconImage;
-    public Sprite[] iconSprite;
+    public List<Sprite> iconSpriteList;
     public RectTransform tran;
 
     public int playerID;
@@ -69,7 +69,12 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == playerID) {
                 myUniqueId = (string)player.CustomProperties["myUniqueID"];
-                this.iconNo = (int)player.CustomProperties["playerImageNum"];
+                object playerImageNumObj = null;
+                yield return new WaitUntil(() => player.CustomProperties.TryGetValue("playerImageNum", out playerImageNumObj));
+                this.iconNo = (int)playerImageNumObj;
+
+                Debug.Log("(int)player.CustomPropertiesplayerImageNum" + (int)player.CustomProperties["playerImageNum"]);
+                //this.iconNo = (int)player.CustomProperties["playerImageNum"];
 
                 //Debug.Log("myUniqueId" + myUniqueId);
             }
