@@ -418,7 +418,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         for (int i = 0; i < playerButton.iconSpriteList.Count; i++) {
             Debug.Log("List作成");
-            if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playerImageNum", out object playerImageNumObj)) {
+            if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playerImageNum" + i, out object playerImageNumObj)) {
 
                 if ((int)playerImageNumObj != i) {
                     playerImageNumList.Add(i);
@@ -426,7 +426,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
                 } else {
                     Debug.Log("List要素削除");
-                    Debug.Log("playerImageNum" + (int)PhotonNetwork.CurrentRoom.CustomProperties["playerImageNum"]);
+                    Debug.Log("playerImageNum" + (int)PhotonNetwork.CurrentRoom.CustomProperties["playerImageNum" + i]);
                     continue;
                 }
             } else {
@@ -441,8 +441,10 @@ public class Player : MonoBehaviourPunCallbacks {
         playerImageNumList.Remove(iconNo);
         //使われた番号オンラインでもを削除する
         var propertiers = new ExitGames.Client.Photon.Hashtable();
-        propertiers.Add("playerImageNum", iconNo);
+        propertiers.Add("playerImageNum" + iconNo, iconNo);
         PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
+
+        propertiers.Add("playerImageNum", iconNo);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
         Debug.Log("PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers)" + (int)PhotonNetwork.LocalPlayer.CustomProperties["playerImageNum"]);
         //playerButton.iconImage.sprite = playerButton.iconSprite[playerImageNum];

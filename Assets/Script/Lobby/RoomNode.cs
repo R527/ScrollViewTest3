@@ -255,6 +255,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         foreach (RoomInfo roomInfo in NetworkManager.instance.roomInfoList) {
             if(roomId == (string)roomInfo.CustomProperties["roomId"]) {
                 NetworkManager.instance.joinedRoom = roomInfo;
+                Debug.Log("NetworkManager.instance.joinedRoom" + NetworkManager.instance.joinedRoom.CustomProperties["roomId"]);
+
             }
         }
         foreach(RoomNode roomObj in NetworkManager.instance.roomNodeObjList) {

@@ -193,7 +193,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
 
         Debug.Log("OnRoomListUpdate");
-        //Debug.Log("roomListCount" + roomList.Count);
+        Debug.Log("roomListCount" + roomList.Count);
         roomInfoList = roomList;
 
         foreach (Photon.Realtime.RoomInfo info in roomList) {
@@ -279,7 +279,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
         if (!isRoomMaster) {
             if (joinedRoom.CustomProperties.TryGetValue("playerCount", out object joinedRoomPlayerCountObj)) {
+                Debug.Log("joinedRoomPlayerCountObj" + (int)joinedRoomPlayerCountObj);
                 if ((int)joinedRoomPlayerCountObj == 1) {
+                    Debug.Log("DestroyObj");
                     Destroy(joinedRoomObj);
                     joinedRoom = null;
                 }
@@ -451,9 +453,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //PlayerImageの処理
         var propertiers = new ExitGames.Client.Photon.Hashtable();
-        propertiers.Remove("playerImageNum");
+        int num = (int)otherPlayer.CustomProperties["playerImageNum"];
+        Debug.Log("RemovePlayerImageNum" + num);
+        propertiers.Remove("playerImageNum" + num);
         PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
 
         //Playerが抜けたときにBanListの更新をする
         string banListStr = "";
