@@ -107,7 +107,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             {"banListStr", banListStr},
             {"roomSelect", room.roomSelection },
             {"numLimit", maxPlayer},
-            {"playerCount", 1},
+            //{"playerCount", 1},
             {"suddenDeath_Type", room.suddenDeath_Type}
         };
         //カスタムプロパティで設定したキーをロービーで参照できるようにする
@@ -171,6 +171,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //プレイヤー作成
         StartCoroutine(FirstCreatePlayerObj());
+
+        //Debug.Log("NetworckroomCount" + joinedRoom.PlayerCount);
+
     }
 
     /// <summary>
@@ -235,6 +238,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="newPlayer"></param>
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
+
         Debug.Log("OnPlayerEnteredRoom");
         checkEmptyRoomCoroutine = SetCoroutine(newPlayer);
         banPlayerKickOutOREnteredRoomCoroutine = BanPlayerKickOutOREnteredRoom(newPlayer);
@@ -278,14 +282,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
         if (!isRoomMaster) {
-            if (joinedRoom.CustomProperties.TryGetValue("playerCount", out object joinedRoomPlayerCountObj)) {
-                Debug.Log("joinedRoomPlayerCountObj" + (int)joinedRoomPlayerCountObj);
-                if ((int)joinedRoomPlayerCountObj == 1) {
+            //if (joinedRoom.CustomProperties.TryGetValue("playerCount", out object joinedRoomPlayerCountObj)) {
+            //    Debug.Log("joinedRoomPlayerCountObj" + (int)joinedRoomPlayerCountObj);
+                if (PhotonNetwork.CurrentRoom.PlayerCount== 1) {
                     Debug.Log("DestroyObj");
                     Destroy(joinedRoomObj);
                     joinedRoom = null;
                 }
-            }
+            //}
         }
 
         if (PhotonNetwork.InRoom) {

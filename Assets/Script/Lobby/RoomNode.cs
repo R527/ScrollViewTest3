@@ -86,7 +86,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         settingNum = (int)roomInfo.MaxPlayers;
         titleText.text = title;
         enterButtonText.text = roomInfo.PlayerCount + "/" + settingNum + "入室";
-        roomInfo.CustomProperties["playerCount"] = roomInfo.PlayerCount;
+        //roomInfo.CustomProperties["playerCount"] = roomInfo.PlayerCount;
         //banListStrを解凍する
         string banListStr = (string)roomInfo.CustomProperties["banListStr"];
         banList = banListStr.Split(',').ToList<string>();
@@ -256,7 +256,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
             if(roomId == (string)roomInfo.CustomProperties["roomId"]) {
                 NetworkManager.instance.joinedRoom = roomInfo;
                 Debug.Log("NetworkManager.instance.joinedRoom" + NetworkManager.instance.joinedRoom.CustomProperties["roomId"]);
-
+                //Debug.Log("roomCount" + (int)NetworkManager.instance.joinedRoom.CustomProperties["playerCount"]);
             }
         }
         foreach(RoomNode roomObj in NetworkManager.instance.roomNodeObjList) {
