@@ -63,6 +63,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
         roomContent = GameObject.FindGameObjectWithTag("content");
+        Debug.Log("Setcontent");
     }
 
     public override void OnConnectedToMaster() {
@@ -220,8 +221,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
                 //まだアクティブ化されていないRoomがある場合こちらで生成する
             }else if (!info.RemovedFromList) {
+                Debug.Log("inactiveEntries" + inactiveEntries.Count);
 
-                roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
+                roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
+                //roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
                 roomNode.Activate(info);
                 roomNodeObjList.Add(roomNode);
                 activeEntries.Add(info.Name, roomNode);
@@ -268,6 +271,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
     }
 
+    /// <summary>
+    /// 部屋から退出したときに自動で呼ばれる
+    /// </summary>
+    public override void OnLeftRoom() {
+        base.OnLeftRoom();
+        Destroy(gameManager.timeController);
+        Debug.Log("OnLeftRoom");
+        PhotonNetwork.Disconnect();
+
+        StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY));
+        StartCoroutine(ReSetSetUp());
+    }
 
     //////////////////////////////
     ///メソッド
@@ -282,14 +297,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
         if (!isRoomMaster) {
-            //if (joinedRoom.CustomProperties.TryGetValue("playerCount", out object joinedRoomPlayerCountObj)) {
-            //    Debug.Log("joinedRoomPlayerCountObj" + (int)joinedRoomPlayerCountObj);
-                if (PhotonNetwork.CurrentRoom.PlayerCount== 1) {
-                    Debug.Log("DestroyObj");
-                    Destroy(joinedRoomObj);
-                    joinedRoom = null;
-                }
-            //}
+            Debug.Log("LeaveRoomDestoryObj");
+            if (PhotonNetwork.CurrentRoom.PlayerCount== 1) {
+                Debug.Log("DestroyObj");
+                Destroy(joinedRoomObj);
+                joinedRoom = null;
+            }
         }
 
         if (PhotonNetwork.InRoom) {
@@ -310,18 +323,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
     }
 
-    /// <summary>
-    /// 部屋から退出したときに自動で呼ばれる
-    /// </summary>
-    public override void OnLeftRoom() {
-        base.OnLeftRoom();
-        Destroy(gameManager.timeController);
-        Debug.Log("OnLeftRoom");
-        PhotonNetwork.Disconnect();
 
-        StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY));
-        StartCoroutine(ReSetSetUp());
-    }
 
 
     /// <summary>
@@ -331,7 +333,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     public IEnumerator ReSetSetUp() {
         yield return new WaitUntil(() => PhotonNetwork.NetworkingClient.DisconnectedCause == DisconnectCause.DisconnectByClientLogic);
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "Lobby");
+
+        //yield return new WaitForSeconds(2.0f);
         SetUp();
+        //OnRoomListUpdate(roomInfoList);
     }
 
     /// <summary>
