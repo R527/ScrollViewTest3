@@ -295,15 +295,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void LeaveRoom() {
         gameManager.timeController.isPlay = false;
 
-        //部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
-        if (!isRoomMaster) {
-            Debug.Log("LeaveRoomDestoryObj");
-            if (PhotonNetwork.CurrentRoom.PlayerCount== 1) {
-                Debug.Log("DestroyObj");
-                Destroy(joinedRoomObj);
-                joinedRoom = null;
-            }
-        }
+        ////部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
+        //if (!isRoomMaster) {
+        //    Debug.Log("LeaveRoomDestoryObj");
+        //    if (PhotonNetwork.CurrentRoom.PlayerCount== 1) {
+        //        Debug.Log("DestroyObj");
+        //        //Destroy(joinedRoomObj);
+        //        joinedRoom = null;
+        //    }
+        //}
 
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
