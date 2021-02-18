@@ -10,4 +10,7 @@ public class ChatLogPlayerButton : MonoBehaviour
     public int playerID;
     public Button playerButton;
     public Image playerBtnImage;
+    public int iconNo;
+    public List<Sprite> iconSpriteList;
+
 }

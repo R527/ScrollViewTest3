@@ -16,6 +16,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Button playerButton;
     public Text playerInfoText;
     public Text playerNameText;
+    public int iconNo;//アイコンの絵用
     public Image iconImage;
     public List<Sprite> iconSpriteList;
     public RectTransform tran;
@@ -23,7 +24,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public int playerID;
     public string myUniqueId;
     public string playerName;
-    public int iconNo;//アイコンの絵用
     public ROLLTYPE rollType = ROLLTYPE.ETC;
     public bool live;//生死 trueで生存している
     public Text rollText;

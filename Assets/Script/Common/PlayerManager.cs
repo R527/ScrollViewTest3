@@ -303,8 +303,11 @@ public class PlayerManager : MonoBehaviour {
 
         if(chatData.comingOutText != "") {
             comingOut = "," + chatData.comingOutText;
+            Debug.Log("comingOut" + comingOut);
         }
-        str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID + comingOut;
+        Debug.Log("chatData.iconNo" + chatData.iconNo);
+
+        str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID + "," + chatData.iconNo + "," + comingOut;
         return str;
     }
 
@@ -328,7 +331,7 @@ public class PlayerManager : MonoBehaviour {
         //プレイヤーID順にボタン用の名前を登録する
         string nameList = "";
         foreach (Player player in gameManager.chatSystem.playersList) {
-            nameList += player.playerID + "," + player.playerName + "," +  player.rollType +"&";
+            nameList += player.playerID + "," + player.playerName + "," +  player.rollType + "," + player.playerButton.iconNo + "&";
         }
         nameList = nameList.Substring(0, nameList.Length - 1);
 
@@ -381,8 +384,9 @@ public class PlayerManager : MonoBehaviour {
             string[] getChatLogList = str.Split(',').ToArray<string>();
             string inputData = getChatLogList[0];
             int boardColor = int.Parse(getChatLogList[1]);
-            playerName = getChatLogList[2] + getChatLogList[4];
+            playerName = getChatLogList[2] + getChatLogList[5];
             int playerID = int.Parse(getChatLogList[3]);
+            int iconNo = int.Parse(getChatLogList[4]);
 
             //SPEAKER_TYPEがON OFFどちらでもOFFLINE処理をする
             SPEAKER_TYPE speaker_Type = SPEAKER_TYPE.NULL;
@@ -395,7 +399,7 @@ public class PlayerManager : MonoBehaviour {
                 chatLog.CreateNextDay();
             } else {
                 //チャット生成
-                chatLog.CreateLogChat(speaker_Type, inputData, playerID, boardColor, playerName);
+                chatLog.CreateLogChat(speaker_Type, inputData, playerID, boardColor, playerName, iconNo);
             }
         }
 
@@ -410,7 +414,8 @@ public class PlayerManager : MonoBehaviour {
             int playerID = int.Parse(buttonData[0]);
             playerName = buttonData[1];
             string roll = buttonData[2];
-            chatLog.CreatePlayerButton(playerName, playerID, roll);
+            int iconNo = int.Parse(buttonData[3]);
+            chatLog.CreatePlayerButton(playerName, playerID, roll,iconNo);
         }
     }
 

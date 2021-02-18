@@ -49,9 +49,9 @@ public class ChatLog : MonoBehaviour
     /// <summary>
     /// ログ保存したものを復元する
     /// </summary>
-    public void CreateLogChat(SPEAKER_TYPE speaker_Type, string inputData, int playerID, int boardColor,string playerName) {
+    public void CreateLogChat(SPEAKER_TYPE speaker_Type, string inputData, int playerID, int boardColor,string playerName, int iconNo) {
 
-        ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, ROLLTYPE.ETC);
+        ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, ROLLTYPE.ETC, iconNo);
         if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_OFFLINE) {
             playerName = "GM";
             chatData.chatType = CHAT_TYPE.GM;
@@ -61,6 +61,7 @@ public class ChatLog : MonoBehaviour
         SetChatNode(chatNode,chatData);
         chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
         chatNode.statusText.text = playerName;
+        chatNode.iconNo = iconNo;
 
         //ComingOutなら横幅を調節する
         if(inputData == "") {
@@ -88,13 +89,14 @@ public class ChatLog : MonoBehaviour
     /// <param name="playerName"></param>
     /// <param name="playerID"></param>
     /// <param name="gameManager"></param>
-    public void CreatePlayerButton(string playerName, int playerID, string roll) {
+    public void CreatePlayerButton(string playerName, int playerID, string roll, int iconNo) {
 
         playerButton = Instantiate(playerButtonPrefab, buttonTran, false);
         playerButton.transform.SetParent(buttonTran);
         playerButton.playerNameText.text = playerName;
         playerButton.playerID = playerID;
         playerButton.rollText.text = roll;
+        playerButton.iconNo = iconNo;
         if (PlayerManager.instance.myID == playerID) {
             playerButton.playerBtnImage.GetComponent<Outline>().enabled = true;
         }

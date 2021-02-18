@@ -20,10 +20,13 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     public Text chatText;
     public GameObject statusObj;
     public GameObject iconObj;
+    public Image iconImage;
+    public int iconNo;
+    public List<Sprite> iconSpriteList;
     public Text statusText;
     public Color statusColor;
+    public Image chatBoard;
     [SerializeField] LayoutGroup layoutGroup;
-    public  Image chatBoard;
     public LayoutElement iconObjLayoutElement;
     public LayoutElement chatObjLayoutElement;
     public VerticalLayoutGroup chatVerticalLayoutGroup;
@@ -56,9 +59,11 @@ public class ChatNode : MonoBehaviourPunCallbacks {
 
         //GMか否か
         if (chatData.chatType == CHAT_TYPE.GM) {
+            this.iconNo = 9999;
             statusText.text = "GM";
         } else {
 
+            this.iconNo = iconNo;
             //PlayerがCOしているか否か（COしている場合は名前の横に職業名を記載
             //stringがnullかから文字かを判定し、その判定をbool型で返す。
             //(chatData.playerID - 1)はGM分をー１にする調整

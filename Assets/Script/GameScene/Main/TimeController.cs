@@ -558,7 +558,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
         dayObj.day = day;
         dayObj.nextDayText.text = day + "日目";
         dayOrderButton.nextDaysList.Add(dayObj.gameObject);
-        ChatData chatData = new ChatData("", 7777, 7777, SPEAKER_TYPE.NULL.ToString(), ROLLTYPE.ETC);
+        ChatData chatData = new ChatData("", 7777, 7777, SPEAKER_TYPE.NULL.ToString(), ROLLTYPE.ETC,7777);
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
     }
 

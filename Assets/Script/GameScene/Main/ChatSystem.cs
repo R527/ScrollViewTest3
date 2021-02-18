@@ -76,7 +76,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             inputData = gameMasterChatManager.gameMasterChat;
 
             //データを格納
-            ChatData chatData = new ChatData(inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM);
+            ChatData chatData = new ChatData(inputData, 999, boardColor, speaker_Type.ToString(), ROLLTYPE.GM,9999);
             chatData.chatType = CHAT_TYPE.GM;
 
             //チャットNodeの初期化
@@ -177,7 +177,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         chatNode.transform.SetParent(chatContent.transform);
 
 
-        ChatData chatData = new ChatData(inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM);
+        ChatData chatData = new ChatData(inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM,9999);
         chatData.chatType = CHAT_TYPE.GM;
         chatNode.InitChatNode(chatData, 0, comingOut, true);
 
@@ -196,6 +196,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
 
 
         //ゲーム中に発言された内容を保存する
+        Debug.Log("chatData.iconNo" + chatData.iconNo);
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
 
         //ボードの色を変える

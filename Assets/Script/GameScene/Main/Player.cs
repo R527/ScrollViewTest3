@@ -224,7 +224,7 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <param name="comingOut"></param>
     public void CreateNode(int id, string inputData, int boardColor, bool comingOut, bool subescribe) {
         //Debug.Log("CreateNode: Player");
-        photonView.RPC(nameof(CreateChatNodeFromPlayer), RpcTarget.All, id, inputData, boardColor, comingOut, subescribe);
+        photonView.RPC(nameof(CreateChatNodeFromPlayer), RpcTarget.All, id, inputData, boardColor, comingOut, subescribe,iconNo);
     }
 
 
@@ -236,9 +236,9 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <param name="boardColor"></param>
     /// <param name="comingOut"></param>
     [PunRPC]
-    public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut, bool subescribe) {
+    public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut, bool subescribe, int iconNo) {
 
-        ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, rollType);
+        ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, rollType,playerButton.iconNo);
 
 
         //発言者の分岐
