@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
 /// <summary>
 /// Lobbyに関するボタン等を管理
 /// </summary>
@@ -13,6 +13,7 @@ public class LobbyButtonManager : MonoBehaviour
     public Button menuButton;
     public GameObject menuPopUp;
     public NetworkManager networkManagerPrefab;
+    public NetworkManager networkManager;
 
     //createRoom
     public Button createRoomButton;
@@ -25,7 +26,7 @@ public class LobbyButtonManager : MonoBehaviour
     private void Awake() {
         GameObject network = GameObject.FindGameObjectWithTag("networkManager");
         if (network == null) {
-            NetworkManager networkManager = Instantiate(networkManagerPrefab);
+            networkManager = Instantiate(networkManagerPrefab);
             networkManager.SetUp();
         } else {
             network.GetComponent<NetworkManager>().SetUp();
@@ -40,6 +41,11 @@ public class LobbyButtonManager : MonoBehaviour
 
         //Lobby画面でサブスクライブ期間中かを確認する
         PlayerManager.instance.SetSubscribe();
+
+
+        if(NetworkManager.instance.roomInfoList.Count > 0) {
+            NetworkManager.instance.OnRoomListUpdate(NetworkManager.instance.roomInfoList) ;
+        }
     }
 
     /// <summary>
@@ -64,5 +70,7 @@ public class LobbyButtonManager : MonoBehaviour
     public void BackButton() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
         StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.TITLE));
+        Destroy(networkManager.gameObject);
+        PhotonNetwork.Disconnect();
     }
 }

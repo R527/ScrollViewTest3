@@ -35,7 +35,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public string roomName;
     public Photon.Realtime.RoomInfo joinedRoom;
     public GameObject joinedRoomObj;
-    public List<Photon.Realtime.RoomInfo> roomInfoList;
+    public List<Photon.Realtime.RoomInfo> roomInfoList = new List<RoomInfo>();
     public bool isRoomMaster;//trueなら部屋を作成した人
 
     //Lobby関連
@@ -204,7 +204,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
 
             RoomNode roomNode = new RoomNode();
-
+            Debug.Log("info.name" + info.Name);
             //アクティブの部屋な部屋がある場合その部屋の更新を行う
             if (activeEntries.TryGetValue(info.Name, out roomNode)) {
                 //info.CustomProperties["roomId"];
@@ -300,7 +300,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             Debug.Log("LeaveRoomDestoryObj");
             if (PhotonNetwork.CurrentRoom.PlayerCount == 1) {
                 Debug.Log("DestroyObj");
-                //Destroy(joinedRoomObj);
+                Destroy(joinedRoomObj);
                 joinedRoom = null;
             }
         }
