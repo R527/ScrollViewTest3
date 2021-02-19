@@ -248,8 +248,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     /// roomIDをもとに部屋に参加する
     /// </summary>
     private void OnClickJoinRoom() {
-        //banListのチェックを入れる、はじく場合はPopUpを出して
-        NetworkManager.instance.JoinRoom(roomId);
 
         //Roomを削除する際にエラーが発生するのでそれを回避するためのroomInfoとObjを登録する
         foreach (RoomInfo roomInfo in NetworkManager.instance.roomInfoList) {
@@ -264,6 +262,9 @@ public class RoomNode : MonoBehaviourPunCallbacks {
                 NetworkManager.instance.joinedRoomObj = roomObj.gameObject;
             }
         }
+
+        //banListのチェックを入れる、はじく場合はPopUpを出して
+        NetworkManager.instance.JoinRoom(roomId);
     }
 
     /// <summary>

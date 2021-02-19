@@ -185,6 +185,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public override void OnJoinRoomFailed(short returnCode, string message) {
         Debug.Log("OnJoinRoomFailed");
         OnRoomListUpdate(roomInfoList);
+        Destroy(joinedRoomObj);
+        joinedRoom = null;
         roomSetting.rollSetting.wrongPopUpObj.SetActive(true);
         roomSetting.rollSetting.wrongPopUp.wrongText.text = "入室に失敗しました。";
     }
