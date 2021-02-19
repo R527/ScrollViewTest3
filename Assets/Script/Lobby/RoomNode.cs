@@ -157,7 +157,8 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         DisplayRollList(rollNumList);
 
         //新規のRoomNodeを一番下に置く
-        SetAsLastSibling();
+        //SetAsLastSibling();
+        SetAsFristSibling();
     }
 
 
@@ -236,6 +237,10 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         return this;
     }
 
+    public RoomNode SetAsFristSibling() {
+        rectTransform.SetAsFirstSibling();
+        return this;
+    }
     /// <summary>
     /// 部屋のIDを取得する
     /// </summary>
