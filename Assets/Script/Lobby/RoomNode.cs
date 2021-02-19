@@ -224,7 +224,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
     ///部屋が閉じられた時の処理
     public void Deactivate() {
-        Destroy(gameObject);
+       Destroy(gameObject);
     }
 
     /// <summary>
