@@ -91,19 +91,15 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 SetChatNode(chatNode, chatData, false);
                 //OnLine
             } else if (speaker_Type == SPEAKER_TYPE.GAMEMASTER_ONLINE) {
-
                 photonView.RPC(nameof(CreateGameMasterChatNode), RpcTarget.All, inputData, boardColor, comingOut);
             }
-
         } else {
-
             //チャットが空かつ通常チャットは生成しない
             if (!comingOut &&  String.IsNullOrWhiteSpace(chatInputField.text)) {
                 return;
             }
 
             //Playerの発言
-            //chatInputField.text == string.Empty 
             //死亡しているプレイヤー
             if (!myPlayer.live) {
                 boardColor = 3;
@@ -128,9 +124,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
                 boardColor = 0;
             }
 
-
             inputView.superChatBtnImage.color = inputView.btnColor[0];
-            //inputView.superChatButtonText.text = "通常";
             inputView.superChat = false;
 
             //禁止Wordチェック
@@ -139,11 +133,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             chatInputField.text = "";
 
             //発言を生成
-            myPlayer.CreateNode(id, inputData, boardColor, comingOut,PlayerManager.instance.subscribe);
-
+            myPlayer.CreateNode(inputData, boardColor, comingOut,PlayerManager.instance.subscribe);
         }
-
-
     }
 
     /// <summary>
@@ -152,7 +143,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     private void CheckSuddenDeath() {
         //一言でも発言したら参加しているものとして扱う
         if (!gameMasterChatManager.gameManager.timeController.isSpeaking) {
-            Debug.Log("isSpeaking");
             gameMasterChatManager.gameManager.timeController.isSpeaking = true;
             gameMasterChatManager.gameManager.timeController.setSuddenDeath = true;
             gameMasterChatManager.gameManager.timeController.SetSuddenDeath();
@@ -176,7 +166,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         ChatNode chatNode = Instantiate(chatNodePrefab, chatContent.transform, false);
         chatNode.transform.SetParent(chatContent.transform);
 
-
         ChatData chatData = new ChatData(inputData, 999, boardColor, SPEAKER_TYPE.GAMEMASTER_ONLINE.ToString(), ROLLTYPE.GM,9999);
         chatData.chatType = CHAT_TYPE.GM;
         chatNode.InitChatNode(chatData, 0, comingOut, true);
@@ -193,10 +182,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
     /// <param name="chatData"></param>
     /// <param name="comingOut"></param>
     public void SetChatNode(ChatNode chatNode, ChatData chatData, bool comingOut) {
-
-
         //ゲーム中に発言された内容を保存する
-        Debug.Log("chatData.iconNo" + chatData.iconNo);
         PlayerManager.instance.saveChatLog += PlayerManager.instance.ConvertStringToChatData(chatData) + "%";
 
         //ボードの色を変える
@@ -231,9 +217,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             }
         }
 
-
-
-
         //playerが連続でチャットを投稿した場合、アイコンObj等を削除する
         //カミングアウト時は適応されない
         if (lastChatNode != null)
@@ -260,7 +243,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             coTimeLimit++;
             if (coTimeLimit >= 4) {
                 //Buttoncomponentにアクセスしないとinteractableが取れない
-                //GameObject.FindGameObjectWithTag("COButton").GetComponent<Button>().interactable = false;
 
                 //4回以上Coしたら押せないように制御する
                 fillter.comingOutButton.interactable = false;
@@ -290,7 +272,6 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
             return isChatSet;
         }
 
-
         if (!chatNode.chatWolf && chatNode.chatLive) {
             //通常チャットは全員が見れる
             isChatSet = true;
@@ -301,10 +282,7 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         } else if (chatNode.chatLive && chatNode.chatWolf && myPlayer.wolfChat && myPlayer.live) {
             //狼チャットは狼でいて生きているプレイヤーだけが見れる
             isChatSet = true;
-
         }
-
-
         return isChatSet;
     }
     /// <summary>
@@ -315,7 +293,5 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         inputView.viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
         StartCoroutine(gameMasterChatManager.gameManager.inputView.PopUpFalse());
     }
-
-
 }
 

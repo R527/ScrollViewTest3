@@ -14,7 +14,6 @@ public class GameOver : MonoBehaviour {
     //main
     public int wolfCount;
     public int liverCount;
-    public GameObject timeSavingButton;
     public string winnerList;
     public bool isGameOver;
     public bool isWin;
@@ -63,9 +62,6 @@ public class GameOver : MonoBehaviour {
                 liverCount++;
             }
         }
-        Debug.Log("生存者数：" + liverCount);
-        Debug.Log("狼の人数:" + wolfCount);
-
         isWin = false;
 
         //狼が0人の場合(市民の勝利
@@ -75,11 +71,8 @@ public class GameOver : MonoBehaviour {
                 if (!Obj.wolfCamp) {
                     winnerList += "\r\n" + Obj.playerName;
                 }
-                Debug.Log(winnerList);
             }
             gameManager.gameMasterChatManager.gameMasterChat = "市民陣営の勝利\r\n" + winnerList;
-            Debug.Log("市民陣営の勝利");
-
             if (gameManager.chatSystem.myPlayer.wolfCamp == false) {
                 isWin = true;
             } 
@@ -91,15 +84,11 @@ public class GameOver : MonoBehaviour {
                 if (Obj.wolfCamp) {
                     winnerList += "\r\n" + Obj.playerName;
                 }
-                Debug.Log(winnerList);
             }
             gameManager.gameMasterChatManager.gameMasterChat = "人狼陣営の勝利\r\n" + winnerList;
-            Debug.Log("人狼陣営の勝利");
-
             if (gameManager.chatSystem.myPlayer.wolfCamp == true) {
                 isWin = true;
             }
-
         } else if (liverCount > wolfCount) {
             //勝利条件を満たしていない場合（ゲーム続行
             liverCount = 0;
@@ -135,9 +124,6 @@ public class GameOver : MonoBehaviour {
 
         //チャットログを全表示する
         gameManager.chatListManager.ReleaseChatLog();
-
-
-        
     }
 
     /// <summary>
@@ -207,7 +193,6 @@ public class GameOver : MonoBehaviour {
     /// </summary>
     public void CheckEndGame() {
         if (PlayerPrefs.GetString("突然死用のフラグ") == PlayerManager.SuddenDeath_TYPE.不参加.ToString()) {
-            Debug.Log("不参加");
             PlayerManager.instance.totalNumberOfSuddenDeath++;
             PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
         }

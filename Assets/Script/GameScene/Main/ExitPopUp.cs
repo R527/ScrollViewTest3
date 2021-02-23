@@ -45,7 +45,7 @@ public class ExitPopUp : MonoBehaviour
         if (isExit) {
             return;
         }
-        NetworkManager.instance.ForcedExitRoom();
         isExit = true;
+        NetworkManager.instance.ForcedExitRoom();
     }
 }

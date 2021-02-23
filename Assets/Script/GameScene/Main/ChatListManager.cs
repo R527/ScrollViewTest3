@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 /// <summary>
 /// ChatListの管理。場合に応じてSetActiveで制御する
@@ -11,7 +10,7 @@ public class ChatListManager : MonoBehaviour {
     //ChatList
     public List<ChatNode> normalList = new List<ChatNode>();
     public List<ChatNode> wlofList = new List<ChatNode>();
-    public List<ChatNode> callOutList = new List<ChatNode>();
+    //public List<ChatNode> callOutList = new List<ChatNode>();
     public List<ChatNode> deathList = new List<ChatNode>();
     public List<ChatNode> gameMasterList = new List<ChatNode>();
 
@@ -21,7 +20,6 @@ public class ChatListManager : MonoBehaviour {
     public List<List<ChatNode>> allwolfList = new List<List<ChatNode>>();
     public List<List<ChatNode>> alldeathList = new List<List<ChatNode>>();
     public bool isfilter;//trueならフィルター中 
-    public int playerNum;//Playerナンバー
 
     //MyPlayer情報
     public bool myWolfChat;
@@ -34,16 +32,15 @@ public class ChatListManager : MonoBehaviour {
             alldeathList.Add(new List<ChatNode>());
         }
     }
+
     /// <summary>
     /// 参加人数分のListを用意する(中身のない箱を作るだけ
     /// </summary>
     /// <param name="numLimit"></param>
     public void PlayerListSetUp( bool wolf) {
-
         //MyPlayerの情報を取得
         myWolfChat = wolf;
     }
-
 
     /// <summary>
     /// フィルター機能をOnにします。
@@ -51,12 +48,9 @@ public class ChatListManager : MonoBehaviour {
     /// </summary>
     /// <param name="id"></param>
     public void OnFilter(int id) {
-        //isfilter = true;
-
         //GMチャット削除
         foreach (ChatNode chatObj in gameMasterList) {
             chatObj.gameObject.SetActive(false);
-            Debug.Log("GMチャット削除");
         }
 
         //通常のチャット
@@ -67,7 +61,6 @@ public class ChatListManager : MonoBehaviour {
                     chatObj.gameObject.SetActive(true);
                 }
             }
-            Debug.Log("通常チャット");
         }
         //狼チャット
         foreach (List<ChatNode> chatList in allwolfList) {
@@ -77,7 +70,6 @@ public class ChatListManager : MonoBehaviour {
                     chatObj.gameObject.SetActive(true);
                 }
             }
-            Debug.Log("狼チャット");
         }
         //死亡チャット
         foreach (List<ChatNode> chatList in alldeathList) {
@@ -87,9 +79,7 @@ public class ChatListManager : MonoBehaviour {
                     chatObj.gameObject.SetActive(true);
                 }
             }
-            Debug.Log("死亡チャットチャット");
         }
-        Debug.Log("フィルター通過");
     }
 
     /// <summary>
@@ -97,7 +87,6 @@ public class ChatListManager : MonoBehaviour {
     /// </summary>
     /// <param name="id"></param>
     public void OffFilter() {
-        Debug.Log("OffFilter");
         //GMチャット
         foreach (ChatNode chatObj in gameMasterList) {
             chatObj.gameObject.SetActive(true);
@@ -105,13 +94,11 @@ public class ChatListManager : MonoBehaviour {
         //通常のチャット
         foreach (List<ChatNode> chatList in allnormalList) {
             foreach (ChatNode chatObj in chatList) {
-                Debug.Log("ノーマルチャット");
                 chatObj.gameObject.SetActive(true);
             }
         }
         //狼チャット
         if (myWolfChat) {
-            Debug.Log("狼チャット");
             foreach (List<ChatNode> chatList in allwolfList) {
                 foreach (ChatNode chatObj in chatList) {
                     chatObj.gameObject.SetActive(true);
@@ -186,16 +173,13 @@ public class ChatListManager : MonoBehaviour {
     /// <summary>
     /// GameOver時に全てのチャットを開放する
     /// </summary>
-
     public void ReleaseChatLog() {
-        Debug.Log("チャット開放");
         foreach (ChatNode chatObj in gameMasterList) {
             chatObj.gameObject.SetActive(true);
         }
         //通常のチャット
         foreach (List<ChatNode> chatList in allnormalList) {
             foreach (ChatNode chatObj in chatList) {
-                Debug.Log("ノーマルチャット");
                 chatObj.gameObject.SetActive(true);
             }
         }

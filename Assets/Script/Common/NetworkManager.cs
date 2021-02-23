@@ -265,7 +265,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         base.OnPlayerLeftRoom(otherPlayer);
 
         //ゲーム開始前Playerを削除する
-        if (!gameManager.gameStart && !gameManager.isConfirmation) {
+        if (!gameManager.gameStart) {
             DeleateOtherPlayer(otherPlayer);
 
             //人数を減らす

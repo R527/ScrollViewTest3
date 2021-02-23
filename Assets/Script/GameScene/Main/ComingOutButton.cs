@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using Photon.Realtime;
 
 /// <summary>
 /// カミングアウト用のボタンに取り付けている
@@ -27,7 +26,6 @@ public class ComingOutButton : MonoBehaviourPunCallbacks {
     /// カミングアウト用のチャットボタン
     /// </summary>
     public void ComingOut() {
-        Debug.Log("CO");
         SetComingOutText();
         chatSystem.chatInputField.text = "";
         chatSystem.CreateChatNode(true, SPEAKER_TYPE.UNNKOWN);
@@ -40,6 +38,4 @@ public class ComingOutButton : MonoBehaviourPunCallbacks {
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertis);
         Debug.Log("comingOutText" + (string)PhotonNetwork.LocalPlayer.CustomProperties["comingOutText"]);
     }
-
-
 }

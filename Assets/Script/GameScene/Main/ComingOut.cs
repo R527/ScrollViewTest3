@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
-using Photon.Realtime;
 
 /// <summary>
 /// 部屋の設定ごとにCoボタンを用意する
@@ -42,10 +39,8 @@ public class ComingOut : MonoBehaviourPunCallbacks {
                     str = (string)comingOutTextObj;
                     break;
                 }
-                Debug.Log("IsTimeUp" + str);
             }
         }
-        
         return str;
     }
 }

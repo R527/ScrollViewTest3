@@ -57,7 +57,7 @@ public class ChatLog : MonoBehaviour
             chatData.chatType = CHAT_TYPE.GM;
         }
         ChatNode chatNode = Instantiate(chatNodePrefab, chatTran, false);
-        chatNode.InitChatNodeLog(chatData, 0, false);
+        chatNode.InitChatNodeLog(chatData);
         SetChatNode(chatNode,chatData);
         chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
         chatNode.statusText.text = playerName;

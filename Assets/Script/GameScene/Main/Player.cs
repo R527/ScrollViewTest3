@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 using System;
 
@@ -19,7 +18,6 @@ public class Player : MonoBehaviourPunCallbacks {
     public ChatSystem chatSystem;
     public VoteCount voteCount;
     public TimeController timeController;
-    public CheckEnteredRoom checkEnteredRoom;
 
     //main
     public int playerID;
@@ -35,7 +33,6 @@ public class Player : MonoBehaviourPunCallbacks {
     public int iconNo;//アイコンの絵用
     public PlayerButton playerButton;
     public Transform chatTran;
-    private IEnumerator setCoroutine = null;
     private IEnumerator checkEmptyRoomCoroutine = null;
     public EMPTYROOM emtyRoom;
 
@@ -47,7 +44,6 @@ public class Player : MonoBehaviourPunCallbacks {
     public PlayerButton playerButtonPrefab;
     private Transform buttontran;
     public List<int> playerImageNumList;
-    //public int playerImageNum;
 
     //masterのみCheckOnLine用
     private float checkTimer;
@@ -75,9 +71,6 @@ public class Player : MonoBehaviourPunCallbacks {
         }
         propertiers.Add("myUniqueID", PlayerManager.instance.myUniqueId);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
-        for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
-            //Debug.Log((string)PhotonNetwork.LocalPlayer.CustomProperties["banUniqueID" + i.ToString()]);
-        }
 
         //生存者にする
         live = true;
@@ -93,9 +86,7 @@ public class Player : MonoBehaviourPunCallbacks {
         if (photonView.IsMine) {
             chatSystem.myPlayer = this;
             playerName = PlayerManager.instance.playerName;
-            //iconNo = PhotonNetwork.LocalPlayer.ActorNumber;
             playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-
         }
 
         if (!PhotonNetwork.IsMasterClient) {
@@ -115,9 +106,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         //プレイヤーボタン作成
         if (photonView.IsMine) {
-            
             AddPlayerImage();
-
             photonView.RPC(nameof(CreatePlayerButton), RpcTarget.AllBuffered);
         } else if (!photonView.IsMine) {
             //他人の世界に生成された自分のPlayerオブジェクトなら→Bさんの世界のPlayerAが行う処理
@@ -132,16 +121,8 @@ public class Player : MonoBehaviourPunCallbacks {
     [PunRPC]
     private IEnumerator CreatePlayerButton() {
         yield return null;
-        //yield return new WaitForSeconds(2.0f);
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
-        //playerButton.transform.SetParent(buttontran);
-        //Debug.Log("playerName" + playerName);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
-        Debug.Log("CreatePlayerButton SetUp");
-        //Button作成完了を通知する
-        //var propertiers = new ExitGames.Client.Photon.Hashtable();
-        //propertiers.Add("isCreatePlayerButton", true);
-        //PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
     }
 
 
@@ -173,8 +154,6 @@ public class Player : MonoBehaviourPunCallbacks {
                     rollType = (ROLLTYPE)player.CustomProperties["roll"];
                 }
             }
-            //自分以外のプレイヤーは青色のラインがない
-            //gameObject.GetComponent<Outline>().enabled = false;
         }
 
         //役職ごとの判定を追加
@@ -187,8 +166,6 @@ public class Player : MonoBehaviourPunCallbacks {
         } else if (rollType == ROLLTYPE.狂人) {
             wolfCamp = true;
         }
-
-        //playerText.text = rollType.ToString() + playerName;
     }
 
 
@@ -222,9 +199,8 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <param name="inputData"></param>
     /// <param name="boardColor"></param>
     /// <param name="comingOut"></param>
-    public void CreateNode(int id, string inputData, int boardColor, bool comingOut, bool subescribe) {
-        //Debug.Log("CreateNode: Player");
-        photonView.RPC(nameof(CreateChatNodeFromPlayer), RpcTarget.All, id, inputData, boardColor, comingOut, subescribe,iconNo);
+    public void CreateNode(string inputData, int boardColor, bool comingOut, bool subescribe) {
+        photonView.RPC(nameof(CreateChatNodeFromPlayer), RpcTarget.All, inputData, boardColor, comingOut, subescribe,iconNo);
     }
 
 
@@ -236,11 +212,9 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <param name="boardColor"></param>
     /// <param name="comingOut"></param>
     [PunRPC]
-    public void CreateChatNodeFromPlayer(int id, string inputData, int boardColor, bool comingOut, bool subescribe, int iconNo) {
+    public void CreateChatNodeFromPlayer(string inputData, int boardColor, bool comingOut, bool subescribe, int iconNo) {
 
         ChatData chatData = new ChatData(inputData, playerID, boardColor, playerName, rollType,playerButton.iconNo);
-
-
         //発言者の分岐
         if (photonView.IsMine) {
             chatData.chatType = CHAT_TYPE.MINE;
@@ -254,14 +228,11 @@ public class Player : MonoBehaviourPunCallbacks {
         if (boardColor == 2) {
             chatData.chatWolf = wolfChat;
         }
-
-
         ChatNode chatNode = Instantiate(chatNodePrefab, chatTran, false);
 
         //RPC内にあるメソッドもRPCと同じ挙動をする
         //そのメソッドの先で呼ばれるメソッドもRPCと同じ挙動をする
         chatNode.InitChatNode(chatData, iconNo, comingOut, subescribe);
-
         chatSystem.SetChatNode(chatNode, chatData, comingOut);
     }
 
@@ -273,40 +244,20 @@ public class Player : MonoBehaviourPunCallbacks {
     /// <returns></returns>
 
     private IEnumerator SetOtherPlayer() {
-
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
-
-                //iconNo = player.ActorNumber;
                 break;
             }
         }
-
-        //playerText.text = rollType.ToString() + playerName;
-
-
-        //自分のボタンが作られるまで待つ
-        //bool isCreatePlayerButton = false;
-
-        //while (!isCreatePlayerButton || playerButton == null) {
-        //    if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCreatePlayerButton", out object isCreatePlayerButtonObj)) {
-        //        isCreatePlayerButton = (bool)isCreatePlayerButtonObj;
-        //        yield return null;
-        //    } else {
-        //        yield return null;
-        //    }
-        //}
         yield return null;
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
-        Debug.Log("SetOtherPlayer SetUp");
 
         //参加人数が揃っていたらtrueにしない
         if (gameManager.GetNum() != gameManager.numLimit) {
             gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         }
-
         gameManager.exitButton.interactable = true;
     }
 
@@ -337,7 +288,6 @@ public class Player : MonoBehaviourPunCallbacks {
 
                 if ((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
                     checkNum++;
-                    //Debug.Log("投票完了したプレイヤー" + player.NickName);
                 }
             }
             //投票完了人数が生存員数と一致したら時短する
@@ -345,7 +295,6 @@ public class Player : MonoBehaviourPunCallbacks {
                 checkTimer = -2;
                 timeController.isVotingCompleted = true;
                 timeController.SetIsVotingCompleted();
-                //Debug.Log("全員投票完了");
             }
         }
     }
@@ -377,7 +326,6 @@ public class Player : MonoBehaviourPunCallbacks {
             if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEmptyRoom", out object isCheckEmptyRoomObj)) {
                 emtyRoom = (EMPTYROOM)Enum.Parse(typeof(EMPTYROOM), isCheckEmptyRoomObj.ToString());
                 //満室処理
-                //Debug.Log(checkEmptyRoomCoroutine);
                 if (emtyRoom == EMPTYROOM.満室 || emtyRoom == EMPTYROOM.入室許可) {
                     isCheck = true;
                 } 
@@ -390,21 +338,12 @@ public class Player : MonoBehaviourPunCallbacks {
         }
     }
 
-    //private IEnumerator SetCoroutine() {
-    //    yield return WaitCreatePlayerButton();
-    //}
-
-    //private IEnumerator WaitCreatePlayerButton() {
-    //    yield return new WaitForSeconds(2.0f);
-        
-    //}
     /// <summary>
     /// マスタークライアント以外のプレイヤーボタンの生成を入室許可するまで止める
     /// </summary>
     /// <returns></returns>
     private bool WaitOtherCreatePlayerButton() {
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isCheckEnteredRoom", out object isCheckEnteredRoomObj)) {
-
             return (bool)isCheckEnteredRoomObj;
         }else {
             return false;
@@ -417,25 +356,16 @@ public class Player : MonoBehaviourPunCallbacks {
     public void AddPlayerImage() {
 
         for (int i = 0; i < playerButton.iconSpriteList.Count; i++) {
-            Debug.Log("List作成");
             if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playerImageNum" + i, out object playerImageNumObj)) {
-
                 if ((int)playerImageNumObj != i) {
                     playerImageNumList.Add(i);
-                    Debug.Log("List要素追加");
-
                 } else {
-                    Debug.Log("List要素削除");
-                    Debug.Log("playerImageNum" + (int)PhotonNetwork.CurrentRoom.CustomProperties["playerImageNum" + i]);
                     continue;
                 }
             } else {
-                Debug.Log("List要素追加");
                 playerImageNumList.Add(i);
             }
         }
-
-        Debug.Log("playerImageNumList.Count" + playerImageNumList.Count);
         iconNo = playerImageNumList[UnityEngine.Random.Range(0, playerImageNumList.Count)];
         
         playerImageNumList.Remove(iconNo);
@@ -446,9 +376,6 @@ public class Player : MonoBehaviourPunCallbacks {
 
         propertiers.Add("playerImageNum", iconNo);
         PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
-        Debug.Log("PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers)" + (int)PhotonNetwork.LocalPlayer.CustomProperties["playerImageNum"]);
-        //playerButton.iconImage.sprite = playerButton.iconSprite[playerImageNum];
-        Debug.Log("playerImageNum" + iconNo);
     }
 }
 

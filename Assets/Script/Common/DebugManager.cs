@@ -62,5 +62,8 @@ public class DebugManager : MonoBehaviour
         }
     }
 
+    public void DisplayDebugLog<T>() {
+
+    }
 
 }
