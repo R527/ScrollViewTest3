@@ -201,7 +201,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         Debug.Log("OnRoomListUpdate");
         Debug.Log("roomListCount" + roomList.Count);
         roomInfoList = roomList;
-
+        List<RoomNode> roomNodeList = new List<RoomNode>(); 
         foreach (Photon.Realtime.RoomInfo info in roomList) {
             //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
 
@@ -214,6 +214,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 //最後のプレイヤーがRoomに入った時にfalseにする
                 if (!info.RemovedFromList && info.IsOpen) {
                     roomNode.Activate(info);
+                    roomNodeList.Add(roomNode);
                 } else {
                     //部屋がなくなった場合
                     activeEntries.Remove(info.Name);
@@ -228,12 +229,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
                 //roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
                 roomNode.Activate(info);
+                roomNodeList.Add(roomNode);
                 roomNodeObjList.Add(roomNode);
                 activeEntries.Add(info.Name, roomNode);
 
                 OnRoomListUpdate(roomList);
             }
         }
+
+        roomNodeList = roomNodeList.OrderByDescending(x => x.roomId).ToList();
+
+
     }
 
 

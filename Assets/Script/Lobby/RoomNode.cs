@@ -158,7 +158,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
 
         //新規のRoomNodeを一番下に置く
         //SetAsLastSibling();
-        SetAsFristSibling();
+        //SetAsFristSibling();
     }
 
 
