@@ -12,7 +12,6 @@ public class BuyCurrency : MonoBehaviour {
     public Button currencyBtn;
     public GameObject currencyImage;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +23,4 @@ public class BuyCurrency : MonoBehaviour {
         rayCastManagerObj.SwitchGraphicRaycasters(false);
         currencyImage.SetActive(true);
     }
-
-
-
 }

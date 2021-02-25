@@ -18,9 +18,7 @@ public class Game_Menu : MonoBehaviour
         gameMenuButton.onClick.AddListener(GameMenuButton);
     }
 
-
     public void GameMenuButton() {
         Instantiate(gameMenu);
     }
-
 }

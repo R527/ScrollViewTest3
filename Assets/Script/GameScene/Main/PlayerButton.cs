@@ -6,11 +6,8 @@ using Photon.Pun;
 
 
 public class PlayerButton : MonoBehaviourPunCallbacks {
-
-
     //class
     public GameManager gameManager;
-
 
     //main
     public Button playerButton;
@@ -38,9 +35,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public bool wolfChat;//狼チャットに参加できるかどうか
     public bool wolfCamp;//狼陣営か否か
 
-    private Transform menbartran;
-
-
     private void Start() {
         gameCancasTran = GameObject.FindGameObjectWithTag("GameCanvas").transform;
         playerButton.onClick.AddListener(() => OnClickPlayerButton());
@@ -49,7 +43,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
 
 
     /// <summary>
-    /// 
+    /// PlayerBtnが生成されたときに使われる
     /// </summary>
     /// <param name="playerName"></param>
     /// <param name="iconNo"></param>
@@ -57,7 +51,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     /// <param name="gameManager"></param>
     /// <returns></returns>
     public IEnumerator SetUp(string playerName,int iconNo, int playerID,GameManager gameManager,bool isMine) {
-
         yield return null;
         this.gameManager = gameManager;
         this.playerName = playerName;
@@ -72,14 +65,8 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                 object playerImageNumObj = null;
                 yield return new WaitUntil(() => player.CustomProperties.TryGetValue("playerImageNum", out playerImageNumObj));
                 this.iconNo = (int)playerImageNumObj;
-
-                Debug.Log("(int)player.CustomPropertiesplayerImageNum" + (int)player.CustomProperties["playerImageNum"]);
-                //this.iconNo = (int)player.CustomProperties["playerImageNum"];
-
-                //Debug.Log("myUniqueId" + myUniqueId);
             }
         }
-
         live = true;
 
         //自分の世界の自分のボタンだけ外枠を青くする、ロールテキストを有効にする
@@ -87,10 +74,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             playBtnOutLine.enabled = true;
             rollText.enabled = true;
         }
-
-        menbartran = GameObject.FindGameObjectWithTag("MenbarContent").transform;
-        Debug.Log("menbartran" + menbartran);
-        //transform.SetParent(menbartran);
 
         if (PhotonNetwork.IsMasterClient && gameManager.GetNum() != gameManager.numLimit) {
             gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
@@ -103,7 +86,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="player"></param>
     public void SetRollSetting(Player player) {
-
         rollType = player.rollType;
         rollText.text = rollType.ToString();
         //役職ごとに判定を設ける
@@ -116,7 +98,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         } else if (rollType == ROLLTYPE.狂人) {
             wolfCamp = true;
         }
-
         //自分の役職が他プレイヤーを開示する場合
         OpenRoll();
     }
@@ -134,9 +115,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     ///投票、フィルター、夜の行動を制御 
     /// </summary>
     public void OnClickPlayerButton() {
-        Debug.Log(".ActorNumber" + PhotonNetwork.LocalPlayer.ActorNumber);
-        Debug.Log("playerID" + playerID);
-
         //フィルター機能ON
         if (gameManager.chatListManager.isfilter) {
             gameManager.chatListManager.OnFilter(playerID);
@@ -145,10 +123,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             //生存していて、自分以外のプレイヤーを指定
         } else if (!gameManager.chatListManager.isfilter && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
             //フィルター機能がOFFの時は各時間ごとの機能をする
-            Debug.Log(gameManager.timeController.timeType);
-
-            //TODO 必要？
-            //BanListの追加
             if (!live) {
                 AddBanPlayer();
             }
@@ -159,19 +133,15 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                 case TIME.投票時間:
                     //ここでは投票をするだけで他プレイヤーとの比較判定はしない
                     //比較はVoteCount.csで行われる
-
                     ActionPopUp voteObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
                     voteObj.actionText.text = playerName + "さんに投票しますか？";
                     voteObj.buttonText.text = "投票する";
                     voteObj.gameManager = this.gameManager;
                     voteObj.playerID = this.playerID;
                     voteObj.action_Type = ActionPopUp.Action_Type.投票;
-
                     break;
-
                 //夜の行動をとる処理
                 case TIME.夜の行動:
-                    Debug.Log("夜の行動");
                     if (!gameManager.chatSystem.myPlayer.isRollAction) {
                         gameManager.gameMasterChatManager.RollAction(playerID, fortune, wolf);
                     }
@@ -180,7 +150,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                 //マスターのみ他プレイヤーを退出できる
                 //強制退出させたプレイヤーはBanListに追加される
                 case TIME.開始前:
-                    Debug.Log("強制退出");
                     ActionPopUp obj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
                     obj.actionText.text = playerName + "さんを強制退出させますか？";
                     obj.buttonText.text = "強制退場";
@@ -198,7 +167,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     }
 
     private void AddBanPlayer() {
-        Debug.Log("BanList追加");
         //枠がいっぱいの場合
         //枠は1つまで
         if (PlayerManager.instance.banListIndex == PlayerManager.instance.banListMaxIndex) {
@@ -207,8 +175,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             list.GetComponent<CanvasGroup>().blocksRaycasts = true;
         } else {
             //枠が空いている場合
-            Debug.Log("追加されました");
-
             ActionPopUp obj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
             obj.actionText.text = playerName + "さんを回避しますか？";
             obj.buttonText.text = "回避する";
@@ -219,16 +185,4 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             obj.action_Type = ActionPopUp.Action_Type.Ban;
         }
     }
-
-    //private void SetRoomBanPlayerID(Photon.Realtime.Player player) {
-        
-    //    var propertis = new ExitGames.Client.Photon.Hashtable {
-    //        {"roomBanPlayerID",(string)player.CustomProperties["myUniqueID"] }
-    //    };
-    //    Debug.Log(PhotonNetwork.LocalPlayer.NickName);
-    //    PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
-    //    Debug.Log("playerName" + (string)PhotonNetwork.LocalPlayer.CustomProperties["playerName"]);
-    //}
-
-
 }

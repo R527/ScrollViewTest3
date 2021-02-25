@@ -29,9 +29,8 @@ public class RulePopUp : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-
         //役職一覧記載
-
+        DisplayRollList();
 
         //ルールを確認画面とゲームシーン専用のメニューに記入する
         numLimitText.text = RoomData.instance.numLimit.ToString();
@@ -42,7 +41,6 @@ public class RulePopUp : MonoBehaviour {
 
         maskBtn.onClick.AddListener(DestroyPopUp);
         closeBtn.onClick.AddListener(DestroyPopUp);
-        DisplayRollList();
     }
 
     void DestroyPopUp() {

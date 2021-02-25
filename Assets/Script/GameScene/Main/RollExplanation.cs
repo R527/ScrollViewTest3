@@ -20,15 +20,6 @@ public class RollExplanation : MonoBehaviour
     public GameObject rollExplanationPopUp;
     public GameObject rollButtonContent;//その他のボタンを置く場所
     public RollExplanationButtonPrefab rollExplanationButtonPrefab;//その他の
-    public Button rollExplanationButton;//自分の役職詳細ボタン
-
-
-    ///// <summary>
-    ///// 役職説明ボタンの無効化と部屋設定ごとに役職説明用のボタンを用意する
-    ///// </summary>
-    //private void Start() {
-    //    rollExplanationButton.onClick.AddListener(RollExplanationButton);
-    //}
 
     /// <summary>
     /// GameManagerより役職リストをもらって役職説明ボタンを作る準備をする
@@ -40,45 +31,6 @@ public class RollExplanation : MonoBehaviour
             Debug.Log("rollTypeList[]" + rollTypeList[i]);
             RollExplanationButtonPrefab Obj = Instantiate(rollExplanationButtonPrefab, rollButtonContent.transform, false);
             Obj.rollText.text = rollTypeList[i].ToString();
-        }
-    }
-
-    /// <summary>
-    /// 自分の役職説明ボタン
-    /// </summary>
-    public void RollExplanationButton() {
-        rollExplanationPopUp.SetActive(true);
-        switch (chatSystem.myPlayer.rollType) {
-            case ROLLTYPE.人狼:
-                rollText.text = ROLLTYPE.人狼.ToString();
-                explanationText.text = "じんろうだよー";
-                statusText.text = "占い結果：黒  \r\n霊能結果：黒 \r\n勝利条件：狼陣営の勝利";
-                break;
-            case ROLLTYPE.占い師:
-                rollText.text = ROLLTYPE.占い師.ToString();
-                explanationText.text = "占い師";
-                statusText.text = "占い結果：白 \r\n霊能結果：白　\r\n勝利条件：市民陣営の勝利";
-                break;
-            case ROLLTYPE.市民:
-                rollText.text = ROLLTYPE.市民.ToString();
-                explanationText.text = "市民";
-                statusText.text = "占い結果：白 \r\n霊能結果：白　\r\n勝利条件：市民陣営の勝利";
-                break;
-            case ROLLTYPE.狂人:
-                rollText.text = ROLLTYPE.狂人.ToString();
-                explanationText.text = "狂人";
-                statusText.text = "占い結果：白 \r\n霊能結果：白　\r\n勝利条件：市民陣営の勝利";
-                break;
-            case ROLLTYPE.騎士:
-                rollText.text = ROLLTYPE.騎士.ToString();
-                explanationText.text = "狩人";
-                statusText.text = "占い結果：白 \r\n霊能結果：白　\r\n勝利条件：市民陣営の勝利";
-                break;
-            case ROLLTYPE.霊能者:
-                rollText.text = ROLLTYPE.霊能者.ToString();
-                explanationText.text = "霊能";
-                statusText.text = "占い結果：白 \r\n霊能結果：白　\r\n勝利条件：市民陣営の勝利";
-                break;
         }
     }
 }

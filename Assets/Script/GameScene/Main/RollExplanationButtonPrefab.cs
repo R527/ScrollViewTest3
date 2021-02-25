@@ -19,7 +19,6 @@ public class RollExplanationButtonPrefab : MonoBehaviour {
     }
 
     public void RollExplanationButton() {
-
         if(gameCanvas == null) {
             gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
         }
@@ -30,9 +29,8 @@ public class RollExplanationButtonPrefab : MonoBehaviour {
         Debug.Log(rollText.text);
         switch (rollText.text) {
             case "人狼":
-                Debug.Log("人狼");
                 rollPopUP.rollText.text = ROLLTYPE.人狼.ToString();
-                rollPopUP.explanationText.text = "じんろうだよー";
+                rollPopUP.explanationText.text = "人狼";
                 rollPopUP.statusText.text = "占い結果：黒  \r\n霊能結果：黒 \r\n勝利条件：狼陣営の勝利";
                 break;
             case "占い師":

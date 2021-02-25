@@ -22,12 +22,6 @@ public class RollPopUp : MonoBehaviour
         backButton.onClick.AddListener(Destroy);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void Destroy() {
         Destroy(gameObject);
         vocabulary.SetActive(true);

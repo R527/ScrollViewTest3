@@ -36,7 +36,6 @@ public class Vocabulary : MonoBehaviour
     /// 用語ごとのボタンを押したら解説が表示される
     /// </summary>
     public void VocabluryButton() {
-        Debug.Log(buttonText);
         switch (buttonText) {
             //初心者向け
             case "CO・塩":

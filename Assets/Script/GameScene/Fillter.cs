@@ -14,7 +14,6 @@ public class Fillter : MonoBehaviour
     public InputView inputView;
 
     //fillter
-    public Text filterButtanText;
     public Button filterButton;
     public Button flodingButton;
     public Button comingOutButton;
@@ -26,8 +25,6 @@ public class Fillter : MonoBehaviour
 
     public Color[] filterColor;
     public Image filterImage;
-    //public bool folding;//夕方～夜にかけて折り畳みを制限する
-
 
     // Start is called before the first frame update
     void Start()
@@ -52,8 +49,6 @@ public class Fillter : MonoBehaviour
 
         //フィルターボタン
         if (!chatListManager.isfilter) {
-            //filterButtanText.text = "解除";
-
             destroyObj = Instantiate(fillterPopUpObj, gameCanvasTran, false);
             destroyObj.fillterText.text = "フィルター中";
 
@@ -65,8 +60,6 @@ public class Fillter : MonoBehaviour
             }
             //テキストが解除ならフィルターを解除する
         } else {
-            //filterButtanText.text = "フィルター";
-
             Destroy(destroyObj.gameObject);
             chatListManager.isfilter = false;
             filterImage.color = filterColor[0];
@@ -75,7 +68,6 @@ public class Fillter : MonoBehaviour
 
         //ボタンのテキストが上向きならInputViewを上にあげる
         if (inputView.folding) {
-            Debug.Log("上に");
             inputView.menberViewPopUpObj.SetActive(true);
             inputView.inputRectTransform.DOLocalMoveY(0, 0.5f);
             inputView.viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
@@ -83,22 +75,18 @@ public class Fillter : MonoBehaviour
             comingOutButton.interactable = false;
 
             inputView.folding = false;
-            //inputView.foldingText.text = "↓";
             inputView.foldingImage.sprite = inputView.downBtnSprite;
             //フィルター中に押したらInputViewを閉じる
         } else if(!inputView.folding) {
-            Debug.Log("下に");
             ischeackCloseInputView = false;
             StartCoroutine(CloseInputView());
 
             inputView.inputRectTransform.DOLocalMoveY(-70, 0.5f);
-            //inputView.inputRectTransform.DOLocalMoveY(-67, 0.5f);
             inputView.viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             flodingButton.interactable = true;
             comingOutButton.interactable = true;
 
             inputView.folding = true;
-            //inputView.foldingText.text = "↑";
             inputView.foldingImage.sprite = inputView.upBtnSprite;
             StartCoroutine(inputView.PopUpFalse());
         }

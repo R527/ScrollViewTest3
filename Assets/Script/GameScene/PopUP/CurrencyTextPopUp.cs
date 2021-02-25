@@ -34,22 +34,17 @@ public class CurrencyTextPopUp : BasePopUP
     public override void DestroyPopUP() {
 
         gameManager.showPopUp = true;
-        Debug.Log("DestroyPopUp");
         //チェックボックスがOnなら次回以降このPopUpを表示しない
         if (checkBox.isOn) {
-
             switch (warningStr) {
                 case "superChatStr":
-                    Debug.Log("superChatStr");
                     PlayerManager.instance.SetStringForPlayerPrefs("非表示", PlayerManager.ID_TYPE.superChat);
                     break;
                 case "exitStr":
-                    Debug.Log("exitStr");
                     PlayerManager.instance.SetStringForPlayerPrefs("非表示", PlayerManager.ID_TYPE.exit);
                     break;
             }
         }
-
         base.DestroyPopUP();
     }
 }

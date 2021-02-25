@@ -74,8 +74,6 @@ public class ActionPopUp : MonoBehaviourPunCallbacks {
 
             case Action_Type.Ban:
                 PlayerManager.instance.banIndex = PlayerManager.instance.banListIndex;
-                Debug.Log(PlayerManager.instance.banIndex);
-                Debug.Log(PlayerManager.instance.banListIndex);
                 PlayerManager.instance.SetStringForPlayerPrefs(myUniqueId, PlayerManager.ID_TYPE.banUniqueID);
                 PlayerManager.instance.SetStringForPlayerPrefs(playerName, PlayerManager.ID_TYPE.banUserNickName);
                 PlayerManager.instance.banListIndex++;
@@ -122,22 +120,9 @@ public class ActionPopUp : MonoBehaviourPunCallbacks {
                                 };
 
                             player.SetCustomProperties(propertiers);
-
-                            Debug.Log((int)player.CustomProperties["voteNum"]);
-                            Debug.Log((string)player.CustomProperties["voteName"]);
-                            Debug.Log((bool)player.CustomProperties["votingCompleted"]);
-
                             //投票数の表示をディクショナリーで管理
-                            //voteCount.voteCountTable[playerID] = voteNum;
-
-
-                            //Debug.Log(voteCount.voteNameTable[playerID]);
                             //投票のチャット表示
                             gameManager.gameMasterChatManager.Voted(player);
-
-                            Debug.Log("投票完了");
-
-
                         }
                     }
                 }
@@ -150,48 +135,36 @@ public class ActionPopUp : MonoBehaviourPunCallbacks {
 
                     if (!fortune) {
                         gameManager.chatSystem.gameMasterChatManager.gameMasterChat = "【占い結果】\r\n" + playerName + "は人狼ではない（白）です。";
-                        Debug.Log("白");
                     } else {
                         gameManager.chatSystem.gameMasterChatManager.gameMasterChat = "【占い結果】\r\n" + playerName + "は人狼（黒）です。";
-                        Debug.Log("黒");
                     }
                 gameManager.chatSystem.myPlayer.isRollAction = true;
 
                 gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-                Debug.Log("RollAction");
                 gameManager.chatSystem.gameMasterChatManager.gameMasterChat = string.Empty;
 
                 break;
             case Action_Type.襲撃:
                 gameManager.chatSystem.gameMasterChatManager.bitedID = playerID;
-                //Debug.Log("噛んだID" + playerID);
                 gameManager.chatSystem.gameMasterChatManager.SetBitedPlayerID();
-                //Debug.Log("噛んだID" + gameManager.chatSystem.gameMasterChatManager.bitedID);
                 gameManager.chatSystem.gameMasterChatManager.gameMasterChat = playerName + "さんを襲撃します。";
-                //Debug.Log(playerName + "襲撃します。");
                 gameManager.chatSystem.myPlayer.isRollAction = true;
 
                 gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-                //Debug.Log("RollAction");
                 gameManager.chatSystem.gameMasterChatManager.gameMasterChat = string.Empty;
 
                 break;
             case Action_Type.護衛:
                 gameManager.chatSystem.gameMasterChatManager.gameMasterChat = playerName + "さんを護衛します。";
-                //Debug.Log("守ります");
                 //守ったプレイヤーを記録
                 gameManager.chatSystem.gameMasterChatManager.protectedID = playerID;
                 gameManager.chatSystem.gameMasterChatManager.SetProtectedPlayerID();
-                //Debug.Log("守ったID" + gameManager.chatSystem.gameMasterChatManager.protectedID);
                 gameManager.chatSystem.myPlayer.isRollAction = true;
 
                 gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
-                //Debug.Log("RollAction");
                 gameManager.chatSystem.gameMasterChatManager.gameMasterChat = string.Empty;
                 break;
         }
-        
-
         Destroy(gameObject);
     }
 }

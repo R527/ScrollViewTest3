@@ -14,11 +14,9 @@ public class InputView : MonoBehaviour {
     public ChatListManager chatListManager;
 
     //main
-    public Text foldingText; //折り畳みボタンのテキスト
     public RectTransform viewport;
     public RectTransform inputRectTransform;
     public Button filterButton;
-    public Button stampButton;
     public Button foldingButton;
     public Button comingButton;
     public GameObject menberViewPopUpObj;//メンバーの入ってるPrefab
@@ -40,7 +38,6 @@ public class InputView : MonoBehaviour {
 
     //superChatButton
     public Button superChatButton;
-    public Text superChatButtonText;
     public bool superChat;
     public GameObject moneyImage;
     public Image superChatBtnImage;
@@ -66,21 +63,13 @@ public class InputView : MonoBehaviour {
 
         //COPopUpが有効でかつ
         if (coPopUpObj.activeSelf && !folding) {
-            Debug.Log("tesut foding");
             coPopUpObj.SetActive(false);
             menberViewPopUpObj.SetActive(true);
-
             //ボタン有効にする
             availabilityButton();
-
             return;
-
-
         } else if (menberViewPopUpObj.activeSelf && !folding) {
             //InputViewを下げるボタン
-
-            Debug.Log("tesut foding２");
-
             inputRectTransform.DOLocalMoveY(-70, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             filterButton.interactable = true;
@@ -95,17 +84,12 @@ public class InputView : MonoBehaviour {
         } else if (folding) {
 
             //InputViewをあげるボタン
-            Debug.Log("tesut foding３");
-
             menberViewPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);
             filterButton.interactable = true;
-            //stampButton.interactable = false;
             folding = false;
-            //foldingText.text = "↓";
             foldingImage.sprite = downBtnSprite;
-
         }
     }
 
@@ -128,10 +112,7 @@ public class InputView : MonoBehaviour {
             inputRectTransform.DOLocalMoveY(-70, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             filterButton.interactable = true;
-            //stampButton.interactable = true;
-
             folding = true;
-            //foldingText.text = "↑";
             foldingImage.sprite = upBtnSprite;
 
             //ボタン有効にする
@@ -148,12 +129,8 @@ public class InputView : MonoBehaviour {
 
             //ほかのボタン無効
             InvalidButton();
-            //stampButton.interactable = false;
-
             folding = false;
-            //foldingText.text = "↓";
             foldingImage.sprite = downBtnSprite;
-
         }
     }
 
@@ -174,7 +151,6 @@ public class InputView : MonoBehaviour {
             wolfModeButtonText.text = "市民";
             wolfMode = false;
             chatListManager.OffWolfMode();
-
         }
     }
 
@@ -195,12 +171,10 @@ public class InputView : MonoBehaviour {
             }
 
             superChatBtnImage.color = btnColor[1];
-            //superChatButtonText.text = "青";
             superChat = true;
             //Offにするとき
         } else {
             superChatBtnImage.color = btnColor[0];
-            //superChatButtonText.text = "通常";
             superChat = false;
         }
     }
@@ -223,7 +197,6 @@ public class InputView : MonoBehaviour {
         wolfModeButton.interactable = false;
 
         superChatBtnImage.color = btnColor[0];
-        //superChatButtonText.text = "通常";
         superChat = false;
         superChatButton.interactable = false;
     }

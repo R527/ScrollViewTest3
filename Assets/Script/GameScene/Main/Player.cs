@@ -18,6 +18,7 @@ public class Player : MonoBehaviourPunCallbacks {
     public ChatSystem chatSystem;
     public VoteCount voteCount;
     public TimeController timeController;
+    public EMPTYROOM emtyRoom;
 
     //main
     public int playerID;
@@ -34,7 +35,6 @@ public class Player : MonoBehaviourPunCallbacks {
     public PlayerButton playerButton;
     public Transform chatTran;
     private IEnumerator checkEmptyRoomCoroutine = null;
-    public EMPTYROOM emtyRoom;
 
     //投票関連
     public bool isVoteFlag; //投票を下か否か　falseなら非投票
@@ -114,7 +114,6 @@ public class Player : MonoBehaviourPunCallbacks {
         }
     }
 
-
     /// <summary>
     /// Player.csとは別にPlayerButtonを作成する
     /// </summary>
@@ -124,7 +123,6 @@ public class Player : MonoBehaviourPunCallbacks {
         playerButton = Instantiate(playerButtonPrefab, buttontran,false);
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
     }
-
 
     /// <summary>
     /// MenbarViewにあるPlayerButtonの設定と役職ごとの判定を追加
@@ -236,8 +234,6 @@ public class Player : MonoBehaviourPunCallbacks {
         chatSystem.SetChatNode(chatNode, chatData, comingOut);
     }
 
-
-
     /// <summary>
     /// 自分以外のPlayerの情報をセットする
     /// </summary>
@@ -299,13 +295,11 @@ public class Player : MonoBehaviourPunCallbacks {
         }
     }
 
-
     /// <summary>
     /// BanListチェック中待機する
     /// </summary>
     /// <returns></returns>
     public IEnumerator CheckBanList() {
-
         bool isBanPlayer = true;
         while (isBanPlayer) {
             if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isBanPlayer", out object isBanPlayerObj)) {
@@ -314,7 +308,6 @@ public class Player : MonoBehaviourPunCallbacks {
             } else {
                 yield return null;
             }
-
         }
         yield break;
     }
@@ -354,7 +347,6 @@ public class Player : MonoBehaviourPunCallbacks {
     /// //マスターがイラストの番号をすべて保存して既に使われているイラストを除外してランダムにセットする
     /// </summary>
     public void AddPlayerImage() {
-
         for (int i = 0; i < playerButton.iconSpriteList.Count; i++) {
             if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playerImageNum" + i, out object playerImageNumObj)) {
                 if ((int)playerImageNumObj != i) {

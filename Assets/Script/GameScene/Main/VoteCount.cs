@@ -13,27 +13,11 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     public GameManager gameManager;
 
     //main
-    //public Dictionary<int,int> voteCountTable = new Dictionary<int, int>();
-    //public Dictionary<int, string> voteNameTable = new Dictionary<int, string>();
     public List<Photon.Realtime.Player> ExecutionPlayerList = new List<Photon.Realtime.Player>();
     public int mostVotes;
     public Photon.Realtime.Player mostVotePlayer;//処刑したプレイヤー
     public string executionPlayerName;
     public int executionID = 999;
-
-    /// <summary>
-    /// ListにInt型を人数に合わせて追加する　
-    /// </summary>
-    /// <param name="numLimit"></param>
-    //public void VoteCountListSetUp(int numLimit) {
-
-    //    //投票用のListを作成
-    //    for (int i = 0; i < numLimit; i++) {
-    //        voteCountTable.Add(i + 1,0);
-    //        voteNameTable.Add(i + 1,string.Empty);
-    //    }
-
-    //}
 
     private void Start() {
         //カスタムプロパティ
@@ -49,14 +33,10 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     /// </summary>
     public void Execution() {
         if (PhotonNetwork.IsMasterClient) {
-
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-
                 //投票数が他プレイヤーと同数ならリストに追加
                 if (player.CustomProperties["voteNum"] != null && (int)player.CustomProperties["voteNum"] != 0) {
                     if (mostVotes == (int)player.CustomProperties["voteNum"]) {
-                        Debug.Log("player.actNum" + player.ActorNumber);
-                        Debug.Log("player.actNum" + (int)player.CustomProperties["voteNum"]);
                         ExecutionPlayerList.Add(player);
                         //投票数が他プレイヤーより多いならListから削除して追加
                     } else if (mostVotes < (int)player.CustomProperties["voteNum"]) {
@@ -78,9 +58,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                         ExecutionPlayerList.Add(player);
                     }
                 }
-                Debug.Log("ExecutionPlayerList.Count" + ExecutionPlayerList.Count);
                 mostVotePlayer = ExecutionPlayerList[Random.Range(0, ExecutionPlayerList.Count)];
-
             } else {
                 //最多投票が一人の場合
                 mostVotePlayer = ExecutionPlayerList[0];
@@ -103,7 +81,6 @@ public class VoteCount : MonoBehaviourPunCallbacks {
                     executionID = mostVotePlayer.ActorNumber;
                     executionPlayerName = mostVotePlayer.NickName;
                     SetExecutionPlayerID();
-                    //Debug.Log("executionID" + executionID);
                     break;
                     }
                 }
@@ -125,21 +102,12 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             if (GetExecutionPlayerID() == playerObj.playerID) {
                 playerObj.live = false;
                 playerObj.playerInfoText.text = gameManager.timeController.day + "日目\n\r処刑";
-                
             }
         }
 
         //生存数を更新
         gameManager.liveNum--;
         gameManager.SetLiveNum();
-
-        ////ディクショナリーの初期化
-        //foreach(int playerID in voteCountList.Keys) {
-        //    voteCountList[playerID] = 0;
-        //}
-
-
-
     }
 
     ////////////////////////////
@@ -156,9 +124,6 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             {"mostVotes",mostVotes }
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-        //Debug.Log("executionID" + (int)PhotonNetwork.CurrentRoom.CustomProperties["executionID"]);
-        //Debug.Log("executionPlayerName" + (string)PhotonNetwork.CurrentRoom.CustomProperties["executionPlayerName"]);
-        //Debug.Log("mostVotes" + (int)PhotonNetwork.CurrentRoom.CustomProperties["mostVotes"]);
     }
     /// <summary>
     /// 処刑されたプレイヤーをもらう
