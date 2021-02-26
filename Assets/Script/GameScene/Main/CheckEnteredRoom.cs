@@ -30,14 +30,11 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         }
 
         //満室ならフラグを立てる
-        var propertiers = new ExitGames.Client.Photon.Hashtable();
-        if (gameManager.GetNum() >= gameManager.numLimit && !PhotonNetwork.IsMasterClient) {
-            propertiers.Add("isCheckEmptyRoom", EMPTYROOM.満室.ToString());
-            PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+        if (NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") >= gameManager.numLimit && !PhotonNetwork.IsMasterClient) {
+            NetworkManager.instance.SetCustomPropertesOfPlayer("isCheckEmptyRoom", EMPTYROOM.満室, PhotonNetwork.LocalPlayer);
         } else {
             //満室ではない処理
-            propertiers.Add("isCheckEmptyRoom", EMPTYROOM.入室許可.ToString());
-            PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+            NetworkManager.instance.SetCustomPropertesOfPlayer("isCheckEmptyRoom", EMPTYROOM.入室許可, PhotonNetwork.LocalPlayer);
         }
         isSetUp = true;
     }
@@ -57,7 +54,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         }
 
         //部屋が満室なら自ら退出するPopUpを出す
-        if (gameManager.GetNum() >= gameManager.numLimit) {
+        if (NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") >= gameManager.numLimit) {
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
             obj.exitText.text = "満室です。";
             Destroy(gameObject);
@@ -83,10 +80,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         if (!isCheckEnteredRoom) {
             gameManager.GameManagerSetUp();
             isCheckEnteredRoom = true;
-            var propertiers = new ExitGames.Client.Photon.Hashtable();
-            propertiers.Add("isCheckEnteredRoom", isCheckEnteredRoom);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
-
+            NetworkManager.instance.SetCustomPropertesOfPlayer("isCheckEnteredRoom", isCheckEnteredRoom, PhotonNetwork.LocalPlayer);
             Destroy(gameObject);
         }
     }

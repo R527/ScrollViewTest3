@@ -75,7 +75,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             rollText.enabled = true;
         }
 
-        if (PhotonNetwork.IsMasterClient && gameManager.GetNum() != gameManager.numLimit) {
+        if (PhotonNetwork.IsMasterClient && NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") != gameManager.numLimit) {
             gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         }
     }

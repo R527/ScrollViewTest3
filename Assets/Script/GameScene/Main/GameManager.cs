@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         if (!gameStart) {
-            gameStart = GetGameStart();
+            gameStart = NetworkManager.instance.GetCustomPropertesOfRoom<bool>("gameStart");
 
             if(gameStart) {
                 PraparateGameStart();
@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
 
         //人数が揃ったら役職セット
-        if (!isSetRoll && GetNum() == numLimit) {
+        if (!isSetRoll && NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") == numLimit) {
             isSetRoll = true;
             SetRoll();
             gameMasterChatManager.timeSavingButton.interactable = false;
@@ -195,12 +195,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void CountNum() {
         //1秒ごとに部屋参加人数を確認する
-        if (GetNum() != numLimit) {
+        if (NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") != numLimit) {
             checkTimer += Time.deltaTime;
 
             if (checkTimer >= 1) {
                 checkTimer = 0;
-                num = GetNum();
+                num = NetworkManager.instance.GetCustomPropertesOfRoom<int>("num");
                 NumText.text = num + "/" + numLimit;
             }
         }
@@ -273,11 +273,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         yield return StartCoroutine(SettingRondomRollType());
 
         gameStart = true;
-        
-        var properties = new ExitGames.Client.Photon.Hashtable();
-        properties.Add("gameStart", gameStart);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
-
+        NetworkManager.instance.SetCustomPropertesOfRoom<bool>("gameStart", gameStart);
         PraparateGameStart();
     }
 
@@ -323,7 +319,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
         liveNum = PhotonNetwork.PlayerList.Length;
 
         if (PhotonNetwork.IsMasterClient) {
-            SetLiveNum();
+            NetworkManager.instance.SetCustomPropertesOfRoom<int>("liveNum", liveNum);
+            //SetLiveNum();
         }
 
         //自分が狼チャットが使えるなら
@@ -603,52 +600,52 @@ public class GameManager : MonoBehaviourPunCallbacks {
         obj.warningStr = warning;
     }
 
-    /////////////////////////////
-    ///カスタムプロパティ関連
-    /////////////////////////////
+    ///////////////////////////////
+    /////カスタムプロパティ関連
+    ///////////////////////////////
 
 
-    /// <summary>
-    /// 入場者数をチェックする
-    /// </summary>
-    public int GetNum() {
-        //ルームに保存されているnumという情報があったら、それをキャストして変数に入れる
-        //numというKeyがセットされていて、numがあった場合
-        //outとしてobject型のnumObjが作られる。
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("num", out object numObj)) {
-            //numObjがobject型なのでintにキャスト
-            num = (int)numObj;
-        }
-        return num;
-    }
-    /// <summary>
-    /// 生存人数をセットします
-    /// </summary>
-    public void SetLiveNum() {
-        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"liveNum", liveNum}
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
+    ///// <summary>
+    ///// 入場者数をチェックする
+    ///// </summary>
+    //public int GetNum() {
+    //    //ルームに保存されているnumという情報があったら、それをキャストして変数に入れる
+    //    //numというKeyがセットされていて、numがあった場合
+    //    //outとしてobject型のnumObjが作られる。
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("num", out object numObj)) {
+    //        //numObjがobject型なのでintにキャスト
+    //        num = (int)numObj;
+    //    }
+    //    return num;
+    //}
+    ///// <summary>
+    ///// 生存人数をセットします
+    ///// </summary>
+    //public void SetLiveNum() {
+    //    ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    //        {"liveNum", liveNum}
+    //    };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    //}
 
-    /// <summary>
-    /// 生存人数をもらいます
-    /// </summary>
-    /// <returns></returns>
-    public int GetLiveNum() {
-        int value = 0;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("liveNum", out object liveNumObj)) {
-            value = (int)liveNumObj;
-        }
-        return value;
-    }
+    ///// <summary>
+    ///// 生存人数をもらいます
+    ///// </summary>
+    ///// <returns></returns>
+    //public int GetLiveNum() {
+    //    int value = 0;
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("liveNum", out object liveNumObj)) {
+    //        value = (int)liveNumObj;
+    //    }
+    //    return value;
+    //}
 
-    private bool GetGameStart() {
-        if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameStart", out object gameStartObj)) {
-            gameStart = (bool)gameStartObj;
-        }
-        return gameStart;
-    }
+    //private bool GetGameStart() {
+    //    if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameStart", out object gameStartObj)) {
+    //        gameStart = (bool)gameStartObj;
+    //    }
+    //    return gameStart;
+    //}
 }
 
 //変数

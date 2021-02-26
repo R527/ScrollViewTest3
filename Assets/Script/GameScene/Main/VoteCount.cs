@@ -19,13 +19,13 @@ public class VoteCount : MonoBehaviourPunCallbacks {
     public string executionPlayerName;
     public int executionID = 999;
 
-    private void Start() {
-        //カスタムプロパティ
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"executionID",executionID }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
+    //private void Start() {
+    //    NetworkManager.instance.SetCustomPropertesOfRoom<int>("executionID",executionID);
+    //    //var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    //    //    {"executionID",executionID }
+    //    //};
+    //    //PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    //}
 
     
     /// <summary>
@@ -89,7 +89,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         
         //マスター以外のプレイヤーに処刑したプレイヤーの死亡処理をする
         foreach (Player player in chatSystem.playersList) {
-            if(GetExecutionPlayerID() == player.playerID) {
+            if(NetworkManager.instance.GetCustomPropertesOfRoom<int>("executionID") == player.playerID) {
                 player.live = false;
                 break;
             }
@@ -99,7 +99,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerButton");
         foreach (GameObject player in objs) {
             PlayerButton playerObj = player.GetComponent<PlayerButton>();
-            if (GetExecutionPlayerID() == playerObj.playerID) {
+            if (NetworkManager.instance.GetCustomPropertesOfRoom<int>("executionID") == playerObj.playerID) {
                 playerObj.live = false;
                 playerObj.playerInfoText.text = gameManager.timeController.day + "日目\n\r処刑";
             }
@@ -107,7 +107,8 @@ public class VoteCount : MonoBehaviourPunCallbacks {
 
         //生存数を更新
         gameManager.liveNum--;
-        gameManager.SetLiveNum();
+        NetworkManager.instance.SetCustomPropertesOfRoom<int>("liveNum", gameManager.liveNum);
+        //gameManager.SetLiveNum();
     }
 
     ////////////////////////////
@@ -125,16 +126,16 @@ public class VoteCount : MonoBehaviourPunCallbacks {
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
     }
-    /// <summary>
-    /// 処刑されたプレイヤーをもらう
-    /// </summary>
-    /// <returns></returns>
-    public int GetExecutionPlayerID() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("executionID", out object executionIDObj)) {
-            executionID = (int)executionIDObj;
-        }
-        return executionID;
-    }
+    ///// <summary>
+    ///// 処刑されたプレイヤーをもらう
+    ///// </summary>
+    ///// <returns></returns>
+    //public int GetExecutionPlayerID() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("executionID", out object executionIDObj)) {
+    //        executionID = (int)executionIDObj;
+    //    }
+    //    return executionID;
+    //}
 }
 
 

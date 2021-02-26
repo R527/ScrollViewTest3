@@ -145,7 +145,8 @@ public class ChatSystem : MonoBehaviourPunCallbacks {
         if (!gameMasterChatManager.gameManager.timeController.isSpeaking) {
             gameMasterChatManager.gameManager.timeController.isSpeaking = true;
             gameMasterChatManager.gameManager.timeController.setSuddenDeath = true;
-            gameMasterChatManager.gameManager.timeController.SetSuddenDeath();
+            //gameMasterChatManager.gameManager.timeController.SetSuddenDeath();
+            NetworkManager.instance.SetCustomPropertesOfPlayer("setSuddenDeath", gameMasterChatManager.gameManager.timeController.setSuddenDeath, PhotonNetwork.LocalPlayer);
         }
 
         //各プレイヤーが一度でも発言したらLocalPlayerにチェックを入れる

@@ -227,20 +227,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
     public void Deactivate() {
        Destroy(gameObject);
     }
-
-    /// <summary>
-    ///部屋のListのTransformを一番下へ
-    /// </summary>
-    /// <returns></returns>
-    public RoomNode SetAsLastSibling() {
-        rectTransform.SetAsLastSibling();
-        return this;
-    }
-
-    public RoomNode SetAsFristSibling() {
-        rectTransform.SetAsFirstSibling();
-        return this;
-    }
     /// <summary>
     /// 部屋のIDを取得する
     /// </summary>
@@ -258,8 +244,6 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         foreach (RoomInfo roomInfo in NetworkManager.instance.roomInfoList) {
             if (roomId == (string)roomInfo.CustomProperties["roomId"]) {
                 NetworkManager.instance.joinedRoom = roomInfo;
-                Debug.Log("NetworkManager.instance.joinedRoom" + NetworkManager.instance.joinedRoom.CustomProperties["roomId"]);
-                //Debug.Log("roomCount" + (int)NetworkManager.instance.joinedRoom.CustomProperties["playerCount"]);
             }
         }
         foreach (RoomNode roomObj in NetworkManager.instance.roomNodeObjList) {

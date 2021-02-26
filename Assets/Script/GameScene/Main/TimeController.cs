@@ -41,7 +41,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public bool isSpeaking;//喋ったか否かtrueならしゃべった
     public bool setSuddenDeath;
     public bool isPlay;//falseならゲームオーバー
-    public float checkTimer;//1秒ごとに時間を管理する
+    private float checkTimer;//1秒ごとに時間を管理する
     public bool isVotingCompleted;
     //ボタン・Input関連
     public Button savingButton;//時短ボタン
@@ -115,7 +115,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
         gameMasterChatManager.TrueCharacter();
 
         //ゲームスタート
-        yield return new WaitUntil(() => GetGameReady());
+        //GetGameReady
+        yield return new WaitUntil(() => NetworkManager.instance.GetCustomPropertesOfRoom<bool>("gameReady"));
+        gameReady = NetworkManager.instance.GetCustomPropertesOfRoom<bool>("gameReady");
     }
 
 
@@ -154,11 +156,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 if (checkTimer >= 1) {
                     checkTimer = 0;
                     totalTime--;
-                    SetGameTime();
+                    NetworkManager.instance.SetCustomPropertesOfRoom("totalTime",totalTime);
+                    //SetGameTime();
                 }
                 //マスター以外はトータルタイムをもらう
             } else {
-                totalTime = GetGameTime();
+                //GetGameTime()
+                totalTime = NetworkManager.instance.GetCustomPropertesOfRoom<float>("totalTime");
             }
 
             //トータルタイム表示
@@ -178,18 +182,20 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //マスターだけが0秒もしくは時短成立の確認を取れたら全員に次のシーンへと行くフラグを送信する
             if ((totalTime < 0 || gameManager.gameMasterChatManager.isTimeSaving) && PhotonNetwork.IsMasterClient) {
                 totalTime = -1;
-                SetGameTime();
-
+                //SetGameTime();
+                totalTime = NetworkManager.instance.GetCustomPropertesOfRoom<float>("totalTime");
                 intervalState = true;
                 gameManager.gameMasterChatManager.isTimeSaving = false;
                 gameManager.gameMasterChatManager.SetIsTimeSaving();
-                SetIntervalState();
+                //SetIntervalState();
+                NetworkManager.instance.SetCustomPropertesOfRoom("intervalState", true);
             }
 
 
             //時短もしくは時間が0秒になったら次のシーンへ以降するフラグを受け取る
             if (totalTime < 0) {
-                GetIntervalState();
+                intervalState = NetworkManager.instance.GetCustomPropertesOfRoom<bool>("intervalState");
+                //GetIntervalState();
             }
 
             //フラグを受け取るとスタートインターバルを走らせる
@@ -199,15 +205,18 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 StartInterval();
             }
         }
-       
+
         //全員の投票が完了したら
-        if (!GetIsVotingCompleted() || !PhotonNetwork.IsMasterClient) {
+        //GetIsVotingCompleted()
+        if (!NetworkManager.instance.GetCustomPropertesOfRoom<bool>("isVotingCompleted") || !PhotonNetwork.IsMasterClient) {
             return;
-        }else if (GetIsVotingCompleted() && PhotonNetwork.IsMasterClient) {
+        }else if (NetworkManager.instance.GetCustomPropertesOfRoom<bool>("isVotingCompleted") && PhotonNetwork.IsMasterClient) {
             isVotingCompleted = false;
-            SetIsVotingCompleted();
+            NetworkManager.instance.SetCustomPropertesOfRoom("isVotingCompleted", isVotingCompleted);
+            //SetIsVotingCompleted();
             totalTime = 0;
-            SetGameTime();
+            //SetGameTime();
+            totalTime = NetworkManager.instance.GetCustomPropertesOfRoom<float>("totalTime");
         }
     }
 
@@ -222,7 +231,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
     public void StartInterval() {
         //タイムタイプに違いがある場合修正する
         if(timeType != NetworkManager.instance.GetCustomPropertesOfRoom<TIME>("timeType")) {
-            NetworkManager.instance.GetCustomPropertesOfRoom<TIME>("timeType");
+            timeType = NetworkManager.instance.GetCustomPropertesOfRoom<TIME>("timeType");
         }
 
         //一度時間を非表示にする
@@ -296,7 +305,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                     foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
                         //突然死していないプレイヤーは通過
-                        if (GetSuddenDeath(player)) {
+                        if (NetworkManager.instance.GetCustomPropertesOfPlayer<bool>("setSuddenDeath", player)) {
                             continue;
                         }
                         //Player生きていたら
@@ -355,10 +364,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 }
                 //突然死の初期化
                 setSuddenDeath = false;
-                SetSuddenDeath();
+                NetworkManager.instance.SetCustomPropertesOfPlayer("setSuddenDeath", setSuddenDeath, PhotonNetwork.LocalPlayer);
 
                 //生存者数を取得
-                gameManager.liveNum = gameManager.GetLiveNum();
+                gameManager.liveNum = NetworkManager.instance.GetCustomPropertesOfRoom<int>("liveNum");
                 if (!DebugManager.instance.isGameOver) {
                     gameOver.CheckGameOver();
                 }
@@ -461,24 +470,29 @@ public class TimeController : MonoBehaviourPunCallbacks {
         //役職に合わせてボタンなどを変更する
         TimesavingControllerTrue();
 
-        SetEndIntervalPassCount(true);
+        //SetEndIntervalPassCount(true);
+        NetworkManager.instance.SetCustomPropertesOfPlayer("endIntervalPass",true,PhotonNetwork.LocalPlayer);
         if(PhotonNetwork.IsMasterClient) {
             yield return  new WaitUntil (() => PhotonNetwork.PlayerList.Length == GetEndIntervalPassCount()) ;
             intervalState = false;
-            SetIntervalState();
+            //SetIntervalState();
+            NetworkManager.instance.SetCustomPropertesOfRoom("intervalState", false);
         }
-        
+
         //Debug用　人数が一人の時UpDateの処理に問題があるので1秒待つ
-        if(DebugManager.instance.numLimit == 1) {
+        if (DebugManager.instance.numLimit == 1) {
             yield return new WaitForSeconds(1.0f);
         }
-        yield return new WaitUntil(() => !GetIntervalState());
+
+        yield return new WaitUntil(() => !NetworkManager.instance.GetCustomPropertesOfRoom<bool>("intervalState"));
+        intervalState = NetworkManager.instance.GetCustomPropertesOfRoom<bool>("intervalState");
 
         //マスターだけTimeTypeをセットする
         if (PhotonNetwork.IsMasterClient) {
             NetworkManager.instance.SetCustomPropertesOfRoom("timeType",timeType);
         }
-        SetEndIntervalPassCount(false);
+        NetworkManager.instance.SetCustomPropertesOfPlayer("endIntervalPass", false, PhotonNetwork.LocalPlayer);
+        //SetEndIntervalPassCount(false);
         isNextInterval = false;
     }
 
@@ -659,139 +673,141 @@ public class TimeController : MonoBehaviourPunCallbacks {
     ///カスタムプロパティ関連
     ///////////////////////////////
 
-    /// <summary>
-    /// gamereadyを取得する
-    /// </summary>
-    /// <returns></returns>
-    private bool GetGameReady() {
-        gameReady = false;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
-            gameReady = (bool)gameReadyObj;
-        }
-        return gameReady;
-    }
-
-    /// <summary>
-    /// ゲーム中の時間のオンライン化
-    /// </summary>
-    public void SetGameTime() {
-        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"totalTime", totalTime }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
-
-
-    /// <summary>
-    /// トータルタイムを取得する
-    /// </summary>
-    /// <returns></returns>
-    private float GetGameTime() {
-        float time = 0;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("totalTime", out object totalTimeObj)) {
-            time = (float)totalTimeObj;
-        }
-        return time;
-    }
-
-    /// <summary>
-    /// 次のインターバルへ以降するフラグをセットする
-    /// </summary>
-    void SetIntervalState() {
-        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"intervalState", intervalState }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
-
-    /// <summary>
-    /// 次のインターバルへ以降するフラグを受け取る
-    /// </summary>
-    bool GetIntervalState() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("intervalState", out object intervalStateObj)) {
-            intervalState = (bool)intervalStateObj;
-        }
-        return intervalState;
-    }
-    
-    void SetEndIntervalPassCount(bool endIntervalPass) {
-        ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"endIntervalPass", endIntervalPass }
-        };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(customRoomProperties);
-    }
-
     int GetEndIntervalPassCount() {
         int endIntervalPassCount = 0;
 
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-            if(player.CustomProperties.TryGetValue("endIntervalPass" , out object endIntervalPassObj)) {
+            if (player.CustomProperties.TryGetValue("endIntervalPass", out object endIntervalPassObj)) {
                 bool endIntervalPass = (bool)endIntervalPassObj;
                 if (endIntervalPass) {
                     endIntervalPassCount++;
                 }
-            } 
+            }
         }
+        Debug.Log("endIntervalPassCount" + endIntervalPassCount);
         return endIntervalPassCount;
     }
-    /// <summary>
-    /// 全員が投票完了したらtrue
-    /// </summary>
-    public bool GetIsVotingCompleted() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isVotingCompleted", out object isVotingCompletedObj)) {
-            isVotingCompleted = (bool)isVotingCompletedObj;
-        }
-        return isVotingCompleted;
-    }
 
-    public void SetIsVotingCompleted() {
-        var propertis = new ExitGames.Client.Photon.Hashtable {
-            {"isVotingCompleted",isVotingCompleted }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
-    }
+    ///// <summary>
+    ///// gamereadyを取得する
+    ///// </summary>
+    ///// <returns></returns>
+    //private bool GetGameReady() {
+    //    gameReady = false;
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameReady", out object gameReadyObj)) {
+    //        gameReady = (bool)gameReadyObj;
+    //    }
+    //    return gameReady;
+    //}
 
-    /// <summary>
-    /// 突然死したらフラグを付ける
-    /// </summary>
-    public void SetSuddenDeath() {
-        var properties = new ExitGames.Client.Photon.Hashtable {
-            {"setSuddenDeath",setSuddenDeath},
-        };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
-    }
+    ///// <summary>
+    ///// ゲーム中の時間のオンライン化
+    ///// </summary>
+    //public void SetGameTime() {
+    //    ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    //        {"totalTime", totalTime }
+    //    };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    //}
 
-    /// <summary>
-    /// 突然死したプレイヤーのフラグをもらう
-    /// </summary>
-    /// <returns></returns>
-    private bool GetSuddenDeath(Photon.Realtime.Player player) {
-        if (player.CustomProperties.TryGetValue("setSuddenDeath", out object setSuddenDeathObj)) {
-            setSuddenDeath = (bool)setSuddenDeathObj;
-        }
-        return setSuddenDeath;
-    }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void SetTimeType() {
-        var properties = new ExitGames.Client.Photon.Hashtable {
-            {"timeType",timeType},
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
-    }
+    ///// <summary>
+    ///// トータルタイムを取得する
+    ///// </summary>
+    ///// <returns></returns>
+    //private float GetGameTime() {
+    //    float time = 0;
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("totalTime", out object totalTimeObj)) {
+    //        time = (float)totalTimeObj;
+    //    }
+    //    return time;
+    //}
 
-    /// <summary>
-    /// 突然死したプレイヤーのフラグをもらう
-    /// </summary>
-    /// <returns></returns>
-    TIME GetTimeType() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeType", out object timeTypeObj)) {
-            timeType = (TIME)Enum.Parse(typeof(TIME), timeTypeObj.ToString());
-        }
-        return timeType;
-    }
+    ///// <summary>
+    ///// 次のインターバルへ以降するフラグをセットする
+    ///// </summary>
+    //void SetIntervalState() {
+    //    ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    //        {"intervalState", intervalState }
+    //    };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    //}
+
+    ///// <summary>
+    ///// 次のインターバルへ以降するフラグを受け取る
+    ///// </summary>
+    //bool GetIntervalState() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("intervalState", out object intervalStateObj)) {
+    //        intervalState = (bool)intervalStateObj;
+    //    }
+    //    return intervalState;
+    //}
+
+    //void SetEndIntervalPassCount(bool endIntervalPass) {
+    //    ExitGames.Client.Photon.Hashtable customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    //        {"endIntervalPass", endIntervalPass }
+    //    };
+    //    PhotonNetwork.LocalPlayer.SetCustomProperties(customRoomProperties);
+    //}
+
+    ///// <summary>
+    ///// 全員が投票完了したらtrue
+    ///// </summary>
+    //public bool GetIsVotingCompleted() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isVotingCompleted", out object isVotingCompletedObj)) {
+    //        isVotingCompleted = (bool)isVotingCompletedObj;
+    //    }
+    //    return isVotingCompleted;
+    //}
+
+    //public void SetIsVotingCompleted() {
+    //    var propertis = new ExitGames.Client.Photon.Hashtable {
+    //        {"isVotingCompleted",isVotingCompleted }
+    //    };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
+    //}
+
+    ///// <summary>
+    ///// 突然死したらフラグを付ける
+    ///// </summary>
+    //public void SetSuddenDeath() {
+    //    var properties = new ExitGames.Client.Photon.Hashtable {
+    //        {"setSuddenDeath",setSuddenDeath},
+    //    };
+    //    PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+    //}
+
+    ///// <summary>
+    ///// 突然死したプレイヤーのフラグをもらう
+    ///// </summary>
+    ///// <returns></returns>
+    //private bool GetSuddenDeath(Photon.Realtime.Player player) {
+    //    if (player.CustomProperties.TryGetValue("setSuddenDeath", out object setSuddenDeathObj)) {
+    //        setSuddenDeath = (bool)setSuddenDeathObj;
+    //    }
+    //    return setSuddenDeath;
+    //}
+
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //void SetTimeType() {
+    //    var properties = new ExitGames.Client.Photon.Hashtable {
+    //        {"timeType",timeType},
+    //    };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+    //}
+
+    ///// <summary>
+    ///// 突然死したプレイヤーのフラグをもらう
+    ///// </summary>
+    ///// <returns></returns>
+    //TIME GetTimeType() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeType", out object timeTypeObj)) {
+    //        timeType = (TIME)Enum.Parse(typeof(TIME), timeTypeObj.ToString());
+    //    }
+    //    return timeType;
+    //}
 }
 
 

@@ -251,7 +251,7 @@ public class Player : MonoBehaviourPunCallbacks {
         StartCoroutine(playerButton.SetUp(playerName, iconNo, playerID, gameManager,isMine));
 
         //参加人数が揃っていたらtrueにしない
-        if (gameManager.GetNum() != gameManager.numLimit) {
+        if (NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") != gameManager.numLimit) {
             gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
         }
         gameManager.exitButton.interactable = true;
@@ -271,17 +271,21 @@ public class Player : MonoBehaviourPunCallbacks {
             //投票完了しているかをチェックする
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
 
+                //投票してない場合
                 if (player.CustomProperties["votingCompleted"] == null) {
-                    bool votingCompleted = false;
-                    if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
-                        votingCompleted = (bool)votingCompletedObj;
-                    }
-                    var propertiers = new ExitGames.Client.Photon.Hashtable {
-                        {"votingCompleted",votingCompleted }
-                    };
-                    player.SetCustomProperties(propertiers);
+                    //NetworkManager.instance.GetCustomPropertesOfPlayer<bool>("votingCompleted", player);
+                    //bool votingCompleted = false;
+                    //if (player.CustomProperties.TryGetValue("votingCompleted", out object votingCompletedObj)) {
+                    //    votingCompleted = (bool)votingCompletedObj;
+                    //}
+                    NetworkManager.instance.SetCustomPropertesOfPlayer("votingCompleted", false, player);
+                    //var propertiers = new ExitGames.Client.Photon.Hashtable {
+                    //    {"votingCompleted",votingCompleted }
+                    //};
+                    //player.SetCustomProperties(propertiers);
                 }
 
+                //投票した場合
                 if ((bool)player.CustomProperties["votingCompleted"] && (bool)player.CustomProperties["live"]) {
                     checkNum++;
                 }
@@ -290,7 +294,8 @@ public class Player : MonoBehaviourPunCallbacks {
             if (checkNum == gameManager.liveNum) {
                 checkTimer = -2;
                 timeController.isVotingCompleted = true;
-                timeController.SetIsVotingCompleted();
+                NetworkManager.instance.SetCustomPropertesOfRoom("isVotingCompleted", timeController.isVotingCompleted);
+                //timeController.SetIsVotingCompleted();
             }
         }
     }
@@ -362,12 +367,15 @@ public class Player : MonoBehaviourPunCallbacks {
         
         playerImageNumList.Remove(iconNo);
         //使われた番号オンラインでもを削除する
-        var propertiers = new ExitGames.Client.Photon.Hashtable();
-        propertiers.Add("playerImageNum" + iconNo, iconNo);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
 
-        propertiers.Add("playerImageNum", iconNo);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
+        NetworkManager.instance.SetCustomPropertesOfRoom("playerImageNum", iconNo);
+        NetworkManager.instance.SetCustomPropertesOfPlayer("playerImageNum", iconNo,PhotonNetwork.LocalPlayer);
+        //var propertiers = new ExitGames.Client.Photon.Hashtable();
+        //propertiers.Add("playerImageNum" + iconNo, iconNo);
+        //PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
+
+        //propertiers.Add("playerImageNum", iconNo);
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
     }
 }
 

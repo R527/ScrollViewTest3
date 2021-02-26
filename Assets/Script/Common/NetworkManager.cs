@@ -504,6 +504,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         isBanCheck = true;
     }
 
+
+    /// <summary>
+    /// カスタムプロパティの値を受け取る（Room用
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="key">カスタムプロパティにセットするString</param>
+    /// <param name="isDefault">既に用意されているフラグをセットする</param>
+    /// <returns></returns>
     public T GetCustomPropertesOfRoom<T>(string key) {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out object obj)) {
             return (T)obj;
@@ -511,20 +519,39 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         return default(T);
     }
 
+    /// <summary>
+    /// カスタムプロパティの値を受け取る（Player用
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="key">カスタムプロパティにセットするString</param>
+    /// <param name="player">PhotonPlayerの指定</param>
+    /// <returns></returns>
     public T GetCustomPropertesOfPlayer<T>(string key, Photon.Realtime.Player player) {
         if (player.CustomProperties.TryGetValue(key, out object obj)) {
             return (T)obj;
         }
         return default(T);
     }
-
+    /// <summary>
+    /// カスタムプロパティの値をSetする（Room用
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="key">カスタムプロパティにセットするString</param>
+    /// <param name="isDefault">既に用意されているフラグをセットする</param>
+    /// <returns></returns>
     public void SetCustomPropertesOfRoom<T>(string key, T value) {
         var properties = new ExitGames.Client.Photon.Hashtable {
             {key,value},
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
     }
-
+    /// <summary>
+    /// カスタムプロパティの値をSetする（Player用
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="key">カスタムプロパティにセットするString</param>
+    /// <param name="isDefault">既に用意されているフラグをセットする</param>
+    /// <returns></returns>
     public void SetCustomPropertesOfPlayer<T>(string key,T value , Photon.Realtime.Player player) {
         var properties = new ExitGames.Client.Photon.Hashtable {
             {key,value},
