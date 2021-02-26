@@ -69,7 +69,11 @@ public class DayOrderButton : MonoBehaviour
     /// 一番最初の日にちに戻る
     /// </summary>
     public void FirstDay() {
-        ScrollToCore(nextDaysList[0], 1.0f);
+        if (nextDaysList.Count != 0) {
+            ScrollToCore(nextDaysList[0], 1.0f);
+        }else if(nextDaysList.Count == 0) {
+            scrollRect.verticalNormalizedPosition = 1f;
+        }
     }
 
     /// <summary>
@@ -82,11 +86,15 @@ public class DayOrderButton : MonoBehaviour
     /// 1日戻る
     /// </summary>
     public void PrevDay() {
-        ScrollToCore(nextDaysList[GetPrevDayPosY()], 1.0f);
+        if (nextDaysList.Count != 0) {
+            ScrollToCore(nextDaysList[GetPrevDayPosY()], 1.0f);
+        }
     }
 
     public void NextDay() {
-        ScrollToCore(nextDaysList[GetNextDayPosY()], 1.0f);
+        if (nextDaysList.Count != 0) {
+            ScrollToCore(nextDaysList[GetNextDayPosY()], 1.0f);
+        }
     }
     /// <summary>
     /// 指定した日にちに移動
