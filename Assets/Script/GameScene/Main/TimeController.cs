@@ -221,8 +221,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
     /// </summary>
     public void StartInterval() {
         //タイムタイプに違いがある場合修正する
-        if(timeType != GetTimeType()) {
-            GetTimeType();
+        if(timeType != NetworkManager.instance.GetCustomPropertesOfRoom<TIME>("timeType")) {
+            NetworkManager.instance.GetCustomPropertesOfRoom<TIME>("timeType");
         }
 
         //一度時間を非表示にする
@@ -449,14 +449,14 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 DeathPlayer();
                 break;
         }
-        StartCoroutine(EndInterval(timeType));
+        StartCoroutine(EndInterval());
     }
 
     /// <summary>
     /// 昼、夜、投票後にあるインターバル時間を設定
     /// </summary>
     /// <returns></returns>
-    private IEnumerator EndInterval(TIME nowTimeType) {
+    private IEnumerator EndInterval() {
 
         //役職に合わせてボタンなどを変更する
         TimesavingControllerTrue();
@@ -476,7 +476,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
         //マスターだけTimeTypeをセットする
         if (PhotonNetwork.IsMasterClient) {
-            SetTimeType();
+            NetworkManager.instance.SetCustomPropertesOfRoom("timeType",timeType);
         }
         SetEndIntervalPassCount(false);
         isNextInterval = false;

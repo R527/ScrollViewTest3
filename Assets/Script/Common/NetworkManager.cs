@@ -503,4 +503,32 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
         isBanCheck = true;
     }
+
+    public T GetCustomPropertesOfRoom<T>(string key) {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out object obj)) {
+            return (T)obj;
+        }
+        return default(T);
+    }
+
+    public T GetCustomPropertesOfPlayer<T>(string key, Photon.Realtime.Player player) {
+        if (player.CustomProperties.TryGetValue(key, out object obj)) {
+            return (T)obj;
+        }
+        return default(T);
+    }
+
+    public void SetCustomPropertesOfRoom<T>(string key, T value) {
+        var properties = new ExitGames.Client.Photon.Hashtable {
+            {key,value},
+        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+    }
+
+    public void SetCustomPropertesOfPlayer<T>(string key,T value , Photon.Realtime.Player player) {
+        var properties = new ExitGames.Client.Photon.Hashtable {
+            {key,value},
+        };
+        player.SetCustomProperties(properties);
+    }
 }

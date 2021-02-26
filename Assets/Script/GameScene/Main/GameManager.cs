@@ -72,8 +72,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
         //部屋を作った人は初めての人なのでこの処理はない
         //二人目以降の人が値を取得する
-        num = GetNum();
-
+        //num = GetNum();
+        num = NetworkManager.instance.GetCustomPropertesOfRoom<int>("num");
         if (DebugManager.instance.isTimeController && PhotonNetwork.IsMasterClient) {
             num = DebugManager.instance.num;
             var customProperties = new ExitGames.Client.Photon.Hashtable {

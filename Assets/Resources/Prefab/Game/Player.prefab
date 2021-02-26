@@ -57,7 +57,7 @@ MonoBehaviour:
   chatSystem: {fileID: 0}
   voteCount: {fileID: 0}
   timeController: {fileID: 0}
-  checkEnteredRoom: {fileID: 0}
+  emtyRoom: 0
   playerID: 0
   playerName: 
   isMine: 0
@@ -73,7 +73,6 @@ MonoBehaviour:
   playerButton: {fileID: 7534093506484074954, guid: 765fafd58a705684babe9cc1ecafa704,
     type: 3}
   chatTran: {fileID: 0}
-  emtyRoom: 0
   isVoteFlag: 0
   isRollAction: 0
   playerButtonPrefab: {fileID: 7534093506484074954, guid: 765fafd58a705684babe9cc1ecafa704,
