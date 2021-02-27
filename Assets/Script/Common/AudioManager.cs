@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
-
+using DG.Tweening;
 
 /// <summary>
 /// 音量を全てのシーンで引き継ぐ
@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
     public AudioMixer audioMixer;
     public AudioSource[] bgmSource;
     public AudioSource[] seSource;
-    private int currentBgmNum;
+    public int currentBgmNum;
     
     //音量調節
     public float bgmVolume;
@@ -77,11 +77,22 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     /// <param name="bgmType"></param>
     public void PlayBGM(BGM_TYPE bgmType) {
-        for(int i = 0; i < bgmSource.Length; i++) {
-            bgmSource[i].Stop();
-        }
+
+        StopBGM();
         currentBgmNum = (int)bgmType;
         bgmSource[currentBgmNum].Play();
+    }
+
+    /// <summary>
+    /// BGMを止めます
+    /// </summary>
+    public void StopBGM() {
+        if (currentBgmNum != 99) {
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(bgmSource[currentBgmNum].DOFade(0, 1.5f)).OnComplete(() => { 
+                bgmSource[currentBgmNum].volume = 0.22f; 
+            }); 
+        }
     }
 
     /// <summary>
@@ -92,9 +103,5 @@ public class AudioManager : MonoBehaviour
         seSource[(int)seType].Play();
     }
 
-    public void StopBGM() {
-        for (int i = 0; i < bgmSource.Length; i++) {
-            bgmSource[i].Stop();
-        }
-    }
+
 }

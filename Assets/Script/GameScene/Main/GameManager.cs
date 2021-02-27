@@ -30,13 +30,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public BanPlayer banPlayerPrefab;
     public Transform banListTran;
 
-    public bool isCheckEnteredRoom;//入室チェック
+    private bool isCheckEnteredRoom;//入室チェック
 
 
 
     public Transform menbarContent;
     public Transform playerListContent;
-    public bool isTimeUp;
     private bool isSetRoll;
     public List<PlayerButton> playerButtonList = new List<PlayerButton>();
 

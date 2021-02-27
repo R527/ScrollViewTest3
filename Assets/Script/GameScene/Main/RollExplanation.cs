@@ -27,8 +27,6 @@ public class RollExplanation : MonoBehaviour
     /// <param name="rollTypeList"></param>
     public void RollExplanationSetUp(List<ROLLTYPE> rollTypeList) {
         for (int i = 0; i < rollTypeList.Count; i++) {
-            Debug.Log("rollTypeList" + rollTypeList.Count);
-            Debug.Log("rollTypeList[]" + rollTypeList[i]);
             RollExplanationButtonPrefab Obj = Instantiate(rollExplanationButtonPrefab, rollButtonContent.transform, false);
             Obj.rollText.text = rollTypeList[i].ToString();
         }

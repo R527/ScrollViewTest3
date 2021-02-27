@@ -21,6 +21,5 @@ public class AdvertisingManager : MonoBehaviour
     void AdsManager() {
         string gameID = "3851633";
         Advertisement.Initialize(gameID, true);
-        Debug.Log("広告準備完了");
     }
 }
