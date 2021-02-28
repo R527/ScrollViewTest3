@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     public void GameManagerSetUp() {
         //BGM開始
-        AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.GAME);
+        StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.GAME));
 
         //部屋を作った人は初めての人なのでこの処理はない
         //二人目以降の人が値を取得する

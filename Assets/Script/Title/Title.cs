@@ -29,7 +29,7 @@ public class Title : MonoBehaviour
             Destroy(DebugManager.instance.debugText.gameObject);
         }
 
-        AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE);
+        StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.TITLE));
         begginerButton.onClick.AddListener(BegginerGuideMenu);
         gameStartButton.onClick.AddListener(StartGameButton);
         menuButton.onClick.AddListener(MenuPopUp);

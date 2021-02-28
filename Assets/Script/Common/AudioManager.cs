@@ -14,7 +14,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource[] bgmSource;
     public AudioSource[] seSource;
     public int currentBgmNum;
-    
+    public int lastBgmNum;
     //音量調節
     public float bgmVolume;
     public float seVolume;
@@ -76,23 +76,23 @@ public class AudioManager : MonoBehaviour
     /// BGMの配列を数字に変換して、流す
     /// </summary>
     /// <param name="bgmType"></param>
-    public void PlayBGM(BGM_TYPE bgmType) {
+    public IEnumerator PlayBGM(BGM_TYPE bgmType) {
 
         StopBGM();
+        yield return new WaitForSeconds(1.51f);
         currentBgmNum = (int)bgmType;
         bgmSource[currentBgmNum].Play();
+        bgmSource[currentBgmNum].DOFade(0.22f, 1.5f);
     }
 
     /// <summary>
     /// BGMを止めます
     /// </summary>
     public void StopBGM() {
-        if (currentBgmNum != 99) {
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(bgmSource[currentBgmNum].DOFade(0, 1.5f)).OnComplete(() => { 
-                bgmSource[currentBgmNum].volume = 0.22f; 
-            }); 
-        }
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(bgmSource[currentBgmNum].DOFade(0, 1.5f)).OnComplete(() => {
+            bgmSource[currentBgmNum].Stop();
+        }); 
     }
 
     /// <summary>

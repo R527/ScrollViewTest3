@@ -241,7 +241,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             case TIME.結果発表後チェック:
                 timeType = TIME.昼;
 
-                AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.お昼);
+                StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.お昼));
                 isDisplay = true;
                 totalTime = mainTime;
                 ChangeSecene();
@@ -268,7 +268,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             case TIME.昼:
                 timeType = TIME.投票時間;
 
-                AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.投票時間);
+                StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.投票時間));
                 isDisplay = true;
                 totalTime = votingTime;
 
@@ -376,7 +376,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
             //夜の行動
             case TIME.処刑後チェック:
                 timeType = TIME.夜の行動;
-                AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.夜の行動);
+                StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.夜の行動));
 
                 //狼ならチャット開放する
                 if (chatSystem.myPlayer.wolfChat) {

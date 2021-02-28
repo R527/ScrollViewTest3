@@ -34,7 +34,7 @@ public class LobbyButtonManager : MonoBehaviour
     }
 
     private void Start() {
-        AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY);
+        StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY));
         backButton.onClick.AddListener(BackButton);
         menuButton.onClick.AddListener(MenuPopUp);
         createRoomButton.onClick.AddListener(CreateRoomButton);
