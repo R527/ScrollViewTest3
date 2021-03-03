@@ -124,6 +124,8 @@ public class GameOver : MonoBehaviour {
 
         //チャットログを全表示する
         gameManager.chatListManager.ReleaseChatLog();
+
+        StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.GAME));
     }
 
     /// <summary>

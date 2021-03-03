@@ -8950,7 +8950,6 @@ MonoBehaviour:
   rollButtonContent: {fileID: 1988542255}
   rollExplanationButtonPrefab: {fileID: -5366768887920439300, guid: fece0fab62b4bb9418375822c4deb64f,
     type: 3}
-  rollExplanationButton: {fileID: 0}
 --- !u!1 &925223932
 GameObject:
   m_ObjectHideFlags: 0
@@ -9163,7 +9162,6 @@ MonoBehaviour:
   gameOver: {fileID: 1130743582}
   gameMasterChatManager: {fileID: 1130743577}
   inputView: {fileID: 1018169722}
-  fillter: {fileID: 1018169728}
   timeType: 0
   dayOrderButton: {fileID: 1666010123}
   timerText: {fileID: 575804562}
@@ -9182,7 +9180,6 @@ MonoBehaviour:
   isSpeaking: 0
   setSuddenDeath: 0
   isPlay: 0
-  checkTimer: 0
   isVotingCompleted: 0
   savingButton: {fileID: 163000424}
   COButton: {fileID: 1812546287}
@@ -9829,11 +9826,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chatListManager: {fileID: 1130743579}
-  foldingText: {fileID: 468840154}
   viewport: {fileID: 4395145947911845164}
   inputRectTransform: {fileID: 4395145949375906982}
   filterButton: {fileID: 474407752}
-  stampButton: {fileID: 443620382}
   foldingButton: {fileID: 48525514}
   comingButton: {fileID: 1812546287}
   menberViewPopUpObj: {fileID: 1552074811}
@@ -9848,7 +9843,6 @@ MonoBehaviour:
   wolfModeButtonText: {fileID: 1484097463}
   wolfMode: 0
   superChatButton: {fileID: 194684091}
-  superChatButtonText: {fileID: 812473625}
   superChat: 0
   moneyImage: {fileID: 635784463014612984}
   superChatBtnImage: {fileID: 194684092}
@@ -9929,7 +9923,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatListManager: {fileID: 1130743579}
   inputView: {fileID: 1018169722}
-  filterButtanText: {fileID: 341305430}
   filterButton: {fileID: 474407752}
   flodingButton: {fileID: 48525514}
   comingOutButton: {fileID: 1812546287}
@@ -11080,7 +11073,6 @@ MonoBehaviour:
   timeSaving: 0
   timeSavingNum: 0
   timeSavingButtonText: {fileID: 256122106}
-  LeavePopUp: {fileID: 0}
   gameMasterChat: 
   isTimeSaving: 0
   actionPopUpPrefab: {fileID: 356964420616384462, guid: 41fd3eb5dc8d15d4e97cc9cd433f3ab9,
@@ -11108,10 +11100,8 @@ MonoBehaviour:
   rollExplanation: {fileID: 904789181}
   voteCount: {fileID: 1130743580}
   gameMasterChatManager: {fileID: 1130743577}
-  fillter: {fileID: 1018169728}
   comingOut: {fileID: 355552696}
   inputView: {fileID: 1018169722}
-  checkEnteredRoom: {fileID: 1738310846}
   NumText: {fileID: 2035613864}
   num: 0
   numLimit: 9
@@ -11121,22 +11111,8 @@ MonoBehaviour:
   banPlayerPrefab: {fileID: 8098118972350181479, guid: 31d6830b8d7b6f04dac354c763f4ed23,
     type: 3}
   banListTran: {fileID: 1403669500}
-  isCheckEnteredRoom: 0
-  enterNum: 0
-  enterNumTime: 25
-  confirmationImage: {fileID: 797423580}
-  confirmationTimeText: {fileID: 1628576554}
-  confirmationNumText: {fileID: 527031520}
-  confirmationEnterButtonText: {fileID: 1790323956}
-  savingText: {fileID: 256122106}
-  confirmation: 0
-  isConfirmation: 0
-  damyObj: {fileID: 546607570}
-  setEnterNumTime: 25
   menbarContent: {fileID: 30259292}
   playerListContent: {fileID: 1857312062}
-  isTimeUp: 0
-  isExit: 0
   playerButtonList: []
   firstDayButton: {fileID: 700035325}
   prevDayButton: {fileID: 2047641962}
@@ -11150,7 +11126,6 @@ MonoBehaviour:
   extitCurrency: 120
   showPopUp: 0
   exitButton: {fileID: 391165869}
-  enterButton: {fileID: 292037474}
   rollBtn: {fileID: 95201241}
   rollTypeList: 
   ComingOutButtonList: 
@@ -11169,11 +11144,9 @@ MonoBehaviour:
   gameManager: {fileID: 1130743578}
   normalList: []
   wlofList: []
-  callOutList: []
   deathList: []
   gameMasterList: []
   isfilter: 0
-  playerNum: 1
   myWolfChat: 0
 --- !u!114 &1130743580
 MonoBehaviour:
@@ -11222,7 +11195,6 @@ MonoBehaviour:
   timeController: {fileID: 930455255}
   wolfCount: 0
   liverCount: 0
-  timeSavingButton: {fileID: 163000422}
   winnerList: 
   isGameOver: 0
   isWin: 0
@@ -12737,8 +12709,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -5.899994}
+  m_SizeDelta: {x: 27.397812, y: 43.05371}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1297556967
 MonoBehaviour:

@@ -146,7 +146,8 @@ public class ActionPopUp : MonoBehaviourPunCallbacks {
                 break;
             case Action_Type.襲撃:
                 gameManager.chatSystem.gameMasterChatManager.bitedID = playerID;
-                gameManager.chatSystem.gameMasterChatManager.SetBitedPlayerID();
+                NetworkManager.instance.SetCustomPropertesOfRoom("bitedID", gameManager.gameMasterChatManager.bitedID);
+                //gameManager.chatSystem.gameMasterChatManager.SetBitedPlayerID();
                 gameManager.chatSystem.gameMasterChatManager.gameMasterChat = playerName + "さんを襲撃します。";
                 gameManager.chatSystem.myPlayer.isRollAction = true;
 
@@ -158,7 +159,8 @@ public class ActionPopUp : MonoBehaviourPunCallbacks {
                 gameManager.chatSystem.gameMasterChatManager.gameMasterChat = playerName + "さんを護衛します。";
                 //守ったプレイヤーを記録
                 gameManager.chatSystem.gameMasterChatManager.protectedID = playerID;
-                gameManager.chatSystem.gameMasterChatManager.SetProtectedPlayerID();
+                NetworkManager.instance.SetCustomPropertesOfRoom("protectedID", gameManager.gameMasterChatManager.protectedID);
+                //gameManager.chatSystem.gameMasterChatManager.SetProtectedPlayerID();
                 gameManager.chatSystem.myPlayer.isRollAction = true;
 
                 gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);

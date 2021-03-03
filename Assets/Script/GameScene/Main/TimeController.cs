@@ -176,7 +176,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 checkTimer += Time.deltaTime;
                 if (checkTimer >= 1) {
                     checkTimer = 0;
-                    gameManager.gameMasterChatManager.GetIsTimeSaving();
+                    NetworkManager.instance.GetCustomPropertesOfRoom<bool>("isTimeSaving");
+                    //gameManager.gameMasterChatManager.GetIsTimeSaving();
                 }
             }
             //マスターだけが0秒もしくは時短成立の確認を取れたら全員に次のシーンへと行くフラグを送信する
@@ -186,7 +187,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 totalTime = NetworkManager.instance.GetCustomPropertesOfRoom<float>("totalTime");
                 intervalState = true;
                 gameManager.gameMasterChatManager.isTimeSaving = false;
-                gameManager.gameMasterChatManager.SetIsTimeSaving();
+                NetworkManager.instance.SetCustomPropertesOfRoom("isTimeSaving", gameManager.gameMasterChatManager.isTimeSaving);
+
+                //gameManager.gameMasterChatManager.SetIsTimeSaving();
                 //SetIntervalState();
                 NetworkManager.instance.SetCustomPropertesOfRoom("intervalState", true);
             }
@@ -289,7 +292,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.処刑;
                 isDisplay = false;
                 totalTime = executionTime;
-
+                Destroy(gameMasterChatManager.destoryedObj);
                 //初期化
                 isVotingCompleted = false;
 
@@ -348,7 +351,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.処刑後チェック;
                 chatSystem.myPlayer.isVoteFlag = false;
                 isDisplay = false;
-                totalTime = executionTime;
+                totalTime = checkGameOverTime;
 
                 //初期化
                 if (PhotonNetwork.IsMasterClient) {
@@ -411,7 +414,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.夜の結果発表;
 
                 AudioManager.instance.StopBGM();
-
+                Debug.Log("destroy");
+                Destroy(gameMasterChatManager.destoryedObj);
                 //狼チャットできる人だけチャットfalseにする
                 if (chatSystem.myPlayer.wolfChat) {
                     inputField.interactable = false;
@@ -448,8 +452,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
                  
                     gameManager.gameMasterChatManager.bitedID = 9999;
                     gameManager.gameMasterChatManager.protectedID = 9999;
-                    gameManager.gameMasterChatManager.SetProtectedPlayerID();
-                    gameManager.gameMasterChatManager.SetBitedPlayerID();
+                    NetworkManager.instance.SetCustomPropertesOfRoom("protectedID", gameManager.gameMasterChatManager.protectedID);
+                    NetworkManager.instance.SetCustomPropertesOfRoom("bitedID", gameManager.gameMasterChatManager.bitedID);
+                    //gameManager.gameMasterChatManager.SetProtectedPlayerID();
+                    //gameManager.gameMasterChatManager.SetBitedPlayerID();
                 }
 
                 if (!DebugManager.instance.isGameOver) {
@@ -684,7 +690,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 }
             }
         }
-        Debug.Log("endIntervalPassCount" + endIntervalPassCount);
         return endIntervalPassCount;
     }
 

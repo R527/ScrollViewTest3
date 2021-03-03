@@ -422,10 +422,8 @@ public class RoomSetting : MonoBehaviour
 
     public void BackButton() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
-
-        roomSettingCanvas.GetComponent<CanvasGroup>().alpha = 0;
         rollSettingCanvas.SetActive(true);
-
+        roomSettingCanvas.gameObject.SetActive(false);
     }
 
 }

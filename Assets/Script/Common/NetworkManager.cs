@@ -63,7 +63,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.ConnectUsingSettings();
         roomSetting = GameObject.FindGameObjectWithTag("roomSetting").GetComponent<RoomSetting>();
         roomContent = GameObject.FindGameObjectWithTag("content");
-        Debug.Log("Setcontent");
     }
 
     public override void OnConnectedToMaster() {
@@ -197,16 +196,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="roomList"></param>
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
-
-        Debug.Log("OnRoomListUpdate");
-        Debug.Log("roomListCount" + roomList.Count);
         roomInfoList = roomList;
         List<RoomNode> roomNodeList = new List<RoomNode>(); 
         foreach (Photon.Realtime.RoomInfo info in roomList) {
             //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
 
             RoomNode roomNode = new RoomNode();
-            Debug.Log("info.name" + info.Name);
             //アクティブの部屋な部屋がある場合その部屋の更新を行う
             if (activeEntries.TryGetValue(info.Name, out roomNode)) {
                 //info.CustomProperties["roomId"];
@@ -224,10 +219,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
                 //まだアクティブ化されていないRoomがある場合こちらで生成する
             }else if (!info.RemovedFromList) {
-                Debug.Log("inactiveEntries" + inactiveEntries.Count);
-
                 roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
-                //roomNode = (inactiveEntries.Count > 0) ? inactiveEntries.Pop().SetAsLastSibling() : Instantiate(roomNodePrefab, roomContent.transform, false);
                 roomNode.Activate(info);
                 roomNodeList.Add(roomNode);
                 roomNodeObjList.Add(roomNode);
@@ -316,6 +308,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
 
         isRoomMaster = false;
+        StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY));
     }
 
     /// <summary>

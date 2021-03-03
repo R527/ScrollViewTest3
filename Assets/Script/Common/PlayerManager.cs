@@ -303,9 +303,7 @@ public class PlayerManager : MonoBehaviour {
 
         if(chatData.comingOutText != "") {
             comingOut = "," + chatData.comingOutText;
-            Debug.Log("comingOut" + comingOut);
         }
-        Debug.Log("chatData.iconNo" + chatData.iconNo);
 
         str = chatData.inputData + "," + chatData.boardColor + "," + chatData.playerName + "," + chatData.playerID + "," + chatData.iconNo + "," + comingOut;
         return str;

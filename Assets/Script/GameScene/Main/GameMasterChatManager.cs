@@ -24,6 +24,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public string gameMasterChat;
     public bool isTimeSaving;//時短用のbool
     public ActionPopUp actionPopUpPrefab;
+    public GameObject destoryedObj;
     public Transform gameCancasTran;
 
     //早朝用
@@ -127,7 +128,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public IEnumerator TimeSavingOrExitButton() {
         //時短処理
         if (timeSavingButtonText.text == "時短") {
-            timeSavingNum = GetimeSavingNum();
+            timeSavingNum = NetworkManager.instance.GetCustomPropertesOfRoom<int>("timeSavingNum");
 
             //キャンセルorまだ希望していない状態なら
             //時短ボタンの色を変更する処理を後程追加したい
@@ -148,14 +149,15 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
             //もう一度チェック
-            timeSavingNum = GetimeSavingNum();
+            timeSavingNum = NetworkManager.instance.GetCustomPropertesOfRoom<int>("timeSavingNum");
 
             //時短判定(過半数以上なら時短成立
             //Mathf.CeilToIntは切り上げ
             float value = (float)gameManager.liveNum;
             if (Mathf.CeilToInt(value / 2) <= timeSavingNum) {
                 isTimeSaving = true;
-                SetIsTimeSaving();
+                NetworkManager.instance.SetCustomPropertesOfRoom("isTimeSaving", isTimeSaving);
+                //SetIsTimeSaving();
             }
             //退出処理
         } else if (timeSavingButtonText.text == "退出" ) {
@@ -174,6 +176,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 yield break;
             }
 
+            Debug.Log("退出");
             //広告表示
             ShowAds();
 
@@ -191,8 +194,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //LeaveRoom();処理をするときにTimeControllerのエラーが出るので消去する
             NetworkManager.instance.LeaveRoom();
         }
-
-
     }
 
     /// <summary>
@@ -255,7 +256,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public IEnumerator EnteredRoom(Photon.Realtime.Player player) {
         //ToDo 部屋入室時にPlayerが参加したGMチャット部分の無駄なタイムラグを排除　様子見
-        //yield return new WaitForSeconds(2.0f);
         yield return null;
         gameMasterChat = player.NickName + "さんが参加しました。";
         if (photonView.IsMine) {
@@ -263,9 +263,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         }
         gameMasterChat = string.Empty;
     }
-
-
-
 
     /// <summary>
     /// 投票を完了させる
@@ -399,11 +396,14 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
 
             case ROLLTYPE.人狼:
                 //相方のため押せません。
-                if (wolf) {
+                if (wolf || timeController.firstDay) {
                     return;
                 } else {
                     //噛んだプレイヤーを記録
                     ActionPopUp biteObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                    Debug.Log("biteObj.gameObject" + biteObj.gameObject);
+                    destoryedObj = biteObj.gameObject;
+                    Debug.Log("destoryedObj" + destoryedObj);
                     biteObj.actionText.text = thePlayer.playerName + "さんを襲撃しますか？";
                     biteObj.buttonText.text = "襲撃";
                     biteObj.gameManager = this.gameManager;
@@ -417,6 +417,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 //初日ではなく もしくは初日占いなし
                 if (!timeController.firstDay || RoomData.instance.roomInfo.fortuneType == FORTUNETYPE.あり) {
                     ActionPopUp fortuneObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                    destoryedObj = fortuneObj.gameObject;
                     fortuneObj.actionText.text = thePlayer.playerName + "さんを占いますか？";
                     fortuneObj.buttonText.text = "占う";
                     fortuneObj.gameManager = this.gameManager;
@@ -426,12 +427,16 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 }
                 break;
             case ROLLTYPE.騎士:
-                ActionPopUp kightObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
-                kightObj.actionText.text = thePlayer.playerName + "さんを護衛しますか？";
-                kightObj.buttonText.text = "護衛";
-                kightObj.gameManager = this.gameManager;
-                kightObj.playerName = thePlayer.playerName;
-                kightObj.action_Type = ActionPopUp.Action_Type.護衛;
+                if(!timeController.firstDay) {
+                    ActionPopUp kightObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                    destoryedObj = kightObj.gameObject;
+                    kightObj.actionText.text = thePlayer.playerName + "さんを護衛しますか？";
+                    kightObj.buttonText.text = "護衛";
+                    kightObj.gameManager = this.gameManager;
+                    kightObj.playerName = thePlayer.playerName;
+                    kightObj.playerID = thePlayer.playerID;
+                    kightObj.action_Type = ActionPopUp.Action_Type.護衛;
+                }
                 break;
 
                 //押せません
@@ -444,8 +449,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// 朝の結果発表
     /// </summary>
     public void MorningResults() {
-        protectedID = GetProtectedPlayerID();
-        bitedID = GetBitedPlayerID();
+        protectedID = NetworkManager.instance.GetCustomPropertesOfRoom<int>("protectedID");
+        bitedID = NetworkManager.instance.GetCustomPropertesOfRoom<int>("bitedID");
         if (PhotonNetwork.IsMasterClient) {
             //結果を実行する
             if (bitedID == protectedID) {
@@ -492,74 +497,74 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
         gameMasterChat = string.Empty;
     }
-    /////////////////////////////
-    ///カスタムプロパティ関連
-    /////////////////////////////
+    ///////////////////////////////
+    /////カスタムプロパティ関連
+    ///////////////////////////////
 
 
-    /// <summary>
-    /// 時短希望人数をチェックする
-    /// </summary>
-    private int GetimeSavingNum() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeSavingNum", out object timeSavingNumObj)) {
-            timeSavingNum = (int)timeSavingNumObj;
-        }
-        return timeSavingNum;
-    }
-    /// <summary>
-    /// 狩人が守った情報をセットします。
-    /// </summary>
-    public void SetProtectedPlayerID() {
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"protectedID", protectedID }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
-    /// <summary>
-    /// 狼が噛んだプレイヤーをセットします。
-    /// </summary>
-    public  void SetBitedPlayerID() {
-        var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-            {"bitedID", bitedID }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-    }
-    /// <summary>
-    /// 噛んだプレイヤーを受け取ります。
-    /// </summary>
-    /// <returns></returns>
-    private int GetBitedPlayerID() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("bitedID", out object bitedIDObj)) {
-            bitedID = (int)bitedIDObj;
-        }
-        return bitedID;
-    }
-    /// <summary>
-    /// 狩人が守ったプレイヤーを受け取ります。
-    /// </summary>
-    /// <returns></returns>
-    private int GetProtectedPlayerID() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("protectedID", out object protectedIDObj)) {
-            protectedID = (int)protectedIDObj;
-        }
-        return protectedID;
-    }
+    ///// <summary>
+    ///// 時短希望人数をチェックする
+    ///// </summary>
+    //private int GetimeSavingNum() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("timeSavingNum", out object timeSavingNumObj)) {
+    //        timeSavingNum = (int)timeSavingNumObj;
+    //    }
+    //    return timeSavingNum;
+    //}
+    ///// <summary>
+    ///// 狩人が守った情報をセットします。
+    ///// </summary>
+    //public void SetProtectedPlayerID() {
+    //    var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    //        {"protectedID", protectedID }
+    //    };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    //}
+    ///// <summary>
+    ///// 狼が噛んだプレイヤーをセットします。
+    ///// </summary>
+    //public  void SetBitedPlayerID() {
+    //    var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
+    //        {"bitedID", bitedID }
+    //    };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+    //}
+    ///// <summary>
+    ///// 噛んだプレイヤーを受け取ります。
+    ///// </summary>
+    ///// <returns></returns>
+    //private int GetBitedPlayerID() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("bitedID", out object bitedIDObj)) {
+    //        bitedID = (int)bitedIDObj;
+    //    }
+    //    return bitedID;
+    //}
+    ///// <summary>
+    ///// 狩人が守ったプレイヤーを受け取ります。
+    ///// </summary>
+    ///// <returns></returns>
+    //private int GetProtectedPlayerID() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("protectedID", out object protectedIDObj)) {
+    //        protectedID = (int)protectedIDObj;
+    //    }
+    //    return protectedID;
+    //}
 
-    /// <summary>
-    /// 時短成立用のboolをセットする
-    /// </summary>
-    /// <returns></returns>
-    public void SetIsTimeSaving() {
-        var propertis = new ExitGames.Client.Photon.Hashtable {
-            {"isTimeSaving",isTimeSaving }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
-    }
+    ///// <summary>
+    ///// 時短成立用のboolをセットする
+    ///// </summary>
+    ///// <returns></returns>
+    //public void SetIsTimeSaving() {
+    //    var propertis = new ExitGames.Client.Photon.Hashtable {
+    //        {"isTimeSaving",isTimeSaving }
+    //    };
+    //    PhotonNetwork.CurrentRoom.SetCustomProperties(propertis);
+    //}
 
-    public bool GetIsTimeSaving() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isTimeSaving", out object isTimeSavingObj)) {
-            isTimeSaving = (bool)isTimeSavingObj;
-        }
-        return isTimeSaving;
-    }
+    //public bool GetIsTimeSaving() {
+    //    if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isTimeSaving", out object isTimeSavingObj)) {
+    //        isTimeSaving = (bool)isTimeSavingObj;
+    //    }
+    //    return isTimeSaving;
+    //}
 }

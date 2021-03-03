@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.0627451}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.14117648}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -544,6 +544,7 @@ MonoBehaviour:
   explanationText: {fileID: 3662827917969869496}
   statusText: {fileID: 3662827918639899814}
   backButton: {fileID: 718770690225836202}
+  maskButton: {fileID: 3715419937682313903}
 --- !u!1 &3662827918180102517
 GameObject:
   m_ObjectHideFlags: 0

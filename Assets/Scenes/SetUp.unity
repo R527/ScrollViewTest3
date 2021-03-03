@@ -214,7 +214,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 93471e631d5225641b8dc6fe1f82564a, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.22
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -920,7 +920,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: b602374cbdd6c454da10dd8add672a0c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.22
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1640,15 +1640,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isTimeController: 1
-  testMainTime: 10
+  testMainTime: 2
   testNightTime: 10
-  testVotingTime: 10
-  testExecutionTime: 10
+  testVotingTime: 2
+  testExecutionTime: 2
   testCheckGameOverTime: 2
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 1
+  numLimit: 2
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1

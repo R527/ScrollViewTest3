@@ -123,7 +123,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             //生存していて、自分以外のプレイヤーを指定
         } else if (!gameManager.chatListManager.isfilter && PhotonNetwork.LocalPlayer.ActorNumber != playerID) {
             //フィルター機能がOFFの時は各時間ごとの機能をする
-            if (!live) {
+            if (!gameManager.chatSystem.myPlayer.live) {
                 AddBanPlayer();
             }
 
@@ -133,12 +133,15 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                 case TIME.投票時間:
                     //ここでは投票をするだけで他プレイヤーとの比較判定はしない
                     //比較はVoteCount.csで行われる
-                    ActionPopUp voteObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
-                    voteObj.actionText.text = playerName + "さんに投票しますか？";
-                    voteObj.buttonText.text = "投票する";
-                    voteObj.gameManager = this.gameManager;
-                    voteObj.playerID = this.playerID;
-                    voteObj.action_Type = ActionPopUp.Action_Type.投票;
+                    if (gameManager.chatSystem.myPlayer.live) {
+                        ActionPopUp voteObj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                        gameManager.gameMasterChatManager.destoryedObj = voteObj.gameObject;
+                        voteObj.actionText.text = playerName + "さんに投票しますか？";
+                        voteObj.buttonText.text = "投票する";
+                        voteObj.gameManager = gameManager;
+                        voteObj.playerID = playerID;
+                        voteObj.action_Type = ActionPopUp.Action_Type.投票;
+                    }
                     break;
                 //夜の行動をとる処理
                 case TIME.夜の行動:
@@ -150,17 +153,21 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                 //マスターのみ他プレイヤーを退出できる
                 //強制退出させたプレイヤーはBanListに追加される
                 case TIME.開始前:
-                    ActionPopUp obj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
-                    obj.actionText.text = playerName + "さんを強制退出させますか？";
-                    obj.buttonText.text = "強制退場";
-                    obj.gameManager = this.gameManager;
-                    obj.playerID = this.playerID;
-                    obj.action_Type = ActionPopUp.Action_Type.強制退場;
-
+                    if (PhotonNetwork.IsMasterClient) {
+                        ActionPopUp obj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
+                        obj.actionText.text = playerName + "さんを強制退出させますか？";
+                        obj.buttonText.text = "強制退場";
+                        obj.gameManager = this.gameManager;
+                        obj.playerID = this.playerID;
+                        obj.action_Type = ActionPopUp.Action_Type.強制退場;
+                    }
                     break;
                     //BanPlayerの追加
                 case TIME.終了:
-                    AddBanPlayer();
+                    if (!gameManager.chatSystem.myPlayer.live) {
+                        Debug.Log("Ban" + playerID);
+                        AddBanPlayer();
+                    }
                     break;
             }
         }
