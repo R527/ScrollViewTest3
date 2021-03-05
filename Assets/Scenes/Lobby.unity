@@ -14363,6 +14363,8 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: e3a7ad8ea87e06d4ab95305aa5262e76, type: 2}
   bgmSource: []
   seSource: []
+  currentBgmNum: 0
+  lastBgmNum: 0
   bgmVolume: 0
   seVolume: 0
 --- !u!4 &1616714036
@@ -15735,9 +15737,11 @@ MonoBehaviour:
     type: 3}
   networkManagerPrefab: {fileID: 2031278994399130302, guid: 1f3cfe8d6b38662418f7143d411f9ca0,
     type: 3}
+  networkManager: {fileID: 0}
   createRoomButton: {fileID: 3556330741267925435}
   roomSelectCanvasObj: {fileID: 3556330741947033353}
   rollSettingCanvasObj: {fileID: 1536450138}
+  test: {fileID: 3556330743257276804}
 --- !u!1 &1801660852
 GameObject:
   m_ObjectHideFlags: 0
@@ -21745,7 +21749,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 3556330743257276811}
   m_OnClick:
     m_PersistentCalls:

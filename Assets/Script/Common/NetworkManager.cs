@@ -197,8 +197,47 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="roomList"></param>
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
         roomInfoList = roomList;
-        List<RoomNode> roomNodeList = new List<RoomNode>(); 
-        foreach (Photon.Realtime.RoomInfo info in roomList) {
+        //List<RoomNode> roomNodeList = new List<RoomNode>(); 
+        //foreach (Photon.Realtime.RoomInfo info in roomList) {
+        //    //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
+
+        //    RoomNode roomNode = new RoomNode();
+        //    //アクティブの部屋な部屋がある場合その部屋の更新を行う
+        //    if (activeEntries.TryGetValue(info.Name, out roomNode)) {
+        //        //info.CustomProperties["roomId"];
+        //        //IsOpenがtureの場合表示する
+        //        //最後のプレイヤーがRoomに入った時にfalseにする
+        //        if (!info.RemovedFromList && info.IsOpen) {
+        //            roomNode.Activate(info);
+        //            roomNodeList.Add(roomNode);
+        //        } else {
+        //            //部屋がなくなった場合
+        //            activeEntries.Remove(info.Name);
+        //            roomNode.Deactivate();
+        //            //inactiveEntries.Push(roomNode);
+        //        }
+
+        //        //まだアクティブ化されていないRoomがある場合こちらで生成する
+        //    }else if (!info.RemovedFromList) {
+        //        roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
+        //        roomNode.Activate(info);
+        //        roomNodeList.Add(roomNode);
+        //        roomNodeObjList.Add(roomNode);
+        //        activeEntries.Add(info.Name, roomNode);
+
+        //        OnRoomListUpdate(roomList);
+        //    }
+        //}
+
+        //roomNodeList = roomNodeList.OrderByDescending(x => x.roomId).ToList();
+
+
+    }
+
+    public void Test() {
+        Debug.Log("UpdateRoomList");
+        List<RoomNode> roomNodeList = new List<RoomNode>();
+        foreach (Photon.Realtime.RoomInfo info in roomInfoList) {
             //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
 
             RoomNode roomNode = new RoomNode();
@@ -218,24 +257,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 }
 
                 //まだアクティブ化されていないRoomがある場合こちらで生成する
-            }else if (!info.RemovedFromList) {
+            } else if (!info.RemovedFromList) {
                 roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
                 roomNode.Activate(info);
                 roomNodeList.Add(roomNode);
                 roomNodeObjList.Add(roomNode);
                 activeEntries.Add(info.Name, roomNode);
 
-                OnRoomListUpdate(roomList);
+                OnRoomListUpdate(roomInfoList);
             }
         }
 
         roomNodeList = roomNodeList.OrderByDescending(x => x.roomId).ToList();
-
-
     }
 
 
-    
     /// <summary>
     /// 部屋に新しいプレイヤーが入室した際に呼ばれる
     /// </summary>

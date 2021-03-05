@@ -20,6 +20,8 @@ public class LobbyButtonManager : MonoBehaviour
     public GameObject roomSelectCanvasObj;
     public GameObject rollSettingCanvasObj;
 
+    public Button test;
+
     /// <summary>
     /// NetworkManagerのSetUpをする
     /// </summary>
@@ -34,6 +36,7 @@ public class LobbyButtonManager : MonoBehaviour
     }
 
     private void Start() {
+        test.onClick.AddListener(NetworkManager.instance.Test);
         StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY));
         backButton.onClick.AddListener(BackButton);
         menuButton.onClick.AddListener(MenuPopUp);
@@ -47,6 +50,7 @@ public class LobbyButtonManager : MonoBehaviour
             NetworkManager.instance.OnRoomListUpdate(NetworkManager.instance.roomInfoList) ;
         }
     }
+
 
     /// <summary>
     /// メニューPopUpをインスタンスする
