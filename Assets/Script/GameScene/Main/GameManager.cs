@@ -276,6 +276,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
 
     private void PraparateGameStart() {
         StartCoroutine(StartGame());
+        num = NetworkManager.instance.GetCustomPropertesOfRoom<int>("num");
         NumText.text = num + "/" + numLimit;
     }
 
