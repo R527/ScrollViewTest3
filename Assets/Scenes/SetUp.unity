@@ -1655,7 +1655,7 @@ MonoBehaviour:
   timeType: 4
   isPlayerPrefsDeleteAll: 0
   isGameOver: 1
-  isCheckSuddenDeath: 1
+  isCheckSuddenDeath: 0
   isVoteCount: 1
   isTestPlay: 1
   testRollTypeList: 04000000020000000400000000000000

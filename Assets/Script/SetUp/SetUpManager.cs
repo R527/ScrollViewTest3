@@ -81,9 +81,12 @@ public class SetUpManager : MonoBehaviour
         AudioManager.instance.seVolume = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.seVolume.ToString(), -25);
 
         //課金額を取得する
-        if (DebugManager.instance.isCurrency && !DebugManager.instance.isDebug) {
-            PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
-        }
+        //if (DebugManager.instance.isCurrency && !DebugManager.instance.isDebug) {
+
+        //}
+        PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
+        Debug.Log(" PlayerManager.instance.currency" + PlayerManager.instance.currency);
+        
 
         //サブスクライブを取得する（期間中ならフラグを入れる
         PlayerManager.instance.subscribe = PlayerManager.instance.SetSubscribe();

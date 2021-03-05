@@ -69,7 +69,7 @@ public class BegginerGuide : MonoBehaviour
     /// 次の説明文へ
     /// </summary>
     public void NextButton() {
-        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
+        //AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         num++;
         if(num == numLimit) {
             nextButton.interactable = false;
@@ -84,7 +84,7 @@ public class BegginerGuide : MonoBehaviour
     /// 前の説明文へ
     /// </summary>
     public void BackButton() {
-        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
+        //AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
         num--;
         if (num == numLimit - 1) {
             nextButton.interactable = true;

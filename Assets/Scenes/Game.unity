@@ -770,10 +770,10 @@ RectTransform:
   m_Father: {fileID: 4395145949375906982}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 102.5, y: -12}
+  m_SizeDelta: {x: 205, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &84472875
 MonoBehaviour:
@@ -5270,10 +5270,10 @@ RectTransform:
   m_Father: {fileID: 4395145949375906982}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 103, y: -61}
+  m_SizeDelta: {x: 206, y: 73.993774}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &504153372
 MonoBehaviour:
@@ -9083,13 +9083,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a5f511b0d8142cba0aeb92d0b264c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: ' test_suisyou_2500'
+  productId: test_suisyou_2500
   buttonType: 0
   consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 635784463014612985}
         m_TargetAssemblyTypeName: CurrencyManager, Assembly-CSharp
         m_MethodName: BuyCurrency
         m_Mode: 3
@@ -11077,6 +11077,7 @@ MonoBehaviour:
   isTimeSaving: 0
   actionPopUpPrefab: {fileID: 356964420616384462, guid: 41fd3eb5dc8d15d4e97cc9cd433f3ab9,
     type: 3}
+  destoryedObj: {fileID: 0}
   gameCancasTran: {fileID: 1221547292}
   bitedID: 0
   protectedID: 0
@@ -11506,13 +11507,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a5f511b0d8142cba0aeb92d0b264c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: ' test_suisyou_5000'
+  productId: test_suisyou_5000
   buttonType: 0
   consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 635784463014612985}
         m_TargetAssemblyTypeName: CurrencyManager, Assembly-CSharp
         m_MethodName: BuyCurrency
         m_Mode: 3
@@ -15397,8 +15398,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 102.5, y: -71.553}
-  m_SizeDelta: {x: 205, y: 70}
+  m_AnchoredPosition: {x: 102.5, y: -72.773}
+  m_SizeDelta: {x: 205, y: 71.21988}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1552074814
 MonoBehaviour:
@@ -16760,7 +16761,7 @@ MonoBehaviour:
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 635784463014612985}
         m_TargetAssemblyTypeName: CurrencyManager, Assembly-CSharp
         m_MethodName: BuyCurrency
         m_Mode: 3
@@ -20451,6 +20452,7 @@ GameObject:
   m_Component:
   - component: {fileID: 635784463014612983}
   - component: {fileID: 635784463014612981}
+  - component: {fileID: 635784463014612985}
   m_Layer: 5
   m_Name: "\u8AB2\u91D1Image"
   m_TagString: Untagged
@@ -20458,6 +20460,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &635784463014612985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635784463014612984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95684ea9cb565c8488d727b678a13e86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1130743578}
+  closeBtn: {fileID: 0}
+  maskBtn: {fileID: 0}
+  CurrencyObj: {fileID: 0}
 --- !u!114 &635784463619713651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20476,7 +20494,7 @@ MonoBehaviour:
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 635784463014612985}
         m_TargetAssemblyTypeName: CurrencyManager, Assembly-CSharp
         m_MethodName: BuyCurrency
         m_Mode: 3
@@ -23580,7 +23598,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4395145949375906977}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
@@ -23617,8 +23635,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000014305, y: -84}
-  m_SizeDelta: {x: 205.48, y: 97}
+  m_AnchoredPosition: {x: -0.0000014305, y: -81.6}
+  m_SizeDelta: {x: 205.48, y: 94.60373}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &4395145949457617568
 GameObject:

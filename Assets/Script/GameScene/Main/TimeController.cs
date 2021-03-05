@@ -248,16 +248,9 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 isDisplay = true;
                 totalTime = mainTime;
                 ChangeSecene();
-                //死亡している場合時短or退出ボタンを退出にする
-                if (chatSystem.myPlayer.live == false) {
-                    gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
-                    gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
-                } else {
-                    gameManager.gameMasterChatManager.timeSavingButtonText.text = "時短";
-                }
+                gameManager.gameMasterChatManager.timeSavingButtonText.text = "時短";
 
-
-                //初期化
+                //Co制限初期化
                 chatSystem.coTimeLimit = 0;
                 //GMチャットなど
                 if (!firstDay) {
@@ -389,13 +382,22 @@ public class TimeController : MonoBehaviourPunCallbacks {
                     inputView.wolfModeButton.interactable = false;
                 }
 
+                //死亡している場合時短or退出ボタンを退出にする
+                if (chatSystem.myPlayer.live == false) {
+                    gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
+                    gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
+                }
+
                 isDisplay = true;
                 totalTime = nightTime;
                 ChangeSecene();
 
                 //初期化
-                voteCount.mostVotes = 0;
-                voteCount.ExecutionPlayerList.Clear();
+                if (PhotonNetwork.IsMasterClient) {
+                    voteCount.mostVotes = 0;
+                    voteCount.ExecutionPlayerList.Clear();
+                }
+
                     
                 //GMチャットなど
                 if (firstDay) {
@@ -414,7 +416,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 timeType = TIME.夜の結果発表;
 
                 AudioManager.instance.StopBGM();
-                Debug.Log("destroy");
                 Destroy(gameMasterChatManager.destoryedObj);
                 //狼チャットできる人だけチャットfalseにする
                 if (chatSystem.myPlayer.wolfChat) {
@@ -423,12 +424,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
 
                 isDisplay = false;
                 totalTime = resultTime;
-
-                //死亡している場合時短or退出ボタンを退出にする
-                if (chatSystem.myPlayer.live == false) {
-                    gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
-                    gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
-                }
 
                 //初期化
                 chatSystem.myPlayer.isRollAction = false;
