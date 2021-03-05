@@ -194,14 +194,12 @@ public class GameManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void CountNum() {
         //1秒ごとに部屋参加人数を確認する
-        if (NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") != numLimit) {
-            checkTimer += Time.deltaTime;
+        checkTimer += Time.deltaTime;
 
-            if (checkTimer >= 1) {
-                checkTimer = 0;
-                num = NetworkManager.instance.GetCustomPropertesOfRoom<int>("num");
-                NumText.text = num + "/" + numLimit;
-            }
+        if (checkTimer >= 1 && NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") <= numLimit) {
+            checkTimer = 0;
+            num = NetworkManager.instance.GetCustomPropertesOfRoom<int>("num");
+            NumText.text = num + "/" + numLimit;
         }
     }
 
