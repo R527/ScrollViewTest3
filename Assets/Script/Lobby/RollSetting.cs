@@ -69,7 +69,6 @@ public class RollSetting : MonoBehaviour
     /// RoomSettingCanvasへ移行する 人数が合わないならポップアップが出る
     /// </summary>
     public void NextButton() {
-        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
         if (numLimit > citizenCampNum + wolfCampNum) {
             wrongPopUpObj.SetActive(true);
@@ -92,6 +91,7 @@ public class RollSetting : MonoBehaviour
                 NumList.Add(rollNum.num);
             }
         }
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
     }
 
     /// <summary>
@@ -99,7 +99,6 @@ public class RollSetting : MonoBehaviour
     /// </summary>
     public void BackButton() {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.NG);
-
         rollSettingObj.SetActive(false);
         roomSelectCanvas.SetActive(true);
     }
@@ -164,6 +163,7 @@ public class RollSetting : MonoBehaviour
     /// 合計人数増加
     /// </summary>
     public void SumNumberPlusButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         numLimit++;
         sumNumText.text = numLimit.ToString();
         if(numLimit == 15) {
@@ -206,6 +206,7 @@ public class RollSetting : MonoBehaviour
     /// 合計人数減少
     /// </summary>
     public void SumNumberMinusButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         numLimit--;
         citizenCampNum--;
         sumNumText.text = numLimit.ToString();

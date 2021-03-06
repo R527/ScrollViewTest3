@@ -227,7 +227,7 @@ public class Search : MonoBehaviour {
     /// 検索初期化
     /// </summary>
     public void InitSearch() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         searchFortuneType = FORTUNETYPE.未設定;
         searchOpenVoting = VOTING.未設定;
         searchJoinNum = 3;
@@ -243,7 +243,7 @@ public class Search : MonoBehaviour {
     /// 募集条件
     /// </summary>
     public void DifficultySelectionRight() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (searchRoomSelection) {
             //case ROOMSELECTION.観戦:
             //    searchRoomSelection = ROOMSELECTION.初心者;
@@ -264,7 +264,7 @@ public class Search : MonoBehaviour {
     /// 募集条件
     /// </summary>
     public void DifficultySelectionLeft() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (searchRoomSelection) {
             //case ROOMSELECTION.初心者:
             //    searchRoomSelection = ROOMSELECTION.観戦;
@@ -284,7 +284,7 @@ public class Search : MonoBehaviour {
     /// 初日占い右
     /// </summary>
     public void FirstDayFortuneRight() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (searchFortuneType) {
             case FORTUNETYPE.ランダム白:
                 searchFortuneType = FORTUNETYPE.あり;
@@ -305,7 +305,7 @@ public class Search : MonoBehaviour {
     /// 初日占い　左
     /// </summary>
     public void FirstDayFortuneLeft() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (searchFortuneType) {
             case FORTUNETYPE.ランダム白:
                 searchFortuneType = FORTUNETYPE.未設定;
@@ -327,7 +327,7 @@ public class Search : MonoBehaviour {
     /// 投票開示右
     /// </summary>
     public void OpenVotingRight() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (searchOpenVoting) {
             case VOTING.開示しない:
                 searchOpenVoting = VOTING.開示する;
@@ -345,6 +345,7 @@ public class Search : MonoBehaviour {
     /// 投票開示設定　左
     /// </summary>
     public void OpenVotingLeft() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (searchOpenVoting) {
             case VOTING.開示する:
                 searchOpenVoting = VOTING.開示しない;
@@ -362,6 +363,7 @@ public class Search : MonoBehaviour {
     /// 人数設定　プラスボタン
     /// </summary>
     public void SumNumberPlusButton() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         searchJoinNum++;
         if(searchJoinNum == 3) {
             joinNumText.text = "未設定";
@@ -382,7 +384,7 @@ public class Search : MonoBehaviour {
     /// 人数設定　マイナスボタン
     /// </summary>
     public void SumNumberMinusButton() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         searchJoinNum--;
         if (searchJoinNum == 3) {
             joinNumText.text = "未設定";
@@ -403,7 +405,7 @@ public class Search : MonoBehaviour {
     /// 突然死設定　左
     /// </summary>
     public void SuddenDeath_TypeLeft() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         //凸0回のプレイヤー
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             switch (suddenDeath_Type) {
@@ -450,7 +452,7 @@ public class Search : MonoBehaviour {
     /// 突然死設定　右
     /// </summary>
     public void SuddenDeath_TypeRight() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         //凸0回のプレイヤー
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             switch (suddenDeath_Type) {

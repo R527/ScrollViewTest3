@@ -166,7 +166,7 @@ public class RoomSetting : MonoBehaviour
     /// 突然死数制限する 右
     /// </summary>
     public void SuddenDeathLimitRight() {
-
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             Debug.Log("0ban");
@@ -224,6 +224,7 @@ public class RoomSetting : MonoBehaviour
     /// 突然死数制限する 左
     /// </summary>
     public void SuddenDeathLimitLeft() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         if (PlayerManager.instance.totalNumberOfSuddenDeath == 0 && PlayerManager.instance.totalNumberOfMatches >= 25) {
             switch (suddenDeath_Type) {
                 case SUDDENDEATH_TYPE._0回:
@@ -278,6 +279,7 @@ public class RoomSetting : MonoBehaviour
     /// 初日占いの設定　右
     /// </summary>
     public void FirstDayFortuneRight() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (fortuneType) {
             case FORTUNETYPE.ランダム白:
                 fortuneType = FORTUNETYPE.あり;
@@ -296,6 +298,7 @@ public class RoomSetting : MonoBehaviour
     /// 初日占いの設定　左
     /// </summary>
     public void FirstDayFortuneLeft() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (fortuneType) {
             case FORTUNETYPE.ランダム白:
                 fortuneType = FORTUNETYPE.なし;
@@ -314,6 +317,7 @@ public class RoomSetting : MonoBehaviour
     /// 募集条件　右
     /// </summary>
     public void DifficultySelectionRight() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (roomSelection) {
             case ROOMSELECTION.初心者:
                 roomSelection = ROOMSELECTION.一般;
@@ -329,6 +333,7 @@ public class RoomSetting : MonoBehaviour
     /// 募集条件　左
     /// </summary>
     public void DifficultySelectionLeft() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (roomSelection) {
             case ROOMSELECTION.初心者:
                 roomSelection = ROOMSELECTION.一般;
@@ -344,6 +349,7 @@ public class RoomSetting : MonoBehaviour
     /// 昼の時間設定　右
     /// </summary>
     public void MainTimeRight() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         mainTime = mainTime + 100;
         switch (mainTime) {
             case 400:
@@ -360,6 +366,7 @@ public class RoomSetting : MonoBehaviour
     /// 昼の時間設定　左
     /// </summary>
     public void MainTimeLeft() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         mainTime = mainTime - 100;
         switch (mainTime) {
             case 300:
@@ -376,6 +383,7 @@ public class RoomSetting : MonoBehaviour
     /// 夜の時間設定　右
     /// </summary>
     public void NightTimeRight() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         nightTime = nightTime + 30;
         switch (nightTime) {
             case 60:
@@ -393,6 +401,7 @@ public class RoomSetting : MonoBehaviour
     /// 夜の時間設定　左
     /// </summary>
     public void NightTimeLeft() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         nightTime = nightTime - 30;
         switch (nightTime) {
             case 30:
@@ -409,6 +418,7 @@ public class RoomSetting : MonoBehaviour
     /// 投票開示設定　右
     /// </summary>
     public void OpenVoting() {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         switch (openVoting) {
             case VOTING.開示しない:
                 openVoting = VOTING.開示する;

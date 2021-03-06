@@ -33,12 +33,13 @@ public class RollSettingButton : MonoBehaviour
         public Button rollSettingButton;
         public Applicant_Type applicant_Type;
     }
+
     public RollNumButton plusButton;
     public RollNumButton minusButton;
 
     private void Start() {
-        plusButton.rollSettingButton.onClick.AddListener(() => PushJudge(plusButton.applicant_Type));
-        minusButton.rollSettingButton.onClick.AddListener(() => PushJudge(minusButton.applicant_Type));
+        plusButton.rollSettingButton.onClick.AddListener(() => SetRollNum(plusButton.applicant_Type));
+        minusButton.rollSettingButton.onClick.AddListener(() => SetRollNum(minusButton.applicant_Type));
 
         SetUpButton();
         SwitchValue();
@@ -74,16 +75,16 @@ public class RollSettingButton : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// 押したボタンの情報をもとに数値を決定する
-    /// </summary>
-    /// <param name="rollSetting"></param>
-    public void PushJudge(Applicant_Type applicant_Type) {
+　　/// <summary>
+  /// 
+  /// </summary>
+  /// <param name="applicant_Type">ボタンのプラスマイナスを判定する</param>
+    public void SetRollNum(Applicant_Type applicant_Type) {
+        AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
 
         plusButton.rollSettingButton.interactable = true;
         minusButton.rollSettingButton.interactable = true;
 
-        
         if (applicant_Type == Applicant_Type.Plus && switchNum != switchNumLimit) {
             switchNum++;
             if (switchNum >= switchNumLimit) {

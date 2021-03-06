@@ -85,7 +85,6 @@ public class SetUpManager : MonoBehaviour
 
         //}
         PlayerManager.instance.currency = PlayerPrefs.GetInt(PlayerManager.ID_TYPE.currency.ToString(), 0);
-        Debug.Log(" PlayerManager.instance.currency" + PlayerManager.instance.currency);
         
 
         //サブスクライブを取得する（期間中ならフラグを入れる
