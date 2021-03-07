@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,6 +39,7 @@ public class PlayerInfoPopUp : MonoBehaviour
     public List<int> rollNumList = new List<int>();
 
     private void Start() {
+        Debug.Log("PlayerInfoPopUP");
         backButton.onClick.AddListener(ClosePopUp);
         maskButton.onClick.AddListener(ClosePopUp);
 
@@ -47,11 +49,17 @@ public class PlayerInfoPopUp : MonoBehaviour
         totalNumberOfLosesText.text = PlayerManager.instance.totalNumberOfLoses + "回";
 
         if (PlayerManager.instance.totalNumberOfWins == 0) {
+            Debug.Log("0");
             totalNumberOfwinRateText.text = "0%";
         } else {
-            totalNumberOfwinRateText.text = 100 * (PlayerManager.instance.totalNumberOfWins / PlayerManager.instance.totalNumberOfWins) + "%";
-        }
+            Debug.Log("計算");
+            totalNumberOfwinRateText.text = 100 * Math.Round( PlayerManager.instance.totalNumberOfWins / PlayerManager.instance.totalNumberOfMatches,2) + "%";
+            Debug.Log("PlayerManager.instance.totalNumberOfWins" + PlayerManager.instance.totalNumberOfWins);
+            Debug.Log("PlayerManager.instance.totalNumberOfMatches" + PlayerManager.instance.totalNumberOfMatches);
+            Debug.Log("100 * (PlayerManager.instance.totalNumberOfWins / PlayerManager.instance.totalNumberOfMatches)" + 100 * (PlayerManager.instance.totalNumberOfWins / PlayerManager.instance.totalNumberOfMatches));
 
+
+        }
         totalNumberOfSuddenDeathText.text = PlayerManager.instance.totalNumberOfSuddenDeath + "回";
 
         //初心者成績
@@ -59,20 +67,20 @@ public class PlayerInfoPopUp : MonoBehaviour
         begginerOfWinsText.text = PlayerManager.instance.beginnerTotalNumberOfWins + "回";
         begginerOfLosesText.text = PlayerManager.instance.beginnerTotalNumberOfLoses + "回";
 
-        if(PlayerManager.instance.beginnerTotalNumberOfMatches == 0) {
+        if(PlayerManager.instance.beginnerTotalNumberOfWins == 0) {
             begginerOfwinRateText.text = "0%";
         } else {
-            begginerOfwinRateText.text = 100 * (PlayerManager.instance.beginnerTotalNumberOfWins / PlayerManager.instance.beginnerTotalNumberOfMatches) + "%";
+            begginerOfwinRateText.text = 100 * Math.Round(PlayerManager.instance.beginnerTotalNumberOfWins / PlayerManager.instance.beginnerTotalNumberOfMatches,2) + "%";
         }
 
         //一般成績
         generalOfMatchesText.text = PlayerManager.instance.generalTotalNumberOfMatches + "回";
         generalOfWinsText.text = PlayerManager.instance.generalTotalNumberOfWins + "回";
         generalOfLosesText.text = PlayerManager.instance.generalTotalNumberOfLoses + "回";
-        if (PlayerManager.instance.generalTotalNumberOfMatches == 0) {
+        if (PlayerManager.instance.generalTotalNumberOfWins == 0) {
             generalOfwinRateText.text = "0%";
         } else {
-            generalOfwinRateText.text = 100 * (PlayerManager.instance.generalTotalNumberOfWins / PlayerManager.instance.generalTotalNumberOfMatches) + "%";
+            generalOfwinRateText.text = 100 * Math.Round(PlayerManager.instance.generalTotalNumberOfWins / PlayerManager.instance.generalTotalNumberOfMatches,2) + "%";
         }
         PlayerManager.instance.GetSaveRoomData();
         CreateGameLog();
@@ -92,7 +100,6 @@ public class PlayerInfoPopUp : MonoBehaviour
         //チャットログがない場合
         //生成しない
         if(PlayerManager.instance.getChatLogList.Count <= 0) {
-            Debug.Log("CreateGameLog Return");
             return;
         }
 

@@ -93,21 +93,21 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 if (gameManager.chatSystem.myPlayer.live) {
                     gameMasterChat = "話し合う時間です。\r\n\r\n市民陣営は嘘をついている狼を探しましょう。\r\n\r\n人狼陣営は市民にうまく紛れて市民を騙しましょう！";
                 } else {
-                    gameMasterChat = "話し合う時間です。\r\n\r\n観戦を楽しめ";
+                    gameMasterChat = "話し合う時間です。\r\n\r\n観戦を楽しみましょう。";
                 }
                 break;
             case TIME.投票時間:
                 if (gameManager.chatSystem.myPlayer.live) {
-                    gameMasterChat = "投票の時間です。\r\n\r\n人狼と思われるプレイヤーに投票しましょう。";
+                    gameMasterChat = "投票の時間です。\r\n\r\n人狼と思われるプレイヤーに投票しましょう。\r\n\r\n※下のプレイヤーボタンから投票できます。";
                 } else {
-                    gameMasterChat = "投票の時間です。\r\n\r\n投票時間が終わるまで待ってください。";
+                    gameMasterChat = "投票の時間です。\r\n\r\n投票時間が終わるまでお待ちください。";
                 }
                 break;
             case TIME.夜の行動:
                 if (gameManager.chatSystem.myPlayer.live) {
-                    gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう";
+                    gameMasterChat = "各役職の能力を使い陣営を勝利へと導きましょう\r\n\r\n※下のプレイヤーボタンから能力を使えます。";
                 } else {
-                    gameMasterChat = "夜の行動時間です。待ってくれ。";
+                    gameMasterChat = "夜の時間です。";
                 }
                 break;
 
@@ -176,7 +176,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
                 yield break;
             }
 
-            Debug.Log("退出");
             //広告表示
             ShowAds();
 
@@ -226,18 +225,6 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         }
         return num;
     }
-
-    ///// <summary>
-    ///// 退出処理全般
-    ///// </summary>
-    ///// <returns></returns>
-    //public void LeaveRoomChat() {
-    //    gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
-    //    if (photonView.IsMine) {
-    //        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-    //    }
-    //    gameMasterChat = string.Empty;
-    //}
 
     /// <summary>
     /// 強制退出 ゲーム開始前にマスタークライアントのみが参加プレイヤーを退出させることができる

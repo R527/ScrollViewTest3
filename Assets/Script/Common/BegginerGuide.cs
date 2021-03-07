@@ -122,24 +122,24 @@ public class BegginerGuide : MonoBehaviour
                         break;
                 }
                 break;
-            case GUIDE_TYPE.操作方法:
-                commentaryTextObj.SetActive(true);
-                mainButtonObj.SetActive(true);
-                numLimit = 2;
-                switch (num) {
-                    //画像を絡めつつ説明したい
-                    case 1:
-                        commentaryText.text = "<b>ゲーム内容</b>\r\n<color=blue>市民陣営</color>と<color=red>人狼陣営</color>に分かれて会話の中から嘘をついている<color=red>狼</color>を見つけ出す心理ゲーム。\r\n陣営ごとに複数の役職があり、それらの言動をヒントに村を平和へと導きましょう。\r\n\r\n<b>勝利条件</b>\r\n<color=blue>市民陣営</color>は<color=red>人狼</color>の全滅。\r\n<color=red>人狼陣営</color>は<color=red>人狼</color>の人数と<color=blue>市民陣営</color>の人数を同数にする。\r\n\r\n<b>ゲームの流れ</b>\r\n<color=navy>夜</color>→<color=green>昼</color>→<color=orange>夕方</color>→<color=navy>夜</color>...と繰り返されどちらかの勝利条件を満たすとゲーム終了。\r\n各時間ごとに行動が変わります。";
-                        break;
-                    case 2:
-                        commentaryText.text = "昼の時間：誰が人狼かを探すための話し合う時間です。市民陣営は占い師や、霊能者などの結果を元に人狼を探しましょう。人狼陣営は市民に紛れてうまく市民を騙しましょう！夕方の時間：人狼を追放する時間です。一般的に進行役（霊能者が進行をつとめることが多い）が一人のプレイヤーを指定し、投票を集めましょう！夜の時間：各役職が能力を使えます。人狼以外は相談することはできず、それぞれ勝利を目指して各役職の能力を利用したり、昼の会話を整理しましょう。";
-                        break;
-                }
-                break;
+            //case GUIDE_TYPE.操作方法:
+            //    commentaryTextObj.SetActive(true);
+            //    mainButtonObj.SetActive(true);
+            //    numLimit = 2;
+            //    switch (num) {
+            //        //画像を絡めつつ説明したい
+            //        case 1:
+            //            commentaryText.text = "<b>ゲーム内容</b>\r\n<color=blue>市民陣営</color>と<color=red>人狼陣営</color>に分かれて会話の中から嘘をついている<color=red>狼</color>を見つけ出す心理ゲーム。\r\n陣営ごとに複数の役職があり、それらの言動をヒントに村を平和へと導きましょう。\r\n\r\n<b>勝利条件</b>\r\n<color=blue>市民陣営</color>は<color=red>人狼</color>の全滅。\r\n<color=red>人狼陣営</color>は<color=red>人狼</color>の人数と<color=blue>市民陣営</color>の人数を同数にする。\r\n\r\n<b>ゲームの流れ</b>\r\n<color=navy>夜</color>→<color=green>昼</color>→<color=orange>夕方</color>→<color=navy>夜</color>...と繰り返されどちらかの勝利条件を満たすとゲーム終了。\r\n各時間ごとに行動が変わります。";
+            //            break;
+            //        case 2:
+            //            commentaryText.text = "昼の時間：誰が人狼かを探すための話し合う時間です。市民陣営は占い師や、霊能者などの結果を元に人狼を探しましょう。人狼陣営は市民に紛れてうまく市民を騙しましょう！夕方の時間：人狼を追放する時間です。一般的に進行役（霊能者が進行をつとめることが多い）が一人のプレイヤーを指定し、投票を集めましょう！夜の時間：各役職が能力を使えます。人狼以外は相談することはできず、それぞれ勝利を目指して各役職の能力を利用したり、昼の会話を整理しましょう。";
+            //            break;
+            //    }
+            //    break;
             case GUIDE_TYPE.用語説明:
                 commentaryTextObj.SetActive(true);
                 mainButtonObj.SetActive(true);
-                numLimit = 4;
+                numLimit = 3;
                 switch (num) {
                     case 1:
                         commentaryText.text = "人狼ではいくつかの専門用語を扱います。\r\n\r\n<b>CO・塩</b>\r\nカミングアウトの略。<b>自分の役職を公表すること</b>。\r\n\r\n<b>白・黒</b><color=blue> 白とは市民</color>。<color=red>黒とは狼</color>を指す。\r\n\r\n<b>確白・確黒</b>  占い、霊能結果から一人のプレイヤーが<b>白・黒確定</b>したこと。\r\n\r\n<b>グレー</b>\r\n<b>占われていない</b>、かつ、<b>役職が確定していない</b>プレイヤーを指す。";
@@ -151,10 +151,10 @@ public class BegginerGuide : MonoBehaviour
                     case 3:
                         commentaryText.text = "<b>囲い・逆囲い</b>\r\n偽の占い師結果で、<color=red>狼</color>に対して<color=blue>白（市民）</color>と騙していることを<b>囲い</b>\r\n<color=blue>市民</color>に対して<color=red>黒（狼）</color>と騙していることを<b>逆囲い</b>と言う。\r\n\r\n<b>噛み・襲撃</b>  <color=red>狼</color>が夜の行動で、プレイヤー倒すことを指す。\r\n\r\n<b>潜伏</b>\r\n市民以外が<b>カミングアウトせずに市民のふり</b>をすること。\r\n\r\n<b>凸</b>  突然死の略。<b>1日の間に一言も話さないと<color=red>死亡</color>する</b>。";
                         break;
-                    case 4:
-                        commentaryText.text = "また、その他の用語もゲーム中に右上のメニューから確認できます！";
-                        //メニューへの誘導画像
-                        break;
+                    //case 4:
+                    //    commentaryText.text = "また、その他の用語もゲーム中に右上のメニューから確認できます！";
+                    //    //メニューへの誘導画像
+                    //    break;
                 }
                 break;
 
