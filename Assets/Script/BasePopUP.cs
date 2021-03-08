@@ -25,7 +25,6 @@ public class BasePopUP : MonoBehaviour {
             closeButton.onClick.AddListener(ClosePopUp);
         } else {
             if(closeButton != null) {
-                Debug.Log("Addlister");
                 closeButton.onClick.AddListener(DestroyPopUP);
             }
         }

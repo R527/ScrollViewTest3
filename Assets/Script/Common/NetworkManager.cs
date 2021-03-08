@@ -214,7 +214,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //            //部屋がなくなった場合
         //            activeEntries.Remove(info.Name);
         //            roomNode.Deactivate();
-        //            //inactiveEntries.Push(roomNode);
         //        }
 
         //        //まだアクティブ化されていないRoomがある場合こちらで生成する
@@ -234,8 +233,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     }
 
-    public void Test() {
-        Debug.Log("UpdateRoomList");
+    public void RoomListUpdate() {
         List<RoomNode> roomNodeList = new List<RoomNode>();
         foreach (Photon.Realtime.RoomInfo info in roomInfoList) {
             //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
@@ -253,7 +251,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                     //部屋がなくなった場合
                     activeEntries.Remove(info.Name);
                     roomNode.Deactivate();
-                    //inactiveEntries.Push(roomNode);
                 }
 
                 //まだアクティブ化されていないRoomがある場合こちらで生成する
