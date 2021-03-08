@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class BasePopUP : MonoBehaviour {
 
     public Button closeButton;
-    //public GameObject destroyObject;
     [Header("trueならSetActive(False)")]
     public bool closeButtonSwich;
 
@@ -34,7 +33,7 @@ public class BasePopUP : MonoBehaviour {
     /// 既にHierarchy上にあるObjを非表示にする
     /// </summary>
     public virtual void ClosePopUp() {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     /// <summary>

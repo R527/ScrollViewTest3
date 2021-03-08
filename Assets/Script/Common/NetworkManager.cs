@@ -24,19 +24,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public RoomNode roomNodePrefab;
     public GameObject roomContent;
     public Dictionary<string, RoomNode> activeEntries = new Dictionary<string, RoomNode>();
-    public Stack<RoomNode> inactiveEntries = new Stack<RoomNode>();
     public List<RoomNode> roomNodeObjList = new List<RoomNode>();
     public bool isBanCheck;
     public EMPTYROOM emtyRoom;
     public IEnumerator checkBanListCoroutine = null;
     public IEnumerator banPlayerKickOutOREnteredRoomCoroutine = null;
     public IEnumerator checkEmptyRoomCoroutine = null;
-    public string banListStr;
     public string roomName;
-    public Photon.Realtime.RoomInfo joinedRoom;
+    public RoomInfo joinedRoom;
     public GameObject joinedRoomObj;
     public List<Photon.Realtime.RoomInfo> roomInfoList = new List<RoomInfo>();
-    public bool isRoomMaster;//trueなら部屋を作成した人
 
     //Lobby関連
     public string sceneType;
@@ -128,7 +125,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //部屋のIdを取得
 
         PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
-        isRoomMaster = true;
         Destroy(room.gameObject);
     }
 
@@ -197,45 +193,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="roomList"></param>
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList) {
         roomInfoList = roomList;
-        //List<RoomNode> roomNodeList = new List<RoomNode>(); 
-        //foreach (Photon.Realtime.RoomInfo info in roomList) {
-        //    //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
-
-        //    RoomNode roomNode = new RoomNode();
-        //    //アクティブの部屋な部屋がある場合その部屋の更新を行う
-        //    if (activeEntries.TryGetValue(info.Name, out roomNode)) {
-        //        //info.CustomProperties["roomId"];
-        //        //IsOpenがtureの場合表示する
-        //        //最後のプレイヤーがRoomに入った時にfalseにする
-        //        if (!info.RemovedFromList && info.IsOpen) {
-        //            roomNode.Activate(info);
-        //            roomNodeList.Add(roomNode);
-        //        } else {
-        //            //部屋がなくなった場合
-        //            activeEntries.Remove(info.Name);
-        //            roomNode.Deactivate();
-        //        }
-
-        //        //まだアクティブ化されていないRoomがある場合こちらで生成する
-        //    }else if (!info.RemovedFromList) {
-        //        roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
-        //        roomNode.Activate(info);
-        //        roomNodeList.Add(roomNode);
-        //        roomNodeObjList.Add(roomNode);
-        //        activeEntries.Add(info.Name, roomNode);
-
-        //        OnRoomListUpdate(roomList);
-        //    }
-        //}
-
-        //roomNodeList = roomNodeList.OrderByDescending(x => x.roomId).ToList();
-
-
-    }
-
-    public void RoomListUpdate() {
         List<RoomNode> roomNodeList = new List<RoomNode>();
-        foreach (Photon.Realtime.RoomInfo info in roomInfoList) {
+        foreach (Photon.Realtime.RoomInfo info in roomList) {
             //Debug.Log("info.RemovedFromList" + info.RemovedFromList);
 
             RoomNode roomNode = new RoomNode();
@@ -261,10 +220,39 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 roomNodeObjList.Add(roomNode);
                 activeEntries.Add(info.Name, roomNode);
 
+                OnRoomListUpdate(roomList);
+            }
+        }
+        roomNodeList = roomNodeList.OrderByDescending(x => x.roomId).ToList();
+    }
+
+    public void RoomListUpdate() {
+        List<RoomNode> roomNodeList = new List<RoomNode>();
+        foreach (Photon.Realtime.RoomInfo info in roomInfoList) {
+            RoomNode roomNode = new RoomNode();
+            //アクティブの部屋な部屋がある場合その部屋の更新を行う
+            if (activeEntries.TryGetValue(info.Name, out roomNode)) {
+                //info.CustomProperties["roomId"];
+                //IsOpenがtureの場合表示する
+                //最後のプレイヤーがRoomに入った時にfalseにする
+                if (!info.RemovedFromList && info.IsOpen) {
+                    roomNode.Activate(info);
+                    roomNodeList.Add(roomNode);
+                } else {
+                    //部屋がなくなった場合
+                    activeEntries.Remove(info.Name);
+                    roomNode.Deactivate();
+                }
+                //まだアクティブ化されていないRoomがある場合こちらで生成する
+            } else if (!info.RemovedFromList) {
+                roomNode = Instantiate(roomNodePrefab, roomContent.transform, false);
+                roomNode.Activate(info);
+                roomNodeList.Add(roomNode);
+                roomNodeObjList.Add(roomNode);
+                activeEntries.Add(info.Name, roomNode);
                 OnRoomListUpdate(roomInfoList);
             }
         }
-
         roomNodeList = roomNodeList.OrderByDescending(x => x.roomId).ToList();
     }
 
@@ -274,7 +262,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="newPlayer"></param>
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
-
         Debug.Log("OnPlayerEnteredRoom");
         checkEmptyRoomCoroutine = SetCoroutine(newPlayer);
         banPlayerKickOutOREnteredRoomCoroutine = BanPlayerKickOutOREnteredRoom(newPlayer);
@@ -299,7 +286,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 {"num", gameManager.num },
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
-
             PhotonNetwork.CurrentRoom.IsOpen = true;
         }
     }
@@ -327,20 +313,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void LeaveRoom() {
         gameManager.timeController.isPlay = false;
-
-        ////部屋を作成した人ではないが、最後の一人になった時に部屋を閉じた場合　自分の部屋を削除する
-        //if (!isRoomMaster && PhotonNetwork.CurrentRoom.PlayerCount == 1) {
-        //    Debug.Log("LeaveRoomDestoryObj");
-        //    Debug.Log("DestroyObj");
-        //    Destroy(joinedRoomObj);
-        //    joinedRoom = null;
-        //}
-
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
         }
 
-        isRoomMaster = false;
         StartCoroutine(AudioManager.instance.PlayBGM(AudioManager.BGM_TYPE.LOBBY));
     }
 
