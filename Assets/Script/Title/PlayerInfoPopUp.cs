@@ -39,7 +39,6 @@ public class PlayerInfoPopUp : MonoBehaviour
     public List<int> rollNumList = new List<int>();
 
     private void Start() {
-        Debug.Log("PlayerInfoPopUP");
         backButton.onClick.AddListener(ClosePopUp);
         maskButton.onClick.AddListener(ClosePopUp);
 
@@ -49,16 +48,9 @@ public class PlayerInfoPopUp : MonoBehaviour
         totalNumberOfLosesText.text = PlayerManager.instance.totalNumberOfLoses + "回";
 
         if (PlayerManager.instance.totalNumberOfWins == 0) {
-            Debug.Log("0");
             totalNumberOfwinRateText.text = "0%";
         } else {
-            Debug.Log("計算");
             totalNumberOfwinRateText.text = 100 * Math.Round( PlayerManager.instance.totalNumberOfWins / PlayerManager.instance.totalNumberOfMatches,2) + "%";
-            Debug.Log("PlayerManager.instance.totalNumberOfWins" + PlayerManager.instance.totalNumberOfWins);
-            Debug.Log("PlayerManager.instance.totalNumberOfMatches" + PlayerManager.instance.totalNumberOfMatches);
-            Debug.Log("100 * (PlayerManager.instance.totalNumberOfWins / PlayerManager.instance.totalNumberOfMatches)" + 100 * (PlayerManager.instance.totalNumberOfWins / PlayerManager.instance.totalNumberOfMatches));
-
-
         }
         totalNumberOfSuddenDeathText.text = PlayerManager.instance.totalNumberOfSuddenDeath + "回";
 

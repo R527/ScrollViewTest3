@@ -26,7 +26,6 @@ public class RollExplanationButtonPrefab : MonoBehaviour {
         RollPopUp rollPopUP = Instantiate(rollPopUPPrefab, gameCanvas.transform, false);
         rollPopUP.vocabulary = vocabulary;
         vocabulary.SetActive(false);
-        Debug.Log(rollText.text);
         switch (rollText.text) {
             case "人狼":
                 rollPopUP.rollText.text = ROLLTYPE.人狼.ToString();
