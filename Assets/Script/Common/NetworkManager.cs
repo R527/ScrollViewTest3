@@ -41,6 +41,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //Lobby入室完了確認
     public bool isCheckJoinLobby;//Lobbyに入室しているかどうかの確認 falseなら入室していない
 
+    //他
+    public bool isMaster;
     /////////////////////
     /// SetUp
     /////////////////////
@@ -126,6 +128,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
         Destroy(room.gameObject);
+        isMaster = true;
     }
 
 
@@ -226,6 +229,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         roomNodeList = roomNodeList.OrderByDescending(x => x.roomId).ToList();
     }
 
+
+    /// <summary>
+    /// 手動で部屋の更新を行えるようにできる
+    /// 今は利用してない
+    /// </summary>
     public void RoomListUpdate() {
         List<RoomNode> roomNodeList = new List<RoomNode>();
         foreach (Photon.Realtime.RoomInfo info in roomInfoList) {
@@ -275,7 +283,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="otherPlayer"></param>
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
         base.OnPlayerLeftRoom(otherPlayer);
-
+        gameManager.gameMasterChatManager.gameMasterChat = otherPlayer.NickName + "さんが退出しました。";
+        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+        gameManager.gameMasterChatManager.gameMasterChat = string.Empty;
         //ゲーム開始前Playerを削除する
         if (!gameManager.gameStart) {
             DeleateOtherPlayer(otherPlayer);
@@ -287,7 +297,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
             PhotonNetwork.CurrentRoom.IsOpen = true;
+
+            if (!isMaster) {
+                gameManager.gameMasterChatManager.IsRoomMaster();
+                isMaster = true;
+            }
         }
+
+
     }
 
     /// <summary>
@@ -297,6 +314,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         base.OnLeftRoom();
         Destroy(gameManager.timeController);
         Debug.Log("OnLeftRoom");
+        isMaster = false;
         PhotonNetwork.Disconnect();
 
         StartCoroutine(SceneStateManager.instance.NextScene(SCENE_TYPE.LOBBY));

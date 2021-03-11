@@ -17,6 +17,7 @@ public class BegginerGuide : MonoBehaviour
     public int num;//ガイド通し番号
     public int numLimit;//通し番号制限
     public Text commentaryText;//解説テキスト
+    public Text commentarySSText;//解説テキスト(画像あり
     //役職紹介
     public Text fortuneText;//占い結果
     public Text psychicText;//霊能結果
@@ -43,6 +44,9 @@ public class BegginerGuide : MonoBehaviour
     public Button maskButton;//マスクについているボタン
     public Text returnText;//ガイド終了ボタンのText
     public GameObject mainButtonObj;//上記のButtonをまとめたObj
+    //画像
+    public List<Sprite> begginerGuideSSList;
+    public Image begginerGuideSSImage;
 
 
 
@@ -122,20 +126,27 @@ public class BegginerGuide : MonoBehaviour
                         break;
                 }
                 break;
-            //case GUIDE_TYPE.操作方法:
-            //    commentaryTextObj.SetActive(true);
-            //    mainButtonObj.SetActive(true);
-            //    numLimit = 2;
-            //    switch (num) {
-            //        //画像を絡めつつ説明したい
-            //        case 1:
-            //            commentaryText.text = "<b>ゲーム内容</b>\r\n<color=blue>市民陣営</color>と<color=red>人狼陣営</color>に分かれて会話の中から嘘をついている<color=red>狼</color>を見つけ出す心理ゲーム。\r\n陣営ごとに複数の役職があり、それらの言動をヒントに村を平和へと導きましょう。\r\n\r\n<b>勝利条件</b>\r\n<color=blue>市民陣営</color>は<color=red>人狼</color>の全滅。\r\n<color=red>人狼陣営</color>は<color=red>人狼</color>の人数と<color=blue>市民陣営</color>の人数を同数にする。\r\n\r\n<b>ゲームの流れ</b>\r\n<color=navy>夜</color>→<color=green>昼</color>→<color=orange>夕方</color>→<color=navy>夜</color>...と繰り返されどちらかの勝利条件を満たすとゲーム終了。\r\n各時間ごとに行動が変わります。";
-            //            break;
-            //        case 2:
-            //            commentaryText.text = "昼の時間：誰が人狼かを探すための話し合う時間です。市民陣営は占い師や、霊能者などの結果を元に人狼を探しましょう。人狼陣営は市民に紛れてうまく市民を騙しましょう！夕方の時間：人狼を追放する時間です。一般的に進行役（霊能者が進行をつとめることが多い）が一人のプレイヤーを指定し、投票を集めましょう！夜の時間：各役職が能力を使えます。人狼以外は相談することはできず、それぞれ勝利を目指して各役職の能力を利用したり、昼の会話を整理しましょう。";
-            //            break;
-            //    }
-            //    break;
+            case GUIDE_TYPE.操作方法:
+                commentarySSText.gameObject.SetActive(true);
+                begginerGuideSSImage.gameObject.SetActive(true);
+                mainButtonObj.SetActive(true);
+                numLimit = 3;
+                switch (num) {
+                    //画像を絡めつつ説明したい
+                    case 1:
+                        //begginerGuideSSImage.sprite = begginerGuideSSList[0];
+                        commentarySSText.text = "<b>1.</b>あなたの本当の姿です。役職紹介が見れます。\n\r<b>2.</b>課金残高です。追加で購入もできます。\n\r<b>3.</b>参加人数と生存人数を表示しています。\n\r<b>4.</b>残り時間を表示しています。0秒になると次のフェーズに移ります。\n\r<b>5.</b>退出ボタンと時短ボタンです。お昼の時間のみ時間の短縮を希望することができます。死亡後は退出が可能になりますが、ゲーム著中での退出には課金が必要です。\n\r<b>6.</b>専門用語をまとめています。\n\r<b>7.</b>メニュー";
+                        break;
+                    case 2:
+                        //begginerGuideSSImage.sprite = begginerGuideSSList[1];
+                        commentarySSText.text = "<b>1.</b>コメントを上下に移動できます。\n\r<b>2.</b>フィルターです。下のプレイヤーボタンを押すとそのプレイヤーが発言したコメントのみを表示します。";
+                        break;
+                    case 3:
+                        //begginerGuideSSImage.sprite = begginerGuideSSList[2];
+                        commentarySSText.text = "<b>1.</b>上下ボタンです\n\r<b>2.</b>人狼と市民チャットを切り替えれます。\n\r<b>3.</b>自分の正体を明かすことができます。\n\r<b>4.</b>発言することができます。\n\r<b>5.</b>青チャットと通常チャットの切り替えです。青チャットには課金が必要です\n\r<b>6.</b>プレイヤーボタンです。フェイズごとに挙動が変わります。\n\r<b>夕方</b>、プレイヤーを投票できます。\n\r<b>夜</b>、役職ごとの行動を決定します。\n\rまた、<b>ルームマスターは</b>ゲーム開始前プレイヤーを強制退場できます。\n\r<b>ゲーム終了後または死亡後</b>にプレイヤーを回避することができます。";
+                        break;
+                }
+                break;
             case GUIDE_TYPE.用語説明:
                 commentaryTextObj.SetActive(true);
                 mainButtonObj.SetActive(true);

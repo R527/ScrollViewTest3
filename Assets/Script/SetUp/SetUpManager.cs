@@ -92,12 +92,9 @@ public class SetUpManager : MonoBehaviour
 
         //PlayerNameが既に登録されている場合はタイトルシーンへ遷移する
         if (!string.IsNullOrEmpty(PlayerManager.instance.playerName)) {
-            Debug.Log("突然死確認" + PlayerPrefs.GetString("突然死用のフラグ"));
-
             //名前が登録されている状態のみ確認する
             //突然死用のフラグを見て戦績に反映する
             if (PlayerPrefs.GetString("突然死用のフラグ", "") != PlayerManager.SuddenDeath_TYPE.ゲーム正常終了.ToString()) {
-                Debug.Log("突然死確認" + PlayerPrefs.GetString("突然死用のフラグ"));
                 PlayerManager.instance.totalNumberOfSuddenDeath++;
                 PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfSuddenDeath, PlayerManager.BATTLE_RECORD_TYPE.突然死数);
             }

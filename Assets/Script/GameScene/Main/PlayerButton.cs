@@ -164,10 +164,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
                     break;
                     //BanPlayerの追加
                 case TIME.終了:
-                    if (!gameManager.chatSystem.myPlayer.live) {
-                        Debug.Log("Ban" + playerID);
-                        AddBanPlayer();
-                    }
+                    AddBanPlayer();
                     break;
             }
         }

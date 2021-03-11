@@ -179,9 +179,9 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //広告表示
             ShowAds();
 
-            gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
-            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-            gameMasterChat = string.Empty;
+            //gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
+            //gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+            //gameMasterChat = string.Empty;
 
             //GameOver時にチャットログを保存する
             if(gameManager.gameMasterChatManager.timeController.gameOver.isGameOver) {
@@ -482,6 +482,15 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public void EndRoomChat() {
         gameMasterChat = "部屋閉じるまで残り2分です。";
         gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_OFFLINE);
+        gameMasterChat = string.Empty;
+    }
+
+    /// <summary>
+    /// あなたがルームマスターですと促すチャット
+    /// </summary>
+    public void IsRoomMaster() {
+        gameMasterChat = "現在" + PlayerManager.instance.playerName + "さんがルームマスターです。";
+        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
         gameMasterChat = string.Empty;
     }
     ///////////////////////////////
