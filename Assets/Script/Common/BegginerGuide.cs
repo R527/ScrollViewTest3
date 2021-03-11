@@ -42,11 +42,13 @@ public class BegginerGuide : MonoBehaviour
     public Button backButton;//後ろの説明へ
     public Button returnButton;//ガイド終了ボタン
     public Button maskButton;//マスクについているボタン
+    public Button checkButton;//初心者ガイドをゲーム開始時に出すかどうかを決めるボタン
     public Text returnText;//ガイド終了ボタンのText
     public GameObject mainButtonObj;//上記のButtonをまとめたObj
     //画像
     public List<Sprite> begginerGuideSSList;
     public Image begginerGuideSSImage;
+
 
 
 
@@ -67,6 +69,7 @@ public class BegginerGuide : MonoBehaviour
         groupButton.onClick.AddListener(GroupButton);
         campButton.onClick.AddListener(CampButton);
         closeAnnotationButton.onClick.AddListener(CloseAnnotation);
+        PlayerManager.instance.SetStringForPlayerPrefs("初心者ガイドをみました", PlayerManager.ID_TYPE.begginer);
     }
 
     /// <summary>
@@ -134,11 +137,20 @@ public class BegginerGuide : MonoBehaviour
                 switch (num) {
                     //画像を絡めつつ説明したい
                     case 1:
-                        //begginerGuideSSImage.sprite = begginerGuideSSList[0];
-                        commentarySSText.text = "<b>1.</b>あなたの本当の姿です。役職紹介が見れます。\n\r<b>2.</b>課金残高です。追加で購入もできます。\n\r<b>3.</b>参加人数と生存人数を表示しています。\n\r<b>4.</b>残り時間を表示しています。0秒になると次のフェーズに移ります。\n\r<b>5.</b>退出ボタンと時短ボタンです。お昼の時間のみ時間の短縮を希望することができます。死亡後は退出が可能になりますが、ゲーム著中での退出には課金が必要です。\n\r<b>6.</b>専門用語をまとめています。\n\r<b>7.</b>メニュー";
+                        begginerGuideSSImage.sprite = begginerGuideSSList[0];
+                        begginerGuideSSImage.rectTransform.sizeDelta = new Vector2(186.9841f, 100f);
+                        begginerGuideSSImage.rectTransform.localPosition = new Vector2(-1.5259e-05f, 87.595f);
+                        commentarySSText.rectTransform.sizeDelta = new Vector2(186.9842f, 175.9904f);
+                        commentarySSText.rectTransform.localPosition = new Vector2(0f, -50.4f);
+
+                        commentarySSText.text = "<b>1.</b>あなたの本当の姿です。役職紹介が見れます。\n\r<b>2.</b>課金残高です。追加で購入もできます。\n\r<b>3.</b>参加人数と生存人数を表示しています。\n\r<b>4.</b>残り時間を表示しています。0秒になると次のフェーズに移ります。\n\r<b>5.</b>退出ボタンと時短ボタンです。お昼の時間のみ時間の短縮を希望することができます。死亡後は退出が可能になりますが、ゲーム途中での退出には課金が必要です。\n\r<b>6.</b>専門用語をまとめています。\n\r<b>7.</b>メニュー";
                         break;
                     case 2:
-                        //begginerGuideSSImage.sprite = begginerGuideSSList[1];
+                        begginerGuideSSImage.sprite = begginerGuideSSList[1];
+                        begginerGuideSSImage.rectTransform.sizeDelta = new Vector2(135.2714f, 205.8609f);
+                        begginerGuideSSImage.rectTransform.localPosition = new Vector2(-25.856f, 37.53f);
+                        commentarySSText.rectTransform.sizeDelta = new Vector2(186.9842f, 72.99475f);
+                        commentarySSText.rectTransform.localPosition = new Vector2(0f, -101.9f);
                         commentarySSText.text = "<b>1.</b>コメントを上下に移動できます。\n\r<b>2.</b>フィルターです。下のプレイヤーボタンを押すとそのプレイヤーが発言したコメントのみを表示します。";
                         break;
                     case 3:

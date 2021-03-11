@@ -11130,6 +11130,8 @@ MonoBehaviour:
   rollBtn: {fileID: 95201241}
   rollTypeList: 
   ComingOutButtonList: 
+  BegginerGuideObj: {fileID: 8136206898632055133, guid: beabe2b1c5b1c0d40b1814e461940a47,
+    type: 3}
 --- !u!114 &1130743579
 MonoBehaviour:
   m_ObjectHideFlags: 0

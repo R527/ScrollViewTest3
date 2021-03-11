@@ -31,9 +31,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
     public Transform banListTran;
 
     private bool isCheckEnteredRoom;//入室チェック
-
-
-
     public Transform menbarContent;
     public Transform playerListContent;
     private bool isSetRoll;
@@ -62,7 +59,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
     [Header("役職リスト")]
     public List<ROLLTYPE> rollTypeList = new List<ROLLTYPE>();//設定されている役職を追加
     public List<ROLLTYPE> ComingOutButtonList = new List<ROLLTYPE>();
-
+    public GameObject BegginerGuideObj;
 
 
     public void GameManagerSetUp() {
@@ -121,6 +118,9 @@ public class GameManager : MonoBehaviourPunCallbacks {
         //部屋が満室なら部屋を閉じる、そうでなければ開放する
         if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers) {
             PhotonNetwork.CurrentRoom.IsOpen = true;
+            if(PlayerPrefs.GetString(PlayerManager.ID_TYPE.begginer.ToString()) != "初心者ガイドをみました") {
+                Instantiate(BegginerGuideObj);
+            }
         }
         isCheckEnteredRoom = true;
 

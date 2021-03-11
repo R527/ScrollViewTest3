@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class BasePopUP : MonoBehaviour {
 
     public Button closeButton;
-    [Header("trueならSetActive(False)")]
+    [Header("trueならSetActive(False)にする")]
     public bool closeButtonSwich;
 
     /// <summary>

@@ -20,15 +20,16 @@ public class BegginerGuidePopUp : BasePopUP {
     public string thatText;
 
 
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+        
         foreach(Button Obj in guideButtonList) {
             Obj.onClick.AddListener(GuideButton);
         }
         maskBtn.onClick.AddListener(DestroyPopUP);
-
     }
 
     /// <summary>
@@ -38,7 +39,7 @@ public class BegginerGuidePopUp : BasePopUP {
         AudioManager.instance.PlaySE(AudioManager.SE_TYPE.OK);
         BegginerGuide obj = Instantiate(begginerGuideObj);
         switch (thatText) {
-            case "人狼とは":
+            case "人狼の遊び方":
                 obj.guideType = GUIDE_TYPE.人狼の遊び方;
                 obj.guideTitleText.text = GUIDE_TYPE.人狼の遊び方.ToString();
                 break;
@@ -59,7 +60,6 @@ public class BegginerGuidePopUp : BasePopUP {
                 obj.guideTitleText.text = GUIDE_TYPE.役職紹介.ToString();
                 break;
         }
-        //OnDestroy();
         DestroyPopUP();
     }
     /// <summary>

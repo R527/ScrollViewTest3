@@ -467,7 +467,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4EBA\u72FC\u3068\u306F"
+  m_Text: "\u64CD\u4F5C\u65B9\u6CD5"
 --- !u!1 &8136206898333355613
 GameObject:
   m_ObjectHideFlags: 0
@@ -1917,7 +1917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c1e8570d847bb14d9b9fb2cc30cc737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guideType: 0
+  guideType: 1
   guideTitleText: {fileID: 8136206898274106453}
   begginerGuidePopUp: {fileID: 2645508698204678958, guid: 8df5b0f5c5e2d1d48bd483ec6d04b22f,
     type: 3}
@@ -1948,7 +1948,9 @@ MonoBehaviour:
   maskButton: {fileID: 8136206898333355612}
   returnText: {fileID: 8136206899500290518}
   mainButtonObj: {fileID: 8136206899390911248}
-  begginerGuideSSList: []
+  begginerGuideSSList:
+  - {fileID: 21300000, guid: 83aa1d41e360ce24bb0fd16e1ed201d5, type: 3}
+  - {fileID: 21300000, guid: b6cc6f83fa8ffcb409941cbeb5e72c7d, type: 3}
   begginerGuideSSImage: {fileID: 2476304833174770559}
 --- !u!1 &8136206898844491929
 GameObject:

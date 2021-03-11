@@ -92,7 +92,10 @@ public class PlayerManager : MonoBehaviour {
         //課金用
         currency,//ゲーム内通貨
         superChat,
-        exit
+        exit,
+
+        //初心者ガイド用
+        begginer
     }
 
     /// <summary>
@@ -174,6 +177,11 @@ public class PlayerManager : MonoBehaviour {
                 break;
             case ID_TYPE.exit:
                 PlayerPrefs.SetString(ID_TYPE.exit.ToString(), setString);
+                break;
+
+            //初心者ガイド用
+            case ID_TYPE.begginer:
+                PlayerPrefs.SetString(ID_TYPE.begginer.ToString(), setString);
                 break;
         }
 
