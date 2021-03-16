@@ -154,7 +154,11 @@ public class BegginerGuide : MonoBehaviour
                         commentarySSText.text = "<b>1.</b>コメントを上下に移動できます。\n\r<b>2.</b>フィルターです。下のプレイヤーボタンを押すとそのプレイヤーが発言したコメントのみを表示します。";
                         break;
                     case 3:
-                        //begginerGuideSSImage.sprite = begginerGuideSSList[2];
+                        begginerGuideSSImage.sprite = begginerGuideSSList[2];
+                        begginerGuideSSImage.rectTransform.sizeDelta = new Vector2(186.9841f, 100f);
+                        begginerGuideSSImage.rectTransform.localPosition = new Vector2(-1.5259e-05f, 87.595f);
+                        commentarySSText.rectTransform.sizeDelta = new Vector2(186.9842f, 175.9904f);
+                        commentarySSText.rectTransform.localPosition = new Vector2(0f, -50.4f);
                         commentarySSText.text = "<b>1.</b>上下ボタンです\n\r<b>2.</b>人狼と市民チャットを切り替えれます。\n\r<b>3.</b>自分の正体を明かすことができます。\n\r<b>4.</b>発言することができます。\n\r<b>5.</b>青チャットと通常チャットの切り替えです。青チャットには課金が必要です\n\r<b>6.</b>プレイヤーボタンです。フェイズごとに挙動が変わります。\n\r<b>夕方</b>、プレイヤーを投票できます。\n\r<b>夜</b>、役職ごとの行動を決定します。\n\rまた、<b>ルームマスターは</b>ゲーム開始前プレイヤーを強制退場できます。\n\r<b>ゲーム終了後または死亡後</b>にプレイヤーを回避することができます。";
                         break;
                 }

@@ -1670,20 +1670,20 @@ MonoBehaviour:
   isDebug: 0
   isTimeController: 1
   testMainTime: 2
-  testNightTime: 10
+  testNightTime: 2
   testVotingTime: 2
   testExecutionTime: 2
   testCheckGameOverTime: 2
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 3
+  numLimit: 1
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 1
+  isGameOver: 0
   isCheckSuddenDeath: 0
   isVoteCount: 1
   isTestPlay: 1

@@ -1946,11 +1946,13 @@ MonoBehaviour:
   backButton: {fileID: 8136206900101140255}
   returnButton: {fileID: 8136206899529090609}
   maskButton: {fileID: 8136206898333355612}
+  checkButton: {fileID: 0}
   returnText: {fileID: 8136206899500290518}
   mainButtonObj: {fileID: 8136206899390911248}
   begginerGuideSSList:
   - {fileID: 21300000, guid: 83aa1d41e360ce24bb0fd16e1ed201d5, type: 3}
   - {fileID: 21300000, guid: b6cc6f83fa8ffcb409941cbeb5e72c7d, type: 3}
+  - {fileID: 21300000, guid: 5addbb45e7a60c540b40389574eac396, type: 3}
   begginerGuideSSImage: {fileID: 2476304833174770559}
 --- !u!1 &8136206898844491929
 GameObject:

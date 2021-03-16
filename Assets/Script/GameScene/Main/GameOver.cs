@@ -162,30 +162,30 @@ public class GameOver : MonoBehaviour {
         if(RoomData.instance.roomInfo.roomSelection == ROOMSELECTION.初心者) {
             //対戦回数を加算
             PlayerManager.instance.beginnerTotalNumberOfMatches++;
-            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.初心者対戦回数);
+            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.beginnerTotalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.初心者対戦回数);
 
             //勝敗を加算
             if (isWin) {
                 PlayerManager.instance.beginnerTotalNumberOfWins++;
-                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.初心者勝利回数);
+                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.beginnerTotalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.初心者勝利回数);
             } else {
                 PlayerManager.instance.beginnerTotalNumberOfLoses++;
-                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.初心者敗北回数);
+                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.beginnerTotalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.初心者敗北回数);
             }
 
         //一般部屋用の戦績反映
         } else if(RoomData.instance.roomInfo.roomSelection == ROOMSELECTION.一般) {
             //対戦回数を加算
             PlayerManager.instance.generalTotalNumberOfMatches++;
-            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.一般対戦回数);
+            PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.generalTotalNumberOfMatches, PlayerManager.BATTLE_RECORD_TYPE.一般対戦回数);
 
             //勝敗を加算
             if (isWin) {
                 PlayerManager.instance.generalTotalNumberOfWins++;
-                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.一般勝利回数);
+                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.generalTotalNumberOfWins, PlayerManager.BATTLE_RECORD_TYPE.一般勝利回数);
             } else {
                 PlayerManager.instance.generalTotalNumberOfLoses++;
-                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.totalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.一般敗北回数);
+                PlayerManager.instance.SetBattleRecordForPlayerPrefs(PlayerManager.instance.generalTotalNumberOfLoses, PlayerManager.BATTLE_RECORD_TYPE.一般敗北回数);
             }
         }
     }

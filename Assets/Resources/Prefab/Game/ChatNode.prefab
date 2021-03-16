@@ -678,10 +678,12 @@ MonoBehaviour:
   chatText: {fileID: 4466735831423285711}
   statusObj: {fileID: 1235808738732009459}
   iconObj: {fileID: 7407571817137271022}
+  iconImage: {fileID: 6432085198602546823}
+  iconNo: 0
   statusText: {fileID: 7543894743011651805}
   statusColor: {r: 1, g: 0.97001815, b: 0, a: 1}
-  layoutGroup: {fileID: 5080018548450252811}
   chatBoard: {fileID: 6995840903809688898}
+  layoutGroup: {fileID: 5080018548450252811}
   iconObjLayoutElement: {fileID: 6187143868307752041}
   chatObjLayoutElement: {fileID: 4857243788529812121}
   chatVerticalLayoutGroup: {fileID: 7219266478331503808}

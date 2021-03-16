@@ -61,11 +61,14 @@ public class ChatLog : MonoBehaviour
         SetChatNode(chatNode,chatData);
         chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
         chatNode.statusText.text = playerName;
-        chatNode.iconImage.color = ColorManger.instance.iconColorList[iconNo];
-        
+
+        //GMだけ例外処理する
+        if(iconNo != 9999) {
+            chatNode.iconImage.color = ColorManger.instance.iconColorList[iconNo];
+        }
 
         //ComingOutなら横幅を調節する
-        if(inputData == "") {
+        if (inputData == "") {
             chatNode.chatObjLayoutElement.preferredWidth = 60;
             chatNode.chatObjLayoutElement.preferredHeight = 60;
         }
@@ -98,6 +101,10 @@ public class ChatLog : MonoBehaviour
         playerButton.playerID = playerID;
         playerButton.rollText.text = roll;
         playerButton.iconNo = iconNo;
+
+        if (iconNo != 9999) {
+            playerButton.playerBtnImage.color = ColorManger.instance.iconColorList[iconNo];
+        }
         if (PlayerManager.instance.myID == playerID) {
             playerButton.playerBtnImage.GetComponent<Outline>().enabled = true;
         }
