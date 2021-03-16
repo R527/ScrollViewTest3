@@ -15,7 +15,6 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public Text playerNameText;
     public int iconNo;//アイコンの絵用
     public Image iconImage;
-    public List<Sprite> iconSpriteList;
     public RectTransform tran;
 
     public int playerID;
@@ -55,7 +54,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         this.gameManager = gameManager;
         this.playerName = playerName;
         playerNameText.text = playerName;
-
+        iconImage.color = ColorManger.instance.iconColorList[iconNo];
         this.playerID = playerID;
         //ボタンにゆにーくIDを登録する
         //自分のボタンではない場合

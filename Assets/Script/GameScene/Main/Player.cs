@@ -352,7 +352,9 @@ public class Player : MonoBehaviourPunCallbacks {
     /// //マスターがイラストの番号をすべて保存して既に使われているイラストを除外してランダムにセットする
     /// </summary>
     public void AddPlayerImage() {
-        for (int i = 0; i < playerButton.iconSpriteList.Count; i++) {
+        Debug.Log(" ColorManger.instance" +
+            ColorManger.instance.iconColorList);
+        for (int i = 0; i < ColorManger.instance.iconColorList.Count; i++) {
             if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("playerImageNum" + i, out object playerImageNumObj)) {
                 if ((int)playerImageNumObj != i) {
                     playerImageNumList.Add(i);
@@ -370,12 +372,7 @@ public class Player : MonoBehaviourPunCallbacks {
 
         NetworkManager.instance.SetCustomPropertesOfRoom("playerImageNum", iconNo);
         NetworkManager.instance.SetCustomPropertesOfPlayer("playerImageNum", iconNo,PhotonNetwork.LocalPlayer);
-        //var propertiers = new ExitGames.Client.Photon.Hashtable();
-        //propertiers.Add("playerImageNum" + iconNo, iconNo);
-        //PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
 
-        //propertiers.Add("playerImageNum", iconNo);
-        //PhotonNetwork.LocalPlayer.SetCustomProperties(propertiers);
     }
 }
 

@@ -61,7 +61,8 @@ public class ChatLog : MonoBehaviour
         SetChatNode(chatNode,chatData);
         chatNode.chatBoard.color = chatSystem.color[chatData.boardColor];
         chatNode.statusText.text = playerName;
-        chatNode.iconNo = iconNo;
+        chatNode.iconImage.color = ColorManger.instance.iconColorList[iconNo];
+        
 
         //ComingOutなら横幅を調節する
         if(inputData == "") {

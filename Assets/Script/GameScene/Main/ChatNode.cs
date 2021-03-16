@@ -20,7 +20,6 @@ public class ChatNode : MonoBehaviourPunCallbacks {
     public GameObject iconObj;
     public Image iconImage;
     public int iconNo;
-    public List<Sprite> iconSpriteList;
     public Text statusText;
     public Color statusColor;
     public Image chatBoard;
@@ -59,8 +58,7 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             this.iconNo = 9999;
             statusText.text = "GM";
         } else {
-
-            this.iconNo = iconNo;
+            iconImage.color = ColorManger.instance.iconColorList[iconNo];
             //PlayerがCOしているか否か（COしている場合は名前の横に職業名を記載
             //stringがnullかから文字かを判定し、その判定をbool型で返す。
             //(chatData.playerID - 1)はGM分をー１にする調整
