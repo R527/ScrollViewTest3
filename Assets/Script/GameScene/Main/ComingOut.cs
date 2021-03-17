@@ -32,7 +32,6 @@ public class ComingOut : MonoBehaviourPunCallbacks {
     /// <returns></returns>
     public string GetComingOutText(int playerID) {
         string str = string.Empty;
-
         foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if(player.ActorNumber == playerID) {
                 if (player.CustomProperties.TryGetValue("comingOutText", out object comingOutTextObj)) {

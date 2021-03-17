@@ -99,8 +99,11 @@ public class InputView : MonoBehaviour {
     /// カミングアウトボタンを制御
     /// </summary>
     public void ComingOut() {
+        Debug.Log("ComingOut");
         //メンバーが表示されている状態でCOボタン押したときの処理
         if (menberViewPopUpObj.activeSelf && !folding) {
+            Debug.Log("メンバーが表示されている状態でCOボタン押したときの処理");
+
             coPopUpObj.SetActive(true);
             menberViewPopUpObj.SetActive(false);
 
@@ -109,6 +112,8 @@ public class InputView : MonoBehaviour {
 
             //COPopUpがアクティブ状態の時の処理
         } else if (coPopUpObj.activeSelf && !folding) {
+            Debug.Log("COPopUpがアクティブ状態の時の処理");
+
             inputRectTransform.DOLocalMoveY(-70, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 330f), 0.5f);
             filterButton.interactable = true;
@@ -121,7 +126,8 @@ public class InputView : MonoBehaviour {
             StartCoroutine(PopUpFalse());
 
             //InPutViewが閉じている時
-        } else if (!folding) {
+        } else if (folding) {
+            Debug.Log("InPutViewが閉じている時");
             coPopUpObj.SetActive(true);
             inputRectTransform.DOLocalMoveY(0, 0.5f);
             viewport.DOSizeDelta(new Vector2(202f, 258f), 0.5f);

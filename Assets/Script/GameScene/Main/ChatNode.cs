@@ -94,13 +94,12 @@ public class ChatNode : MonoBehaviourPunCallbacks {
             chatSystem.chatInputField.text = "";
 
             //COすると名前の横にCO状況を表示
-            if (comingOutClass.GetComingOutText(playerID) != string.Empty) {
-               
-                chatObjLayoutElement.preferredWidth = 60;
-                chatObjLayoutElement.preferredHeight = 60;
+            if (comingOutClass.GetComingOutText(playerID) != "スライド") {
+                chatText.text = comingOutClass.GetComingOutText(playerID)+"をカミングアウトします。";
                 statusText.text = chatData.playerName + "【" + comingOutClass.GetComingOutText(playerID) + "CO】";
             } else {
                 chatText.text = "カミングアウトを取り消します。";
+                statusText.text = chatData.playerName;
             }
         }
     }

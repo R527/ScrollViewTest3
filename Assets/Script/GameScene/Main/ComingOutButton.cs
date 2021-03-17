@@ -16,9 +16,9 @@ public class ComingOutButton : MonoBehaviourPunCallbacks {
     private void Start() {
         chatSystem = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<ChatSystem>();
         comingOutButton = gameObject.GetComponent<Button>();
-        if(comingOutText.text == "スライド") {
-            comingOutText.text = string.Empty;
-        }
+        //if (comingOutText.text == "スライド") {
+        //    comingOutText.text = string.Empty;
+        //}
         comingOutButton.onClick.AddListener(ComingOut);
     }
 
