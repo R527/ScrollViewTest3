@@ -8191,8 +8191,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1378972847}
+  - component: {fileID: 1378972851}
   - component: {fileID: 1378972849}
   - component: {fileID: 1378972848}
+  - component: {fileID: 1378972850}
   m_Layer: 5
   m_Name: "\u56DE\u907F"
   m_TagString: Untagged
@@ -8247,7 +8249,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378972846}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
@@ -8299,6 +8301,48 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 0
+--- !u!114 &1378972850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378972846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6151a1dfcc91a3c4aad69ed9eb2923ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleNum: 2
+--- !u!114 &1378972851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378972846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6683946226144914367}
+          m_TargetAssemblyTypeName: PlayerInfoPopUp, Assembly-CSharp
+          m_MethodName: Toggle
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 1378972846}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1388767190
 GameObject:
   m_ObjectHideFlags: 0
@@ -9081,6 +9125,7 @@ GameObject:
   - component: {fileID: 1629712377}
   - component: {fileID: 1629712376}
   - component: {fileID: 1629712378}
+  - component: {fileID: 1629712379}
   m_Layer: 5
   m_Name: BanList
   m_TagString: Untagged
@@ -9171,6 +9216,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1629712379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629712374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6151a1dfcc91a3c4aad69ed9eb2923ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleNum: 2
 --- !u!1 &1636040183
 GameObject:
   m_ObjectHideFlags: 0
@@ -13787,6 +13845,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maskButton: {fileID: 8707105659282575659}
   backButton: {fileID: 857341203846348346}
+  playerInfoToggleList:
+  - {fileID: 7655497596264456569}
+  - {fileID: 7655497595815494539}
+  - {fileID: 1378972850}
+  playerInfoList:
+  - {fileID: 7655497596554938994}
+  - {fileID: 7655497596802906954}
+  - {fileID: 1629712379}
   totalNumberOfSuddenDeathText: {fileID: 7655497596458918125}
   totalNumberOfMatchesText: {fileID: 7655497595476378279}
   totalNumberOfWinsText: {fileID: 7655497595019006005}
@@ -16122,9 +16188,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7655497595815494537}
+  - component: {fileID: 7655497595815494540}
   - component: {fileID: 7655497595815494543}
-  - component: {fileID: 7655497595815494542}
   - component: {fileID: 7655497595815494538}
+  - component: {fileID: 7655497595815494539}
   m_Layer: 5
   m_Name: "\u5BFE\u6226\u30ED\u30B0"
   m_TagString: Untagged
@@ -16172,7 +16239,7 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
---- !u!114 &7655497595815494542
+--- !u!114 &7655497595815494539
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16181,18 +16248,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7655497595815494536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Script: {fileID: 11500000, guid: 6151a1dfcc91a3c4aad69ed9eb2923ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreLayout: 1
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: 1
-  m_FlexibleHeight: 1
-  m_LayoutPriority: 1
---- !u!114 &7655497595815494543
+  toggleNum: 1
+--- !u!114 &7655497595815494540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16200,6 +16260,35 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7655497595815494536}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6683946226144914367}
+          m_TargetAssemblyTypeName: PlayerInfoPopUp, Assembly-CSharp
+          m_MethodName: Toggle
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 7655497595815494536}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &7655497595815494543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7655497595815494536}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
@@ -16719,7 +16808,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7655497596054999748}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
   m_Name: 
@@ -17354,7 +17443,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7655497596264456567}
   - component: {fileID: 7655497596264456564}
+  - component: {fileID: 7655497596264456570}
   - component: {fileID: 7655497596264456568}
+  - component: {fileID: 7655497596264456569}
   m_Layer: 5
   m_Name: "\u6226\u7E3E"
   m_TagString: Untagged
@@ -17389,7 +17480,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7655497596264456566}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
@@ -17420,7 +17511,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 7655497596059301331}
   toggleTransition: 1
   graphic: {fileID: 7655497596059301331}
@@ -17441,6 +17532,48 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 1
+--- !u!114 &7655497596264456569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7655497596264456566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6151a1dfcc91a3c4aad69ed9eb2923ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleNum: 0
+--- !u!114 &7655497596264456570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7655497596264456566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6683946226144914367}
+          m_TargetAssemblyTypeName: PlayerInfoPopUp, Assembly-CSharp
+          m_MethodName: Toggle
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 7655497596264456566}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &7655497596287458464
 GameObject:
   m_ObjectHideFlags: 0
@@ -17984,6 +18117,7 @@ GameObject:
   - component: {fileID: 7655497596554938997}
   - component: {fileID: 7655497596554938996}
   - component: {fileID: 7655497596554938999}
+  - component: {fileID: 7655497596554938994}
   m_Layer: 5
   m_Name: "\u6226\u7E3EScrollView"
   m_TagString: Untagged
@@ -17991,6 +18125,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7655497596554938994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7655497596554938993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6151a1dfcc91a3c4aad69ed9eb2923ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleNum: 0
 --- !u!222 &7655497596554938996
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18758,6 +18905,7 @@ GameObject:
   - component: {fileID: 7655497596802906956}
   - component: {fileID: 7655497596802906959}
   - component: {fileID: 7655497596802906958}
+  - component: {fileID: 7655497596802906954}
   m_Layer: 5
   m_Name: "\u5BFE\u6226\u30ED\u30B0ScrollView"
   m_TagString: Untagged
@@ -18785,6 +18933,19 @@ RectTransform:
   m_AnchoredPosition: {x: -97.90003, y: -167.1}
   m_SizeDelta: {x: 195.8, y: 258.28143}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7655497596802906954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7655497596802906952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6151a1dfcc91a3c4aad69ed9eb2923ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleNum: 1
 --- !u!114 &7655497596802906956
 MonoBehaviour:
   m_ObjectHideFlags: 0

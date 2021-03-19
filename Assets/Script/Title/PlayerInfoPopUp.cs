@@ -14,6 +14,10 @@ public class PlayerInfoPopUp : MonoBehaviour
     public Button maskButton;
     public Button backButton;
 
+    public List<PlayerInfoToggle> playerInfoToggleList;
+    public List<PlayerInfoToggle> playerInfoList;
+
+
     //Text
     public Text totalNumberOfSuddenDeathText;
 
@@ -41,6 +45,8 @@ public class PlayerInfoPopUp : MonoBehaviour
     private void Start() {
         backButton.onClick.AddListener(ClosePopUp);
         maskButton.onClick.AddListener(ClosePopUp);
+
+
 
         //総合成績
         totalNumberOfMatchesText.text = PlayerManager.instance.totalNumberOfMatches + "回";
@@ -138,5 +144,27 @@ public class PlayerInfoPopUp : MonoBehaviour
                 gameLogNode.rollListText.text += emptyStr + str;
             }
         }
+    }
+
+    /// <summary>
+    /// 上部のボタンを押したときにボタンを無効にする
+    /// </summary>
+    public void Toggle(GameObject obj) {
+        //自分のボタンをOFFにして他のボタンをONにする
+
+        Debug.Log("obj.GetComponent<PlayerInfoToggle>().toggleNum" + obj.GetComponent<PlayerInfoToggle>().toggleNum);
+
+        for (int i = 0; i < playerInfoToggleList.Count; i++) {
+            if (i == obj.GetComponent<PlayerInfoToggle>().toggleNum) {
+                Debug.Log("false");
+                playerInfoToggleList[i].GetComponent<Toggle>().interactable = false;
+                playerInfoList[i].gameObject.SetActive(true);
+            } else {
+                Debug.Log("true");
+                playerInfoList[i].gameObject.SetActive(false);
+                playerInfoToggleList[i].GetComponent<Toggle>().interactable = true;
+            }
+        }
+
     }
 }
