@@ -156,11 +156,9 @@ public class PlayerInfoPopUp : MonoBehaviour
 
         for (int i = 0; i < playerInfoToggleList.Count; i++) {
             if (i == obj.GetComponent<PlayerInfoToggle>().toggleNum) {
-                Debug.Log("false");
                 playerInfoToggleList[i].GetComponent<Toggle>().interactable = false;
                 playerInfoList[i].gameObject.SetActive(true);
             } else {
-                Debug.Log("true");
                 playerInfoList[i].gameObject.SetActive(false);
                 playerInfoToggleList[i].GetComponent<Toggle>().interactable = true;
             }

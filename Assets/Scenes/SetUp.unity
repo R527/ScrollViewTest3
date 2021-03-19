@@ -1669,7 +1669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isTimeController: 1
-  testMainTime: 10
+  testMainTime: 2
   testNightTime: 2
   testVotingTime: 2
   testExecutionTime: 2
@@ -1677,15 +1677,15 @@ MonoBehaviour:
   testResultTime: 2
   num: 0
   enterNum: 0
-  numLimit: 1
+  numLimit: 2
   setEnterNumTime: 25
   openVoting: 1
   fortuneType: 1
   timeType: 4
   isPlayerPrefsDeleteAll: 0
-  isGameOver: 1
-  isCheckSuddenDeath: 1
-  isVoteCount: 1
+  isGameOver: 0
+  isCheckSuddenDeath: 0
+  isVoteCount: 0
   isTestPlay: 1
   testRollTypeList: 04000000020000000400000000000000
   isCurrency: 0
