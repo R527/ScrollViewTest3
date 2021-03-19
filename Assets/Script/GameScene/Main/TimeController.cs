@@ -295,7 +295,6 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 isVotingCompleted = false;
                 //時短リセット処理
                 gameMasterChatManager.timeSaving = false;
-                Debug.Log("gameMasterChatManager.isTimeSaving" + gameMasterChatManager.isTimeSavingOfOnLine);
                 NetworkManager.instance.SetCustomPropertesOfRoom("timeSavingNum", 0);
 
                 //処刑処理　DebugManagerでチェック入っていると走らない
