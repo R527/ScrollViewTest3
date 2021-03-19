@@ -102,6 +102,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
             if (NetworkManager.instance.GetCustomPropertesOfRoom<int>("executionID") == playerObj.playerID) {
                 playerObj.live = false;
                 playerObj.playerInfoText.text = gameManager.timeController.day + "日目\n\r処刑";
+
             }
         }
 

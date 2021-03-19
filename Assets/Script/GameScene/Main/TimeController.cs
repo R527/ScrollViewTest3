@@ -248,7 +248,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 isDisplay = true;
                 totalTime = mainTime;
                 ChangeSecene();
-                gameManager.gameMasterChatManager.timeSavingButtonText.text = "時短";
+
+                if (chatSystem.myPlayer.live) {
+                    gameManager.gameMasterChatManager.timeSavingButtonText.text = "時短";
+                }
 
                 //Co制限初期化
                 chatSystem.coTimeLimit = 0;
@@ -324,6 +327,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                                     if (player.ActorNumber == playerObj.playerID) {
                                         playerObj.live = false;
                                         playerObj.playerInfoText.text = day + "日目\n\r突然死";
+
                                         break;
                                     }
                                 }
@@ -383,7 +387,7 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 }
 
                 //死亡している場合時短or退出ボタンを退出にする
-                if (chatSystem.myPlayer.live == false) {
+                if (!chatSystem.myPlayer.live) {
                     gameManager.gameMasterChatManager.timeSavingButtonText.text = "退出";
                     gameManager.gameMasterChatManager.timeSavingButton.interactable = true;
                 }

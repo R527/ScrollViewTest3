@@ -1626,7 +1626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconColorList:
-  - {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+  - {r: 0.5372549, g: 0.44313726, b: 0.44313726, a: 1}
   - {r: 0.54509807, g: 0, b: 0, a: 1}
   - {r: 1, g: 0.27058825, b: 0, a: 1}
   - {r: 0.54509807, g: 0.27058825, b: 0.07450981, a: 1}
@@ -1669,7 +1669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isTimeController: 1
-  testMainTime: 50
+  testMainTime: 10
   testNightTime: 2
   testVotingTime: 2
   testExecutionTime: 2
@@ -1684,7 +1684,7 @@ MonoBehaviour:
   timeType: 4
   isPlayerPrefsDeleteAll: 0
   isGameOver: 1
-  isCheckSuddenDeath: 0
+  isCheckSuddenDeath: 1
   isVoteCount: 1
   isTestPlay: 1
   testRollTypeList: 04000000020000000400000000000000
