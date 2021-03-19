@@ -22,7 +22,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     public int timeSavingNum;//時短の人数確認
     public Text timeSavingButtonText;//時短or退出ボタン
     public string gameMasterChat;
-    public bool isTimeSaving;//時短用のbool
+    public bool isTimeSavingOfOnLine;//時短用のbool
     public ActionPopUp actionPopUpPrefab;
     public GameObject destoryedObj;
     public Transform gameCancasTran;
@@ -129,7 +129,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         //時短処理
         if (timeSavingButtonText.text == "時短") {
             timeSavingNum = NetworkManager.instance.GetCustomPropertesOfRoom<int>("timeSavingNum");
-
+            Debug.Log("timeSavingNum"+timeSavingNum);
             //キャンセルorまだ希望していない状態なら
             //時短ボタンの色を変更する処理を後程追加したい
             if (!timeSaving) {
@@ -144,10 +144,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
 
             //timeSavingNum更新
-            var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                {"timeSavingNum",timeSavingNum }
-            };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+            NetworkManager.instance.SetCustomPropertesOfRoom("timeSavingNum",timeSavingNum);
             //もう一度チェック
             timeSavingNum = NetworkManager.instance.GetCustomPropertesOfRoom<int>("timeSavingNum");
 
@@ -155,8 +152,8 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //Mathf.CeilToIntは切り上げ
             float value = (float)gameManager.liveNum;
             if (Mathf.CeilToInt(value / 2) <= timeSavingNum) {
-                isTimeSaving = true;
-                NetworkManager.instance.SetCustomPropertesOfRoom("isTimeSaving", isTimeSaving);
+                isTimeSavingOfOnLine = true;
+                NetworkManager.instance.SetCustomPropertesOfRoom("isTimeSaving", isTimeSavingOfOnLine);
                 //SetIsTimeSaving();
             }
             //退出処理

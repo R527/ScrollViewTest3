@@ -181,13 +181,13 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 }
             }
             //マスターだけが0秒もしくは時短成立の確認を取れたら全員に次のシーンへと行くフラグを送信する
-            if ((totalTime < 0 || gameManager.gameMasterChatManager.isTimeSaving) && PhotonNetwork.IsMasterClient) {
+            if ((totalTime < 0 || gameManager.gameMasterChatManager.isTimeSavingOfOnLine) && PhotonNetwork.IsMasterClient) {
                 totalTime = -1;
                 //SetGameTime();
                 totalTime = NetworkManager.instance.GetCustomPropertesOfRoom<float>("totalTime");
                 intervalState = true;
-                gameManager.gameMasterChatManager.isTimeSaving = false;
-                NetworkManager.instance.SetCustomPropertesOfRoom("isTimeSaving", gameManager.gameMasterChatManager.isTimeSaving);
+                gameManager.gameMasterChatManager.isTimeSavingOfOnLine = false;
+                NetworkManager.instance.SetCustomPropertesOfRoom("isTimeSaving", gameManager.gameMasterChatManager.isTimeSavingOfOnLine);
 
                 //gameManager.gameMasterChatManager.SetIsTimeSaving();
                 //SetIntervalState();
@@ -275,6 +275,8 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 //一日ごとに突然死チェックするのでリセット
                 isSpeaking = false;
 
+
+
                 //GMチャットなど
                 TimesavingControllerFalse();
                 StartCoroutine(GameMasterChat());
@@ -291,6 +293,10 @@ public class TimeController : MonoBehaviourPunCallbacks {
                 Destroy(gameMasterChatManager.destoryedObj);
                 //初期化
                 isVotingCompleted = false;
+                //時短リセット処理
+                gameMasterChatManager.timeSaving = false;
+                Debug.Log("gameMasterChatManager.isTimeSaving" + gameMasterChatManager.isTimeSavingOfOnLine);
+                NetworkManager.instance.SetCustomPropertesOfRoom("timeSavingNum", 0);
 
                 //処刑処理　DebugManagerでチェック入っていると走らない
                 if (!DebugManager.instance.isVoteCount) {
