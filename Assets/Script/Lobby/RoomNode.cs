@@ -106,8 +106,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
         gameObject.SetActive(false);
 
         if (gameObject != null && !CheckBanListToRoomOwner()) {
-
-            if(search == null) {
+            if (search == null) {
                 search = GameObject.FindGameObjectWithTag("Search").GetComponent<Search>();
             }
 
@@ -123,7 +122,7 @@ public class RoomNode : MonoBehaviourPunCallbacks {
             }
 
             //フィルターにかける
-            //人数設定が未設定
+            ////人数設定が未設定
             if (search.isNumLimit == true) {
                 if (fortuneType == search.searchFortuneType && openVoting == search.searchOpenVoting && search.searchRoomSelection == roomSelection && CheckSuddenDeath()) {
                     gameObject.SetActive(true);
