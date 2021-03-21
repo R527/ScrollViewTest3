@@ -244,6 +244,7 @@ public class Player : MonoBehaviourPunCallbacks {
             if (player.ActorNumber == photonView.OwnerActorNr) {
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
+                iconNo = NetworkManager.instance.GetCustomPropertesOfPlayer<int>("playerImageNum", player);
                 break;
             }
         }
