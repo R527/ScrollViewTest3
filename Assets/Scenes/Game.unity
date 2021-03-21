@@ -11074,7 +11074,7 @@ MonoBehaviour:
   timeSavingNum: 0
   timeSavingButtonText: {fileID: 256122106}
   gameMasterChat: 
-  isTimeSaving: 0
+  isTimeSavingOfOnLine: 0
   actionPopUpPrefab: {fileID: 356964420616384462, guid: 41fd3eb5dc8d15d4e97cc9cd433f3ab9,
     type: 3}
   destoryedObj: {fileID: 0}
@@ -13664,7 +13664,7 @@ GameObject:
   - component: {fileID: 1403669500}
   - component: {fileID: 1403669501}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15299,7 +15299,7 @@ GameObject:
   - component: {fileID: 1534995041}
   - component: {fileID: 1534995040}
   m_Layer: 5
-  m_Name: List
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

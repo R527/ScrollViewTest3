@@ -561,6 +561,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
             return;
         }
 
+
         //BanList作成
         for (int i = 0; i < PlayerManager.instance.banUniqueIDList.Count; i++) {
             BanPlayer banPlayer = Instantiate(banPlayerPrefab, banListTran, false);

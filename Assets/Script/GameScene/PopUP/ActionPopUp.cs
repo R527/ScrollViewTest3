@@ -14,7 +14,7 @@ public class ActionPopUp : MonoBehaviourPunCallbacks {
 
     public int playerID;
     public string playerName;
-    public string myUniqueId;
+    public string otherUniqueId;
     public bool fortune;
 
     public Text actionText;
@@ -74,8 +74,10 @@ public class ActionPopUp : MonoBehaviourPunCallbacks {
 
             case Action_Type.Ban:
                 PlayerManager.instance.banIndex = PlayerManager.instance.banListIndex;
-                PlayerManager.instance.SetStringForPlayerPrefs(myUniqueId, PlayerManager.ID_TYPE.banUniqueID);
+                PlayerManager.instance.SetStringForPlayerPrefs(otherUniqueId, PlayerManager.ID_TYPE.banUniqueID);
+                PlayerManager.instance.banUniqueIDList.Add(otherUniqueId);
                 PlayerManager.instance.SetStringForPlayerPrefs(playerName, PlayerManager.ID_TYPE.banUserNickName);
+                PlayerManager.instance.banUserNickNameList.Add(playerName);
                 PlayerManager.instance.banListIndex++;
 
                 PlayerManager.instance.SetIntForPlayerPrefs(PlayerManager.instance.banListIndex, PlayerManager.ID_TYPE.banListMaxIndex);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 部屋に入った直後にBanList、満室チェックなどを行う
@@ -73,7 +74,9 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             }
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
             obj.exitText.text = "接続に問題がありました。";
+            
             Destroy(gameObject);
+            SceneManager.LoadScene("Game", LoadSceneMode.Additive);
             return;
         }
         //満室でもBanPlayerでもなく部屋が空いていたら

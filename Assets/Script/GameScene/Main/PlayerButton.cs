@@ -18,7 +18,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
     public RectTransform tran;
 
     public int playerID;
-    public string myUniqueId;
+    public string otherUniqueId;
     public string playerName;
     public ROLLTYPE rollType = ROLLTYPE.ETC;
     public bool live;//生死 trueで生存している
@@ -60,7 +60,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         //自分のボタンではない場合
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == playerID) {
-                myUniqueId = (string)player.CustomProperties["myUniqueID"];
+                otherUniqueId = (string)player.CustomProperties["myUniqueID"];
                 object playerImageNumObj = null;
                 yield return new WaitUntil(() => player.CustomProperties.TryGetValue("playerImageNum", out playerImageNumObj));
                 this.iconNo = (int)playerImageNumObj;
@@ -173,9 +173,15 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
         //枠がいっぱいの場合
         //枠は1つまで
         if (PlayerManager.instance.banListIndex == PlayerManager.instance.banListMaxIndex) {
-            GameObject list = GameObject.FindGameObjectWithTag("BanPlayerList");
-            list.GetComponent<CanvasGroup>().alpha = 1;
-            list.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            GameObject listObj = GameObject.FindGameObjectWithTag("BanPlayerList");
+
+            foreach (Transform n in listObj.transform.Find("Image").transform.Find("List"). gameObject.transform) {
+                Destroy(n.gameObject);
+            }
+
+            gameManager.CreateBanList();
+            listObj.GetComponent<CanvasGroup>().alpha = 1;
+            listObj.GetComponent<CanvasGroup>().blocksRaycasts = true;
         } else {
             //枠が空いている場合
             ActionPopUp obj = Instantiate(actionPopUpPrefab, gameCancasTran, false);
@@ -184,7 +190,7 @@ public class PlayerButton : MonoBehaviourPunCallbacks {
             obj.gameManager = this.gameManager;
             obj.playerID = this.playerID;
             obj.playerName = playerName;
-            obj.myUniqueId = this.myUniqueId;
+            obj.otherUniqueId = this.otherUniqueId;
             obj.action_Type = ActionPopUp.Action_Type.Ban;
         }
     }
