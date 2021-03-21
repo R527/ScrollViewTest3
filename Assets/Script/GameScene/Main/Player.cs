@@ -242,9 +242,23 @@ public class Player : MonoBehaviourPunCallbacks {
     private IEnumerator SetOtherPlayer() {
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
             if (player.ActorNumber == photonView.OwnerActorNr) {
+
+                bool isCheack = true;
+                while (isCheack) {
+                    if (player.CustomProperties.TryGetValue("playerImageNum", out object playerImageNumObj)) {
+                        iconNo = (int)playerImageNumObj;
+                        isCheack = false;
+                        yield return null;
+                    } else {
+                        Debug.Log("待つ");
+                        yield return null;
+                    }
+
+                }
+
                 playerID = player.ActorNumber;
                 playerName = player.NickName;
-                iconNo = NetworkManager.instance.GetCustomPropertesOfPlayer<int>("playerImageNum", player);
+                //iconNo = NetworkManager.instance.GetCustomPropertesOfPlayer<int>("playerImageNum", player);
                 break;
             }
         }
