@@ -43,6 +43,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
 
     void Update() {
 
+
         //Startが終わるまでリターン
         if (!isSetUp) {
             return;
@@ -53,6 +54,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             Destroy(gameObject);
             return;
         }
+
 
         //部屋が満室なら自ら退出するPopUpを出す
         if (NetworkManager.instance.GetCustomPropertesOfRoom<int>("num") >= gameManager.numLimit) {
@@ -76,7 +78,6 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
             obj.exitText.text = "接続に問題がありました。";
             
             Destroy(gameObject);
-            SceneManager.LoadScene("Game", LoadSceneMode.Additive);
             return;
         }
         //満室でもBanPlayerでもなく部屋が空いていたら

@@ -486,10 +486,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
         //PlayerImageの処理
         var propertiers = new ExitGames.Client.Photon.Hashtable();
-        int num = (int)otherPlayer.CustomProperties["playerImageNum"];
-        Debug.Log("RemovePlayerImageNum" + num);
-        propertiers.Remove("playerImageNum" + num);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
+        if (otherPlayer.CustomProperties.TryGetValue("playerImageNum",out object playerImageNumobj)){
+            int num = (int)playerImageNumobj;
+            propertiers.Remove("playerImageNum" + num);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(propertiers);
+        } 
 
         //Playerが抜けたときにBanListの更新をする
         string banListStr = "";
@@ -505,10 +506,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         if (banListStr != "") {
             banListStr.Substring(0, banListStr.Length - 1);
         }
-        var customRoomBanListProperties = new ExitGames.Client.Photon.Hashtable {
-            {"banListStr",banListStr }
-        };
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomBanListProperties);
+
+        SetCustomPropertesOfRoom<string>("banListStr", banListStr);
 
         //PlayerButton削除
         gameManager.DestroyPlayerButton(otherPlayer);
