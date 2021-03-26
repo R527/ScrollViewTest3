@@ -36,7 +36,11 @@ public class SceneStateManager : MonoBehaviour
             NetworkManager.instance.roomSetting.GetComponent<RoomSetting>().createRoomButton.interactable = false;
 
             SceneManager.LoadScene(sceneName.ToString(), LoadSceneMode.Additive);
-            
+
+            yield return new WaitUntil(() => SceneManager.GetActiveScene().name != "Game");
+            yield return null;
+
+            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(4));
             //次の呼び出すシーンがLobbyかつ現在のシーンがGameならGameシーンを破棄する
         } else if(SceneManager.GetActiveScene().name == "Game"){
 

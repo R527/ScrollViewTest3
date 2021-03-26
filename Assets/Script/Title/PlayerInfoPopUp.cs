@@ -152,8 +152,6 @@ public class PlayerInfoPopUp : MonoBehaviour
     public void Toggle(GameObject obj) {
         //自分のボタンをOFFにして他のボタンをONにする
 
-        Debug.Log("obj.GetComponent<PlayerInfoToggle>().toggleNum" + obj.GetComponent<PlayerInfoToggle>().toggleNum);
-
         for (int i = 0; i < playerInfoToggleList.Count; i++) {
             if (i == obj.GetComponent<PlayerInfoToggle>().toggleNum) {
                 playerInfoToggleList[i].GetComponent<Toggle>().interactable = false;
