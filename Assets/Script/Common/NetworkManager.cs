@@ -299,7 +299,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             }
             PhotonNetwork.CurrentRoom.IsOpen = true;
 
-            if (!isMaster) {
+            if (!isMaster && gameManager.num == 1) {
                 gameManager.gameMasterChatManager.IsRoomMaster();
                 isMaster = true;
             }
