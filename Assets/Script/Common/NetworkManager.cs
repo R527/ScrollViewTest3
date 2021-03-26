@@ -34,6 +34,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public RoomInfo joinedRoom;
     public GameObject joinedRoomObj;
     public List<Photon.Realtime.RoomInfo> roomInfoList = new List<RoomInfo>();
+    public Player myPlayer;
 
     //Lobby関連
     public string sceneType;
@@ -129,6 +130,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         PhotonNetwork.CreateRoom(roomId, roomOptions, TypedLobby.Default);
         Destroy(room.gameObject);
         isMaster = true;
+        
     }
 
 
@@ -285,9 +287,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         base.OnPlayerLeftRoom(otherPlayer);
 
         Debug.Log("退出");
-        gameManager.gameMasterChatManager.gameMasterChat = otherPlayer.NickName + "さんが退出しました。";
-        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-        gameManager.gameMasterChatManager.gameMasterChat = string.Empty;
+
+        if (myPlayer.photonView.IsMine) {
+            gameManager.gameMasterChatManager.gameMasterChat = otherPlayer.NickName + "さんが退出しました。";
+            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+            gameManager.gameMasterChatManager.gameMasterChat = string.Empty;
+        }
+
 
         //ゲーム開始前Playerを削除する
         if (!gameManager.gameStart) {
@@ -300,6 +306,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 gameManager.num--;
                 SetCustomPropertesOfRoom("num", gameManager.num);
             }
+
             PhotonNetwork.CurrentRoom.IsOpen = true;
             gameManager.num = GetCustomPropertesOfRoom<int>("num");
             if (!isMaster && gameManager.num == 1) {
@@ -400,6 +407,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         GameObject playerObj = PhotonNetwork.Instantiate("Prefab/Game/Player", gameManager.menbarContent.position, gameManager.menbarContent.rotation);
         Player player = playerObj.GetComponent<Player>();
         gameManager.chatSystem.myPlayer = player;
+        myPlayer = player;
 
     }
 
