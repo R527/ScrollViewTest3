@@ -284,38 +284,35 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     /// <param name="otherPlayer"></param>
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
-        base.OnPlayerLeftRoom(otherPlayer);
 
-        Debug.Log("退出");
+        if (PhotonNetwork.IsMasterClient) {
+            base.OnPlayerLeftRoom(otherPlayer);
 
-        if (myPlayer.photonView.IsMine) {
-            gameManager.gameMasterChatManager.gameMasterChat = otherPlayer.NickName + "さんが退出しました。";
-            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-            gameManager.gameMasterChatManager.gameMasterChat = string.Empty;
-        }
+            //ゲーム開始前Playerを削除する
+            if (!gameManager.gameStart) {
+                DeleateOtherPlayer(otherPlayer);
 
+                //Playerの人数を減らす（BanPlayerの場合は除外する）
+                bool isForcedExit;
+                isForcedExit = GetCustomPropertesOfPlayer<bool>("isForcedExit", otherPlayer);
+                if (!isForcedExit && myPlayer.photonView.IsMine) {
+                    gameManager.num--;
+                    SetCustomPropertesOfRoom("num", gameManager.num);
 
-        //ゲーム開始前Playerを削除する
-        if (!gameManager.gameStart) {
-            DeleateOtherPlayer(otherPlayer);
+                        gameManager.gameMasterChatManager.gameMasterChat = otherPlayer.NickName + "さんが退出しました。";
+                        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
+                        gameManager.gameMasterChatManager.gameMasterChat = string.Empty;
+                    
+                }
 
-            //Playerの人数を減らす（BanPlayerの場合は除外する）
-            bool isForcedExit;
-            isForcedExit = GetCustomPropertesOfPlayer<bool>("isForcedExit", otherPlayer);
-            if (!isForcedExit) {
-                gameManager.num--;
-                SetCustomPropertesOfRoom("num", gameManager.num);
+                PhotonNetwork.CurrentRoom.IsOpen = true;
+                gameManager.num = GetCustomPropertesOfRoom<int>("num");
+                if (!isMaster && gameManager.num == 1) {
+                    gameManager.gameMasterChatManager.IsRoomMaster();
+                    isMaster = true;
+                }
             }
-
-            PhotonNetwork.CurrentRoom.IsOpen = true;
-            gameManager.num = GetCustomPropertesOfRoom<int>("num");
-            if (!isMaster && gameManager.num == 1) {
-                gameManager.gameMasterChatManager.IsRoomMaster();
-                isMaster = true;
-            }
         }
-
-
     }
 
     /// <summary>

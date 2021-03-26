@@ -69,7 +69,7 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         }
 
         //自分がキック対象なら自ら退出するPopUpを出す
-        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]) {
+        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"] == false) {
             PhotonNetwork.CurrentRoom.IsOpen = true;
             if (NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine != null) {
                 StopCoroutine(NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine);
