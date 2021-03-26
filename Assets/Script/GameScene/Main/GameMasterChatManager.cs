@@ -238,13 +238,18 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
     /// <summary>
     /// 入室時のチャット
     /// </summary>
-    public IEnumerator EnteredRoom(Photon.Realtime.Player player) {
+    public IEnumerator EnteredRoom(string playerName) {
         //ToDo 部屋入室時にPlayerが参加したGMチャット部分の無駄なタイムラグを排除　様子見
         yield return null;
-        gameMasterChat = player.NickName + "さんが参加しました。";
-        if (photonView.IsMine) {
+        gameMasterChat = playerName  + "さんが参加しました。";
+        Debug.Log(playerName);
+        Debug.Log("photonView" + photonView.IsMine);
+        Debug.Log("photonView" + photonView);
+        //if (photonView.IsMine) {
+            Debug.Log("EnteredRoom3");
+
             gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-        }
+        //}
         gameMasterChat = string.Empty;
     }
 

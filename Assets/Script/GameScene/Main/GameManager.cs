@@ -124,12 +124,14 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
         isCheckEnteredRoom = true;
 
-        //シーン遷移関連
-        Scene gameScene = SceneManager.GetSceneByName(SCENE_TYPE.GAME.ToString());
-        SceneManager.SetActiveScene(gameScene);
+        ////シーン遷移関連
+        //Scene gameScene = SceneManager.GetSceneByName(SCENE_TYPE.GAME.ToString());
+        //SceneManager.SetActiveScene(gameScene);
+        StartCoroutine(gameMasterChatManager.EnteredRoom(PlayerManager.instance.playerName));
+
     }
 
-    
+
     /// <summary>
     /// 入室と退室を管理
     /// 人数設定と入室者が同じ数になるとゲーム参加再確認を行う
@@ -270,7 +272,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         yield return StartCoroutine(SettingRondomRollType());
 
         gameStart = true;
-        NetworkManager.instance.SetCustomPropertesOfRoom<bool>("gameStart", gameStart);
+        NetworkManager.instance.SetCustomPropertesOfRoom("gameStart", gameStart);
         PraparateGameStart();
     }
 
@@ -317,7 +319,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         liveNum = PhotonNetwork.PlayerList.Length;
 
         if (PhotonNetwork.IsMasterClient) {
-            NetworkManager.instance.SetCustomPropertesOfRoom<int>("liveNum", liveNum);
+            NetworkManager.instance.SetCustomPropertesOfRoom("liveNum", liveNum);
             //SetLiveNum();
         }
 

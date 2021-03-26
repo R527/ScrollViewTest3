@@ -69,19 +69,20 @@ public class CheckEnteredRoom : MonoBehaviourPunCallbacks {
         }
 
         //自分がキック対象なら自ら退出するPopUpを出す
-        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"] == false) {
+        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isBanPlayer"]) {
             PhotonNetwork.CurrentRoom.IsOpen = true;
             if (NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine != null) {
                 StopCoroutine(NetworkManager.instance.banPlayerKickOutOREnteredRoomCoroutine);
             }
             ExitPopUp obj = Instantiate(exitPopUp, tran, false);
-            obj.exitText.text = "接続に問題がありました。";
+            obj.exitText.text = "接続に問題が\r\nありました。";
             
             Destroy(gameObject);
             return;
         }
         //満室でもBanPlayerでもなく部屋が空いていたら
         if (!isCheckEnteredRoom) {
+            NetworkManager.instance.SetCustomPropertesOfPlayer("isForcedExit", false, PhotonNetwork.LocalPlayer);
             gameManager.GameManagerSetUp();
             isCheckEnteredRoom = true;
             NetworkManager.instance.SetCustomPropertesOfPlayer("isCheckEnteredRoom", isCheckEnteredRoom, PhotonNetwork.LocalPlayer);

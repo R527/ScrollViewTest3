@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 
 
 /// <summary>
@@ -19,6 +20,7 @@ public class ExitPopUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        NetworkManager.instance.SetCustomPropertesOfPlayer("isForcedExit", true, PhotonNetwork.LocalPlayer);
         exitButton.onClick.AddListener(ExitButton);
     }
 

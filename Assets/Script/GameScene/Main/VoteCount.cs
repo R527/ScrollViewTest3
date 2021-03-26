@@ -108,7 +108,7 @@ public class VoteCount : MonoBehaviourPunCallbacks {
 
         //生存数を更新
         gameManager.liveNum--;
-        NetworkManager.instance.SetCustomPropertesOfRoom<int>("liveNum", gameManager.liveNum);
+        NetworkManager.instance.SetCustomPropertesOfRoom("liveNum", gameManager.liveNum);
         //gameManager.SetLiveNum();
     }
 

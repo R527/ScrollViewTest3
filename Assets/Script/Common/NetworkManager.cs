@@ -290,12 +290,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         if (!gameManager.gameStart) {
             DeleateOtherPlayer(otherPlayer);
 
-            //人数を減らす
-            gameManager.num--;
-            var customRoomProperties = new ExitGames.Client.Photon.Hashtable {
-                {"num", gameManager.num },
-            };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProperties);
+            //Playerの人数を減らす（BanPlayerの場合は除外する）
+            bool isForcedExit;
+            isForcedExit = GetCustomPropertesOfPlayer<bool>("isForcedExit", otherPlayer);
+            if (!isForcedExit) {
+                gameManager.num--;
+                SetCustomPropertesOfRoom("num", gameManager.num);
+            }
             PhotonNetwork.CurrentRoom.IsOpen = true;
 
             if (!isMaster) {
@@ -443,7 +444,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             yield break;
         }
 
-        StartCoroutine(gameManager.gameMasterChatManager.EnteredRoom(newPlayer));
     }
 
     /// <summary>
@@ -507,7 +507,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             banListStr.Substring(0, banListStr.Length - 1);
         }
 
-        SetCustomPropertesOfRoom<string>("banListStr", banListStr);
+        SetCustomPropertesOfRoom("banListStr", banListStr);
 
         //PlayerButton削除
         gameManager.DestroyPlayerButton(otherPlayer);
