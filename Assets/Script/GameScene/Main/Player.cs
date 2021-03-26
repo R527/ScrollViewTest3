@@ -250,7 +250,6 @@ public class Player : MonoBehaviourPunCallbacks {
                         isCheack = false;
                         yield return null;
                     } else {
-                        Debug.Log("待つ");
                         yield return null;
                     }
 

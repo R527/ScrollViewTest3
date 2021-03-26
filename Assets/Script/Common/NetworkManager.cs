@@ -283,9 +283,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <param name="otherPlayer"></param>
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
         base.OnPlayerLeftRoom(otherPlayer);
+
+        Debug.Log("退出");
         gameManager.gameMasterChatManager.gameMasterChat = otherPlayer.NickName + "さんが退出しました。";
         gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
         gameManager.gameMasterChatManager.gameMasterChat = string.Empty;
+
         //ゲーム開始前Playerを削除する
         if (!gameManager.gameStart) {
             DeleateOtherPlayer(otherPlayer);
@@ -298,7 +301,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
                 SetCustomPropertesOfRoom("num", gameManager.num);
             }
             PhotonNetwork.CurrentRoom.IsOpen = true;
-
+            gameManager.num = GetCustomPropertesOfRoom<int>("num");
             if (!isMaster && gameManager.num == 1) {
                 gameManager.gameMasterChatManager.IsRoomMaster();
                 isMaster = true;

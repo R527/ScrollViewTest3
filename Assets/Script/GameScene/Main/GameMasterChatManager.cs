@@ -179,6 +179,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
             //gameMasterChat = PhotonNetwork.LocalPlayer.NickName + "さんが退出しました。";
             //gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
             //gameMasterChat = string.Empty;
+            Debug.Log("taisyutusyori");
 
             //GameOver時にチャットログを保存する
             if(gameManager.gameMasterChatManager.timeController.gameOver.isGameOver) {
