@@ -1606,6 +1606,7 @@ GameObject:
   - component: {fileID: 2820532273166376548}
   - component: {fileID: 2820532273166376549}
   - component: {fileID: 2820532273166376552}
+  - component: {fileID: 2820532273166376553}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -1641,6 +1642,18 @@ MonoBehaviour:
   - {r: 0.6, g: 0.19607843, b: 0.8, a: 1}
   - {r: 1, g: 0.4117647, b: 0.7058824, a: 1}
   - {r: 1, g: 0.7137255, b: 0.75686276, a: 1}
+--- !u!114 &2820532273166376553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2820532273166376551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c32854728b907469204ca4338fca86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4274428794974511825
 Transform:
   m_ObjectHideFlags: 0
@@ -1667,7 +1680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa02f1440382db4cac061645077d770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 0
+  isDebug: 1
   isTimeController: 1
   testMainTime: 2
   testNightTime: 2

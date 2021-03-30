@@ -124,10 +124,8 @@ public class GameManager : MonoBehaviourPunCallbacks {
         }
         isCheckEnteredRoom = true;
 
-        ////シーン遷移関連
-        //Scene gameScene = SceneManager.GetSceneByName(SCENE_TYPE.GAME.ToString());
-        //SceneManager.SetActiveScene(gameScene);
         StartCoroutine(gameMasterChatManager.EnteredRoom(PlayerManager.instance.playerName));
+
 
     }
 

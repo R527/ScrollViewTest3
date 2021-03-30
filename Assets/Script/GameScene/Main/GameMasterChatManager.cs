@@ -243,14 +243,7 @@ public class GameMasterChatManager : MonoBehaviourPunCallbacks {
         //ToDo 部屋入室時にPlayerが参加したGMチャット部分の無駄なタイムラグを排除　様子見
         yield return null;
         gameMasterChat = playerName  + "さんが参加しました。";
-        Debug.Log(playerName);
-        Debug.Log("photonView" + photonView.IsMine);
-        Debug.Log("photonView" + photonView);
-        //if (photonView.IsMine) {
-            Debug.Log("EnteredRoom3");
-
-            gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
-        //}
+        gameManager.chatSystem.CreateChatNode(false, SPEAKER_TYPE.GAMEMASTER_ONLINE);
         gameMasterChat = string.Empty;
     }
 

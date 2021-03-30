@@ -57,7 +57,7 @@ public class BegginerGuidePopUp : BasePopUP {
                 break;
             case "役職紹介":
                 obj.guideType = GUIDE_TYPE.役職紹介;
-                obj.guideTitleText.text = GUIDE_TYPE.役職紹介.ToString();
+                obj.guideTitleText.text = "市民";
                 break;
         }
         DestroyPopUP();

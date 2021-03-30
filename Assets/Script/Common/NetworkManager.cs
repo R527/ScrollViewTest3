@@ -173,8 +173,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         //プレイヤー作成
         StartCoroutine(FirstCreatePlayerObj());
 
-        //Debug.Log("NetworckroomCount" + joinedRoom.PlayerCount);
-
     }
 
     /// <summary>

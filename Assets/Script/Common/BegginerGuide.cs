@@ -209,7 +209,7 @@ public class BegginerGuide : MonoBehaviour
                 switch (num) {
                     case 1:
                         //市民
-                        rollNameText.text = "市民";
+                        guideTitleText.text = "市民";
                         fortuneText.text = "占い：市民";
                         psychicText.text = "霊能：市民";
                         groupText.text = "系統：市民";
@@ -219,7 +219,7 @@ public class BegginerGuide : MonoBehaviour
                         break;
                     case 2:
                         //占い師
-                        rollNameText.text = "占い師";
+                        guideTitleText.text = "占い師";
                         fortuneText.text = "占い：市民";
                         psychicText.text = "霊能：市民";
                         groupText.text = "系統：市民";
@@ -229,7 +229,7 @@ public class BegginerGuide : MonoBehaviour
                         break;
                     case 3:
                         //騎士
-                        rollNameText.text = "騎士";
+                        guideTitleText.text = "騎士";
                         fortuneText.text = "占い：市民";
                         psychicText.text = "霊能：市民";
                         groupText.text = "系統：市民";
@@ -239,7 +239,7 @@ public class BegginerGuide : MonoBehaviour
                         break;
                     case 4:
                         //霊能者
-                        rollNameText.text = "霊能者";
+                        guideTitleText.text = "霊能者";
                         fortuneText.text = "占い：市民";
                         psychicText.text = "霊能：市民";
                         groupText.text = "系統：市民";
@@ -249,7 +249,7 @@ public class BegginerGuide : MonoBehaviour
                         break;
                     case 5:
                         //人狼
-                        rollNameText.text = "人狼";
+                        guideTitleText.text = "人狼";
                         fortuneText.text = "占い：人狼";
                         psychicText.text = "霊能：人狼";
                         groupText.text = "系統：人狼";
@@ -259,7 +259,7 @@ public class BegginerGuide : MonoBehaviour
                         break;
                     case 6:
                         //狂信者
-                        rollNameText.text = "狂信者";
+                        guideTitleText.text = "狂信者";
                         fortuneText.text = "占い：市民";
                         psychicText.text = "霊能：市民";
                         groupText.text = "系統：市民";
