@@ -46,9 +46,6 @@ public class DebugManager : MonoBehaviour
     public bool isTestPlay;//プレイヤーの役職を任意に決める
     public List<ROLLTYPE> testRollTypeList = new List<ROLLTYPE>();
 
-    [Header("課金管理　trueなら内部通貨初期化")]
-    public bool isCurrency;
-
     public Text debugText;
 
     private void Awake() {
